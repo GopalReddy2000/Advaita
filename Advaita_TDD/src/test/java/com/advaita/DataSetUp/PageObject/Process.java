@@ -1,6 +1,5 @@
 package com.advaita.DataSetUp.PageObject;
 
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -9,12 +8,17 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.Pagination;
 
 public class Process extends TestBase {
+
+	@FindBy(tagName = "body")
+	public static WebElement driverIninteractable;
 
 	@FindBy(xpath = "//img[@alt='justify_icon']")
 	public WebElement sideBar;
@@ -124,13 +128,13 @@ public class Process extends TestBase {
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[2]/td[1]//img[@alt='table_drop_down']")
 	public static WebElement dropDown2;
 
-	@FindBy(xpath = "(//img[@alt='table-edit'])[1]")
+	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[1]")
 	public static WebElement editOption1;
 
-	@FindBy(xpath = "(//img[@alt='table-edit'])[2]")
+	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[2]")
 	public static WebElement editOption2;
 
-	@FindBy(xpath = "(//img[@alt='table-edit'])[3]")
+	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[3]")
 	public static WebElement editOption3;
 
 	@FindBy(xpath = "//span[@id='change_msg'][text()='Process has been updated']")
@@ -157,6 +161,12 @@ public class Process extends TestBase {
 	@FindBy(id = "s_sub_process")
 	public static WebElement subSubProcessDropDown;
 
+	@FindBy(xpath = "//li//a//img[@alt='left_arrow']")
+	public static WebElement leftArrowOfPagination;
+
+	@FindBy(xpath = "//li//a//img[@alt='rgt_arrow']")
+	public static WebElement rightArrowOfPagination;
+
 	public Process() {
 		PageFactory.initElements(driver, this);
 	}
@@ -170,11 +180,12 @@ public class Process extends TestBase {
 		System.out.println("beforeCreateRecords : " + beforeCreateRecords);
 
 		int beforeCreateRecord = extractNumber(beforeCreateRecords);
-		int beforeNumber = extractNumber(beforeCreateRecords)+1;
+		int beforeNumber = extractNumber(beforeCreateRecords) + 1;
 //		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-		System.out.println("beforeNumber"+"("+beforeCreateRecord+"+1"+") :"+ beforeNumber);
+		System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
 
-		assertTrue(processTab.isDisplayed() && dataSetTab.isDisplayed() && metadataTab.isDisplayed() && datauploadTab.isDisplayed(), "tabs are not displayed.");
+		assertTrue(processTab.isDisplayed() && dataSetTab.isDisplayed() && metadataTab.isDisplayed()
+				&& datauploadTab.isDisplayed(), "tabs are not displayed.");
 
 		createProcessButton.isDisplayed();
 		createProcessButton.click();
@@ -241,12 +252,13 @@ public class Process extends TestBase {
 
 		save_UpdateButtonInSubProcess.isDisplayed();
 		save_UpdateButtonInSubProcess.click();
-
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//
+//		try {
+//			Thread.sleep(2000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+		wait.until(ExpectedConditions.visibilityOf(createSuceessMassgage));
 		Assert.assertTrue(createSuceessMassgage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
 
@@ -259,7 +271,7 @@ public class Process extends TestBase {
 
 		int afterNumber = extractNumber(afterCreateRecords);
 		System.out.println("afterNumber : " + afterNumber);
-		
+
 		assertEquals(afterNumber, beforeNumber);
 
 		dropDown1.isDisplayed();
@@ -270,7 +282,6 @@ public class Process extends TestBase {
 		Thread.sleep(1000);
 	}
 
-	
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
 		for (char c : input.toCharArray()) {
@@ -281,12 +292,11 @@ public class Process extends TestBase {
 
 		return Integer.parseInt(numberAsString.toString());
 	}
-	
-	
 
 	public void editCreatedProcess(String editProcessDesc, String editSubProcessDesc, String editSubSubProcessDesc)
 			throws Throwable {
 
+		actions.moveToElement(driverIninteractable).perform();
 		editOption1.click();
 		processDescField.clear();
 		processDescField.sendKeys(editProcessDesc);
@@ -327,7 +337,7 @@ public class Process extends TestBase {
 
 	}
 
-	public void tablePage(int pageNumber) throws Throwable {
+	public void tablePage() throws Throwable {
 
 		String searchText = fetchCreatedRecord.getText();
 
@@ -337,29 +347,29 @@ public class Process extends TestBase {
 		Thread.sleep(2000);
 		clearButton.click();
 
-		js = (JavascriptExecutor) driver;
+//		// Click a specific page by its number
+//		WebElement pageLink = driver.findElement(By.cssSelector(
+//				".pagination_nav .pagination .page-item:not(.disabled) a[href*='?page=" + pageNumber + "']"));
+//		js.executeScript("arguments[0].scrollIntoView(true);", pageLink);
+//		js.executeScript("arguments[0].click();", pageLink);
+//
+//		for (int i = 1; i <= 6; i++) {
+//			WebElement nextPageLink = driver
+//					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:last-child a"));
+//			js.executeScript("arguments[0].scrollIntoView(true);", nextPageLink);
+//			js.executeScript("arguments[0].click();", nextPageLink);
+//
+//		}
+//
+//		for (int j = 1; j <= 5; j++) {
+//			// Click the previous page link
+//			WebElement previousPageLink = driver
+//					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:first-child a"));
+//			js.executeScript("arguments[0].scrollIntoView(true);", previousPageLink);
+//			js.executeScript("arguments[0].click();", previousPageLink);
+//		}
 
-		// Click a specific page by its number
-		WebElement pageLink = driver.findElement(By.cssSelector(
-				".pagination_nav .pagination .page-item:not(.disabled) a[href*='?page=" + pageNumber + "']"));
-		js.executeScript("arguments[0].scrollIntoView(true);", pageLink);
-		js.executeScript("arguments[0].click();", pageLink);
-
-		for (int i = 1; i <= 6; i++) {
-			WebElement nextPageLink = driver
-					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:last-child a"));
-			js.executeScript("arguments[0].scrollIntoView(true);", nextPageLink);
-			js.executeScript("arguments[0].click();", nextPageLink);
-
-		}
-
-		for (int j = 1; j <= 5; j++) {
-			// Click the previous page link
-			WebElement previousPageLink = driver
-					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:first-child a"));
-			js.executeScript("arguments[0].scrollIntoView(true);", previousPageLink);
-			js.executeScript("arguments[0].click();", previousPageLink);
-		}
+		Pagination.paginate(driver, rightArrowOfPagination, leftArrowOfPagination);
 
 	}
 

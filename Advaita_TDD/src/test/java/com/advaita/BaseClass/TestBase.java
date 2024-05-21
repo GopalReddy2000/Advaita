@@ -101,7 +101,7 @@ public class TestBase {
 //			}
 //		});
 
-		driver.get("https://app.transmonqa.in/en/myprofile/login/");
+		driver.get("https://pkt-test.transmonqa.in/en/myprofile/login/");
 
 	}
 

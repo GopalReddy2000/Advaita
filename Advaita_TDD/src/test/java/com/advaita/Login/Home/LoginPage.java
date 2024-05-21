@@ -1,5 +1,10 @@
 package com.advaita.Login.Home;
 
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +22,9 @@ public class LoginPage extends TestBase {
 
 	@FindBy(xpath = "//button[text()='Sign In']")
 	public static WebElement signInButton;
+
+	@FindBy(xpath = "//li[text()='Invalid username or password. Please check your credentials.']")
+	public static WebElement wrongUserErorrMessagElement;
 
 	public HomePage loginloginTest;
 
@@ -54,7 +62,15 @@ public class LoginPage extends TestBase {
 		passwordField.clear();
 		passwordField.sendKeys(pwd);
 		click(driver, signInButton);
-		Thread.sleep(2000);
+		Thread.sleep(1000);
+		assertTrue(driver.getCurrentUrl().equals("https://pkt-test.transmonqa.in/en/alchemy/evaluation_tab_view/"),
+				"Invalid password.");
+
+//		List<WebElement> errorMessages = driver
+//				.findElements(By.xpath("//li[text()='Invalid username or password. Please check your credentials.']"));
+//		// Assert that the error message is not displayed
+//		assertTrue(errorMessages.isEmpty(), "Login failed: Invalid username or password error message is displayed.");
+
 		return new HomePage();
 	}
 }

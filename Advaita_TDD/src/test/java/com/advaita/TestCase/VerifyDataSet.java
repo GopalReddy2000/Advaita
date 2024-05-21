@@ -39,7 +39,7 @@ public class VerifyDataSet extends TestBase {
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita DataSet.html");
 		reports = new ExtentReports();

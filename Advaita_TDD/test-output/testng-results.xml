@@ -1,33 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+<testng-results ignored="0" total="3" passed="1" failed="2" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-05-13T11:05:32 IST" name="Default suite" finished-at="2024-05-13T11:07:04 IST" duration-ms="91663">
+  <suite started-at="2024-05-21T18:41:11 IST" name="Default suite" finished-at="2024-05-21T18:41:30 IST" duration-ms="19330">
     <groups>
     </groups>
-    <test started-at="2024-05-13T11:05:32 IST" name="Default test" finished-at="2024-05-13T11:07:04 IST" duration-ms="91663">
-      <class name="com.advaita.TestCase.VerifyNonMeasurableSetPage">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyNonMeasurableSetPage@4f1bfe23]" started-at="2024-05-13T11:05:32 IST" name="setUp" finished-at="2024-05-13T11:05:47 IST" duration-ms="14614" status="PASS">
+    <test started-at="2024-05-21T18:41:11 IST" name="Default test" finished-at="2024-05-21T18:41:30 IST" duration-ms="19330">
+      <class name="com.advaita.TestCase.VerifyLoginPage">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:11 IST" name="setUp" finished-at="2024-05-21T18:41:15 IST" duration-ms="4248" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyNonMeasurableSetCreatePage()[pri:1, instance:com.advaita.TestCase.VerifyNonMeasurableSetPage@4f1bfe23]" started-at="2024-05-13T11:05:47 IST" name="verifyNonMeasurableSetCreatePage" finished-at="2024-05-13T11:06:30 IST" duration-ms="42764" status="PASS">
+        <test-method signature="verifyLoginPage(java.lang.String,java.lang.String)[pri:1, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:15 IST" name="verifyLoginPage" data-provider="loginDataProvider" finished-at="2024-05-21T18:41:19 IST" duration-ms="4124" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Capture_admin]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Qwerty@123]]>
+              </value>
+            </param>
+          </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyNonMeasurableSetCreatePage -->
-        <test-method signature="verifyNonMeasurableSetEditePage()[pri:2, instance:com.advaita.TestCase.VerifyNonMeasurableSetPage@4f1bfe23]" started-at="2024-05-13T11:06:30 IST" name="verifyNonMeasurableSetEditePage" finished-at="2024-05-13T11:06:43 IST" duration-ms="12789" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyNonMeasurableSetEditePage -->
-        <test-method signature="verifyNonMeasurableSetTablePage()[pri:3, instance:com.advaita.TestCase.VerifyNonMeasurableSetPage@4f1bfe23]" started-at="2024-05-13T11:06:43 IST" name="verifyNonMeasurableSetTablePage" finished-at="2024-05-13T11:07:03 IST" duration-ms="20431" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyNonMeasurableSetTablePage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyNonMeasurableSetPage@4f1bfe23]" started-at="2024-05-13T11:07:03 IST" name="tearDown" finished-at="2024-05-13T11:07:04 IST" duration-ms="953" status="PASS">
+        </test-method> <!-- verifyLoginPage -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:19 IST" name="tearDown" finished-at="2024-05-21T18:41:20 IST" duration-ms="895" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- com.advaita.TestCase.VerifyNonMeasurableSetPage -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:20 IST" name="setUp" finished-at="2024-05-21T18:41:23 IST" duration-ms="2714" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="verifyLoginPage(java.lang.String,java.lang.String)[pri:1, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:23 IST" name="verifyLoginPage" data-provider="loginDataProvider" finished-at="2024-05-21T18:41:24 IST" duration-ms="1679" status="FAIL">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Capture_user1]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password1]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Invalid password. expected [true] but found [false]]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Invalid password. expected [true] but found [false]
+at org.testng.Assert.fail(Assert.java:111)
+at org.testng.Assert.failNotEquals(Assert.java:1578)
+at org.testng.Assert.assertTrue(Assert.java:57)
+at com.advaita.Login.Home.LoginPage.login(LoginPage.java:66)
+at com.advaita.TestCase.VerifyLoginPage.verifyLoginPage(VerifyLoginPage.java:72)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:228)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:961)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:201)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+at org.testng.TestRunner.privateRun(TestRunner.java:819)
+at org.testng.TestRunner.run(TestRunner.java:619)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+at org.testng.SuiteRunner.run(SuiteRunner.java:336)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1301)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1228)
+at org.testng.TestNG.runSuites(TestNG.java:1134)
+at org.testng.TestNG.run(TestNG.java:1101)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyLoginPage -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:24 IST" name="tearDown" finished-at="2024-05-21T18:41:25 IST" duration-ms="519" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:25 IST" name="setUp" finished-at="2024-05-21T18:41:28 IST" duration-ms="2610" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="verifyLoginPage(java.lang.String,java.lang.String)[pri:1, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:28 IST" name="verifyLoginPage" data-provider="loginDataProvider" finished-at="2024-05-21T18:41:30 IST" duration-ms="2019" status="FAIL">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[Capture_user2]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password2]]>
+              </value>
+            </param>
+          </params>
+          <exception class="java.lang.AssertionError">
+            <message>
+              <![CDATA[Invalid password. expected [true] but found [false]]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.AssertionError: Invalid password. expected [true] but found [false]
+at org.testng.Assert.fail(Assert.java:111)
+at org.testng.Assert.failNotEquals(Assert.java:1578)
+at org.testng.Assert.assertTrue(Assert.java:57)
+at com.advaita.Login.Home.LoginPage.login(LoginPage.java:66)
+at com.advaita.TestCase.VerifyLoginPage.verifyLoginPage(VerifyLoginPage.java:72)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:228)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:961)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:201)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+at org.testng.TestRunner.privateRun(TestRunner.java:819)
+at org.testng.TestRunner.run(TestRunner.java:619)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+at org.testng.SuiteRunner.run(SuiteRunner.java:336)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1301)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1228)
+at org.testng.TestNG.runSuites(TestNG.java:1134)
+at org.testng.TestNG.run(TestNG.java:1101)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.AssertionError -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyLoginPage -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyLoginPage@339bf286]" started-at="2024-05-21T18:41:30 IST" name="tearDown" finished-at="2024-05-21T18:41:30 IST" duration-ms="430" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.advaita.TestCase.VerifyLoginPage -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

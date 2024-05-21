@@ -17,17 +17,14 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class VerifyProcess extends TestBase {
 
-	
 	FakeData fake = new FakeData();
-	
-	
-	
-	public String processName = "Test "+fake.lastName1();
-	public String processDesc = "Test Desc "+fake.lastName1();
-	public String subProcessName = "Test "+fake.lastName1();
-	public String subProcessDesc = "Test Desc"+fake.lastName1();
-	public String subSubProcessName = "Test "+fake.lastName1();
-	public String subSubProcessDesc = "Test Desc"+fake.lastName1();
+
+	public String processName = "Test " + fake.lastName1();
+	public String processDesc = "Test Desc " + fake.lastName1();
+	public String subProcessName = "Test " + fake.lastName1();
+	public String subProcessDesc = "Test Desc" + fake.lastName1();
+	public String subSubProcessName = "Test " + fake.lastName1();
+	public String subSubProcessDesc = "Test Desc" + fake.lastName1();
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -46,7 +43,7 @@ public class VerifyProcess extends TestBase {
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita Process.html");
 		reports = new ExtentReports();
@@ -71,7 +68,7 @@ public class VerifyProcess extends TestBase {
 
 	@Test(priority = 1)
 	public void verifyProcessCreate() throws Throwable {
-		
+
 		test = reports.createTest("verifyProcessCreate");
 		homePage.clickOnProcessManagementCreate();
 		process.createProcess(processName, 
@@ -85,19 +82,21 @@ public class VerifyProcess extends TestBase {
 	}
 
 	@Test(priority = 2)
-	public void verifyProcessEdite() throws Throwable {
-		
-		test = reports.createTest("verifyProcessEdite");
+	public void verifyProcessEdit() throws Throwable {
+
+		test = reports.createTest("verifyProcessEdit");
+		homePage.clickOnProcessManagementCreate();
 		process.editCreatedProcess("Edit processDesc", "Edit subProcessDesc", "Edit subSubProcessDesc");
 
 	}
 
 	@Test(priority = 3)
 	public void verifyProcessTable() throws Throwable {
-		
-		test = reports.createTest("verifyProcessTable");
-		process.tablePage(3);
 
+		test = reports.createTest("verifyProcessTable");
+		homePage.clickOnProcessManagementCreate();
+		process.tablePage();
+		
 
 	}
 

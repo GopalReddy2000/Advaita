@@ -15,7 +15,7 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class VerifyMeasurableSet extends TestBase {
 
-	static int createCount = 1;
+	static int createCount = 20;
 
 //	Faker faker = new Faker();
 //		public String num = "24";
@@ -39,7 +39,7 @@ public class VerifyMeasurableSet extends TestBase {
 
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita MeasurableSetPage.html");
 		reports = new ExtentReports();
@@ -61,14 +61,14 @@ public class VerifyMeasurableSet extends TestBase {
 		measurableSetPage = new MasterParameterMeasurableSetPage();
 	}
 
-//	@Test(priority = 1)
-//	public void verifyMeasurableSetCreatePage() throws Throwable {
-//		
-//		test = reports.createTest("verifyMeasurableSetCreatePage");
-//		homePage.clickOnworkflowDesign();
-//		measurableSetPage.createMeasurableSet(createCount);
-//		
-//	}
+	@Test(priority = 1)
+	public void verifyMeasurableSetCreatePage() throws Throwable {
+		
+		test = reports.createTest("verifyMeasurableSetCreatePage");
+		homePage.clickOnworkflowDesign();
+		measurableSetPage.createMeasurableSet(createCount);
+		
+	}
 
 	@Test(priority = 2)
 	public void verifyMeasurableSetTablePage() throws Throwable {
@@ -90,8 +90,8 @@ public class VerifyMeasurableSet extends TestBase {
 	@AfterTest
 	public void tearDown() {
 
-//		driver.manage().window().minimize();                                       
-//		driver.quit();
+		driver.manage().window().minimize();                                       
+		driver.quit();
 		reports.flush();
 
 	}

@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCase.VerifyDisposition">
+      <class name="com.advaita.TestCase.VerifyLoginPage">
         <methods>
+          <include name="verifyLoginPage" invocation-numbers="1 2"/>
           <include name="setUp"/>
-          <include name="verifyDispositionCreatePage"/>
           <include name="tearDown"/>
         </methods>
-      </class> <!-- com.advaita.TestCase.VerifyDisposition -->
+      </class> <!-- com.advaita.TestCase.VerifyLoginPage -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
