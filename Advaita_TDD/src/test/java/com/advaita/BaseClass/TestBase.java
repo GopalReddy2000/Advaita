@@ -109,7 +109,7 @@ public class TestBase {
 	public static WebElement waitForElement(WebDriver driver, WebElement element, int timeout, int pollingInterval) {
 
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(timeout))
-				.pollingEvery(Duration.ofSeconds(pollingInterval)).ignoring(ElementClickInterceptedException.class);
+				.pollingEvery(Duration.ofSeconds(pollingInterval)).ignoring(ElementClickInterceptedException.class,Exception.class);
 
 		return wait.until(new Function<WebDriver, WebElement>() {
 			public WebElement apply(WebDriver driver) {
@@ -170,16 +170,6 @@ public class TestBase {
 		// To extract Value Attribute and use same approach to retrieve
 		String elementValue = element.getText().trim();
 		System.out.println(variableName + " : " + elementValue + "\n");
-	}
-
-	// Data Print 2
-	// Label-input Tag
-	public static void dataPrintFromInputtag(WebDriver driver, WebElement element, String variableName)
-			throws InterruptedException {
-		waitForElement(driver, element, 10, 1);
-		assertTrue(element.isDisplayed(), element + " is not IsDisplayed.");
-		String elementValue = (String) js.executeScript("return arguments[0].value;", element);
-		System.out.println("\n" + variableName + " : " + elementValue + "\n");
 	}
 
 	
