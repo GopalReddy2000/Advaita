@@ -2,6 +2,8 @@ package com.advaita.Utilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
@@ -27,5 +29,21 @@ public class ScreenShorts extends TestBase{
 			FileUtils.copyFile(screenshotFile, new File(filePath));
 
 		}
+		
+		// Method to capture screenshot
+	    public static String captureScreenshot(String methodName) {
+	        String dateName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+	        TakesScreenshot ts = (TakesScreenshot) driver;
+	        File source = ts.getScreenshotAs(OutputType.FILE);
+	        // After execution, you could see a folder "Screenshots" under project directory
+	        String destination = System.getProperty("user.dir") + "/TSFailedScreenshots/" + methodName + dateName + ".png";
+	        File finalDestination = new File(destination);
+	        try {
+	            FileUtils.copyFile(source, finalDestination);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return destination;
+	    }
 
 }

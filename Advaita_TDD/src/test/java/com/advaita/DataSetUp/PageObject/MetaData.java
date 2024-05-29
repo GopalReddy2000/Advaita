@@ -10,7 +10,11 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 public class MetaData extends TestBase {
+	
+	FakeData fake = new FakeData();
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down']")
 	public static WebElement dropDown1;
@@ -168,6 +172,7 @@ public class MetaData extends TestBase {
 
 	public void createMetaData(String metaDataName) throws Throwable {
 
+		
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
@@ -232,7 +237,7 @@ public class MetaData extends TestBase {
 
 		assertTrue(metaDataNameField.isDisplayed(), "metaDataNameField is not displayed.");
 		metaDataNameField.clear();
-		metaDataNameField.sendKeys(metaDataName);
+		metaDataNameField.sendKeys("Test " + fake.lastName1());
 
 		assertTrue(addPlusColumn.isDisplayed(), "addPlusRow is not displayed."); //
 //		click(driver, addPlusColumn);
@@ -353,7 +358,6 @@ public class MetaData extends TestBase {
 		click(driver, clickOnMetaDataExecuteButton);
 		
 		assertTrue(!faildToEdit.isDisplayed(), "faildToEdit is displayed.");
-		
 		
 
 	}

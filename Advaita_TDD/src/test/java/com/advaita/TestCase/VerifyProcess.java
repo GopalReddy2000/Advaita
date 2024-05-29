@@ -61,9 +61,9 @@ public class VerifyProcess extends TestBase {
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
-
+	
 		process = new Process();
-
+	
 	}
 
 	@Test(priority = 1)

@@ -15,7 +15,7 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class VerifyMeasurableSet extends TestBase {
 
-	static int createCount = 20;
+	static int createCount = 1;
 
 //	Faker faker = new Faker();
 //		public String num = "24";

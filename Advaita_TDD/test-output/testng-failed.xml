@@ -3,13 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCase.VerifyDataSet">
+      <class name="com.advaita.TestCase.VerifyStagesCreate">
         <methods>
-          <include name="setUp"/>
-          <include name="verifyCreateDataset"/>
+          <include name="verifyAddSectionA"/>
           <include name="tearDown"/>
+          <include name="getResult"/>
+          <include name="setUp"/>
         </methods>
-      </class> <!-- com.advaita.TestCase.VerifyDataSet -->
+      </class> <!-- com.advaita.TestCase.VerifyStagesCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

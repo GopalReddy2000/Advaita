@@ -194,7 +194,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed());
 		dataSetTab.click();
 
-		String expecteddURL = "https://app.transmonqa.in/en/dataset_management/dataset/";
+		String expecteddURL = "https://pkt-test.transmonqa.in/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
@@ -218,19 +218,19 @@ public class DataSet extends TestBase {
 			dataSetNameField.click();
 //		assertTrue(dataSetNameField.isSelected());
 			if (i == 1) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 2) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 3) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 4) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			assertTrue(processDropDown.isDisplayed());

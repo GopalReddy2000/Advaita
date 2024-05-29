@@ -12,13 +12,17 @@ public class FetchDataFromInputTagWithJS extends TestBase{
 	
 	// Data Print 2
 		// Label-input Tag
-		public static void dataPrintFromInputtag(WebDriver driver, WebElement element, String variableName)
+		public static String dataPrintFromInputtag(WebDriver driver, WebElement element, String variableName)
 				throws InterruptedException {
 			
 			wait.until(ExpectedConditions.visibilityOf(element));
 			assertTrue(element.isDisplayed(), element + " is not IsDisplayed.");
 			String elementValue = (String) js.executeScript("return arguments[0].value;", element);
 			System.out.println("\n" + variableName + " : " + elementValue + "\n");
+			
+			return elementValue;
+			
+			
 		}
 
 }
