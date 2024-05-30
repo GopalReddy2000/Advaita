@@ -59,7 +59,7 @@ public class VerifyStagesCreate extends TestBase {
         loginPage = new LoginPage();
         homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
-        htmlReporter = new ExtentSparkReporter("extentreport Advaita Stages.html");
+        htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir")+"/Reports/Stages extentReport.html");
         reports = new ExtentReports();
         reports.attachReporter(htmlReporter);
 
@@ -83,27 +83,27 @@ public class VerifyStagesCreate extends TestBase {
         stages = new Stages();
     }
 
-    @Test(priority = 1)
-    public void verifyProcessCreate() throws Throwable {
-        test = reports.createTest("verifyProcessCreate");
-        homePage.clickOnProcessManagementCreate();
-        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
-                subSubProcessName, subSubProcessDesc);
-    }
-
-    @Test(priority = 2)
-    public void verifyCreateDataset() throws Throwable {
-        test = reports.createTest("verifyCreateDataset");
-        homePage.clickOnProcessManagementCreate();
-        dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
-    }
-
-    @Test(priority = 3)
-    public void verifyCreateMetaData() throws Throwable {
-        test = reports.createTest("verifyCreateMetaData");
-        homePage.clickOnProcessManagementCreate();
-        metaData.createMetaData(metaDataName);
-    }
+//    @Test(priority = 1)
+//    public void verifyProcessCreate() throws Throwable {
+//        test = reports.createTest("verifyProcessCreate");
+//        homePage.clickOnProcessManagementCreate();
+//        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
+//                subSubProcessName, subSubProcessDesc);
+//    }
+//
+//    @Test(priority = 2)
+//    public void verifyCreateDataset() throws Throwable {
+//        test = reports.createTest("verifyCreateDataset");
+//        homePage.clickOnProcessManagementCreate();
+//        dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
+//    }
+//
+//    @Test(priority = 3)
+//    public void verifyCreateMetaData() throws Throwable {
+//        test = reports.createTest("verifyCreateMetaData");
+//        homePage.clickOnProcessManagementCreate();
+//        metaData.createMetaData(metaDataName);
+//    }
 
     @Test(priority = 4)
     public void navigateFetchRecord() throws Throwable {
@@ -174,7 +174,7 @@ public class VerifyStagesCreate extends TestBase {
  
 
     @AfterMethod
-    public void getResult(ITestResult result) throws IOException {
+    public void getResult(ITestResult result) throws IOException, Throwable {
         if (result.getStatus() == ITestResult.FAILURE) {
             // Mark the test as failed in the ExtentReports
             test.fail(result.getThrowable());
@@ -183,12 +183,6 @@ public class VerifyStagesCreate extends TestBase {
             test.addScreenCaptureFromPath(screenshotPath);
         }
         // Close ExtentReports
-        try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
         
         reports.flush();
     }

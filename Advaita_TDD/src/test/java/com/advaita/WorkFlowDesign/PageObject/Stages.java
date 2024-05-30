@@ -151,7 +151,6 @@ public class Stages extends TestBase {
 	}
 
 	public void navigateFetchMetaDataRecord() throws Throwable {
-
 		click(driver, metaDataTab);
 
 		Thread.sleep(1000);
@@ -316,7 +315,7 @@ public class Stages extends TestBase {
 			assertNotNull(option, "fetchMetaDataRecord after add Metadata popup is null.");
 
 //			assertTrue(list.contains(option.getText()));
-			
+
 			assertTrue(option.getText().contains(list));
 
 		}
