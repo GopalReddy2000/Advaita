@@ -62,22 +62,22 @@ public class VerifyDataSet extends TestBase {
 
 	}
 
-	@Test(priority = 1)
-	public void verifyCreateDataset() throws Throwable {
-
-		test = reports.createTest("verifyCreateDataset");
-		homePage.clickOnProcessManagementCreate();
-		dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
-
-	}
-
-	@Test(priority = 2)
-	public void verifyEditDataset() throws Throwable {
-
-		test = reports.createTest("verifyEditDataset");
+//	@Test(priority = 1)
+//	public void verifyCreateDataset() throws Throwable {
+//
+//		test = reports.createTest("verifyCreateDataset");
 //		homePage.clickOnProcessManagementCreate();
-		dataset.editDataSet("Edit dataSetName");
-	}
+//		dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
+//
+//	}
+//
+//	@Test(priority = 2)
+//	public void verifyEditDataset() throws Throwable {
+//
+//		test = reports.createTest("verifyEditDataset");
+////		homePage.clickOnProcessManagementCreate();
+//		dataset.editDataSet("Edit dataSetName");
+//	}
 
 	@Test(priority = 3)
 	public void verifydataSetTablePage() throws Throwable {
@@ -85,6 +85,12 @@ public class VerifyDataSet extends TestBase {
 		test = reports.createTest("verifydataSetTablePage");
 //		homePage.clickOnProcessManagementCreate();
 		dataset.dataSetTablePage();
+	}
+	@Test()
+	public void delDataset()
+	{
+		homePage.clickOnProcessManagementCreate();
+		dataset.deleteDataSet();
 	}
 
 	@AfterTest

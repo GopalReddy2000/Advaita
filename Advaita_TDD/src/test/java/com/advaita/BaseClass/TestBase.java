@@ -1,28 +1,12 @@
 package com.advaita.BaseClass;
 
-import static org.testng.Assert.assertTrue;
-
 import java.awt.AWTException;
 import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
+import java.util.NoSuchElementException;
 
-import org.apache.commons.io.FileUtils; // Import FileUtils
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,18 +14,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 public class TestBase {
-	
-	
-	//Global Variable(Need to be Initialize)
-	//It should be only within class scopes
+
+	// Global Variable(Need to be Initialize)
+	// It should be only within class scopes
 	public static ChromeDriver driver;
 	public static DevTools devTools;
 //	public static FirefoxDriver driver;
@@ -50,9 +28,6 @@ public class TestBase {
 	public static Actions actions;
 	public static JavascriptExecutor js;
 	public static Robot robot;
-
-	@FindBy(xpath = "(//button[normalize-space()='Close'])[1]")
-	static WebElement closeButton;
 
 	public static void initialization() throws AWTException {
 
@@ -68,8 +43,8 @@ public class TestBase {
 //		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		actions = new Actions(driver);
 		robot = new Robot();
@@ -105,25 +80,6 @@ public class TestBase {
 
 	}
 
-	// Fluent Wait
-	public static WebElement waitForElement(WebDriver driver, WebElement element, int timeout, int pollingInterval) {
-
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(timeout))
-				.pollingEvery(Duration.ofSeconds(pollingInterval)).ignoring(ElementClickInterceptedException.class,Exception.class);
-
-		return wait.until(new Function<WebDriver, WebElement>() {
-			public WebElement apply(WebDriver driver) {
-				return wait.until(ExpectedConditions.elementToBeClickable(element));
-			}
-		});
-	}
-
-	// Usage:
-
-//	WebElement element = driver.findElement(By.id("elementId"));
-//	element = waitForElement(driver, element, 30, 2);
-//	element.click();
-
 //Click Action
 	public static void click(WebDriver driver, WebElement element) {
 //		wait.until(ExpectedConditions.elementToBeClickable(element));
@@ -148,31 +104,5 @@ public class TestBase {
 		}
 
 	}
-	
-	  public static void highlightElement(WebDriver driver, WebElement element) {
-		// Execute JavaScript to apply red border to the element
-		  ((JavascriptExecutor) driver).executeScript("arguments[0].style.setProperty('background-color', 'rgba(255, 0, 0, 0.5)');", element);
-
-	    }
-
-// Is Selected
-
-	public static void isSelected(WebDriver driver, WebElement element, String variableName) {
-		assertTrue(driver.switchTo().activeElement().equals(element), variableName + " : " + " is not Selected");
-	}
-
-	// Data Print 1
-	// Label-Label Tag
-	public static void dataPrint(WebDriver driver, WebElement element, String variableName)
-			throws InterruptedException {
-		waitForElement(driver, element, 10, 1);
-		assertTrue(element.isDisplayed(), element + " is not IsDisplayed.");
-		// To extract Value Attribute and use same approach to retrieve
-		String elementValue = element.getText().trim();
-		System.out.println(variableName + " : " + elementValue + "\n");
-	}
-
-	
-
 
 }

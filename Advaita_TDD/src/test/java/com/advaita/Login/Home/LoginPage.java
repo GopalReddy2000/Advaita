@@ -1,11 +1,8 @@
 package com.advaita.Login.Home;
 
-import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
-import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;

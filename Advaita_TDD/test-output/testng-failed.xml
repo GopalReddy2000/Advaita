@@ -4,28 +4,44 @@
   <test thread-count="5" name="Default test(failed)">
     <classes>
 <<<<<<< HEAD
+      <class name="com.advaita.TestCase.StageTest">
+=======
+<<<<<<< HEAD
       <class name="com.advaita.TestCase.VerifyProcess">
 =======
       <class name="com.advaita.TestCase.VerifyStagesCreate">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
         <methods>
+<<<<<<< HEAD
+          <include name="setup"/>
+=======
 <<<<<<< HEAD
 =======
           <include name="verifyAddSectionA"/>
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <include name="tearDown"/>
+<<<<<<< HEAD
+          <include name="testDataCount"/>
+=======
 <<<<<<< HEAD
           <include name="verifyProcessEdit"/>
 =======
           <include name="getResult"/>
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="setUp"/>
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
         </methods>
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.StageTest -->
+=======
 <<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.VerifyProcess -->
 =======
       </class> <!-- com.advaita.TestCase.VerifyStagesCreate -->
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

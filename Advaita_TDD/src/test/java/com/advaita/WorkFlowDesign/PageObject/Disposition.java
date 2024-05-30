@@ -187,10 +187,8 @@ public class Disposition extends TestBase {
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Customer Name");
 					textBoxUnderColumn.sendKeys("Enter Customer Name?");
-
 					textBoxUnderColumn.click();
 					textBox.click();
-
 				}
 
 				if (j == 2) {
@@ -341,11 +339,9 @@ public class Disposition extends TestBase {
 				WebElement xpathForField2 = driver.findElement(By.xpath(xpathName));
 
 				if (a == 1) {
-
 					click(driver, xpathForColumn2);
 					xpathForColumn2Name.sendKeys("Enter Customer Name?");
 					xpathForField2.sendKeys("Customer Name");
-
 				}
 
 				if (a == 2) {
