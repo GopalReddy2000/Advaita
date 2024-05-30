@@ -46,6 +46,7 @@ public class TEST_Advaita extends TestBase {
 	public TEST_Advaita() {
 		super();
 	}
+	
 
 	@BeforeTest
 	public void setUp() throws Throwable {
@@ -97,7 +98,7 @@ public class TEST_Advaita extends TestBase {
 	public void verifyProcessTable() throws Throwable {
 
 		test = reports.createTest("verifyProcessTable");
-		process.tablePage(3);
+		process.tablePage();
 
 	}
 

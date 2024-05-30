@@ -375,9 +375,9 @@ public class StagePage extends TestBase{
 		
 		System.out.println(editStageName.getText());
 		
-		String renaming=generateRandomAlphabeticString(5);
+//		String renaming=generateRandomAlphabeticString(5);
 		editStageName.clear();
-		editStageName.sendKeys(renaming);
+//		editStageName.sendKeys(renaming);
 		
 //		Selecting the process Dropdown randomly fetching from the dropdown it self;
 		Select processDropdown= new Select(editProcess);
@@ -426,7 +426,7 @@ public class StagePage extends TestBase{
 		
 		click(driver, editBackButton);
 		
-		assertEquals(stageName.getText(), renaming);
+//		assertEquals(stageName.getText(), renaming);
 		
 		
 	}

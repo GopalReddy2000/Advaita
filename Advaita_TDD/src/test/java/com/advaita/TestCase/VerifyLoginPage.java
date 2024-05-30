@@ -1,8 +1,5 @@
 package com.advaita.TestCase;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -26,6 +23,7 @@ public class VerifyLoginPage extends TestBase {
     LoginPage loginPage;
     HomePage homePage;
 
+    Process process;
 
     public VerifyLoginPage() {
         super();
@@ -33,7 +31,7 @@ public class VerifyLoginPage extends TestBase {
 
     @BeforeMethod
     public void setUp() throws Throwable {
-//        initialization();
+        initialization();
 
         htmlReporter = new ExtentSparkReporter("extentreport Advaita Process.html");
         reports = new ExtentReports();
@@ -70,6 +68,7 @@ public class VerifyLoginPage extends TestBase {
         test = reports.createTest("verifyLoginPage for user: " + username);
         homePage = loginPage.login(username, password);
 
+        
     }
         
 

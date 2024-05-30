@@ -3,11 +3,10 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
+import java.util.NoSuchElementException;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,10 +17,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TestBase {
-	
-	
-	//Global Variable(Need to be Initialize)
-	//It should be only within class scopes
+
+	// Global Variable(Need to be Initialize)
+	// It should be only within class scopes
 	public static ChromeDriver driver;
 	public static DevTools devTools;
 //	public static FirefoxDriver driver;
@@ -52,30 +50,35 @@ public class TestBase {
 		robot = new Robot();
 		js = (JavascriptExecutor) driver;
 
-		
+		// For Get the Error Status
+//		devTools = ((ChromeDriver) driver).getDevTools();
+//		devTools.createSession();
+//		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+//
+//		devTools.addListener(Network.requestWillBeSent(), requestConsumer -> {
+//			Request req = requestConsumer.getRequest();
+//
+//			// System.out.println("Send URL :- "+req.getUrl()+"\n"+"\n");
+//		});
+//
+//		devTools.addListener(Network.responseReceived(), response -> {
+//			Response res = response.getResponse();
+//
+//			// System.err.println(res.getStatus() + " :- "+res.getStatusText()+"\n"+"\n");
+//			if (res.getStatus().toString().startsWith("3") || res.getStatus().toString().startsWith("4")
+//					|| res.getStatus().toString().startsWith("5")) {
+//				String errorMessage = "Error status received: " + res.getStatus() + " - " + res.getStatusText()
+//						+ "\nError URL: " + res.getUrl();
+//
+//				System.out.println(errorMessage);
+//				// Hard assertion
+//				Assert.fail(errorMessage);
+//			}
+//		});
 
 		driver.get("https://pkt-test.transmonqa.in/en/myprofile/login/");
 
 	}
-	
-	
-	  // Generate a random string of alphabetic characters
-    public static String generateRandomAlphabeticString(int length) {
-        return RandomStringUtils.randomAlphabetic(length);
-    }
-
-    // Generate a random string of alphanumeric characters
-    public static String generateRandomAlphanumericString(int length) {
-        return RandomStringUtils.randomAlphanumeric(length);
-    }
-
-    // Generate a random string of numeric characters
-    public static String generateRandomNumericString(int length) {
-        return RandomStringUtils.randomNumeric(length);
-    }
-	
-	
-
 
 //Click Action
 	public static void click(WebDriver driver, WebElement element) {
@@ -101,11 +104,5 @@ public class TestBase {
 		}
 
 	}
-	
-	
-	
-	
-	 
-
 
 }

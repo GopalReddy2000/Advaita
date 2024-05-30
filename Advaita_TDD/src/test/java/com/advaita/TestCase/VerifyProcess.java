@@ -17,17 +17,14 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class VerifyProcess extends TestBase {
 
-	
 	FakeData fake = new FakeData();
-	
-	
-	
-	public String processName = "Test "+fake.lastName1();
-	public String processDesc = "Test Desc "+fake.lastName1();
-	public String subProcessName = "Test "+fake.lastName1();
-	public String subProcessDesc = "Test Desc"+fake.lastName1();
-	public String subSubProcessName = "Test "+fake.lastName1();
-	public String subSubProcessDesc = "Test Desc"+fake.lastName1();
+
+	public String processName = "Test " + fake.lastName1();
+	public String processDesc = "Test Desc " + fake.lastName1();
+	public String subProcessName = "Test " + fake.lastName1();
+	public String subProcessDesc = "Test Desc" + fake.lastName1();
+	public String subSubProcessName = "Test " + fake.lastName1();
+	public String subSubProcessDesc = "Test Desc" + fake.lastName1();
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -46,7 +43,7 @@ public class VerifyProcess extends TestBase {
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita Process.html");
 		reports = new ExtentReports();
@@ -64,43 +61,67 @@ public class VerifyProcess extends TestBase {
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
-
+	
 		process = new Process();
-
+	
 	}
 
 	@Test(priority = 1)
 	public void verifyProcessCreate() throws Throwable {
-		
+
 		test = reports.createTest("verifyProcessCreate");
 		homePage.clickOnProcessManagementCreate();
-		process.createProcess(processName, 
-				processDesc, 
-				processName, 
-				subProcessName, 
-				subProcessDesc, 
-				subProcessName, 
-				subSubProcessName, 
-				subSubProcessDesc);
+//		process.createProcess1(processName, processDesc);
+//		process.createSubProcess(subProcessDesc, processDesc);
+//		process.createSubSubProcess(subSubProcessName, subSubProcessDesc);
+		
+		
+
+//		process.createProcess(processName, 
+//				processDesc, 
+//				processName, 
+//				subProcessName, 
+//				subProcessDesc, 
+//				subProcessName, 
+//				subSubProcessName, 
+//				subSubProcessDesc);
 	}
 
 	@Test(priority = 2)
-	public void verifyProcessEdite() throws Throwable {
-		
-		test = reports.createTest("verifyProcessEdite");
+	public void verifyProcessEdit() throws Throwable {
+		homePage.clickOnProcessManagementCreate();
+		test = reports.createTest("verifyProcessEdit");
 		process.editCreatedProcess("Edit processDesc", "Edit subProcessDesc", "Edit subSubProcessDesc");
+		//process.EditProcess(processName);
 
 	}
 
 	@Test(priority = 3)
 	public void verifyProcessTable() throws Throwable {
+
 		
 		test = reports.createTest("verifyProcessTable");
-		process.tablePage(3);
+		homePage.clickOnProcessManagementCreate();           ///clickOnProcessManagementCreate change to datasetup
+//		process.tablePage(3);
+//		process.TablePage1();
+//		process.clearfilter_tablePage();
+//		process.clickonProcessDropDownToacessSubList_Tablepage();
+//		process.clickonProcessDropDownAgainSubprocessDropdownToacessSubSubList_Tablepage();
+//		process.createdprocessNotificatedByclickingBellIcon();
+//	    process.HowmuchCreatedprocess();	
+//		process.SearchCreatedProcesbySelctingStatus_Active();
+//		process.SearchCreatedProcesbySelctingStatus_InAnctive();
+//		process.NavigateToNextTablePageClick_Rightarrow();
+//		process.NavigateToNextTablePageClick_leftarrow();
 
+		test = reports.createTest("verifyProcessTable");
+		process.tablePage();
+		
 
 	}
 
+	
+	
 	@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();

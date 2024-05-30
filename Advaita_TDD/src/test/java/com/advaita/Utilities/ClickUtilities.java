@@ -11,7 +11,6 @@ import com.advaita.BaseClass.TestBase;
 public class ClickUtilities extends TestBase {
 	
 	public static void click(WebDriver driver, WebElement element) {
-		wait.until(ExpectedConditions.elementToBeClickable(element));
 		wait.until(ExpectedConditions.visibilityOf(element));
 		try {
 			if (!element.isDisplayed()) {

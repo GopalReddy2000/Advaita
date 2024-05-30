@@ -241,19 +241,19 @@ public class DataSet extends TestBase {
 			dataSetNameField.click();
 			//		assertTrue(dataSetNameField.isSelected());
 			if (i == 1) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 2) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 3) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			if (i == 4) {
-				dataSetNameField.sendKeys(fake.lastName1()+" Name");
+				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
 			}
 
 			assertTrue(processDropDown.isDisplayed());

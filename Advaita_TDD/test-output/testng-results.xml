@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+=======
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
   <reporter-output>
   </reporter-output>
+<<<<<<< HEAD
   <suite started-at="2024-05-30T14:04:59 IST" name="Default suite" finished-at="2024-05-30T14:05:10 IST" duration-ms="10685">
+=======
+<<<<<<< HEAD
+  <suite started-at="2024-05-30T12:46:47 IST" name="Default suite" finished-at="2024-05-30T12:47:15 IST" duration-ms="28252">
+=======
+  <suite started-at="2024-05-30T12:37:36 IST" name="Default suite" finished-at="2024-05-30T12:37:59 IST" duration-ms="22942">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
     <groups>
     </groups>
+<<<<<<< HEAD
     <test started-at="2024-05-30T14:04:59 IST" name="Default test" finished-at="2024-05-30T14:05:10 IST" duration-ms="10685">
       <class name="com.advaita.TestCase.StageTest">
         <test-method is-config="true" signature="setup()[pri:0, instance:com.advaita.TestCase.StageTest@ed3068a]" started-at="2024-05-30T14:04:59 IST" name="setup" finished-at="2024-05-30T14:05:06 IST" duration-ms="6596" status="PASS">
+=======
+<<<<<<< HEAD
+    <test started-at="2024-05-30T12:46:47 IST" name="Default test" finished-at="2024-05-30T12:47:15 IST" duration-ms="28252">
+      <class name="com.advaita.TestCase.VerifyProcess">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyProcess@7451338e]" started-at="2024-05-30T12:46:47 IST" name="setUp" finished-at="2024-05-30T12:46:58 IST" duration-ms="10674" status="PASS">
+=======
+    <test started-at="2024-05-30T12:37:36 IST" name="Default test" finished-at="2024-05-30T12:37:59 IST" duration-ms="22942">
+      <class name="com.advaita.TestCase.VerifyProcess">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyProcess@239fdf8f]" started-at="2024-05-30T12:37:36 IST" name="setUp" finished-at="2024-05-30T12:37:42 IST" duration-ms="6160" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- setup -->
         <test-method signature="testDataCount()[pri:0, instance:com.advaita.TestCase.StageTest@ed3068a]" started-at="2024-05-30T14:05:06 IST" name="testDataCount" finished-at="2024-05-30T14:05:10 IST" duration-ms="3904" status="FAIL">
           <exception class="org.openqa.selenium.StaleElementReferenceException">
@@ -83,14 +108,35 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 ]]>
             </full-stacktrace>
           </exception> <!-- org.openqa.selenium.StaleElementReferenceException -->
+=======
+        </test-method> <!-- setUp -->
+<<<<<<< HEAD
+        <test-method signature="verifyProcessEdit()[pri:2, instance:com.advaita.TestCase.VerifyProcess@7451338e]" started-at="2024-05-30T12:46:58 IST" name="verifyProcessEdit" finished-at="2024-05-30T12:47:15 IST" duration-ms="16623" status="PASS">
+=======
+        <test-method signature="verifyProcessEdit()[pri:2, instance:com.advaita.TestCase.VerifyProcess@239fdf8f]" started-at="2024-05-30T12:37:42 IST" name="verifyProcessEdit" finished-at="2024-05-30T12:37:58 IST" duration-ms="16016" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- testDataCount -->
         <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.StageTest@ed3068a]" started-at="2024-05-30T14:05:10 IST" name="tearDown" finished-at="2024-05-30T14:05:10 IST" duration-ms="153" status="PASS">
+=======
+        </test-method> <!-- verifyProcessEdit -->
+<<<<<<< HEAD
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyProcess@7451338e]" started-at="2024-05-30T12:47:15 IST" name="tearDown" finished-at="2024-05-30T12:47:15 IST" duration-ms="898" status="PASS">
+=======
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyProcess@239fdf8f]" started-at="2024-05-30T12:37:58 IST" name="tearDown" finished-at="2024-05-30T12:37:59 IST" duration-ms="717" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.StageTest -->
+=======
+      </class> <!-- com.advaita.TestCase.VerifyProcess -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
