@@ -61,9 +61,9 @@ public class VerifyProcess extends TestBase {
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
-
+	
 		process = new Process();
-
+	
 	}
 
 	@Test(priority = 1)
@@ -98,6 +98,7 @@ public class VerifyProcess extends TestBase {
 
 	@Test(priority = 3)
 	public void verifyProcessTable() throws Throwable {
+
 		
 		test = reports.createTest("verifyProcessTable");
 		homePage.clickOnProcessManagementCreate();           ///clickOnProcessManagementCreate change to datasetup
@@ -113,6 +114,9 @@ public class VerifyProcess extends TestBase {
 //		process.NavigateToNextTablePageClick_Rightarrow();
 //		process.NavigateToNextTablePageClick_leftarrow();
 
+		test = reports.createTest("verifyProcessTable");
+		process.tablePage();
+		
 
 	}
 

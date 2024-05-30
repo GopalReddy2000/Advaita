@@ -47,10 +47,10 @@ public class Pagination extends TestBase {
 //
 //	}
 
-	public static void paginate(WebDriver driver,WebElement rightArrowElement,WebElement leftArrowElement) {
-		
+	public static void paginate(WebDriver driver, WebElement rightArrowElement, WebElement leftArrowElement) {
+
 //		########### For Limit the iteration ###########
-		
+
 //		// Define the maximum number of iterations
 //		int maxIterations = 3;
 //		// Counter to keep track of the number of iterations
@@ -78,10 +78,9 @@ public class Pagination extends TestBase {
 //		        System.out.println(e);
 //		        break;
 //		    }
-		
+
 //		########### For Limit the iteration ###########
-		
-		
+
 		// Loop for backward paginate
 		while (true) {
 			try {

@@ -39,7 +39,7 @@ public class VerifyNonMeasurableSetPage extends TestBase {
 
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita Non-MeasurableSetPage.html");
 		reports = new ExtentReports();

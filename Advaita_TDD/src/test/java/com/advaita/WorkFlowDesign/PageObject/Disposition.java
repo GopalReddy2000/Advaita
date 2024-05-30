@@ -1,6 +1,5 @@
 package com.advaita.WorkFlowDesign.PageObject;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 

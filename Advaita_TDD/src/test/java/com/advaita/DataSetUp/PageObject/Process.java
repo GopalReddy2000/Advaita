@@ -4,25 +4,18 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.xpath.XPath;
-
-import org.checkerframework.common.value.qual.StaticallyExecutable;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.Wait;
 import org.testng.Assert;
-import org.testng.reporters.AbstractXmlReporter.Count;
 
 import com.advaita.BaseClass.TestBase;
-import com.github.javafaker.Witcher;
+import com.advaita.Utilities.Pagination;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -219,6 +212,12 @@ public class Process extends TestBase {
 
 	@FindBy(xpath = "//div[@class='table_footer d-flex align-items-center justify-content-between']//p[@class='show_entries m-0 font_13']")
 	public static WebElement showing_pageniation;
+	
+	@FindBy(xpath = "//li//a//img[@alt='left_arrow']")
+	public static WebElement leftArrowOfPagination;
+
+	@FindBy(xpath = "//li//a//img[@alt='rgt_arrow']")
+	public static WebElement rightArrowOfPagination;
 
 //    @FindBy(xpath ="(//table[@class='process_table w-100']//tbody//tr)[4]")
 //	public static WebElement fetchSubProcssNamElement;
@@ -529,7 +528,7 @@ public class Process extends TestBase {
 
 //	process table page
 
-	public void tablePage(int pageNumber) throws Throwable {
+	public void tablePage() throws Throwable {
 
 		String searchText = fetchCreatedRecord.getText();
 
@@ -539,29 +538,29 @@ public class Process extends TestBase {
 		Thread.sleep(2000);
 		clearButton.click();
 
-		js = (JavascriptExecutor) driver;
+//		// Click a specific page by its number
+//		WebElement pageLink = driver.findElement(By.cssSelector(
+//				".pagination_nav .pagination .page-item:not(.disabled) a[href*='?page=" + pageNumber + "']"));
+//		js.executeScript("arguments[0].scrollIntoView(true);", pageLink);
+//		js.executeScript("arguments[0].click();", pageLink);
+//
+//		for (int i = 1; i <= 6; i++) {
+//			WebElement nextPageLink = driver
+//					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:last-child a"));
+//			js.executeScript("arguments[0].scrollIntoView(true);", nextPageLink);
+//			js.executeScript("arguments[0].click();", nextPageLink);
+//
+//		}
+//
+//		for (int j = 1; j <= 5; j++) {
+//			// Click the previous page link
+//			WebElement previousPageLink = driver
+//					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:first-child a"));
+//			js.executeScript("arguments[0].scrollIntoView(true);", previousPageLink);
+//			js.executeScript("arguments[0].click();", previousPageLink);
+//		}
 
-		// Click a specific page by its number
-		WebElement pageLink = driver.findElement(By.cssSelector(
-				".pagination_nav .pagination .page-item:not(.disabled) a[href*='?page=" + pageNumber + "']"));
-		js.executeScript("arguments[0].scrollIntoView(true);", pageLink);
-		js.executeScript("arguments[0].click();", pageLink);
-
-		for (int i = 1; i <= 6; i++) {
-			WebElement nextPageLink = driver
-					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:last-child a"));
-			js.executeScript("arguments[0].scrollIntoView(true);", nextPageLink);
-			js.executeScript("arguments[0].click();", nextPageLink);
-
-		}
-
-		for (int j = 1; j <= 5; j++) {
-			// Click the previous page link
-			WebElement previousPageLink = driver
-					.findElement(By.cssSelector(".pagination_nav .pagination .page-item:first-child a"));
-			js.executeScript("arguments[0].scrollIntoView(true);", previousPageLink);
-			js.executeScript("arguments[0].click();", previousPageLink);
-		}
+		Pagination.paginate(driver, rightArrowOfPagination, leftArrowOfPagination);
 
 	}
 	// ===========================================================================================
