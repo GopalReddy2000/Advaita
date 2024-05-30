@@ -37,7 +37,12 @@
 	    <artifactId>selenium-devtools-v85</artifactId>
 	    <version>4.16.1</version>
 	</dependency>
-
+<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+			<dependency>
+			    <groupId>org.apache.commons</groupId>
+			    <artifactId>commons-lang3</artifactId>
+			    <version>3.12.0</version>
+			</dependency>
 
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 	<dependency>

@@ -39,7 +39,7 @@ public class VerifyMeasurableSet extends TestBase {
 
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita MeasurableSetPage.html");
 		reports = new ExtentReports();
@@ -61,14 +61,14 @@ public class VerifyMeasurableSet extends TestBase {
 		measurableSetPage = new MasterParameterMeasurableSetPage();
 	}
 
-//	@Test(priority = 1)
-//	public void verifyMeasurableSetCreatePage() throws Throwable {
-//		
-//		test = reports.createTest("verifyMeasurableSetCreatePage");
-//		homePage.clickOnworkflowDesign();
-//		measurableSetPage.createMeasurableSet(createCount);
-//		
-//	}
+	@Test(priority = 1)
+	public void verifyMeasurableSetCreatePage() throws Throwable {
+		
+		test = reports.createTest("verifyMeasurableSetCreatePage");
+		homePage.clickOnworkflowDesign();
+		measurableSetPage.createMeasurableSet(createCount);
+		
+	}
 
 	@Test(priority = 2)
 	public void verifyMeasurableSetTablePage() throws Throwable {
