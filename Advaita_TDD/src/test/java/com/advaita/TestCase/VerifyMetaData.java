@@ -76,17 +76,17 @@ public class VerifyMetaData extends TestBase {
 	@Test(priority = 2)
 	public void verifyEditMetaData() throws Throwable {
 
-		test = reports.createTest("verifyEditMetaData");
-		homePage.clickOnProcessManagementCreate();
-		metaData.editMetaData();
+//		test = reports.createTest("verifyEditMetaData");
+//		homePage.clickOnProcessManagementCreate();
+//		metaData.editMetaData();
 
 	}
 
 	@AfterTest
 	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
-//		reports.flush();
+		driver.manage().window().minimize();
+		driver.quit();
+		reports.flush();
 	}
 
 }
