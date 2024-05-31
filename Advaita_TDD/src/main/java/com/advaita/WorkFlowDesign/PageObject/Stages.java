@@ -125,6 +125,7 @@ public class Stages extends TestBase {
 
 		Thread.sleep(4000);
 
+		wait.until(ExpectedConditions.visibilityOf(dropDown1));
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(500);

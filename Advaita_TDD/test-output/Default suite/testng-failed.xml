@@ -3,14 +3,22 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestProcessCreate">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
-          <include name="getResult"/>
-          <include name="tearDown"/>
-          <include name="verifyProcessCreate"/>
+          <include name="verifyStageSelectProcessDropDown"/>
+          <include name="verifyStageSelectSubProcessDropDown"/>
+          <include name="verifyStageSelectSubSubProcessDropDown"/>
+          <include name="verifyAddSectionA"/>
+          <include name="verifyStageCalculationTypeDropDown"/>
           <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="navigateFetchRecord"/>
+          <include name="getResult"/>
+          <include name="verifyStageNameTextBox"/>
+          <include name="VerifyStagesTabIsDisplayed"/>
+          <include name="verifyCreateStagesButton"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestProcessCreate -->
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
