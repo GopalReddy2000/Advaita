@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+    <classes>
+      <class name="com.advaita.TestCase.VerifyDataSet"/>
+      <class name="com.advaita.TestCase.StageTest"/>
+      <class name="com.advaita.EndtoEnd.run.test.TEST_Advaita"/>
+      <class name="com.advaita.TestCase.VerifyDisposition"/>
+      <class name="com.advaita.TestCase.VerifyMetaData"/>
+      <class name="com.advaita.TestCase.VerifyNonMeasurableSetPage"/>
+      <class name="com.advaita.TestCase.VerifyStagesCreate"/>
+      <class name="com.advaita.TestCase.VerifyMeasurableSet"/>
+      <class name="com.advaita.TestCase.VerifyLoginPage"/>
+      <class name="com.advaita.TestCase.VerifyProcess"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
