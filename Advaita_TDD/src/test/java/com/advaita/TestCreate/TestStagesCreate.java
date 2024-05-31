@@ -1,6 +1,7 @@
-package com.advaita.TestCase;
+package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -18,12 +19,14 @@ import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class VerifyStagesCreate extends TestBase {
+public class TestStagesCreate extends TestBase {
 
 	FakeData fake = new FakeData();
 
@@ -49,7 +52,7 @@ public class VerifyStagesCreate extends TestBase {
 
 	Stages stages;
 
-	public VerifyStagesCreate() {
+	public TestStagesCreate() {
 		super();
 	}
 
@@ -59,7 +62,7 @@ public class VerifyStagesCreate extends TestBase {
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
-		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/Stages extentReport.html");
+		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/StagesCreate.html");
 		reports = new ExtentReports();
 		reports.attachReporter(htmlReporter);
 
@@ -175,20 +178,29 @@ public class VerifyStagesCreate extends TestBase {
 	public void getResult(ITestResult result) throws IOException, Throwable {
 		if (result.getStatus() == ITestResult.FAILURE) {
 			// Mark the test as failed in the ExtentReports
+			Thread.sleep(4000);
 			test.fail(result.getThrowable());
 			// Add screenshot to ExtentReports
 			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
 			test.addScreenCaptureFromPath(screenshotPath);
+			Thread.sleep(4000);
+
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
 		}
 		// Close ExtentReports
-
 		reports.flush();
 	}
 
 	@AfterTest
 	public void tearDown() {
+
 		driver.manage().window().minimize();
 		driver.quit();
 		reports.flush();
+
 	}
 }
