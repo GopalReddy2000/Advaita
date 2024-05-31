@@ -67,11 +67,9 @@ public class VerifyLoginPage extends TestBase {
 
         test = reports.createTest("verifyLoginPage for user: " + username);
         homePage = loginPage.login(username, password);
-
         
     }
         
-
     @AfterMethod
     public void tearDown() {
         driver.manage().window().minimize();
