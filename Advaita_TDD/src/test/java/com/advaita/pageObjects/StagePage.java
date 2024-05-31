@@ -432,16 +432,6 @@ public class StagePage extends TestBase{
 	}
 
 
-
-
-
-
-
-
-
-
-
-
 	
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
