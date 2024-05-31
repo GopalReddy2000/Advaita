@@ -1,5 +1,11 @@
 package com.advaita.EndtoEnd.run.test;
 
+import java.io.IOException;
+import java.util.Date;
+
+import org.openqa.selenium.WebElement;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -10,8 +16,11 @@ import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.DataSetUp.PageObject.Process;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
@@ -46,7 +55,6 @@ public class TEST_Advaita extends TestBase {
 	public TEST_Advaita() {
 		super();
 	}
-	
 
 	@BeforeTest
 	public void setUp() throws Throwable {
@@ -87,7 +95,7 @@ public class TEST_Advaita extends TestBase {
 	}
 
 	@Test(priority = 2)
-	public void verifyProcessEdite() throws Throwable {
+	public void verifyProcessEdit() throws Throwable {
 
 		test = reports.createTest("verifyProcessEdit");
 		process.editCreatedProcess("Edit processDesc", "Edit subProcessDesc", "Edit subSubProcessDesc");
@@ -141,16 +149,46 @@ public class TEST_Advaita extends TestBase {
 	public void verifyEditMetaData() throws Throwable {
 
 		test = reports.createTest("verifyEditMetaData");
-//		homePage.clickOnProcessManagementCreate();
+		homePage.clickOnProcessManagementCreate();
 		metaData.editMetaData();
 
 	}
 
-	@AfterTest
-	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
+	@AfterMethod
+	public void getResult(ITestResult result) throws IOException, Throwable {
+		if (result.getStatus() == ITestResult.FAILURE) {
+			// Mark the test as failed in the ExtentReports
+			Thread.sleep(4000);
+			test.fail(result.getThrowable());
+			// Add screenshot to ExtentReports
+			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
+			test.addScreenCaptureFromPath(screenshotPath);
+			Thread.sleep(4000);
+
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+
+		} else if (result.getStatus() == ITestResult.SUCCESS) {
+			test.log(Status.PASS, "Test passed successfully");
+
+			// Add logs
+			test.log(Status.INFO, "Execution time: " + (result.getEndMillis() - result.getStartMillis()) + "ms");
+		}
+		// Close ExtentReports
 		reports.flush();
 	}
+	
+	
 
+	@AfterTest
+	public void tearDown() {
+
+		driver.manage().window().minimize();
+		driver.quit();
+		reports.flush();
+
+	}
 }

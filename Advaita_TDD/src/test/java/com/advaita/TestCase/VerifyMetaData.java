@@ -15,10 +15,10 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
 
 public class VerifyMetaData extends TestBase {
-	
+
 	Faker faker = new Faker();
-	
-	public String metaDataName = "Test "+faker.name().firstName();
+
+	public String metaDataName = "Test " + faker.name().firstName();
 
 //	public String num = "7";
 //	public String metaDataName = "Test Single MetaData" + num;
@@ -42,7 +42,7 @@ public class VerifyMetaData extends TestBase {
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
-		htmlReporter = new ExtentSparkReporter("extentreport Advaita MetaData.html");
+		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/AdvaitaMetaData.html");
 		reports = new ExtentReports();
 		reports.attachReporter(htmlReporter);
 
@@ -59,7 +59,6 @@ public class VerifyMetaData extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		
 		metaData = new MetaData();
 
 	}
@@ -72,7 +71,7 @@ public class VerifyMetaData extends TestBase {
 		metaData.createMetaData(metaDataName);
 
 	}
-	
+
 	@Test(priority = 2)
 	public void verifyEditMetaData() throws Throwable {
 
