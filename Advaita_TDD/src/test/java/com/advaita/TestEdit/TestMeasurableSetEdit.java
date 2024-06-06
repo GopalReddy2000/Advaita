@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.WorkFlowDesign.PageObject.MasterParameterMeasurableSetPage;
+import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -28,7 +28,7 @@ public class TestMeasurableSetEdit extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	MasterParameterMeasurableSetPage measurableSetPage;
+	MeasurableSetPage measurableSetPage;
 
 	public TestMeasurableSetEdit() {
 		super();
@@ -41,7 +41,7 @@ public class TestMeasurableSetEdit extends TestBase {
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
-		htmlReporter = new ExtentSparkReporter("extentreport Advaita MeasurableSetPage.html");
+		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/MeasurableEdit.html");
 		reports = new ExtentReports();
 		reports.attachReporter(htmlReporter);
 
@@ -58,7 +58,7 @@ public class TestMeasurableSetEdit extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		measurableSetPage = new MasterParameterMeasurableSetPage();
+		measurableSetPage = new MeasurableSetPage();
 	}
 
 	@Test(priority = 3)
@@ -72,7 +72,7 @@ public class TestMeasurableSetEdit extends TestBase {
 	@AfterTest
 	public void tearDown() {
 
-		driver.manage().window().minimize();                                       
+		driver.manage().window().minimize();
 		driver.quit();
 		reports.flush();
 

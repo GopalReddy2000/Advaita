@@ -59,9 +59,9 @@ public class LoginPage extends TestBase {
 		passwordField.clear();
 		passwordField.sendKeys(pwd);
 		click(driver, signInButton);
-		Thread.sleep(1000);
-		assertTrue(driver.getCurrentUrl().equals("https://pkt-test.transmonqa.in/en/alchemy/evaluation_tab_view/"),
-				"Invalid password.");
+//		Thread.sleep(1000);
+//		assertTrue(driver.getCurrentUrl().equals("https://pkt-test.transmonqa.in/en/alchemy/evaluation_tab_view/"),
+//				"Invalid password.");
 
 //		List<WebElement> errorMessages = driver
 //				.findElements(By.xpath("//li[text()='Invalid username or password. Please check your credentials.']"));

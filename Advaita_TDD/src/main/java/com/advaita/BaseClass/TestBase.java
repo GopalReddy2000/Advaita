@@ -36,6 +36,7 @@ public class TestBase {
 		options.addArguments("--incognito");
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(ChromeOptions.CAPABILITY, options);
+		cap.setCapability("applicationCacheEnabled", false);
 		options.merge(cap);
 		driver = new ChromeDriver(options);
 
@@ -76,7 +77,7 @@ public class TestBase {
 //			}
 //		});
 
-		driver.get("https://pkt-test.transmonqa.in/en/myprofile/login/");
+		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 
 	}
 

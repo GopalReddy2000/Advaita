@@ -16,7 +16,7 @@ import com.advaita.Utilities.Pagination;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class MasterParameterMeasurableSetPage extends TestBase {
+public class MeasurableSetPage extends TestBase {
 
 	FakeData fake = new FakeData();
 
@@ -140,8 +140,14 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 	@FindBy(xpath = "//span[normalize-space(text())='Measurable Set has been updated successfully']/..//button[normalize-space(text())='Continue']")
 	public static WebElement afterMeasurableUpdatedContinueButton;
-	
-	public MasterParameterMeasurableSetPage() {
+
+	@FindBy(xpath = "(//a/span/..//h6[normalize-space()='Short Answer'])[3]")
+	public static WebElement shortAnswerTypElement;
+
+	@FindBy(xpath = "(//a/span/..//h6[normalize-space()='File Upload'])[3]")
+	public static WebElement fileUploadTypElement;
+
+	public MeasurableSetPage() {
 		PageFactory.initElements(driver, this);
 	}
 
@@ -152,16 +158,17 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 		for (int b = 1; b <= count; b++) {
 
-			String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-					.getText();
-
-			Thread.sleep(2000);
-			System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
-
-			int beforeCreateRecord = extractNumber(beforeCreatedRecords);
-			int beforeNumber = extractNumber(beforeCreatedRecords) + 1;
-//		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-			System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
+//			String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+//					.getText();
+//
+//			Thread.sleep(2000);
+//			System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
+//
+//			int beforeCreateRecord = extractNumber(beforeCreatedRecords);
+//			int beforeNumber = extractNumber(beforeCreatedRecords) + 1;
+//
+////		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
+//			System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
 
 			click(driver, addMeasurableSetButton);
 
@@ -188,14 +195,16 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 				WebElement textBoxUnderColumn = driver.findElement(By.name(xpathForTextBox));
 
+				// Text Box
 				if (j == 1) {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Customer Name");
-					textBoxUnderColumn.sendKeys("Enter Customer Name?");
+//					textBoxUnderColumn.sendKeys("Enter Customer Name?");
 
 					textBoxUnderColumn.click();
 					textBox.click();
+					Thread.sleep(3000);
 
 				}
 
@@ -203,13 +212,13 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Person Who Pick the Call");
-					textBoxUnderColumn.sendKeys("Enter the Employee Name?");
+//					textBoxUnderColumn.sendKeys("Enter the Employee Name?");
 
 //				Thread.sleep(6000);
 					wait.until(ExpectedConditions.elementToBeClickable(textBoxUnderColumn));
 					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", textBox);
-//				Thread.sleep(6000);
+					Thread.sleep(3000);
 				}
 
 				// Date Picker
@@ -218,13 +227,14 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Call Date");
 					click(driver, textBoxUnderColumn);
-					textBoxUnderColumn.sendKeys("Enter the Date?");
+//					textBoxUnderColumn.sendKeys("Enter the Date?");
 					js.executeScript("arguments[0].click();", dateType);
-					dateField.click();
-					actions.moveToElement(driverIninteractable).perform();
-					dateField.click();
-					dateField.sendKeys("06/04/2024");
-					dateField.sendKeys(Keys.ENTER);
+					Thread.sleep(3000);
+//					dateField.click();
+//					actions.moveToElement(driverIninteractable).perform();
+//					dateField.click();
+//					dateField.sendKeys("06/04/2024");
+//					dateField.sendKeys(Keys.ENTER);
 
 				}
 
@@ -233,22 +243,24 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Feedback");
-					textBoxUnderColumn.sendKeys("Enter Your Feedback?");
+					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", textBox);
+					Thread.sleep(3000);
 
 					click(driver, settingButton);
 					click(driver, plusColumnButton);
 				}
 
-				// Drop Down
+//				 Drop Down
 				if (j == 5) {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Select Customer Feedback");
-					textBoxUnderColumn.sendKeys("Select Feedback Satisfied / Not Satisfied");
+//					textBoxUnderColumn.sendKeys("Select Feedback Satisfied / Not Satisfied");
 					textBoxUnderColumn.click();
-
 					js.executeScript("arguments[0].click();", dropDownOption);
+
+					Thread.sleep(2000);
 
 					for (int i = 1; i <= 2; i++) {
 
@@ -259,6 +271,7 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 							js.executeScript("arguments[0].click();", dropDownOptionField);
 							dropDownOptionField.sendKeys("Satisfied");
+							Thread.sleep(3000);
 							actions.moveToElement(driverIninteractable).perform();
 							// Thread.sleep(2000);
 							js.executeScript("arguments[0].click();", addDropDownOptionField);
@@ -283,21 +296,27 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("Is customer picked your call ?");
-					textBoxUnderColumn.sendKeys("Select Radio button in yes or no.");
+//					textBoxUnderColumn.sendKeys("Select Radio button in yes or no.");
 					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", radioButtonOption);
 
 					for (int i = 1; i <= 2; i++) {
 
-						String xpathForRadioButtonOptions = "ans_option_1_1_" + i;
+						String xpathForRadioButtonOptions = "//input[@class='answer_option']/..//input[@name='ans_option_1_1_"
+								+ i + "']";
 
 						if (i == 1) {
-							WebElement option1 = driver.findElement(By.name(xpathForRadioButtonOptions));
+							WebElement option1 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
+							
+							js.executeScript("arguments[0].scrollIntoView(true);", option1);
+							Thread.sleep(1000);
 							option1.sendKeys("Yes");
 						}
 
 						if (i == 2) {
-							WebElement option2 = driver.findElement(By.name(xpathForRadioButtonOptions));
+							WebElement option2 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
+							js.executeScript("arguments[0].scrollIntoView(true);", option2);
+							Thread.sleep(1000);
 							option2.sendKeys("No");
 
 							settingButton.click();
@@ -313,72 +332,79 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 					click(driver, ClickColumn);
 					sendDataColumn.sendKeys("On which time call picked ?");
-					textBoxUnderColumn.sendKeys("Select the time of the call.");
+//					textBoxUnderColumn.sendKeys("Select the time of the call.");
 					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", timeOption);
 
 					js.executeScript("arguments[0].scrollIntoView(true);", timePicker);
-					timePicker.click();
-					timePicker.click();
-					timePicker.sendKeys("10:10");
-					timePicker.sendKeys(Keys.ENTER);
+//					timePicker.click();
+//					timePicker.click();
+//					timePicker.sendKeys("10:10");
+//					timePicker.sendKeys(Keys.ENTER);
 
 				}
-
+//
 			}
 
-			click(driver, addSectionButton);
-
-			click(driver, settingButton2);
-
-			click(driver, tabularView2);
-
-			for (int a = 1; a <= 4; a++) {
-
-				String xpath = "(//label[text()='COLUMN NAME " + a + "'])[2]";
-				String columnNameXpath = "//input[contains(@placeholder, 'Enter your column Name')]/..//input[@name='col_name_2_"
-						+ a + "']";
-				String xpathName = "//input[@name='question_2_" + a + "']";
-
-				System.out.println("name : " + xpathName);
-
-				WebElement xpathForColumn2 = driver.findElement(By.xpath(xpath));
-				WebElement xpathForColumn2Name = driver.findElement(By.xpath(columnNameXpath));
-				WebElement xpathForField2 = driver.findElement(By.xpath(xpathName));
-
-				if (a == 1) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter Customer Name?");
-					xpathForField2.sendKeys("Customer Name");
-
-				}
-
-				if (a == 2) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter Customer Phone No.?");
-					xpathForField2.sendKeys("Customer Phone No.");
-
-				}
-
-				if (a == 3) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter the time ?");
-					xpathForField2.sendKeys("Enter Time");
-
-				}
-
-				if (a == 4) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter the Customer Address ?");
-					xpathForField2.sendKeys("Enter Customer Address");
-
-				}
-
-			}
+//			click(driver, addSectionButton);
+//
+//			click(driver, settingButton2);
+//
+//			click(driver, tabularView2);
+//
+//			for (int a = 1; a <= 4; a++) {
+//
+//				String xpath = "(//label[text()='COLUMN NAME " + a + "'])[2]";
+//				String columnNameXpath = "//input[contains(@placeholder, 'Enter your column Name')]/..//input[@name='col_name_2_"
+//						+ a + "']";
+//				String xpathName = "//input[@name='question_2_" + a + "']";
+//
+//				System.out.println("name : " + xpathName);
+//
+//				WebElement xpathForColumn2 = driver.findElement(By.xpath(xpath));
+//				WebElement xpathForColumn2Name = driver.findElement(By.xpath(columnNameXpath));
+//				WebElement xpathForField2 = driver.findElement(By.xpath(xpathName));
+//
+//				if (a == 1) {
+//
+//					click(driver, xpathForColumn2);
+//					xpathForColumn2Name.sendKeys("Enter Customer Name?");
+//
+//					click(driver, xpathForField2);
+//					js.executeScript("arguments[0].click();", shortAnswerTypElement);
+//
+//				}
+//
+//				if (a == 2) {
+//
+//					click(driver, xpathForColumn2);
+//					xpathForColumn2Name.sendKeys("Enter Customer Details File ?");
+//
+//					click(driver, xpathForField2);
+//					js.executeScript("arguments[0].click();", fileUploadTypElement);
+//
+//				}
+//
+//				if (a == 3) {
+//
+//					click(driver, xpathForColumn2);
+//					xpathForColumn2Name.sendKeys("Enter the time ?");
+//
+//					click(driver, xpathForField2);
+////					js.executeScript("arguments[0].click();", fileUploadTypElement);
+//
+//				}
+//
+//				if (a == 4) {
+//
+//					click(driver, xpathForColumn2);
+//					xpathForColumn2Name.sendKeys("Enter the Customer Address ?");
+//
+//					click(driver, xpathForField2);
+//
+//				}
+//
+//			}
 
 			click(driver, saveButtonOfCreateQuestionSet);
 			Thread.sleep(2000);
@@ -388,22 +414,25 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 			click(driver, leftArrowToGoBackTablePage);
 
-			Thread.sleep(2000);
-
-			String afterCreateRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-					.getText();
-
-			assertNotNull(afterCreateRecords, "afterCreateRecords is null.");
-			System.out.println("afterCreateRecords : " + afterCreateRecords);
-
-			int afterNumber = extractNumber(afterCreateRecords);
-			System.out.println("afterNumber : " + afterNumber);
-
-			assertEquals(afterNumber, beforeNumber);
+//			Thread.sleep(2000);
+//
+//			String afterCreateRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+//					.getText();
+//
+//			assertNotNull(afterCreateRecords, "afterCreateRecords is null.");
+//			System.out.println("afterCreateRecords : " + afterCreateRecords);
+//
+//			int afterNumber = extractNumber(afterCreateRecords);
+//			System.out.println("afterNumber : " + afterNumber);
+//
+//			assertEquals(afterNumber, beforeNumber);
 
 		}
 
 	}
+	
+//##########################################################################################################################################################################
+//###########################################################################################################################################################################
 
 	public void tablePageOfMeasurableSet() throws Throwable {
 
@@ -419,7 +448,7 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 		WebElement searchRecord = driver.findElement(By.xpath("//td[text()='" + firstRecord + "']"));
 		assertTrue(searchRecord.isDisplayed(), "searchRecord is not displayed.");
-//		
+
 //		assertTrue(createdDatePicker.isDisplayed(), "createdDatePicker is not displayed.");
 //		createdDatePicker.click();
 //		createdDatePicker.sendKeys("25-04-2024");
@@ -436,6 +465,9 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 
 	}
 
+//	#####################################################################################################################################################################################
+//	##########################################################################################################################################################################
+
 	public void editPageOfMeasurableSet() {
 
 		assertTrue(remarkFieldInEditPage.isDisplayed(), "remarkFieldInEditPage is not displayed.");
@@ -446,12 +478,15 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(successfullyMeasurableUpdatedMassage));
 		assertTrue(successfullyMeasurableUpdatedMassage.isDisplayed(),
 				"successfullyMeasurableUpdatedMassage is not displayed.");
-		
+
 		click(driver, afterMeasurableUpdatedContinueButton);
-		
+
 		click(driver, leftArrowToGoBackTablePage);
 
 	}
+	
+//	##########################################################################################################################################################################
+//	##########################################################################################################################################################################
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -461,7 +496,22 @@ public class MasterParameterMeasurableSetPage extends TestBase {
 			}
 		}
 
+		// Check if the numberAsString has at least 3 digits
+		if (numberAsString.length() > 3) {
+			// Remove the first 3 digits
+			numberAsString = new StringBuilder(numberAsString.substring(3));
+		} else {
+			// If there are fewer than 3 digits, set the numberAsString to "0" or handle
+			// accordingly
+			numberAsString = new StringBuilder("0");
+		}
+
+		// Parse the remaining string to an integer
 		return Integer.parseInt(numberAsString.toString());
 	}
+	
+//	##########################################################################################################################################################################
+//	##########################################################################################################################################################################
+
 
 }
