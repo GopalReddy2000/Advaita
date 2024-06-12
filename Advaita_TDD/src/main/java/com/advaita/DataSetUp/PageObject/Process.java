@@ -225,6 +225,7 @@ public class Process extends TestBase {
 	FakeData fake = new FakeData();
 
 	public Process() {
+		
 		PageFactory.initElements(driver, this);
 	}
 

@@ -25,9 +25,9 @@ public class TestNon_MeasurableTable extends TestBase {
 
 	static int createCount = 2;
 
-//		Faker faker = new Faker();
-//			public String num = "24";
-//		public String questionSet = faker.name().lastName() + " TestAudit";
+	// Faker faker = new Faker();
+	// public String num = "24";
+	// public String questionSet = faker.name().lastName() + " TestAudit";
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -54,9 +54,9 @@ public class TestNon_MeasurableTable extends TestBase {
 		reports.attachReporter(htmlReporter);
 
 		// add environment details
-		reports.setSystemInfo("Machine", "Testpc1");
+		reports.setSystemInfo("Machine", "W2390");
 		reports.setSystemInfo("OS", "Windows 11");
-		reports.setSystemInfo("user", "Gopal");
+		reports.setSystemInfo("User", "James Paul R");
 		reports.setSystemInfo("Browser", "Chrome");
 
 		// Configuration to change look and feel
@@ -68,6 +68,51 @@ public class TestNon_MeasurableTable extends TestBase {
 
 		nonMeasurableSetPage = new NonMeasurableSetPage();
 	}
+
+	@Test
+	public void testCommonNavigation() {
+		nonMeasurableSetPage.multipleChoice();
+	}
+
+	@Test
+	public void testShortAnswer() {
+		nonMeasurableSetPage.shortAnswer();
+
+	}
+
+	@Test
+	public void testquestionTypeDropDown() {
+		nonMeasurableSetPage.questionTypeDropDown();
+
+	}
+
+	@Test
+	public void testQuestionTypeRelativeDropdown() {
+		nonMeasurableSetPage.questionTypeRelativeDropdown();
+	}
+
+	@Test
+	public void testfileUpload() {
+		nonMeasurableSetPage.fileUpload();
+	}
+
+	@Test
+	public void testcreateNormalView() {
+		nonMeasurableSetPage.createColumnView();
+		
+	}
+	
+	
+	@Test
+	public void testisConditional() throws Throwable {
+		test = reports.createTest("isConditional");
+		nonMeasurableSetPage.isConditional();
+		
+	}
+	
+	
+	
+	
 
 	@Test(priority = 1)
 	public void verifyNonMeasurableSetTablePage() throws Throwable {
@@ -93,14 +138,16 @@ public class TestNon_MeasurableTable extends TestBase {
 			// Add custom HTML block
 			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
 		}
-		// Close ExtentReports
+		// CloseExtentReports
 		reports.flush();
 	}
 
-	@AfterTest
-	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
-		reports.flush();
-	}
+//	@AfterTest
+//	public void tearDown() {
+//		driver.manage().window().minimize();
+//		driver.quit(); 
+//		reports.flush();
+//
+//	}
+
 }

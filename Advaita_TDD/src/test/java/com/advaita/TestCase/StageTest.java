@@ -1,7 +1,5 @@
 package com.advaita.TestCase;
 
-import static org.testng.Assert.assertTrue;
-
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -38,7 +36,8 @@ public class StageTest extends TestBase {
 	@Test
 	public void testExistingStagenameWithoutDatePicker() {
 		sp.existingStageNameWitoutDatePicker();
-		Assert.assertEquals(sp.stageName.getText(), "In Progress");
+		sp.validateStageName("In Progress");
+		
 	}
 
 	@Test
@@ -59,7 +58,7 @@ public class StageTest extends TestBase {
 	
 	
 	@Test
-	public void testMonthsInDatePicker()
+	public void testMonthsInDatePicker() throws InterruptedException
 	{
 		sp.monthsInDatePicker();
 	}
@@ -97,7 +96,7 @@ public class StageTest extends TestBase {
 	@Test
 	public void testDuplicate()
 	{
-		sp.duplicateDuplicate();
+		sp.duplicateFunction();
 	}
 	
 	@Test

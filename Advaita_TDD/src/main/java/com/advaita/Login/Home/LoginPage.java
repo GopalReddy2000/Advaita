@@ -64,6 +64,7 @@ public class LoginPage extends TestBase {
 		Thread.sleep(1000);
 		assertTrue(profileAfterLoginElement.isDisplayed(), "profileAfterLoginElement is not displayed.");
 
+		
 //		List<WebElement> errorMessages = driver
 //				.findElements(By.xpath("//li[text()='Invalid username or password. Please check your credentials.']"));
 //		// Assert that the error message is not displayed
