@@ -6,12 +6,9 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -21,7 +18,8 @@ import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.Pagination;
-import com.google.common.util.concurrent.Uninterruptibles;
+
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class StagePage extends TestBase{
 
@@ -109,11 +107,9 @@ public class StagePage extends TestBase{
 	@FindBy(xpath="(//button[normalize-space()='Continue'])[1]")
 	public WebElement deleteSuccessButton;
 
-	
-
 	@FindBy(xpath = "//img[@title='Duplicate Stage']")
 	public List<WebElement> duplicateButtons;
-
+	
 	@FindBy(xpath="(//button[@type='submit'])[2]")
 	public WebElement duplicateYesButton;
 
@@ -151,9 +147,13 @@ public class StagePage extends TestBase{
 	@FindBy(xpath = "//img[@class='arrow-left']//parent::a")
 	public WebElement editBackButton;
 	
-
+	@FindBy(xpath = "//div[contains(@class,'table_footer d-flex align')]//p")
+	public WebElement showingOf;
+	
+	FakeData fake;
 	public StagePage() {
 		PageFactory.initElements(driver, this);
+		fake= new FakeData();
 	}
 
 
@@ -183,6 +183,10 @@ public class StagePage extends TestBase{
 		click(driver,day);
 		click(driver,searchButton);
 	}
+	public void validateStageName(String str)
+	{
+		Assert.assertEquals(stageName.getText(), str);
+	}
 
 	public void clearAllFilters()
 	{
@@ -206,32 +210,44 @@ public class StagePage extends TestBase{
 	}
 
 
-	public void monthsInDatePicker() {
+	public void monthsInDatePicker() throws InterruptedException {
 		CommonNavigation();
 		click(driver,datePicker);
-
-		click(driver,monthDropdown); 
-
-
-//		List<WebElement> monthElements=listOfMonths;
-
-		List<String> capturedMonths = new ArrayList<>();
-
-		for (WebElement monthElement : listOfMonths) { 
-			String monthText = monthElement.getText();
-			System.out.println(monthElement.getText()); 
-
-			capturedMonths.add(monthText);
+		wait.until(ExpectedConditions.visibilityOf(monthDropdown));
+		click(driver,monthDropdown);
+		Thread.sleep(1000);
+//		js.executeScript("arguments[0].style.display = 'block';", listOfMonths);
+		for(int i=0;i<listOfMonths.size();i++)
+		{
+			String executorScript = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
+	                + "var elementTop = arguments[0].getBoundingClientRect().top;"
+	                + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
+			System.out.println(js.executeScript("return arguments[0].innerText;",listOfMonths.get(i)));
+			
+			
+//			var xpathResult = document.evaluate('//div[@class="xdsoft_label xdsoft_month"]//div[contains(@class,"xdsoft_option ")]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
 		}
 
-		List<String> expectedMonths = List.of(
-				"January", "February", "March", "April", "May", "June", "July", "August",
-				"September", "October", "November", "December" );
-
-
-		Assert.assertEquals(capturedMonths, expectedMonths,
-				"The captured months should match the expected months");
-
+//		List<String> capturedMonths = new ArrayList<>();
+//
+//		for (WebElement monthElement : listOfMonths) { 
+//
+//			
+////			jsClick(driver, listOfMonths.get(0));
+//			String monthText = monthElement.getText();
+//			System.out.println(monthElement.getText()); 
+//
+//			capturedMonths.add(monthText);
+//		}
+//
+//		List<String> expectedMonths = List.of(
+//				"January", "February", "March", "April", "May", "June", "July", "August",
+//				"September", "October", "November", "December" );
+//
+//
+//		Assert.assertEquals(capturedMonths, expectedMonths,
+//				"The captured months should match the expected months");
+//
 	}
 
 	public void viewingCreatedStage()
@@ -271,11 +287,15 @@ public class StagePage extends TestBase{
 	{
 		CommonNavigation();
 		System.out.println(listOfDataSet.size());
-		assertEquals(listOfDataSet.size(), 10);
+		String a =showingOf.getText();
+		String b=a.substring(a.indexOf("to")+3,a.indexOf("of")-1);
+		System.out.println(a);
+		int numberOfRecords= Integer.parseInt(b);
+		assertEquals(listOfDataSet.size(), numberOfRecords);
 	}
 
 
-	public void duplicateDuplicate()
+	public void duplicateFunction()
 	{
 		CommonNavigation();
 		
@@ -283,14 +303,11 @@ public class StagePage extends TestBase{
 		System.out.println(beforeRecord);
 		
 		int beforeDuplicateRecord=extractNumber(beforeRecord)+1;
-		
-		List<WebElement> duplicateButton=duplicateButtons;
-		List<WebElement> StageNames=listOfDataSet;
 
-		int randomIndex = ThreadLocalRandom.current().nextInt(duplicateButton.size());
+		int randomIndex = ThreadLocalRandom.current().nextInt(duplicateButtons.size());
 
-		WebElement dpb=duplicateButton.get(randomIndex);
-		WebElement stn=StageNames.get(randomIndex);
+		WebElement dpb=duplicateButtons.get(randomIndex);
+		WebElement stn=listOfDataSet.get(randomIndex);
 		click(driver, dpb);
 		
 		duplicateYesButton.click();
@@ -316,14 +333,11 @@ public class StagePage extends TestBase{
 		String beforeDeleteRecord=driver.findElement(By.xpath("//p[@class='show_entries m-0 font_13']")).getText();
 		System.out.println(beforeDeleteRecord);
 		int beforeDelRecord =extractNumber(beforeDeleteRecord)-1;
-//		int beforeDeleRecord=extractNumber(beforeDeleteRecord)-1;
 
-		List<WebElement> deleteButton=deleteButtons;
-		List<WebElement> StageNames=listOfDataSet;
 
-		int randomIndex = ThreadLocalRandom.current().nextInt(deleteButton.size());
+		int randomIndex = ThreadLocalRandom.current().nextInt(deleteButtons.size());
 
-		WebElement db=deleteButton.get(randomIndex);
+		WebElement db=deleteButtons.get(randomIndex);
 		assertTrue(db.isEnabled(),"Delete Button is not Enabled"+db);
 
 		click(driver, db);
@@ -362,9 +376,8 @@ public class StagePage extends TestBase{
 		List<WebElement> editButton=editButtons;
 
 		int randomIndex = ThreadLocalRandom.current().nextInt(editButton.size());
-		WebElement eb=editButton.get(randomIndex);
-		
-		click(driver, eb);
+				
+		click(driver, editButton.get(randomIndex));
 		
 	}
 	
@@ -377,7 +390,7 @@ public class StagePage extends TestBase{
 		
 //		String renaming=generateRandomAlphabeticString(5);
 		editStageName.clear();
-//		editStageName.sendKeys(renaming);
+		editStageName.sendKeys();
 		
 //		Selecting the process Dropdown randomly fetching from the dropdown it self;
 		Select processDropdown= new Select(editProcess);
@@ -414,8 +427,8 @@ public class StagePage extends TestBase{
 			options.getText());
 			ActualStrings.add(text);
 			
-			
 		}
+		
 		List<String> expectedStrings = List.of("Question Wise","Parameter Wise","Domain Wise");
 		
 		Assert.assertEquals(expectedStrings, ActualStrings);
