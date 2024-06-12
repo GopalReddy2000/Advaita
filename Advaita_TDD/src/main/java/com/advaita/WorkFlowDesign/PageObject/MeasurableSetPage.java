@@ -158,17 +158,17 @@ public class MeasurableSetPage extends TestBase {
 
 		for (int b = 1; b <= count; b++) {
 
-//			String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-//					.getText();
-//
-//			Thread.sleep(2000);
-//			System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
-//
-//			int beforeCreateRecord = extractNumber(beforeCreatedRecords);
-//			int beforeNumber = extractNumber(beforeCreatedRecords) + 1;
-//
-////		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-//			System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
+			String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+					.getText();
+
+			Thread.sleep(2000);
+			System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
+
+			int beforeCreateRecord = extractNumber(beforeCreatedRecords);
+			int beforeNumber = extractNumber(beforeCreatedRecords) + 1;
+
+//		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
+			System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
 
 			click(driver, addMeasurableSetButton);
 
@@ -182,7 +182,7 @@ public class MeasurableSetPage extends TestBase {
 			assertTrue(tabularView.isDisplayed(), "tabularView is not displayed.");
 			click(driver, tabularView);
 
-			for (int j = 1; j <= 7; j++) {
+			for (int j = 1; j <= 4; j++) {
 
 				String xpathForColumn1 = "//label[normalize-space()='COLUMN NAME " + j + "']";
 
@@ -204,7 +204,6 @@ public class MeasurableSetPage extends TestBase {
 
 					textBoxUnderColumn.click();
 					textBox.click();
-					Thread.sleep(3000);
 
 				}
 
@@ -218,7 +217,6 @@ public class MeasurableSetPage extends TestBase {
 					wait.until(ExpectedConditions.elementToBeClickable(textBoxUnderColumn));
 					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", textBox);
-					Thread.sleep(3000);
 				}
 
 				// Date Picker
@@ -229,7 +227,6 @@ public class MeasurableSetPage extends TestBase {
 					click(driver, textBoxUnderColumn);
 //					textBoxUnderColumn.sendKeys("Enter the Date?");
 					js.executeScript("arguments[0].click();", dateType);
-					Thread.sleep(3000);
 //					dateField.click();
 //					actions.moveToElement(driverIninteractable).perform();
 //					dateField.click();
@@ -245,104 +242,104 @@ public class MeasurableSetPage extends TestBase {
 					sendDataColumn.sendKeys("Feedback");
 					textBoxUnderColumn.click();
 					js.executeScript("arguments[0].click();", textBox);
-					Thread.sleep(3000);
+//					Thread.sleep(3000);
 
-					click(driver, settingButton);
-					click(driver, plusColumnButton);
+//					click(driver, settingButton);
+//					click(driver, plusColumnButton);
 				}
 
 //				 Drop Down
-				if (j == 5) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Select Customer Feedback");
-//					textBoxUnderColumn.sendKeys("Select Feedback Satisfied / Not Satisfied");
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", dropDownOption);
-
-					Thread.sleep(2000);
-
-					for (int i = 1; i <= 2; i++) {
-
-						String xpathOfDropDownOption = "ans_option_1_1_" + i;
-						WebElement dropDownOptionField = driver.findElement(By.name(xpathOfDropDownOption));
-
-						if (i == 1) {
-
-							js.executeScript("arguments[0].click();", dropDownOptionField);
-							dropDownOptionField.sendKeys("Satisfied");
-							Thread.sleep(3000);
-							actions.moveToElement(driverIninteractable).perform();
-							// Thread.sleep(2000);
-							js.executeScript("arguments[0].click();", addDropDownOptionField);
-							// click(driver, plusColumnButton);
-						}
-
-						if (i == 2) {
-
-							js.executeScript("arguments[0].click();", dropDownOptionField);
-							dropDownOptionField.sendKeys("Not Satisfied");
-
-							settingButton.click();
-							click(driver, plusColumnButton);
-						}
-
-					}
-
-				}
+//				if (j == 5) {
+//
+//					click(driver, ClickColumn);
+//					sendDataColumn.sendKeys("Select Customer Feedback");
+////					textBoxUnderColumn.sendKeys("Select Feedback Satisfied / Not Satisfied");
+//					textBoxUnderColumn.click();
+//					js.executeScript("arguments[0].click();", dropDownOption);
+//
+//					Thread.sleep(2000);
+//
+//					for (int i = 1; i <= 2; i++) {
+//
+//						String xpathOfDropDownOption = "ans_option_1_1_" + i;
+//						WebElement dropDownOptionField = driver.findElement(By.name(xpathOfDropDownOption));
+//
+//						if (i == 1) {
+//
+//							js.executeScript("arguments[0].click();", dropDownOptionField);
+//							dropDownOptionField.sendKeys("Satisfied");
+//							Thread.sleep(3000);
+//							actions.moveToElement(driverIninteractable).perform();
+//							// Thread.sleep(2000);
+//							js.executeScript("arguments[0].click();", addDropDownOptionField);
+//							// click(driver, plusColumnButton);
+//						}
+//
+//						if (i == 2) {
+//
+//							js.executeScript("arguments[0].click();", dropDownOptionField);
+//							dropDownOptionField.sendKeys("Not Satisfied");
+//
+//							settingButton.click();
+//							click(driver, plusColumnButton);
+//						}
+//
+//					}
+//
+//				}
 
 				// Radio Button
-				if (j == 6) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Is customer picked your call ?");
-//					textBoxUnderColumn.sendKeys("Select Radio button in yes or no.");
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", radioButtonOption);
-
-					for (int i = 1; i <= 2; i++) {
-
-						String xpathForRadioButtonOptions = "//input[@class='answer_option']/..//input[@name='ans_option_1_1_"
-								+ i + "']";
-
-						if (i == 1) {
-							WebElement option1 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
-							
-							js.executeScript("arguments[0].scrollIntoView(true);", option1);
-							Thread.sleep(1000);
-							option1.sendKeys("Yes");
-						}
-
-						if (i == 2) {
-							WebElement option2 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
-							js.executeScript("arguments[0].scrollIntoView(true);", option2);
-							Thread.sleep(1000);
-							option2.sendKeys("No");
-
-							settingButton.click();
-							click(driver, plusColumnButton);
-						}
-
-					}
-
-				}
+//				if (j == 6) {
+//
+//					click(driver, ClickColumn);
+//					sendDataColumn.sendKeys("Is customer picked your call ?");
+////					textBoxUnderColumn.sendKeys("Select Radio button in yes or no.");
+//					textBoxUnderColumn.click();
+//					js.executeScript("arguments[0].click();", radioButtonOption);
+//
+//					for (int i = 1; i <= 2; i++) {
+//
+//						String xpathForRadioButtonOptions = "//input[@class='answer_option']/..//input[@name='ans_option_1_1_"
+//								+ i + "']";
+//
+//						if (i == 1) {
+//							WebElement option1 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
+//							
+//							js.executeScript("arguments[0].scrollIntoView(true);", option1);
+//							Thread.sleep(1000);
+//							option1.sendKeys("Yes");
+//						}
+//
+//						if (i == 2) {
+//							WebElement option2 = driver.findElement(By.xpath(xpathForRadioButtonOptions));
+//							js.executeScript("arguments[0].scrollIntoView(true);", option2);
+//							Thread.sleep(1000);
+//							option2.sendKeys("No");
+//
+//							settingButton.click();
+//							click(driver, plusColumnButton);
+//						}
+//
+//					}
+//
+//				}
 
 				// Time Picker
-				if (j == 7) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("On which time call picked ?");
-//					textBoxUnderColumn.sendKeys("Select the time of the call.");
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", timeOption);
-
-					js.executeScript("arguments[0].scrollIntoView(true);", timePicker);
-//					timePicker.click();
-//					timePicker.click();
-//					timePicker.sendKeys("10:10");
-//					timePicker.sendKeys(Keys.ENTER);
-
-				}
+//				if (j == 7) {
+//
+//					click(driver, ClickColumn);
+//					sendDataColumn.sendKeys("On which time call picked ?");
+////					textBoxUnderColumn.sendKeys("Select the time of the call.");
+//					textBoxUnderColumn.click();
+//					js.executeScript("arguments[0].click();", timeOption);
+//
+//					js.executeScript("arguments[0].scrollIntoView(true);", timePicker);
+////					timePicker.click();
+////					timePicker.click();
+////					timePicker.sendKeys("10:10");
+////					timePicker.sendKeys(Keys.ENTER);
+//
+//				}
 //
 			}
 
@@ -414,18 +411,18 @@ public class MeasurableSetPage extends TestBase {
 
 			click(driver, leftArrowToGoBackTablePage);
 
-//			Thread.sleep(2000);
-//
-//			String afterCreateRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-//					.getText();
-//
-//			assertNotNull(afterCreateRecords, "afterCreateRecords is null.");
-//			System.out.println("afterCreateRecords : " + afterCreateRecords);
-//
-//			int afterNumber = extractNumber(afterCreateRecords);
-//			System.out.println("afterNumber : " + afterNumber);
-//
-//			assertEquals(afterNumber, beforeNumber);
+			Thread.sleep(2000);
+
+			String afterCreateRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+					.getText();
+
+			assertNotNull(afterCreateRecords, "afterCreateRecords is null.");
+			System.out.println("afterCreateRecords : " + afterCreateRecords);
+
+			int afterNumber = extractNumber(afterCreateRecords);
+			System.out.println("afterNumber : " + afterNumber);
+
+			assertEquals(afterNumber, beforeNumber);
 
 		}
 

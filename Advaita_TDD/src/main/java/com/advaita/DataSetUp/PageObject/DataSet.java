@@ -217,7 +217,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(),"Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://pkt-test.transmonqa.in/en/dataset_management/dataset/";
+		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
