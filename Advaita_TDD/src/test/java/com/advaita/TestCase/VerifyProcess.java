@@ -104,7 +104,7 @@ public class VerifyProcess extends TestBase {
 		
 		test = reports.createTest("verifyProcessTable");
 		homePage.clickOnProcessManagementCreate();           //clickOnProcessManagementCreate change to datasetup
-//		process.tablePage(3);
+//	process.tablePage(3);
 //		process.TablePage1();
 //		process.clearfilter_tablePage();
 //		process.clickonProcessDropDownToacessSubList_Tablepage();

@@ -3,27 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-<<<<<<< HEAD
       <class name="com.advaita.TestCase.VerifyMetaData">
-=======
-      <class name="com.advaita.TestCreate.TestProcessCreate">
->>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         <methods>
-<<<<<<< HEAD
-=======
-          <include name="getResult"/>
-          <include name="tearDown"/>
-          <include name="verifyProcessCreate"/>
->>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="setUp"/>
-          <include name="verifyCreateMetaData"/>
+          <include name="veriftTableMetadata"/>
           <include name="tearDown"/>
         </methods>
-<<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.VerifyMetaData -->
-=======
-      </class> <!-- com.advaita.TestCreate.TestProcessCreate -->
->>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -64,7 +64,8 @@ public class VerifyMetaData extends TestBase {
 	}
 
 	@Test(priority = 1)
-	public void verifyCreateMetaData() throws Throwable {
+	public void verifyCreateMetaData() throws Throwable 
+	{
 
 		test = reports.createTest("verifyCreateMetaData");
 		homePage.clickOnProcessManagementCreate();
@@ -73,13 +74,29 @@ public class VerifyMetaData extends TestBase {
 	}
 
 	@Test(priority = 2)
-	public void verifyEditMetaData() throws Throwable {
+	public void verifyEditMetaData() throws Throwable 
+	{
 
-//		test = reports.createTest("verifyEditMetaData");
-//		homePage.clickOnProcessManagementCreate();
-//		metaData.editMetaData();
-
+		test = reports.createTest("verifyEditMetaData");
+		homePage.clickOnProcessManagementCreate();
+		//metaData.editMetaData();
+		
+		
+	    
 	}
+	
+	@Test(priority = 3)
+	public void veriftTableMetadata() throws InterruptedException 
+	{
+		test = reports.createTest("verifyEditMetaData");
+//		homePage.clickOnProcessManagementCreate();
+//		metaData.delete_createdMetadata();
+//		metaData.searchcreatedMetadata("Test Barrows");
+//		metaData.searchByFilters();
+		metaData.getNotificationAftercreatedMetadata(null);
+		
+	}
+	
 
 	@AfterTest
 	public void tearDown() {
