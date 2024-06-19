@@ -1,23 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="18" passed="3" failed="15" skipped="0">
+=======
+<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
   <reporter-output>
   </reporter-output>
+<<<<<<< HEAD
   <suite started-at="2024-06-18T15:06:15 IST" name="Suite" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
+=======
+  <suite started-at="2024-06-19T15:19:44 IST" name="Default suite" finished-at="2024-06-19T15:20:19 IST" duration-ms="35077">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
     <groups>
     </groups>
+<<<<<<< HEAD
     <test started-at="2024-06-18T15:06:15 IST" name="Test" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
       <class name="com.advaita.TestCase.StageTest">
         <test-method is-config="true" signature="setup()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:15 IST" name="setup" finished-at="2024-06-18T15:06:23 IST" duration-ms="7480" status="PASS">
+=======
+    <test started-at="2024-06-19T15:19:44 IST" name="Default test" finished-at="2024-06-19T15:20:19 IST" duration-ms="35077">
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:44 IST" name="setUp" finished-at="2024-06-19T15:19:57 IST" duration-ms="12977" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- setup -->
         <test-method signature="navigation()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:23 IST" name="navigation" finished-at="2024-06-18T15:06:25 IST" duration-ms="2284" status="PASS">
+=======
+        </test-method> <!-- setUp -->
+        <test-method signature="verifyTabsForFieldSetCreate()[pri:1, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:57 IST" name="verifyTabsForFieldSetCreate" finished-at="2024-06-19T15:20:00 IST" duration-ms="2564" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- navigation -->
         <test-method signature="testCheckBox()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:25 IST" name="testCheckBox" finished-at="2024-06-18T15:06:28 IST" duration-ms="2616" status="PASS">
+=======
+        </test-method> <!-- verifyTabsForFieldSetCreate -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:00 IST" name="getResult" finished-at="2024-06-19T15:20:01 IST" duration-ms="1042" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyTabsForFieldSetCreate status=SUCCESS method=TestMasterFieldsSetTable.verifyTabsForFieldSetCreate()[pri:1, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34] output={null}]]]>
+              </value>
+            </param>
+          </params>
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- testCheckBox -->
         <test-method signature="testClearAllFilters()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:28 IST" name="testClearAllFilters" finished-at="2024-06-18T15:06:28 IST" duration-ms="37" status="FAIL">
           <exception class="org.openqa.selenium.json.JsonException">
@@ -151,8 +183,43 @@ at org.openqa.selenium.interactions.Sequence.toJson(Sequence.java:81)
 ]]>
             </full-stacktrace>
           </exception> <!-- org.openqa.selenium.json.JsonException -->
+=======
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyTablePageSearch()[pri:2, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:01 IST" name="verifyTablePageSearch" finished-at="2024-06-19T15:20:02 IST" duration-ms="1387" status="PASS">
           <reporter-output>
           </reporter-output>
+        </test-method> <!-- verifyTablePageSearch -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:02 IST" name="getResult" finished-at="2024-06-19T15:20:02 IST" duration-ms="40" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyTablePageSearch status=SUCCESS method=TestMasterFieldsSetTable.verifyTablePageSearch()[pri:2, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyTableClearFilter()[pri:3, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:02 IST" name="verifyTableClearFilter" finished-at="2024-06-19T15:20:03 IST" duration-ms="1054" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyTableClearFilter -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:03 IST" name="getResult" finished-at="2024-06-19T15:20:03 IST" duration-ms="68" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyTableClearFilter status=SUCCESS method=TestMasterFieldsSetTable.verifyTableClearFilter()[pri:3, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyTablePagePaginationr()[pri:4, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:03 IST" name="verifyTablePagePaginationr" finished-at="2024-06-19T15:20:19 IST" duration-ms="15247" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+          <reporter-output>
+          </reporter-output>
+<<<<<<< HEAD
         </test-method> <!-- testClearAllFilters -->
         <test-method signature="testDelete()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:28 IST" name="testDelete" finished-at="2024-06-18T15:06:28 IST" duration-ms="27" status="FAIL">
           <exception class="org.openqa.selenium.json.JsonException">
@@ -2038,10 +2105,31 @@ at org.openqa.selenium.interactions.Sequence.toJson(Sequence.java:81)
           </reporter-output>
         </test-method> <!-- testViewingCreatedStage -->
         <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:28 IST" name="tearDown" finished-at="2024-06-18T15:06:28 IST" duration-ms="123" status="PASS">
+=======
+        </test-method> <!-- verifyTablePagePaginationr -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:19 IST" name="getResult" finished-at="2024-06-19T15:20:19 IST" duration-ms="175" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyTablePagePaginationr status=SUCCESS method=TestMasterFieldsSetTable.verifyTablePagePaginationr()[pri:4, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:19 IST" name="tearDown" finished-at="2024-06-19T15:20:19 IST" duration-ms="420" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.StageTest -->
     </test> <!-- Test -->
   </suite> <!-- Suite -->
+=======
+      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
 </testng-results>

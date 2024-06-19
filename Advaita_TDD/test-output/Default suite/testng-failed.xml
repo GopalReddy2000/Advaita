@@ -3,8 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
+<<<<<<< HEAD
       <class name="com.advaita.TestCase.StageTest">
+=======
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
         <methods>
+<<<<<<< HEAD
           <include name="tearDown"/>
           <include name="testNumberOfStagesListed"/>
           <include name="testMonthsInDatePicker"/>
@@ -22,8 +27,18 @@
           <include name="testDuplicate"/>
           <include name="testEditButtons"/>
           <include name="testViewingCreatedStage"/>
+=======
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="verifyTablePagePaginationr"/>
+          <include name="getResult"/>
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
         </methods>
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.StageTest -->
+=======
+      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

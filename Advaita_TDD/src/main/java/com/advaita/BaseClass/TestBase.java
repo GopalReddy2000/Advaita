@@ -1,5 +1,7 @@
 package com.advaita.BaseClass;
 
+import static org.testng.Assert.assertTrue;
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
@@ -39,6 +41,7 @@ public class TestBase {
 		options.addArguments("--incognito");
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(ChromeOptions.CAPABILITY, options);
+		cap.setCapability("applicationCacheEnabled", false);
 		options.merge(cap);
 		driver = new ChromeDriver(options);
 
@@ -46,7 +49,7 @@ public class TestBase {
 //		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		actions = new Actions(driver);
@@ -117,6 +120,8 @@ public class TestBase {
 
 		return Integer.parseInt(numberAsString.toString());
 	}
+
+	// Click Action
 
 	// Click Action
 	public static void click(WebDriver driver, WebElement element) {

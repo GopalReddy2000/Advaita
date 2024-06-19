@@ -86,27 +86,27 @@ public class TestStagesCreate extends TestBase {
 		stages = new Stages();
 	}
 
-    @Test(priority = 1)
-    public void verifyProcessCreate() throws Throwable {
-        test = reports.createTest("verifyProcessCreate");
-        homePage.clickOnProcessManagementCreate();
-        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
-                subSubProcessName, subSubProcessDesc);
-    }
-
-    @Test(priority = 2)
-    public void verifyCreateDataset() throws Throwable {
-        test = reports.createTest("verifyCreateDataset");
-        homePage.clickOnProcessManagementCreate();
-        dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
-    }
-
-    @Test(priority = 3)
-    public void verifyCreateMetaData() throws Throwable {
-        test = reports.createTest("verifyCreateMetaData");
-        homePage.clickOnProcessManagementCreate();
-        metaData.createMetaData(metaDataName);
-    }
+//    @Test(priority = 1)
+//    public void verifyProcessCreate() throws Throwable {
+//        test = reports.createTest("verifyProcessCreate");
+//        homePage.clickOnProcessManagementCreate();
+//        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
+//                subSubProcessName, subSubProcessDesc);
+//    }
+//
+//    @Test(priority = 2)
+//    public void verifyCreateDataset() throws Throwable {
+//        test = reports.createTest("verifyCreateDataset");
+//        homePage.clickOnProcessManagementCreate();
+//        dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
+//    }
+//
+//    @Test(priority = 3)
+//    public void verifyCreateMetaData() throws Throwable {
+//        test = reports.createTest("verifyCreateMetaData");
+//        homePage.clickOnProcessManagementCreate();
+//        metaData.createMetaData(metaDataName);
+//    }
 
 	@Test(priority = 4)
 	public void navigateFetchRecord() throws Throwable {

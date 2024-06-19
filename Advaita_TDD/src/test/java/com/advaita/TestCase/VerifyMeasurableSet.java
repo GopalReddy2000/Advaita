@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.WorkFlowDesign.PageObject.MasterParameterMeasurableSetPage;
+import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -28,7 +28,7 @@ public class VerifyMeasurableSet extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	MasterParameterMeasurableSetPage measurableSetPage;
+	MeasurableSetPage measurableSetPage;
 
 	public VerifyMeasurableSet() {
 		super();
@@ -58,7 +58,7 @@ public class VerifyMeasurableSet extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		measurableSetPage = new MasterParameterMeasurableSetPage();
+		measurableSetPage = new MeasurableSetPage();
 	}
 
 	@Test(priority = 1)

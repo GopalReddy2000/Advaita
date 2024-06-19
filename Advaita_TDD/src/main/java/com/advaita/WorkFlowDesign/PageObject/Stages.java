@@ -20,15 +20,15 @@ public class Stages extends TestBase {
 
 	SoftAssert softAssert = new SoftAssert();
 
-	static private String stageListingPageUrl = "https://pkt-test.transmonqa.in/en/stages/stages_list/";
-	static private String stagesCraeteFormURL = "https://pkt-test.transmonqa.in/en/stages/create_stages/";
+	static private String stageListingPageUrl = "https://test.capture.autosherpas.com/en/stages/stages_list/";
+	static private String stagesCraeteFormURL = "https://test.capture.autosherpas.com/en/stages/create_stages/";
 
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
 	public static String fetchSubSubProcessRecord;
 	public static String fetchMetaDataRecord;
 
-	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down']")
+	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td[1]")
 	public static WebElement dropDown1;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[2]/td[1]//img[@alt='table_drop_down']")
@@ -121,7 +121,7 @@ public class Stages extends TestBase {
 
 	public void navigateFetchProcessRecord() throws Throwable {
 
-		driver.navigate().to("https://pkt-test.transmonqa.in/en/data_management/process/");
+		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
 
 		Thread.sleep(4000);
 
@@ -160,12 +160,12 @@ public class Stages extends TestBase {
 
 		System.out.println(fetchMetaDataRecord);
 
-		driver.navigate().to("https://pkt-test.transmonqa.in/en/stages/stages_list/");
+		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 	}
 
 	public void VerifyStagesTabIsDisplayed() {
 
-//		String stageListingPageUrl = "https://pkt-test.transmonqa.in/en/stages/stages_list/";
+//		String stageListingPageUrl = "https://test.capture.autosherpas.com//en/stages/stages_list/";
 
 		assertTrue(workFlowStagesTab.isDisplayed(), "workFlowStagesTab is not displayed");
 //		click(driver, workFlowStagesTab);
@@ -176,7 +176,7 @@ public class Stages extends TestBase {
 
 	public void verifyCreateStagesButton() {
 
-//		String stagesCraeteFormURL = "https://pkt-test.transmonqa.in/en/stages/create_stages/"; 
+//		String stagesCraeteFormURL = "https://test.capture.autosherpas.com/en/stages/create_stages/"; 
 
 		assertTrue(stagesCreateButton.isDisplayed() && stagesCreateButton.isEnabled(),
 				"stagesCreateButton is not displayed and enabled.");
@@ -315,9 +315,9 @@ public class Stages extends TestBase {
 
 			assertNotNull(option, "fetchMetaDataRecord after add Metadata popup is null.");
 
-//			assertTrue(list.contains(option.getText()));
+			assertTrue(list.contains(option.getText()));
 
-			assertTrue(option.getText().contains(list));
+//			assertTrue(option.getText().contains(list));
 
 		}
 

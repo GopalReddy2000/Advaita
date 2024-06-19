@@ -1,5 +1,11 @@
 package com.advaita.TestCreate;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.Iterator;
+
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -7,9 +13,12 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.WorkFlowDesign.PageObject.MasterParameterMeasurableSetPage;
+import com.advaita.Utilities.ScreenShorts;
+import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
@@ -28,7 +37,7 @@ public class TestMeasurableSetCreate extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	MasterParameterMeasurableSetPage measurableSetPage;
+	MeasurableSetPage measurableSetPage;
 
 	public TestMeasurableSetCreate() {
 		super();
@@ -58,22 +67,42 @@ public class TestMeasurableSetCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		measurableSetPage = new MasterParameterMeasurableSetPage();
+		measurableSetPage = new MeasurableSetPage();
 	}
 
 	@Test(priority = 1)
 	public void verifyMeasurableSetCreatePage() throws Throwable {
-		
+
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
-		measurableSetPage.createMeasurableSet(createCount);
 		
+		measurableSetPage.createMeasurableSet(createCount);
+
+	}
+
+	@AfterMethod
+	public void getResult(ITestResult result) throws IOException, Throwable {
+		if (result.getStatus() == ITestResult.FAILURE) {
+			// Mark the test as failed in the ExtentReports
+			test.fail(result.getThrowable());
+			// Add screenshot to ExtentReports
+			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
+			test.addScreenCaptureFromPath(screenshotPath);
+
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+		}
+		// Close ExtentReports
+		reports.flush();
 	}
 
 	@AfterTest
 	public void tearDown() {
 
-		driver.manage().window().minimize();                                       
+		driver.manage().window().minimize();
 		driver.quit();
 		reports.flush();
 
