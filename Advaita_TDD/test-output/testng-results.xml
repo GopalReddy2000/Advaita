@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <<<<<<< HEAD
+<testng-results ignored="2" total="3" passed="0" failed="1" skipped="0">
+=======
+<<<<<<< HEAD
 <testng-results ignored="0" total="18" passed="3" failed="15" skipped="0">
 =======
 <testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
   <reporter-output>
   </reporter-output>
+<<<<<<< HEAD
+  <suite started-at="2024-06-04T21:34:04 IST" name="Default suite" finished-at="2024-06-04T21:34:25 IST" duration-ms="21131">
+=======
 <<<<<<< HEAD
   <suite started-at="2024-06-18T15:06:15 IST" name="Suite" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
 =======
   <suite started-at="2024-06-19T15:19:44 IST" name="Default suite" finished-at="2024-06-19T15:20:19 IST" duration-ms="35077">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     <groups>
     </groups>
+<<<<<<< HEAD
+    <test started-at="2024-06-04T21:34:04 IST" name="Default test" finished-at="2024-06-04T21:34:25 IST" duration-ms="21131">
+      <class name="com.advaita.TestCase.VerifyMetaData">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyMetaData@48eb9836]" started-at="2024-06-04T21:34:04 IST" name="setUp" finished-at="2024-06-04T21:34:14 IST" duration-ms="10278" status="PASS">
+=======
 <<<<<<< HEAD
     <test started-at="2024-06-18T15:06:15 IST" name="Test" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
       <class name="com.advaita.TestCase.StageTest">
@@ -22,6 +35,7 @@
       <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
         <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:44 IST" name="setUp" finished-at="2024-06-19T15:19:57 IST" duration-ms="12977" status="PASS">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
 <<<<<<< HEAD
@@ -29,6 +43,10 @@
         <test-method signature="navigation()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:23 IST" name="navigation" finished-at="2024-06-18T15:06:25 IST" duration-ms="2284" status="PASS">
 =======
         </test-method> <!-- setUp -->
+<<<<<<< HEAD
+        <test-method signature="veriftTableMetadata()[pri:3, instance:com.advaita.TestCase.VerifyMetaData@48eb9836]" started-at="2024-06-04T21:34:14 IST" name="veriftTableMetadata" finished-at="2024-06-04T21:34:24 IST" duration-ms="10111" status="FAIL">
+          <exception class="org.openqa.selenium.NoSuchElementException">
+=======
         <test-method signature="verifyTabsForFieldSetCreate()[pri:1, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:57 IST" name="verifyTabsForFieldSetCreate" finished-at="2024-06-19T15:20:00 IST" duration-ms="2564" status="PASS">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
           <reporter-output>
@@ -53,20 +71,61 @@
         </test-method> <!-- testCheckBox -->
         <test-method signature="testClearAllFilters()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:28 IST" name="testClearAllFilters" finished-at="2024-06-18T15:06:28 IST" duration-ms="37" status="FAIL">
           <exception class="org.openqa.selenium.json.JsonException">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
             <message>
+<<<<<<< HEAD
+              <![CDATA[no such element: Unable to locate element: {"method":"xpath","selector":"//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down']"}
+  (Session info: chrome=125.0.6422.141)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+=======
               <![CDATA[java.lang.reflect.InvocationTargetException
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 Build info: version: '4.19.1', revision: 'abe0ee07dc'
+<<<<<<< HEAD
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
+=======
 System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 Driver info: org.openqa.selenium.chrome.ChromeDriver
+<<<<<<< HEAD
+Command: [d7909ca5726767d7a090eb6f675108cc, findElement {value=//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down'], using=xpath}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.141, chrome: {chromedriverVersion: 125.0.6422.141 (4b1e8393712..., userDataDir: C:\Users\W2378\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54766}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54766/devtoo..., se:cdpVersion: 125.0.6422.141, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: d7909ca5726767d7a090eb6f675108cc]]>
+=======
 Command: [001943d8c656206f8ac7c6146d6ef0cc, actions {actions=[org.openqa.selenium.interactions.Sequence@393881f0]}]
 Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 126.0.6478.61, chrome: {chromedriverVersion: 126.0.6478.61 (8dc092df54ce..., userDataDir: C:\Users\W2390\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:50241}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:50241/devtoo..., se:cdpVersion: 126.0.6478.61, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
 Session ID: 001943d8c656206f8ac7c6146d6ef0cc]]>
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
             </message>
             <full-stacktrace>
+<<<<<<< HEAD
+              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down']"}
+  (Session info: chrome=125.0.6422.141)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+=======
               <![CDATA[org.openqa.selenium.json.JsonException: java.lang.reflect.InvocationTargetException
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 Build info: version: '4.19.1', revision: 'abe0ee07dc'
+<<<<<<< HEAD
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
+=======
 System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 Driver info: org.openqa.selenium.chrome.ChromeDriver
+<<<<<<< HEAD
+Command: [d7909ca5726767d7a090eb6f675108cc, findElement {value=//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down'], using=xpath}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 125.0.6422.141, chrome: {chromedriverVersion: 125.0.6422.141 (4b1e8393712..., userDataDir: C:\Users\W2378\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:54766}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:54766/devtoo..., se:cdpVersion: 125.0.6422.141, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: d7909ca5726767d7a090eb6f675108cc
+at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
+at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
+at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
+=======
 Command: [001943d8c656206f8ac7c6146d6ef0cc, actions {actions=[org.openqa.selenium.interactions.Sequence@393881f0]}]
 Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 126.0.6478.61, chrome: {chromedriverVersion: 126.0.6478.61 (8dc092df54ce..., userDataDir: C:\Users\W2390\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:50241}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:50241/devtoo..., se:cdpVersion: 126.0.6478.61, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
 Session ID: 001943d8c656206f8ac7c6146d6ef0cc
@@ -96,15 +155,28 @@ at org.openqa.selenium.json.Json.toJson(Json.java:119)
 at org.openqa.selenium.remote.codec.AbstractHttpCommandCodec.encode(AbstractHttpCommandCodec.java:245)
 at org.openqa.selenium.remote.codec.AbstractHttpCommandCodec.encode(AbstractHttpCommandCodec.java:111)
 at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:178)
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
 at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:518)
+<<<<<<< HEAD
+at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
+at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:355)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:349)
+at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:68)
+at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
+at jdk.proxy2/jdk.proxy2.$Proxy13.isDisplayed(Unknown Source)
+at com.advaita.DataSetUp.PageObject.MetaData.getNotificationAftercreatedMetadata(MetaData.java:565)
+at com.advaita.TestCase.VerifyMetaData.veriftTableMetadata(VerifyMetaData.java:96)
+=======
 at org.openqa.selenium.remote.RemoteWebDriver.perform(RemoteWebDriver.java:604)
 at org.openqa.selenium.interactions.Actions$BuiltAction.perform(Actions.java:603)
 at com.advaita.BaseClass.TestBase.click(TestBase.java:136)
 at com.advaita.pageObjects.StagePage.CommonNavigation(StagePage.java:453)
 at com.advaita.pageObjects.StagePage.clearAllFilters(StagePage.java:482)
 at com.advaita.TestCase.StageTest.testClearAllFilters(StageTest.java:49)
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -133,6 +205,8 @@ at org.testng.TestNG.run(TestNG.java:1031)
 at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
 at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
+<<<<<<< HEAD
+=======
 Suppressed: org.openqa.selenium.json.JsonException: Attempting to close incomplete json stream
 Build info: version: '4.19.1', revision: 'abe0ee07dc'
 System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
@@ -180,14 +254,23 @@ at org.openqa.selenium.interactions.PointerInput$Move.encode(PointerInput.java:2
 at org.openqa.selenium.interactions.Sequence.encode(Sequence.java:72)
 at org.openqa.selenium.interactions.Sequence.toJson(Sequence.java:81)
 ... 67 more
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
 ]]>
             </full-stacktrace>
+<<<<<<< HEAD
+          </exception> <!-- org.openqa.selenium.NoSuchElementException -->
+=======
           </exception> <!-- org.openqa.selenium.json.JsonException -->
 =======
         </test-method> <!-- getResult -->
         <test-method signature="verifyTablePageSearch()[pri:2, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:01 IST" name="verifyTablePageSearch" finished-at="2024-06-19T15:20:02 IST" duration-ms="1387" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
+        </test-method> <!-- veriftTableMetadata -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyMetaData@48eb9836]" started-at="2024-06-04T21:34:24 IST" name="tearDown" finished-at="2024-06-04T21:34:25 IST" duration-ms="664" status="PASS">
+=======
         </test-method> <!-- verifyTablePageSearch -->
         <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:02 IST" name="getResult" finished-at="2024-06-19T15:20:02 IST" duration-ms="40" status="PASS">
           <params>
@@ -2120,15 +2203,20 @@ at org.openqa.selenium.interactions.Sequence.toJson(Sequence.java:81)
         </test-method> <!-- getResult -->
         <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:19 IST" name="tearDown" finished-at="2024-06-19T15:20:19 IST" duration-ms="420" status="PASS">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMetaData -->
+=======
 <<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.StageTest -->
     </test> <!-- Test -->
   </suite> <!-- Suite -->
 =======
       </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita

@@ -4,11 +4,17 @@
   <test thread-count="5" name="Default test(failed)">
     <classes>
 <<<<<<< HEAD
+      <class name="com.advaita.TestCase.VerifyMetaData">
+=======
+<<<<<<< HEAD
       <class name="com.advaita.TestCase.StageTest">
 =======
       <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         <methods>
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
           <include name="tearDown"/>
           <include name="testNumberOfStagesListed"/>
@@ -28,17 +34,27 @@
           <include name="testEditButtons"/>
           <include name="testViewingCreatedStage"/>
 =======
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="setUp"/>
+<<<<<<< HEAD
+          <include name="veriftTableMetadata"/>
+          <include name="tearDown"/>
+=======
           <include name="tearDown"/>
           <include name="verifyTablePagePaginationr"/>
           <include name="getResult"/>
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         </methods>
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMetaData -->
+=======
 <<<<<<< HEAD
       </class> <!-- com.advaita.TestCase.StageTest -->
 =======
       </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

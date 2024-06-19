@@ -71,9 +71,9 @@ public class VerifyProcess extends TestBase {
 
 		test = reports.createTest("verifyProcessCreate");
 		homePage.clickOnProcessManagementCreate();
-//		process.createProcess1(processName, processDesc);
-//		process.createSubProcess(subProcessDesc, processDesc);
-//		process.createSubSubProcess(subSubProcessName, subSubProcessDesc);
+		process.createProcess1(processName, processDesc);
+		process.createSubProcess(subProcessDesc, processDesc);
+		process.createSubSubProcess(subSubProcessName, subSubProcessDesc);
 		
 		
 
@@ -91,8 +91,10 @@ public class VerifyProcess extends TestBase {
 	public void verifyProcessEdit() throws Throwable {
 		homePage.clickOnProcessManagementCreate();
 		test = reports.createTest("verifyProcessEdit");
-		process.editCreatedProcess("Edit processDesc", "Edit subProcessDesc", "Edit subSubProcessDesc");
-		//process.EditProcess(processName);
+//		process.editCreatedProcess("Edit processDesc", "Edit subProcessDesc", "Edit subSubProcessDesc");
+//		process.EditProcess(processName);
+//		process.EditSubProcess(subProcessName, subProcessDesc);
+//		process.EditSubsubProcess(subSubProcessName, subSubProcessDesc);
 
 	}
 
@@ -101,8 +103,8 @@ public class VerifyProcess extends TestBase {
 
 		
 		test = reports.createTest("verifyProcessTable");
-		homePage.clickOnProcessManagementCreate();           ///clickOnProcessManagementCreate change to datasetup
-//		process.tablePage(3);
+		homePage.clickOnProcessManagementCreate();           //clickOnProcessManagementCreate change to datasetup
+//	process.tablePage(3);
 //		process.TablePage1();
 //		process.clearfilter_tablePage();
 //		process.clickonProcessDropDownToacessSubList_Tablepage();
