@@ -70,7 +70,7 @@ public class TestNon_MeasurableTable extends TestBase {
 	}
 
 	@Test
-	public void testCommonNavigation() {
+	public void testCommonNavigation() throws InterruptedException {
 		nonMeasurableSetPage.multipleChoice();
 	}
 
@@ -98,6 +98,12 @@ public class TestNon_MeasurableTable extends TestBase {
 
 	@Test
 	public void testcreateNormalView() {
+		nonMeasurableSetPage.createNormalView();
+		
+	}
+	
+	@Test
+	public void testcreateColumnView() {
 		nonMeasurableSetPage.createColumnView();
 		
 	}
@@ -142,12 +148,12 @@ public class TestNon_MeasurableTable extends TestBase {
 		reports.flush();
 	}
 
-//	@AfterTest
-//	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit(); 
-//		reports.flush();
-//
-//	}
+	@AfterTest
+	public void tearDown() {
+		driver.manage().window().minimize();
+		driver.quit(); 
+		reports.flush();
+
+	}
 
 }

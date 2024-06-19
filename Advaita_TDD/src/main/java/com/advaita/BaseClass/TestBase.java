@@ -23,18 +23,18 @@ public class TestBase {
 	// It should be only within class scopes
 	public static ChromeDriver driver;
 	public static DevTools devTools;
-	//	public static FirefoxDriver driver;
+	// public static FirefoxDriver driver;
 	public static ChromeOptions options;
 	public static WebDriverWait wait;
 	public static Actions actions;
 	public static JavascriptExecutor js;
 	public static Robot robot;
-	
+
 	protected static SoftAssert softAssert;
 
 	public static void initialization() throws AWTException {
 
-		// Incognito Mode Execution
+//		 Incognito Mode Execution
 		options = new ChromeOptions();
 		options.addArguments("--incognito");
 		DesiredCapabilities cap = new DesiredCapabilities();
@@ -43,10 +43,10 @@ public class TestBase {
 		driver = new ChromeDriver(options);
 
 		// Normal Execution
-		//		driver = new ChromeDriver();
+//		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		actions = new Actions(driver);
@@ -55,58 +55,70 @@ public class TestBase {
 		softAssert = new SoftAssert();
 
 		// For Get the Error Status
-		//		devTools = ((ChromeDriver) driver).getDevTools();
-		//		devTools.createSession();
-		//		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+		// devTools = ((ChromeDriver) driver).getDevTools();
+		// devTools.createSession();
+		// devTools.send(Network.enable(Optional.empty(), Optional.empty(),
+		// Optional.empty()));
 		//
-		//		devTools.addListener(Network.requestWillBeSent(), requestConsumer -> {
-		//			Request req = requestConsumer.getRequest();
+		// devTools.addListener(Network.requestWillBeSent(), requestConsumer -> {
+		// Request req = requestConsumer.getRequest();
 		//
-		//			// System.out.println("Send URL :- "+req.getUrl()+"\n"+"\n");
-		//		});
+		// // System.out.println("Send URL :- "+req.getUrl()+"\n"+"\n");
+		// });
 		//
-		//		devTools.addListener(Network.responseReceived(), response -> {
-		//			Response res = response.getResponse();
+		// devTools.addListener(Network.responseReceived(), response -> {
+		// Response res = response.getResponse();
 		//
-		//			// System.err.println(res.getStatus() + " :- "+res.getStatusText()+"\n"+"\n");
-		//			if (res.getStatus().toString().startsWith("3") || res.getStatus().toString().startsWith("4")
-		//					|| res.getStatus().toString().startsWith("5")) {
-		//				String errorMessage = "Error status received: " + res.getStatus() + " - " + res.getStatusText()
-		//						+ "\nError URL: " + res.getUrl();
+		// // System.err.println(res.getStatus() + " :-
+		// "+res.getStatusText()+"\n"+"\n");
+		// if (res.getStatus().toString().startsWith("3") ||
+		// res.getStatus().toString().startsWith("4")
+		// || res.getStatus().toString().startsWith("5")) {
+		// String errorMessage = "Error status received: " + res.getStatus() + " - " +
+		// res.getStatusText()
+		// + "\nError URL: " + res.getUrl();
 		//
-		//				System.out.println(errorMessage);
-		//				// Hard assertion
-		//				Assert.fail(errorMessage);
-		//			}
-		//		});
+		// System.out.println(errorMessage);
+		// // Hard assertion
+		// Assert.fail(errorMessage);
+		// }
+		// });
 
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 
 	}
 
-
 //	SendKeys
-	
-	public void sendKeys(WebElement webelement,String str)
-	{
+
+	public void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
-	
-	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
-        for (int i = 0; i < clickCount; i++) {
-        	jsClick(driver, element);
-        }
-    }
 
-	public static void jsClick(WebDriver driver, WebElement element)
-	{
+	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
+		for (int i = 0; i < clickCount; i++) {
+			jsClick(driver, element);
+		}
+	}
+
+	public static void jsClick(WebDriver driver, WebElement element) {
 		js.executeScript("arguments[0].click();", element);
 	}
 	
-	
-	//Click Action
+
+	public static int extractNumber(String input) {
+		StringBuilder numberAsString = new StringBuilder();
+		for (char c : input.toCharArray()) {
+			if (Character.isDigit(c)) {
+				numberAsString.append(c);
+			}
+		}
+
+		return Integer.parseInt(numberAsString.toString());
+	}
+
+	// Click Action
 	public static void click(WebDriver driver, WebElement element) {
 		try {
 			if (!element.isDisplayed()) {

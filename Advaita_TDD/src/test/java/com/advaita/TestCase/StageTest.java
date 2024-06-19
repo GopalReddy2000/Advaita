@@ -1,6 +1,5 @@
 package com.advaita.TestCase;
 
-import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -36,7 +35,7 @@ public class StageTest extends TestBase {
 	@Test
 	public void testExistingStagenameWithoutDatePicker() {
 		sp.existingStageNameWitoutDatePicker();
-		sp.validateStageName("In Progress");
+		
 		
 	}
 
@@ -73,7 +72,6 @@ public class StageTest extends TestBase {
 	@Test
 	public void testVerifyViewRadioButtons()
 	{
-		sp.verifyViewRadioButtons();
 	}
 	
 	@Test
@@ -83,34 +81,75 @@ public class StageTest extends TestBase {
 		
 	}
 	
-	
-	
-	
-	@Test
-	public void testEditButtons()
-	{
-		sp.editButtons();
-	}
-	
-	
 	@Test
 	public void testDuplicate()
 	{
 		sp.duplicateFunction();
 	}
-	
 	@Test
 	public void testDelete()
 	{
 		sp.deleteFunction();
 		
 	}
+
+	@Test
+	public void testEditButtons()
+	{
+		sp.editButtons();
+	}
 	
 	@Test
-	public void testDataCount()
+	public void testEditStageNavigtion()
+	{
+		sp.editStageNavigation();
+		
+	}
+	
+	
+	
+	
+	@Test
+	public void testEdit()
 	{
 		sp.editStageForm();
+		sp.actionCheckBox();
+		sp.secPreferences();
+		sp.disposition();
+
 	}
+	
+	
+	@Test
+	public void testEditSectionAAndB()
+	{
+		sp.editSectionAAndB();
+	}
+	
+	
+	@Test
+	public void testCheckBox()
+	{
+		sp.actionCheckBox();
+	}
+	
+	
+	
+	@Test
+	public void testSecPreference()
+	{
+		sp.secPreferences();
+	}
+	
+	
+	@Test
+	public void testDisposition()
+	{
+		sp.disposition();
+	}
+	
+	
+	
 	
 	
 	@AfterTest

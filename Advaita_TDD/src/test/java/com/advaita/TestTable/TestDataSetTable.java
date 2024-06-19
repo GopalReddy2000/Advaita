@@ -77,6 +77,14 @@ public class TestDataSetTable extends TestBase {
 		test = reports.createTest("verifydataSetTablePage");
 		dataset.dataSetTablePage();
 	}
+	
+	
+	
+	@Test
+	public void testDeleteFunction()
+	{
+		dataset.deleteDataSet();
+	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
