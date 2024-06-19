@@ -296,13 +296,9 @@ public class StagePage extends TestBase{
 
 	@FindBy(xpath = "//select[@id='is_company_stages']")
 	public WebElement dispositionManualOutsideStages;
-
-
-
-
+	
 	@FindBy(id = "submt_single")
 	public WebElement editSave;
-
 
 	@FindBy(xpath = "(//button[normalize-space()='Continue'])[1]")
 	public WebElement editSuccessContinue;
