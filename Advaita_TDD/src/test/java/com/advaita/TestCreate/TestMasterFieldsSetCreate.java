@@ -67,51 +67,123 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
+//		*******************************************************************************************************************
 		masterFieldSet = new MastersFieldSets();
 
 	}
 
 	@Test(priority = 1)
 	public void verifyTabsForFieldSetCreate() throws Throwable {
-		
+
 		homePage.clickOnworkflowDesign();
-		
+
 		test = reports.createTest("verifyTabsForFieldSetCreate");
 		masterFieldSet.verifyTabsForFieldSetCreate();
 
 	}
-	
+
 	@Test(priority = 2)
+	public void verifyBeforeFieldSetCount() throws Throwable {
+
+		test = reports.createTest("verifyBeforeFieldSetCreatedCount");
+		masterFieldSet.verifyBeforeFieldSetCreatedCount();
+
+	}
+
+	@Test(priority = 3)
 	public void verifyFieldSetCreateButton() throws Throwable {
-		
+
 		test = reports.createTest("verifyFieldSetCreateButton");
 		masterFieldSet.verifyFieldSetCreateButton();
 
 	}
-	
-	@Test(priority = 3)
+
+	@Test(priority = 4)
 	public void verifyQuestionSetNameField() throws Throwable {
-		
+
 		test = reports.createTest("verifyQuestionSetNameField");
 		masterFieldSet.verifyQuestionSetNameField();
 
 	}
-	
-	@Test(priority = 4)
-	public void verifyDefaultSection1() throws Throwable {
-		
-		test = reports.createTest("verifyDefaultSection1");
-		masterFieldSet.verifyDefaultSection1();
-		
-	}
+
 	@Test(priority = 5)
-	public void verifyByAddingQuestionsAndQuestionsType() throws Throwable {
-		
-		test = reports.createTest("verifyByAddingQuestionsAndQuestionsType");
-		masterFieldSet.verifyByAddingQuestionsAndQuestionsType();
-		
+	public void verifyDefaultSection1() throws Throwable {
+
+		test = reports.createTest("verifyDefaultSection1");
+		masterFieldSet.verifyDefaultSection1andAddingQuestion();
+
 	}
 
+	@Test(priority = 6)
+	public void verifyByAddingQuestionsAndQuestionsType() throws Throwable {
+
+		test = reports.createTest("verifyByAddingQuestionsAndQuestionsType");
+		masterFieldSet.verifyByAddingQuestionsTypeInSection1();
+
+	}
+
+	@Test(priority = 7)
+	public void verifyAddedSection2() throws Throwable {
+
+		test = reports.createTest("verifyDefaultSection2s");
+		masterFieldSet.verifyDefaultSection2();
+
+	}
+
+	@Test(priority = 8)
+	public void verifyByAddingQuestionsAndQuestionsTypeInSection2() throws Throwable {
+
+		test = reports.createTest("verifyByAddingQuestionsAndQuestionsTypeInSection2");
+		masterFieldSet.verifyByAddingQuestionsAndQuestionsTypeInSection2();
+	}
+
+//	@Test(priority = 9)
+//	public void verifyIsConditionalandConnectTwoSections() throws Throwable {
+//
+//		test = reports.createTest("verifyIsConditionalandConnectTwoSections");
+//		masterFieldSet.verifyIsConditionalandConnectTwoSections();
+//
+//	}
+//
+//	@Test(priority = 10)
+//	public void verifySaveInCreateFieldSet() throws Throwable {
+//
+//		test = reports.createTest("verifySaveInCreateFieldSet");
+//		masterFieldSet.verifySaveInCreateFieldSet();
+//
+//	}
+//
+//	@Test(priority = 11)
+//	public void verifySelectOptionAfterIsConditional() throws Throwable {
+//
+//		test = reports.createTest("verifySelectOptionAfterIsConditional");
+//		masterFieldSet.verifySelectOptionAfterIsConditional();
+//
+//	}
+
+	@Test(priority = 12)
+	public void verifyCreateFieldSetTabularView() throws Throwable {
+
+		test = reports.createTest("verifyCreateFieldSetTabularView");
+		masterFieldSet.createFieldSetTabularView();
+
+	}
+
+	@Test(priority = 13)
+	public void verifySaveInCreateFieldSet() throws Throwable {
+
+		test = reports.createTest("verifySaveInCreateFieldSet");
+		masterFieldSet.verifySaveInCreateFieldSet();
+
+	}
+
+	@Test(priority = 14)
+	public void verifyafterFieldSetCount() throws Throwable {
+
+		test = reports.createTest("verifyAfterFieldSetCreatedCount");
+		masterFieldSet.verifyAfterFieldSetCreatedCount();
+
+	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {

@@ -49,38 +49,6 @@ public class Pagination extends TestBase {
 
 	public static void paginate(WebDriver driver, WebElement rightArrowElement, WebElement leftArrowElement) {
 
-//		########### For Limit the iteration ###########
-
-//		// Define the maximum number of iterations
-//		int maxIterations = 3;
-//		// Counter to keep track of the number of iterations
-//		int iterationCount = 0;
-//
-//		// Loop for backward pagination with a limit
-//		while (iterationCount < maxIterations) {
-//		    try {
-//		        // Store the current URL before clicking
-//		        String currentUrlBeforeClick = driver.getCurrentUrl();
-//		        // Scroll the element into view and click it
-//		        js.executeScript("arguments[0].scrollIntoView(true);", rightArrowElement);
-//		        click(driver, rightArrowElement);
-//
-//		        // If the URL remains the same after clicking, break the loop
-//		        if (driver.getCurrentUrl().equals(currentUrlBeforeClick)) {
-//		            break;
-//		        }
-//		        
-//		        // Increment the iteration count
-//		        iterationCount++;
-//		        
-//		    } catch (Exception e) {
-//		        // Print the exception and break the loop
-//		        System.out.println(e);
-//		        break;
-//		    }
-
-//		########### For Limit the iteration ###########
-
 		// Loop for backward paginate
 		while (true) {
 			try {
@@ -118,6 +86,68 @@ public class Pagination extends TestBase {
 //							isClickable = true;
 			} catch (Exception e) {
 
+				System.out.println(e);
+				break;
+			}
+		}
+	}
+
+	public static void paginateWithCount(WebDriver driver, WebElement rightArrowElement, WebElement leftArrowElement,
+			int maxIt) {
+
+		// Define the maximum number of iterations
+		int maxIterations = maxIt;
+		// Counter to keep track of the number of iterations
+		int iterationCount = 0;
+
+		// Loop for forward pagination with a limit
+		while (iterationCount < maxIterations) {
+			try {
+				// Store the current URL before clicking
+				String currentUrlBeforeClick = driver.getCurrentUrl();
+
+				// Scroll the right arrow element into view and click it
+				js.executeScript("arguments[0].scrollIntoView(true);", rightArrowElement);
+				click(driver, rightArrowElement);
+
+				// If the URL remains the same after clicking, break the loop
+				if (driver.getCurrentUrl().equals(currentUrlBeforeClick)) {
+					break;
+				}
+
+				// Increment the iteration count
+				iterationCount++;
+
+			} catch (Exception e) {
+				// Print the exception and break the loop
+				System.out.println(e);
+				break;
+			}
+		}
+
+		// Reset the iteration count for backward pagination
+		iterationCount = 0;
+
+		// Loop for backward pagination with a limit
+		while (iterationCount < maxIterations) {
+			try {
+				// Store the current URL before clicking
+				String currentUrlBeforeClick = driver.getCurrentUrl();
+
+				// Scroll the left arrow element into view and click it
+				js.executeScript("arguments[0].scrollIntoView(true);", leftArrowElement);
+				click(driver, leftArrowElement);
+
+				// If the URL remains the same after clicking, break the loop
+				if (driver.getCurrentUrl().equals(currentUrlBeforeClick)) {
+					break;
+				}
+
+				// Increment the iteration count
+				iterationCount++;
+
+			} catch (Exception e) {
+				// Print the exception and break the loop
 				System.out.println(e);
 				break;
 			}

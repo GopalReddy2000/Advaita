@@ -5,7 +5,6 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -456,6 +455,7 @@ public class MeasurableSetPage extends TestBase {
 		click(driver, clearFilterButton);
 
 		Pagination.paginate(driver, rightArrow, leftArrow);
+		
 
 		driver.navigate().refresh();
 //		---------------------------------------------------------------------------
