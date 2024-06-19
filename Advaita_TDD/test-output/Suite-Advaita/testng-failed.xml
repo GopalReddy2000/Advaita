@@ -3,14 +3,14 @@
 <suite name="Failed suite [Suite-Advaita]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestStagesCreate">
+      <class name="com.advaita.TestCreate.TestMeasurableSetCreate">
         <methods>
-          <include name="verifyAddSectionA"/>
-          <include name="setUp"/>
-          <include name="tearDown"/>
           <include name="getResult"/>
+          <include name="verifyMeasurableSetCreatePage"/>
+          <include name="tearDown"/>
+          <include name="setUp"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
+      </class> <!-- com.advaita.TestCreate.TestMeasurableSetCreate -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite-Advaita] -->

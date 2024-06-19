@@ -2,7 +2,6 @@ package com.advaita.Login.Home;
 
 import static org.testng.Assert.assertTrue;
 
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -22,6 +21,9 @@ public class LoginPage extends TestBase {
 
 	@FindBy(xpath = "//li[text()='Invalid username or password. Please check your credentials.']")
 	public static WebElement wrongUserErorrMessagElement;
+
+	@FindBy(xpath = "//img[@alt='header_profile_icon']/..//span")
+	public static WebElement profileAfterLoginElement;
 
 	public HomePage loginloginTest;
 
@@ -60,9 +62,9 @@ public class LoginPage extends TestBase {
 		passwordField.sendKeys(pwd);
 		click(driver, signInButton);
 		Thread.sleep(1000);
-		assertTrue(driver.getCurrentUrl().equals("https://pkt-test.transmonqa.in/en/alchemy/evaluation_tab_view/"),
-				"Invalid password.");
+		assertTrue(profileAfterLoginElement.isDisplayed(), "profileAfterLoginElement is not displayed.");
 
+		
 //		List<WebElement> errorMessages = driver
 //				.findElements(By.xpath("//li[text()='Invalid username or password. Please check your credentials.']"));
 //		// Assert that the error message is not displayed

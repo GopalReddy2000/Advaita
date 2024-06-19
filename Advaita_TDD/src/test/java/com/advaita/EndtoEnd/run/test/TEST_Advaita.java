@@ -180,8 +180,6 @@ public class TEST_Advaita extends TestBase {
 		// Close ExtentReports
 		reports.flush();
 	}
-	
-	
 
 	@AfterTest
 	public void tearDown() {

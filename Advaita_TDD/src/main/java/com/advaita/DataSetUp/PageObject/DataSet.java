@@ -5,12 +5,14 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -170,17 +172,28 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "(//h6[normalize-space()='Clear All Filters'])[1]")
 	public static WebElement clearButton;
 
-	@FindBy(xpath ="//table[@class='w-100']//img[@id=\"id_delete\"]")
-	public static WebElement deleteDataSet;
+	@FindBy(xpath ="//table[@class='w-100']//tr//td//img[1]")
+	public static List <WebElement> deleteDataSet;
 
-	@FindBy(xpath ="//div[@id=\"id_confrm_popp\"]//button[text()='Delete']")
+	@FindBy(xpath ="//div[@id='id_confrm_popp']//button[text()='Delete']")
 	public static WebElement popDeleteButton;
 	
-	@FindBy(xpath="//div[@id=\"succs_succ\"]//span[@id=\"change_msg\"]")
+	@FindBy(xpath="//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
 	public static WebElement notificationTxt;
 	
-	@FindBy(xpath="//div[@id=\"succs_succ\"]//button[normalize-space()=\"Continue\"]")
-	public static WebElement notificationDeleteButton;
+
+	@FindBy(xpath="//img[@alt='rgt_arrow']//parent::a")
+	public static WebElement paginationRightArrow;
+	
+	@FindBy(xpath="//p[@class='show_entries m-0 font_13']")
+	public static WebElement showingNumberOfRecords;
+	
+	
+	
+	@FindBy(xpath="//div[@class='mt_20']//button[@type='submit']")
+	public static WebElement recordDeleteButton;
+	
+	
 
 	ScreenShorts ss = new ScreenShorts();
 	Pagination pg = new Pagination();
@@ -217,7 +230,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(),"Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://pkt-test.transmonqa.in/en/dataset_management/dataset/";
+		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
@@ -510,51 +523,49 @@ public class DataSet extends TestBase {
 		//		Thread.sleep(3000);
 
 	}
+	
+	 public static WebElement getRandomElement(List<WebElement> elements) {
+	        int randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
+	        return elements.get(randomIndex);
+	    }
 
+	 
+	 public static void clickMultipleTimes(WebElement element, int times) {
+	        for (int i = 0; i < times; i++) {
+	            jsClick(driver,element);
+	            }
+	        }
+	 
+	 public static int generateRandomNumber(int a) {
+	        return ThreadLocalRandom.current().nextInt(1, a);
+	    }
+	 
 	public void deleteDataSet()
 	{
+		
 		dataSetup.click();
-
 		dataSetTab.click();
+		String text= showingNumberOfRecords.getText();
+		int numberOfPages=Integer.parseInt(text.substring(text.indexOf("of")+3,text.length()-1));
+		clickMultipleTimes(paginationRightArrow,generateRandomNumber(numberOfPages));
+		String text1= showingNumberOfRecords.getText();
 		
-		int initialRowCount=getRowCount();
+		System.out.println(text1);
 		
-		List<WebElement> deleteButton=driver.findElements((By) deleteDataSet);
-
-		Assert.assertFalse(deleteButton.isEmpty(),"No Delete icon is present");
-
-		for(WebElement delete:deleteButton)
+		
+		for(int a=0;a<deleteDataSet.size();a++)
+		
 		{
-			if(delete.isEnabled()) {
-				delete.click();
-				
-				if (popDeleteButton.isEnabled()) {
-					popDeleteButton.click();
-					String notifyTxt=notificationTxt.getText();
-					
-					if(notifyTxt.contains("Dataset has been deleted successfully.")) {
-						notificationDeleteButton.click();
-						
-					}else {Assert.fail("No Delete popup");}
-					
-			
-				}else {Assert.fail("popDeleteButton is Disabled");}
-
-			}
-			else {
-				Assert.fail("Delete Button is Disabled");
-			}
+			System.out.println((a+1)+"st Delete Button is Enabled: "+deleteDataSet.get(a).isEnabled());
 		}
-		int finalRowCount= getRowCount();
-		Assert.assertEquals(finalRowCount, initialRowCount);
-
+		
+		jsClick(driver, getRandomElement(deleteDataSet)); 
+		jsClick(driver, recordDeleteButton);
+		wait.until(ExpectedConditions.visibilityOf(notificationTxt));
+		System.out.println(notificationTxt.getText());
+		Assert.assertEquals(notificationTxt.getText(), "Dataset has been deleted successfully");		
+						
 	}
-	private int getRowCount() {
-        List<WebElement> rows = driver.findElements(By.xpath("//table[@class='w-100']//tbody//tr"));
-        // Subtracting 1 to exclude the header row
-        return rows.size() - 1;
-    } 
-
 
 
 }
