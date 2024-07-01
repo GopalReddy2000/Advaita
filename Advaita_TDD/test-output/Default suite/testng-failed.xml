@@ -3,17 +3,98 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
+<<<<<<< HEAD
       <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
+=======
+<<<<<<< HEAD
+      <class name="com.advaita.TestCase.VerifyMeasurableSet">
+=======
+<<<<<<< HEAD
+      <class name="com.advaita.TestCase.VerifyMetaData">
+=======
+<<<<<<< HEAD
+      <class name="com.advaita.TestCase.StageTest">
+=======
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         <methods>
+<<<<<<< HEAD
           <include name="verifyCreateFieldSetTabularView"/>
           <include name="verifyafterFieldSetCount"/>
+=======
+<<<<<<< HEAD
+          <include name="verifyMeasurableSetCreatePage"/>
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="tearDown"/>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+          <include name="testNumberOfStagesListed"/>
+          <include name="testMonthsInDatePicker"/>
+          <include name="testEdit"/>
+          <include name="testEditStageNavigtion"/>
+          <include name="testPagination"/>
+          <include name="testSearchOnlyWithDatePicker"/>
+          <include name="setup"/>
+          <include name="testClearAllFilters"/>
+          <include name="testEditSectionAAndB"/>
+          <include name="testSecPreference"/>
+          <include name="testDelete"/>
+          <include name="testExistingStagenameWithoutDatePicker"/>
+          <include name="testDisposition"/>
+          <include name="testDuplicate"/>
+          <include name="testEditButtons"/>
+          <include name="testViewingCreatedStage"/>
+=======
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+          <include name="setUp"/>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+          <include name="veriftTableMetadata"/>
+          <include name="tearDown"/>
+=======
+          <include name="tearDown"/>
+          <include name="verifyTablePagePaginationr"/>
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="getResult"/>
+<<<<<<< HEAD
           <include name="verifyByAddingQuestionsAndQuestionsType"/>
           <include name="setUp"/>
           <include name="verifySaveInCreateFieldSet"/>
+=======
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         </methods>
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMeasurableSet -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMetaData -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.StageTest -->
+=======
+      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

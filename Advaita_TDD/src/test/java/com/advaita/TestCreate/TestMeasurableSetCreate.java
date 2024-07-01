@@ -76,7 +76,7 @@ public class TestMeasurableSetCreate extends TestBase {
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
 		
-		measurableSetPage.createMeasurableSet(createCount);
+		measurableSetPage.createNormalView();
 
 	}
 

@@ -1,11 +1,13 @@
 package com.advaita.BaseClass;
 
-import static org.testng.Assert.assertTrue;
-
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -18,6 +20,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
+
+import com.google.common.util.concurrent.Uninterruptibles;
 
 public class TestBase {
 
@@ -120,6 +124,26 @@ public class TestBase {
 
 		return Integer.parseInt(numberAsString.toString());
 	}
+	
+	public static void unWait(int seconds)
+	{
+	 	Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+	}
+	
+//	Random Index
+	
+	 public static WebElement getRandomElement(List<WebElement> elements) {
+	        int randomIndex = 0;
+			try {
+				randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        return elements.get(randomIndex);
+	    }
+	
+	
 
 	// Click Action
 

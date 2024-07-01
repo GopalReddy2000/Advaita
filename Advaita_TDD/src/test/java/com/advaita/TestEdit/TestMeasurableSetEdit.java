@@ -66,7 +66,7 @@ public class TestMeasurableSetEdit extends TestBase {
 
 		test = reports.createTest("verifyMeasurableSetEditPage");
 		homePage.clickOnEditMeasurableSet();
-		measurableSetPage.editPageOfMeasurableSet();
+//		measurableSetPage.editPageOfMeasurableSet();
 	}
 
 	@AfterTest

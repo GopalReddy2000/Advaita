@@ -1,19 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="11" passed="11" failed="0" skipped="0">
+=======
+<<<<<<< HEAD
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+=======
+<<<<<<< HEAD
+<testng-results ignored="2" total="3" passed="0" failed="1" skipped="0">
+=======
+<<<<<<< HEAD
+<testng-results ignored="0" total="18" passed="3" failed="15" skipped="0">
+=======
+<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
   <reporter-output>
   </reporter-output>
+<<<<<<< HEAD
   <suite started-at="2024-07-01T14:44:11 IST" name="Default suite" finished-at="2024-07-01T14:45:31 IST" duration-ms="80144">
+=======
+<<<<<<< HEAD
+  <suite started-at="2024-07-01T16:28:42 IST" name="Default suite" finished-at="2024-07-01T16:29:10 IST" duration-ms="28445">
+=======
+<<<<<<< HEAD
+  <suite started-at="2024-06-04T21:34:04 IST" name="Default suite" finished-at="2024-06-04T21:34:25 IST" duration-ms="21131">
+=======
+<<<<<<< HEAD
+  <suite started-at="2024-06-18T15:06:15 IST" name="Suite" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
+=======
+  <suite started-at="2024-06-19T15:19:44 IST" name="Default suite" finished-at="2024-06-19T15:20:19 IST" duration-ms="35077">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     <groups>
     </groups>
+<<<<<<< HEAD
     <test started-at="2024-07-01T14:44:11 IST" name="Default test" finished-at="2024-07-01T14:45:31 IST" duration-ms="80144">
       <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
         <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@29528a22]" started-at="2024-07-01T14:44:11 IST" name="setUp" finished-at="2024-07-01T14:44:22 IST" duration-ms="11378" status="PASS">
+=======
+<<<<<<< HEAD
+    <test started-at="2024-07-01T16:28:42 IST" name="Default test" finished-at="2024-07-01T16:29:10 IST" duration-ms="28445">
+      <class name="com.advaita.TestCase.VerifyMeasurableSet">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyMeasurableSet@771a660]" started-at="2024-07-01T16:28:42 IST" name="setUp" finished-at="2024-07-01T16:28:52 IST" duration-ms="10275" status="PASS">
+=======
+<<<<<<< HEAD
+    <test started-at="2024-06-04T21:34:04 IST" name="Default test" finished-at="2024-06-04T21:34:25 IST" duration-ms="21131">
+      <class name="com.advaita.TestCase.VerifyMetaData">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.VerifyMetaData@48eb9836]" started-at="2024-06-04T21:34:04 IST" name="setUp" finished-at="2024-06-04T21:34:14 IST" duration-ms="10278" status="PASS">
+=======
+<<<<<<< HEAD
+    <test started-at="2024-06-18T15:06:15 IST" name="Test" finished-at="2024-06-18T15:06:28 IST" duration-ms="13012">
+      <class name="com.advaita.TestCase.StageTest">
+        <test-method is-config="true" signature="setup()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:15 IST" name="setup" finished-at="2024-06-18T15:06:23 IST" duration-ms="7480" status="PASS">
+=======
+    <test started-at="2024-06-19T15:19:44 IST" name="Default test" finished-at="2024-06-19T15:20:19 IST" duration-ms="35077">
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:44 IST" name="setUp" finished-at="2024-06-19T15:19:57 IST" duration-ms="12977" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
+<<<<<<< HEAD
         <test-method signature="verifyTabsForFieldSetCreate()[pri:1, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@29528a22]" started-at="2024-07-01T14:44:22 IST" name="verifyTabsForFieldSetCreate" finished-at="2024-07-01T14:44:24 IST" duration-ms="1590" status="PASS">
+=======
+<<<<<<< HEAD
+        <test-method signature="verifyMeasurableSetCreatePage()[pri:1, instance:com.advaita.TestCase.VerifyMeasurableSet@771a660]" started-at="2024-07-01T16:28:52 IST" name="verifyMeasurableSetCreatePage" finished-at="2024-07-01T16:29:09 IST" duration-ms="17608" status="PASS">
+=======
+<<<<<<< HEAD
+        <test-method signature="veriftTableMetadata()[pri:3, instance:com.advaita.TestCase.VerifyMetaData@48eb9836]" started-at="2024-06-04T21:34:14 IST" name="veriftTableMetadata" finished-at="2024-06-04T21:34:24 IST" duration-ms="10111" status="FAIL">
+          <exception class="org.openqa.selenium.NoSuchElementException">
+=======
+        <test-method signature="verifyTabsForFieldSetCreate()[pri:1, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:19:57 IST" name="verifyTabsForFieldSetCreate" finished-at="2024-06-19T15:20:00 IST" duration-ms="2564" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        </test-method> <!-- verifyMeasurableSetCreatePage -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.VerifyMeasurableSet@771a660]" started-at="2024-07-01T16:29:09 IST" name="tearDown" finished-at="2024-07-01T16:29:10 IST" duration-ms="491" status="PASS">
+=======
+<<<<<<< HEAD
+        </test-method> <!-- navigation -->
+        <test-method signature="testCheckBox()[pri:0, instance:com.advaita.TestCase.StageTest@54e1c68b]" started-at="2024-06-18T15:06:25 IST" name="testCheckBox" finished-at="2024-06-18T15:06:28 IST" duration-ms="2616" status="PASS">
+=======
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
         </test-method> <!-- verifyTabsForFieldSetCreate -->
         <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@29528a22]" started-at="2024-07-01T14:44:24 IST" name="getResult" finished-at="2024-07-01T14:44:24 IST" duration-ms="608" status="PASS">
           <params>
@@ -56,6 +136,7 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getResult -->
+<<<<<<< HEAD
         <test-method signature="verifyQuestionSetNameField()[pri:4, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@29528a22]" started-at="2024-07-01T14:44:27 IST" name="verifyQuestionSetNameField" finished-at="2024-07-01T14:44:28 IST" duration-ms="383" status="PASS">
           <reporter-output>
           </reporter-output>
@@ -177,10 +258,33 @@
           </reporter-output>
         </test-method> <!-- getResult -->
         <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@29528a22]" started-at="2024-07-01T14:45:30 IST" name="tearDown" finished-at="2024-07-01T14:45:31 IST" duration-ms="483" status="PASS">
+=======
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestTable.TestMasterFieldsSetTable@510f3d34]" started-at="2024-06-19T15:20:19 IST" name="tearDown" finished-at="2024-06-19T15:20:19 IST" duration-ms="420" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMeasurableSet -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.VerifyMetaData -->
+=======
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCase.StageTest -->
+    </test> <!-- Test -->
+  </suite> <!-- Suite -->
+=======
+      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
