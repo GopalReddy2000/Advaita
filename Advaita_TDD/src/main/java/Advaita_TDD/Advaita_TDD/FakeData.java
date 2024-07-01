@@ -50,7 +50,7 @@ public class FakeData {
 
 //		firstName();
 ////		fd.lastName();
-//		fd.firstCapString();
+		fd.firstCapString();
 //        string();
 //        number();
 //        fd.dateNextYear();

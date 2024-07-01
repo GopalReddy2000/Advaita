@@ -5,8 +5,10 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -238,7 +240,7 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(questionSetNameFieldElement.isDisplayed());
 
 		questionSetNameFieldElement.clear();
-		questionSetNameFieldElement.sendKeys(fake.lastName1() + " QS");
+		questionSetNameFieldElement.sendKeys(fake.lastName1() + " FS");
 
 	}
 
@@ -276,32 +278,350 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
-	final int LABEL = 1;
-	final int MULTIPLE_CHOICE = 2;
-	final int SHORT_ANSWER = 3;
-	final int DROP_DOWN = 4;
-	final int RELATIVE_DROP_DOWN = 5;
-	final int FILE_UPLOAD = 6;
-	final int RADIO_BUTTON = 7;
-	final int DATE = 8;
-	final int TIME = 9;
-	final int TEXT_BOX = 10;
-	final int RELATIVE_MULTISELECT = 11;
+//	All 11 elements are present.
+//	questionTypes 1 : Label
+//	questionTypes 2 : Multiple Choice
+//	questionTypes 3 : Short Answer
+//	questionTypes 4 : Drop Down
+//	questionTypes 5 : Relative Drop down
+//	questionTypes 6 : File Upload
+//	questionTypes 7 : Radio Button
+//	questionTypes 8 : Date
+//	questionTypes 9 : Time
+//	questionTypes 10 : Text Box
+//	questionTypes 11 : Relative MultiSelect
 
+	final static int LABEL = 1;
+	final static int MULTIPLE_CHOICE = 2;
+	final static int SHORT_ANSWER = 3;
+	final static int DROP_DOWN = 4;
+	final static int RELATIVE_DROP_DOWN = 5;
+	final static int FILE_UPLOAD = 6;
+	final static int RADIO_BUTTON = 7;
+	final static int DATE = 8;
+	final static int TIME = 9;
+	final static int TEXT_BOX = 10;
+	final static int RELATIVE_MULTISELECT = 11;
+
+//	final static int section1 = 1;
+//
+//	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
+//
+//		Map<Integer, Integer> questionTypes = new HashMap<>();
+//		questionTypes.put(1, TEXT_BOX);
+//		questionTypes.put(2, SHORT_ANSWER);
+//		questionTypes.put(3, DATE);
+//		questionTypes.put(4, TIME);
+//		questionTypes.put(5, RADIO_BUTTON);
+//		questionTypes.put(6, DROP_DOWN);
+//
+//		for (int i = 1; i <= 6; i++) {
+//			String xpathQuestionTextField = "//div[h5[contains(text(), 'Question " + i
+//					+ "')]]//input[@name='question_1_" + i + "']";
+//
+//			WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
+//
+//			int questionType = questionTypes.get(i);
+//
+//			switch (questionType) {
+//			case TEXT_BOX:
+//				handleTextBoxQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			case SHORT_ANSWER:
+//				handleShortAnswerQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			case DATE:
+//				handleDateQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			case TIME:
+//				handleTimeQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			case RADIO_BUTTON:
+//				handleRadioButtonQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			case DROP_DOWN:
+//				handleDropDownQuestion(i, xpathQuestionTextField, questionFields);
+//				break;
+//			default:
+//				throw new IllegalArgumentException("Unsupported question type: " + questionType);
+//			}
+//		}
+//	}
+//
+//	private void handleTextBoxQuestion(int i, String xpathQuestionTextField, WebElement questionFields)
+//			throws InterruptedException {
+//		questionFields.sendKeys("Name Of The Customer ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + TEXT_BOX + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		// Additional handling for text box question type
+//		toggleRequiredFields(i);
+//		setMaxLengthFieldForQuestion(i, "250");
+//		configureTextFieldValueTypeDropDown(i);
+//		toggleAllowSpecialCharacters(i);
+//	}
+//
+//	private void handleShortAnswerQuestion(int i, String xpathQuestionTextField, WebElement questionFields)
+//			throws InterruptedException {
+//		questionFields.sendKeys("Address Of The Customer ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + SHORT_ANSWER + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		setShortAnswerLengthFields(i, "1", "100");
+//		configureShortAnswerValueTypeDropDown(i);
+//		toggleAllowSpecialCharacters(i);
+//	}
+//
+//	private void handleDateQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
+//		questionFields.sendKeys("Date of the call ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + DATE + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		assertTrue(driver.findElement(By.id("startDate")).isDisplayed());
+//	}
+//
+//	private void handleTimeQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
+//		questionFields.sendKeys("Time of the call ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + TIME + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		assertTrue(driver.findElement(By.id("startTime")).isDisplayed());
+//	}
+//
+//	private void handleRadioButtonQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
+//		questionFields.sendKeys("Was the call picked by the Customer ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + RADIO_BUTTON + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		configureRadioButtonOptions(i, typeElement);
+////		toggleRadioButtonAllowMultipleSelection();
+////		toggleAllowNotApplicable();
+//	}
+//
+//	private void handleDropDownQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
+//		questionFields.sendKeys("Was the call handled effectively ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
+//				+ "']/following-sibling::div[" + DROP_DOWN + "]//h6";
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//		typeElement.click();
+//		configureDropDownOptions(i, questionFields);
+////		toggleDropDownAllowMultipleSelection();
+////		toggleAllowNotApplicable();
+//	}
+//
+//	private void toggleRequiredFields(int i) {
+//		WebElement requiredToggleButton = driver.findElement(
+//				By.xpath("//h5[normalize-space()='REQUIRED']/following::label/input[@name='question_required_"
+//						+ section1 + "_" + i + "']"));
+//		WebElement escalatedFieldToggleButton = driver.findElement(
+//				By.xpath("//h5[normalize-space()='ESCALATED FIELD']/following::label/input[@name='question_escalated_"
+//						+ section1 + "_" + i + "']"));
+//		requiredToggleButton.click();
+//		escalatedFieldToggleButton.click();
+//	}
+//
+//	private void setMaxLengthFieldForQuestion(int i, String maxLength) {
+//		WebElement maxLengthFieldForQuestion = driver.findElement(By
+//				.xpath("//h6[normalize-space()='Max Length']/following::input[@name='dataset_field_section_max_length_"
+//						+ section1 + "_" + i + "']"));
+//		maxLengthFieldForQuestion.sendKeys(maxLength);
+//	}
+//
+//	private void configureTextFieldValueTypeDropDown(int i) throws InterruptedException {
+//		Select valueTypeDropDown = new Select(driver.findElement(
+//				By.xpath("//h6[normalize-space()='Value-Type']/following::select[@name='textbox_settings_value_type_"
+//						+ section1 + "_" + i + "']")));
+//		List<WebElement> options = valueTypeDropDown.getOptions();
+//		for (WebElement option : options) {
+//			valueTypeDropDown.selectByVisibleText(option.getText());
+//			Thread.sleep(200); // Adding a small delay for UI interaction
+//		}
+//		valueTypeDropDown.selectByVisibleText("All");
+//	}
+//
+//	private void toggleAllowSpecialCharacters(int i) throws InterruptedException {
+//		WebElement allowSpCharToggleButton = driver.findElement(
+//				By.cssSelector("//h6[text()='Allow-Sp-Char']/..//input[@name='textbox_settings_allow_sp_char_"
+//						+ section1 + "_" + i + "']/..//span[@class='slider round']"));
+//		allowSpCharToggleButton.click();
+//		Thread.sleep(500);
+//		allowSpCharToggleButton.click();
+//	}
+//
+//	private void setShortAnswerLengthFields(int i, String minLength, String maxLength) {
+//		WebElement shortAnswerMinLengthField = driver.findElement(
+//				By.xpath("//div[contains(@class, 'increament-input')]//input[@name='shortans_settings_min_length_"
+//						+ section1 + "_" + i + "' and @value='1']"));
+//		WebElement shortAnswerMaxLengthField = driver
+//				.findElement(By.xpath("(//input[@name='shortans_settings_max_length_" + section1 + "_" + i + "'])[1]"));
+//		shortAnswerMinLengthField.clear();
+//		shortAnswerMinLengthField.sendKeys(minLength);
+//		shortAnswerMaxLengthField.clear();
+//		shortAnswerMaxLengthField.sendKeys(maxLength);
+//	}
+//
+//	private void configureShortAnswerValueTypeDropDown(int i) throws InterruptedException {
+//		Select shortAnswerValueTypeDropDown = new Select(driver.findElement(By.cssSelector(
+//				"//h6[normalize-space()='Value-Type']/following::select[@name='shortans_settings_value_type_" + section1
+//						+ "_" + i + "']")));
+//		List<WebElement> options = shortAnswerValueTypeDropDown.getOptions();
+//		for (WebElement option : options) {
+//			shortAnswerValueTypeDropDown.selectByVisibleText(option.getText());
+//			Thread.sleep(200); // Adding a small delay for UI interaction
+//		}
+//		shortAnswerValueTypeDropDown.selectByVisibleText("All");
+//	}
+//
+//	private void configureRadioButtonOptions(int questionIndex, WebElement questionFields) {
+////		questionTypes 6 : Radio Button
+//		// Example interaction: setting text in the question fields
+//		questionFields.sendKeys("Did you picked your call ?");
+//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_"
+//				+ questionIndex + "']/following-sibling::div[" + RADIO_BUTTON + "]//h6";
+//
+//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+//
+//		ClickUtilities.jsClick(driver, typeElement);
+//
+//		for (int a = 1; a <= 2; a++) {
+//
+//			String radioOption = questionFields
+//					+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + questionIndex
+//					+ "_" + a + "']";
+//
+//			System.out.println("radioOption : " + radioOption);
+//
+//			WebElement radioOptionField = driver.findElement(By.xpath(radioOption));
+//
+//			if (a == 1) {
+//
+//				radioOptionField.sendKeys("Yes");
+//
+//			}
+//			if (a == 2) {
+//
+//				radioOptionField.sendKeys("No");
+//
+//				String xpathAdd = "(" + questionFields
+//						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
+//
+//				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+//
+////				driver.findElement(By.xpath(xpath)).click();
+//
+//			}
+//
+//		}
+//
+//		String radioOption1 = questionFields
+//				+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + questionIndex + "_"
+//				+ (questionIndex - 2) + "']";
+//
+//		System.out.println("radioOption1 : " + radioOption1);
+//
+//		WebElement radioOptionField1 = driver.findElement(By.xpath(radioOption1));
+//
+//		radioOptionField1.sendKeys("NA");
+//	}
+//
+//	private void toggleRadioButtonAllowMultipleSelection() {
+//		WebElement radioButtonAllowMulSelToggleButton = driver
+//				.findElement(By.cssSelector("selector-for-radio-button-allow-multiple-selection-toggle"));
+//		radioButtonAllowMulSelToggleButton.click();
+//	}
+//
+//	private void toggleAllowNotApplicable() {
+//		WebElement allowNotApplicableToggleButton = driver
+//				.findElement(By.cssSelector("selector-for-allow-not-applicable-toggle"));
+//		allowNotApplicableToggleButton.click();
+//	}
+//
+//	private void configureDropDownOptions(int i, WebElement questionFields) {
+//
+//		for (int x = 1; x <= 3; x++) {
+//			//
+//			String xpathAdd = "(" + questionFields
+//					+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
+//
+//			ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+//
+//		}
+//
+//		for (int y = 1; y <= 4; y++) {
+//
+//			if (y == 1) {
+//				String xpathDropDownOption1 = questionFields
+//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
+//						+ "']";
+//
+//				WebElement dropDownOptions1 = driver.findElement(By.xpath(xpathDropDownOption1));
+//
+//				dropDownOptions1.sendKeys("Male");
+//
+//			}
+//
+//			if (y == 2) {
+//
+//				String xpathDropDownOption = questionFields
+//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
+//						+ "']";
+//
+//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
+//
+//				dropDownOptions.sendKeys("Female");
+//
+//			}
+//
+//			if (y == 3) {
+//
+//				String xpathDropDownOption = questionFields
+//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
+//						+ "']";
+//
+//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
+//
+//				dropDownOptions.sendKeys("Transgender");
+//
+//			}
+//
+//			if (y == 4) {
+//
+//				String xpathDropDownOption = questionFields
+//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
+//						+ "']";
+//
+//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
+//
+//				dropDownOptions.sendKeys("Others");
+//
+//			}
+//
+//		}
+//
+////		WebElement dropDownAddOption1 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-1"));
+////		WebElement dropDownAddOption2 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-2"));
+////		WebElement dropDownAddOption3 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-3"));
+////		dropDownAddOption1.click();
+////		dropDownAddOption2.click();
+////		dropDownAddOption3.click();
+////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_1")).sendKeys("Yes");
+////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_2")).sendKeys("No");
+////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_3")).sendKeys("Partially");
+//	}
+//
+//	private void toggleDropDownAllowMultipleSelection() {
+//		WebElement dropDownAllowMulSelToggleButton = driver
+//				.findElement(By.cssSelector("selector-for-drop-down-allow-multiple-selection-toggle"));
+//		dropDownAllowMulSelToggleButton.click();
+//	}
+
+//	########################################################################################################################################################
 	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
-
-//		All 11 elements are present.
-//		questionTypes 1 : Label
-//		questionTypes 2 : Multiple Choice
-//		questionTypes 3 : Short Answer
-//		questionTypes 4 : Drop Down
-//		questionTypes 5 : Relative Drop down
-//		questionTypes 6 : File Upload
-//		questionTypes 7 : Radio Button
-//		questionTypes 8 : Date
-//		questionTypes 9 : Time
-//		questionTypes 10 : Text Box
-//		questionTypes 11 : Relative MultiSelect
 
 		// Interact with the questionFields elements by index, excluding the last one
 
@@ -567,7 +887,7 @@ public class MastersFieldSets extends TestBase {
 
 						ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
 
-//						driver.findElement(By.xpath(xpath)).click();
+///////////////					driver.findElement(By.xpath(xpath)).click();
 
 					}
 
@@ -1022,7 +1342,7 @@ public class MastersFieldSets extends TestBase {
 				sendDataColumn.sendKeys("Person Who Pick the Call");
 
 				wait.until(ExpectedConditions.elementToBeClickable(DynamicXpath.textBox(3, j)));
-				ClickUtilities.highlightElement(DynamicXpath.textBox(3, j), driver);
+//				ClickUtilities.highlightElement(DynamicXpath.textBox(3, j), driver);
 				SendDataUtils.clearAndSendKeys(DynamicXpath.textBox(3, j), "Radio");
 				ClickUtilities.clickWithRetry(DynamicXpath.textBox(3, j), 2);
 
@@ -1031,7 +1351,7 @@ public class MastersFieldSets extends TestBase {
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 1), "a");
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 2), "b");
 
-				ClickUtilities.highlightElement(DynamicXpath.addOptions(3, j), driver);
+//				ClickUtilities.highlightElement(DynamicXpath.addOptions(3, j), driver);
 				ClickUtilities.clickWithRetry(DynamicXpath.addOptions(3, j), 2);
 
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 3), "c");
@@ -1140,6 +1460,8 @@ public class MastersFieldSets extends TestBase {
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
 	}
 
+//	**********************************************************Create Ended**************************************************************************************************************
+
 	public void verifyAfterFieldSetCreatedCount() throws Throwable {
 
 		click(driver, leftArrowToGoBackTablePage);
@@ -1179,8 +1501,9 @@ public class MastersFieldSets extends TestBase {
 		// Parse the remaining string to an integer
 		return Integer.parseInt(numberAsString.toString());
 	}
+//	**********************************************************Edit Started**************************************************************************************************************
 
-//	**********************************************************Create Edit**************************************************************************************************************
+//	**********************************************************Table Started**************************************************************************************************************
 
 	public void tablePageSearch() throws Throwable {
 
@@ -1206,7 +1529,7 @@ public class MastersFieldSets extends TestBase {
 		createdDatePicker.click();
 		createdDatePicker.sendKeys("25-04-2024");
 		createdDatePicker.sendKeys(Keys.ENTER);
-		
+
 		click(driver, searchButton);
 	}
 
@@ -1218,8 +1541,8 @@ public class MastersFieldSets extends TestBase {
 	public void tablePagePagination() throws Throwable {
 
 //		Pagination.paginate(driver, rightArrow, leftArrow);
-		
-		Pagination.paginateWithCount(driver, rightArrow, leftArrow,3);
+
+		Pagination.paginateWithCount(driver, rightArrow, leftArrow, 3);
 
 		driver.navigate().refresh();
 //		---------------------------------------------------------------------------
