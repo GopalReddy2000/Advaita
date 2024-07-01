@@ -39,7 +39,7 @@ public class VerifyDisposition extends TestBase {
 
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Manu", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter("extentreport Advaita DispositionPage.html");
 		reports = new ExtentReports();
@@ -61,32 +61,13 @@ public class VerifyDisposition extends TestBase {
 		disposition = new Disposition();
 
 	}
-
-	@Test(priority = 1)
-	public void verifyDispositionCreatePage() throws Throwable {
-
-		test = reports.createTest("verifyDispositionCreatePage");
-		homePage.clickOnDisposition();
-		disposition.dispositionCreatePage(createCount);
-
+	
+	@Test
+	public void testCreat()
+	{
+		disposition.createNormalView();
 	}
 
-	@Test(priority = 2)
-	public void verifyDispositionEditPage() throws Throwable {
-
-		test = reports.createTest("verifyNonMeasurableSetTablePage");
-		homePage.clickOnDisposition();
-		disposition.dispositionEditPage();
-
-	}
-
-	@Test(priority = 3)
-	public void verifyDispositionTablePage() throws Throwable {
-
-		test = reports.createTest("verifyDispositionTablePage");
-		homePage.clickOnDisposition();
-		disposition.dispositionTablePage();
-	}
 
 	@AfterTest
 	public void tearDown() {

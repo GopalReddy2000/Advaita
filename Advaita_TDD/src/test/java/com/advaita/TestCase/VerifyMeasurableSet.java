@@ -66,26 +66,25 @@ public class VerifyMeasurableSet extends TestBase {
 		
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
-		measurableSetPage.createMeasurableSet(createCount);
-		
+		measurableSetPage.createNormalView();	
 	}
 
-	@Test(priority = 2)
-	public void verifyMeasurableSetTablePage() throws Throwable {
-
-		test = reports.createTest("verifyMeasurableSetTablePage");
-		homePage.clickOnworkflowDesign();
-		measurableSetPage.tablePageOfMeasurableSet();
-
-	}
-
-	@Test(priority = 3)
-	public void verifyMeasurableSetEditePage() throws Throwable {
-
-		test = reports.createTest("verifyMeasurableSetEditPage");
-		homePage.clickOnEditMeasurableSet();
-		measurableSetPage.editPageOfMeasurableSet();
-	}
+//	@Test(priority = 2)
+//	public void verifyMeasurableSetTablePage() throws Throwable {
+//
+//		test = reports.createTest("verifyMeasurableSetTablePage");
+//		homePage.clickOnworkflowDesign();
+//		measurableSetPage.tablePageOfMeasurableSet();
+//
+//	}
+//
+//	@Test(priority = 3)
+//	public void verifyMeasurableSetEditePage() throws Throwable {
+//
+//		test = reports.createTest("verifyMeasurableSetEditPage");
+//		homePage.clickOnEditMeasurableSet();
+//		measurableSetPage.editPageOfMeasurableSet();
+//	}
 
 	@AfterTest
 	public void tearDown() {

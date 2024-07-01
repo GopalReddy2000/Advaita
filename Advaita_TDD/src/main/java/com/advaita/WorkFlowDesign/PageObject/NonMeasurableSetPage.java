@@ -353,27 +353,15 @@ public class NonMeasurableSetPage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void commonNavigation(String questionSetName)
-	{
-		click(driver, workFlowDesign);
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-		questionSetNameField.clear();
-		questionSetNameField.sendKeys(generateQuestionSetName(questionSetName));
-
-		question1.clear();
-		question1.sendKeys(generateQuestionSetName(questionSetName));
-	}
-
+	
 	 public static String generateQuestionSetName(String QuestionSetName) {
 	        
-				return QuestionSetName+" "+ fake.lastName1();
+				return QuestionSetName+" "+ fake.lastName2();
 	    }
 	
 		 
 	
-	final String sectionNameString="Section Name "+fake.lastName1();
+	final String sectionNameString="Section Name "+fake.lastName2();
 	
 	final int labelInt=1;
 	final int multipleChoiceInt=2;
@@ -387,7 +375,61 @@ public class NonMeasurableSetPage extends TestBase {
 	final int textBoxInt=10;
 	final int relativeMultiselectInt=11;
 	
+	private static String getRandomString(String[] array) {
+		// Generate a random index within the array length
+		Random random = new Random();
+		int randomIndex = random.nextInt(array.length);
+		return array[randomIndex];
+	}
+
+	public WebElement getElementByDynamicXPath(int q) {
+		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
+		return driver.findElement(By.xpath(xpath));
+	}
+	public WebElement getSectionQuestion(int s,int q) {
+		String xpath = "//div[@data-info='question-"+s+"-"+q+"']//input[@name='question_"+s+"_"+q+"']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	public WebElement setQuestionTypes(int s,int q,int t) {
+		String xpath = "//input[@name='question_type_"+s+"_"+q+"']/following-sibling::div["+t+"]";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public WebElement sectionsSettings(int a) {
+		String xpath = "(//img[@alt='settingicon'])["+a+"]";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+
+	public WebElement sectionIsConditional(int a) {
+		String xpath = "is_conditional_"+a;
+
+		return driver.findElement(By.name(xpath));
+	}
+
+	public WebElement addSectionQuestion(int s) {
+		String xpath = "//div[@data-info='question-"+s+"-1']/following-sibling::div//a[normalize-space()='Add Question']";
+
+		return driver.findElement(By.name(xpath));
+	}
+
 	
+	public void commonNavigation(String questionSetName)
+	{
+		click(driver, workFlowDesign);
+		click(driver, masterParameterTab);
+		click(driver, nonMeasurableTab);
+		click(driver, addNonMeasurableSetButton);
+		questionSetNameField.clear();
+		questionSetNameField.sendKeys(generateQuestionSetName(questionSetName));
+
+		question1.clear();
+		question1.sendKeys(generateQuestionSetName(questionSetName));
+	}
+
 	
 	public void multipleChoice() throws InterruptedException
 	{
@@ -663,18 +705,7 @@ public class NonMeasurableSetPage extends TestBase {
 		
 	}
 
-	private static String getRandomString(String[] array) {
-		// Generate a random index within the array length
-		Random random = new Random();
-		int randomIndex = random.nextInt(array.length);
-		return array[randomIndex];
-	}
-
-	public WebElement getElementByDynamicXPath(int q) {
-		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
-		return driver.findElement(By.xpath(xpath));
-	}
-
+	
 
 	public void createNormalView()
 	{
@@ -682,15 +713,14 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, masterParameterTab);
 		click(driver, nonMeasurableTab);
 		click(driver, addNonMeasurableSetButton);
-		String questionName= "Software Testing "+fake.lastName1();
+		String questionName= "Software Testing "+fake.lastName2();
 		sendKeys(questionSetNameField,questionName );
 
-		List<WebElement> questionTypeList =selectQuestionType;
 		List<WebElement> questionsList=questionList;
 
 
 
-		for (int q=0;q<questionTypeList.size();q++)
+		for (int q=0;q<selectQuestionType.size();q++)
 		{
 
 
@@ -822,14 +852,15 @@ public class NonMeasurableSetPage extends TestBase {
 			break;
 			}
 
-			click(driver, questionSaveButton);
 			
-			click(driver, questionSaveContinueButton);
-
-			String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
-			assertEquals(questionName,actualQuestionSet);
 
 		}
+		click(driver, questionSaveButton);
+		
+		click(driver, questionSaveContinueButton);
+
+		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
+		assertEquals(questionName,actualQuestionSet);
 
 
 	}
@@ -842,7 +873,7 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, masterParameterTab);
 		click(driver, nonMeasurableTab);
 		click(driver, addNonMeasurableSetButton);
-		String questionName= "Software Testing "+ fake.lastName1();
+		String questionName= "Software Testing "+ fake.lastName2();
 		sendKeys(questionSetNameField, questionName);
 
 
@@ -1006,35 +1037,7 @@ public class NonMeasurableSetPage extends TestBase {
 	}
 
 
-	public WebElement getSectionQuestion(int s,int q) {
-		String xpath = "//div[@data-info='question-"+s+"-"+q+"']//input[@name='question_"+s+"_"+q+"']";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-	public WebElement setQuestionTypes(int s,int q,int t) {
-		String xpath = "//input[@name='question_type_"+s+"_"+q+"']/following-sibling::div["+t+"]";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-
-	public WebElement sectionsSettings(int a) {
-		String xpath = "(//img[@alt='settingicon'])["+a+"]";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-
-
-	public WebElement sectionIsConditional(int a) {
-		String xpath = "is_conditional_"+a;
-
-		return driver.findElement(By.name(xpath));
-	}
-
-	public WebElement addSectionQuestion(int s) {
-		String xpath = "//div[@data-info='question-"+s+"-1']/following-sibling::div//a[normalize-space()='Add Question']";
-
-		return driver.findElement(By.name(xpath));
-	}
+	
 
 
 
@@ -1046,7 +1049,7 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, masterParameterTab);
 		click(driver, nonMeasurableTab);
 		click(driver, addNonMeasurableSetButton);
-		String QuestionSetName=fake.lastName1();
+		String QuestionSetName=fake.lastName2();
 		questionSetNameField.clear();
 		questionSetNameField.sendKeys(QuestionSetName);
 
@@ -1159,7 +1162,7 @@ public class NonMeasurableSetPage extends TestBase {
 			click(driver, addNonMeasurableSetButton);
 
 			assertTrue(questionSetNameField.isDisplayed(), "questionSetNameField is not displayed.");
-			questionSetNameField.sendKeys(fake.lastName1() + " TestAudit");
+			questionSetNameField.sendKeys(fake.lastName2() + " TestAudit");
 
 			click(driver, settingButton);
 

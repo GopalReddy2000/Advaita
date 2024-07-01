@@ -57,7 +57,7 @@ public class FakeData {
 //        
 	}
 
-	public String firstCapString() {
+	public static String firstCapString() {
 		// Create a Faker instance
 		Faker faker = new Faker();
 
@@ -93,7 +93,7 @@ public class FakeData {
 	}
 	
 	private static final Set<String> generatedLastNames = new HashSet<>();
-    public String lastName1() {
+    public static String lastName2() {
         // Create a Faker instance
         Faker faker = new Faker();
 
@@ -115,21 +115,21 @@ public class FakeData {
         return randomLastName;
     }
 
-//	public String lastName1() {
-//		// Create a Faker instance
-//		Faker faker = new Faker();
-//
-//		// Generate a random last name
-//		String randomLastName = faker.name().lastName();
-//
-//		// Remove special characters using regex
-//		randomLastName = randomLastName.replaceAll("[^a-zA-Z]", "");
-//
-//		// Print the random last name
-//		System.out.println("Random Last Name: " + randomLastName);
-//
-//		return randomLastName;
-//	}
+	public static String lastName1() {
+		// Create a Faker instance
+		Faker faker = new Faker();
+
+		// Generate a random last name
+		String randomLastName = faker.name().lastName();
+
+		// Remove special characters using regex
+		randomLastName = randomLastName.replaceAll("[^a-zA-Z]", "");
+
+		// Print the random last name
+		System.out.println("Random Last Name: " + randomLastName);
+
+		return randomLastName;
+	}
 
 	public static void firstName() {
 		// Create a Faker instance
