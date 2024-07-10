@@ -5,10 +5,8 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -185,6 +183,7 @@ public class MastersFieldSets extends TestBase {
 	public MastersFieldSets() {
 
 		PageFactory.initElements(driver, this);
+		
 	}
 
 	public void verifyTabsForFieldSetCreate() {
@@ -240,7 +239,7 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(questionSetNameFieldElement.isDisplayed());
 
 		questionSetNameFieldElement.clear();
-		questionSetNameFieldElement.sendKeys(fake.lastName1() + " FS");
+		questionSetNameFieldElement.sendKeys(FakeData.lastName1() + " FS");
 
 	}
 

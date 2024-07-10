@@ -94,6 +94,27 @@ public class ClickUtilities extends TestBase {
 
 		}
 	}
+	
+	public static void multiClickWithRetry(WebDriver driver, WebElement element, int count) throws Throwable {
+		
+		for (int i = 1; i < count; i++) {
+			wait.until(ExpectedConditions.visibilityOf(element));
+			try {
+				if (!element.isDisplayed()) {
+					throw new NoSuchElementException("Element not visible so could not click: " + element);
+				}
+				
+				js.executeScript("arguments[0].scrollIntoView(true);", element);
+				clickWithRetry(element, count);
+				Thread.sleep(700);
+			} catch (Exception e1) {
+//				System.out.println("e1 : "+e1);
+				Thread.sleep(200);
+				clickWithRetry(element, count);
+			}
+			
+		}
+	}
 
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -174,7 +195,7 @@ public class ClickUtilities extends TestBase {
 		try {
 
 			js.executeScript("arguments[0].scrollIntoView(true);", element);
-			element.click();
+			clickWithRetry(element, 2);
 
 			Thread.sleep(1000); // Highlight for 1 second
 		} catch (InterruptedException e) {

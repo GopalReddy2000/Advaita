@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite-Advaita">
+  <test thread-count="5" name="Test">
+    <classes>
+
+      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate"/>
+      <class name="com.advaita.TestCreate.TestMasterFormsCreate"/>
+      
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
+
+<!-- for comment ctlr+shift+c-->
+<!-- for navigation ctlr+shift+r-->

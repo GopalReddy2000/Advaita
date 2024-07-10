@@ -135,5 +135,23 @@ public class DynamicXpath extends TestBase {
 				sectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
+	
+	// Method to generate the dynamic XPath and return the WebElement %d-section or
+	// sub section number
+//	public static List<WebElement> checkQuestionTypes(int sectionNumber, int question) {
+//	    String xpath = String.format(
+//	        "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_%d_%d']/following-sibling::div//h6",
+//	        sectionNumber, question);
+//	    return driver.findElements(By.xpath(xpath));
+//	}
+	
+	// Method to generate the dynamic XPath and return the WebElement %d-section or
+	// sub section number
+	public static WebElement questionField(int questionNum,int sectionNumber,int questionFieldNum) {
+		String xpath = String.format(
+				"//div[h5[contains(text(), 'Question %d')]]//input[@name='question_%d_%d']",
+				questionNum,sectionNumber,questionFieldNum);
+		return driver.findElement(By.xpath(xpath));
+	}
 
 }

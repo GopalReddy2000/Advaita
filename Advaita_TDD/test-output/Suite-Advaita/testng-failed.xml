@@ -11,6 +11,17 @@
           <include name="setUp"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestMeasurableSetCreate -->
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+        <methods>
+          <include name="verifyTableClearFilter"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="verifyTablePageSearch"/>
+          <include name="verifyTablePagePaginationr"/>
+          <include name="verifyTabsForFieldSetCreate"/>
+          <include name="getResult"/>
+        </methods>
+      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite-Advaita] -->

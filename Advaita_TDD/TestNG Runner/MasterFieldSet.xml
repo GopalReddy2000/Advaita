@@ -5,7 +5,7 @@
     <classes>
 
       <class name="com.advaita.TestCreate.TestMeasurableSetCreate"/>
-<!--      <class name="com.advaita.TestTable.TestMasterFieldsSetTable"/>-->
+      <class name="com.advaita.TestTable.TestMasterFieldsSetTable"/>
 <!--      <class name="com.advaita.TestCreate.TestMeasurableSetCreate"/>-->
       
     </classes>

@@ -86,13 +86,13 @@ public class TestStagesCreate extends TestBase {
 		stages = new Stages();
 	}
 
-//    @Test(priority = 1)
-//    public void verifyProcessCreate() throws Throwable {
-//        test = reports.createTest("verifyProcessCreate");
-//        homePage.clickOnProcessManagementCreate();
-//        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
-//                subSubProcessName, subSubProcessDesc);
-//    }
+    @Test(priority = 1)
+    public void verifyProcessCreate() throws Throwable {
+        test = reports.createTest("verifyProcessCreate");
+        homePage.clickOnProcessManagementCreate();
+        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
+                subSubProcessName, subSubProcessDesc);
+    }
 //
 //    @Test(priority = 2)
 //    public void verifyCreateDataset() throws Throwable {

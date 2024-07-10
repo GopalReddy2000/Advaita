@@ -37,6 +37,7 @@ public class TestBase {
 	public static Robot robot;
 
 	protected static SoftAssert softAssert;
+	public static String mainURl = "https://test.capture.autosherpas.com/";
 
 	public static void initialization() throws AWTException {
 
@@ -105,7 +106,7 @@ public class TestBase {
 
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
-			jsClick(driver, element);
+//			jsClick(driver, element);
 		}
 	}
 
