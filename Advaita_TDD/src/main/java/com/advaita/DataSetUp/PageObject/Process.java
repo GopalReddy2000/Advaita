@@ -429,6 +429,7 @@ public class Process extends TestBase {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		unWait(2);
 		Assert.assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
 
@@ -450,6 +451,8 @@ public class Process extends TestBase {
 		dropDown2.isDisplayed();
 		dropDown2.click();
 		Thread.sleep(1000);
+		
+		
 	}
 
 	public static int extractNumber(String input) {

@@ -42,7 +42,7 @@ public class HomePage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void clickOnProcessManagementCreate() {
+	public static void clickOnProcessManagementCreate() {
 
 		click(driver, DataSetUpButton);
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");

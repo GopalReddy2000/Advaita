@@ -5,7 +5,6 @@ import java.awt.Robot;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +53,7 @@ public class TestBase {
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(1));
 
 		actions = new Actions(driver);
 		robot = new Robot();
@@ -97,7 +96,7 @@ public class TestBase {
 
 //	SendKeys
 
-	public void sendKeys(WebElement webelement, String str) {
+	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
 		webelement.clear();
 		webelement.sendKeys(str);

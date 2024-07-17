@@ -13,6 +13,8 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 public class VerifyDisposition extends TestBase {
 
 	static int createCount = 2;
@@ -65,7 +67,7 @@ public class VerifyDisposition extends TestBase {
 	@Test
 	public void testCreat()
 	{
-		disposition.createNormalView();
+		disposition.createNormalView("Software Testing "+FakeData.lastName2());
 	}
 
 

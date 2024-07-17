@@ -13,6 +13,8 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 public class VerifyMeasurableSet extends TestBase {
 
 	static int createCount = 1;
@@ -66,7 +68,7 @@ public class VerifyMeasurableSet extends TestBase {
 		
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
-		measurableSetPage.createNormalView();	
+		measurableSetPage.createNormalView("Software Testing "+FakeData.lastName2());	
 	}
 
 //	@Test(priority = 2)

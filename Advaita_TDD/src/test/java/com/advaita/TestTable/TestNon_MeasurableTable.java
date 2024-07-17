@@ -21,6 +21,8 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 public class TestNon_MeasurableTable extends TestBase {
 
 	static int createCount = 2;
@@ -98,7 +100,7 @@ public class TestNon_MeasurableTable extends TestBase {
 
 	@Test
 	public void testcreateNormalView() {
-		nonMeasurableSetPage.createNormalView();
+		nonMeasurableSetPage.createNormalView("Software Testing "+FakeData.lastName2());
 		
 	}
 	
@@ -111,7 +113,6 @@ public class TestNon_MeasurableTable extends TestBase {
 	
 	@Test
 	public void testisConditional() throws Throwable {
-		test = reports.createTest("isConditional");
 		nonMeasurableSetPage.isConditional();
 		
 	}
@@ -146,6 +147,11 @@ public class TestNon_MeasurableTable extends TestBase {
 		}
 		// CloseExtentReports
 		reports.flush();
+	}
+	@Test
+	public void testSms()
+	{
+		nonMeasurableSetPage.smsTemp();
 	}
 
 	@AfterTest

@@ -99,7 +99,7 @@ public class NonMeasurableSetPage extends TestBase {
 	@FindBy(xpath = "(//select[@class='rule-select edit-measurable_normal_view'])[1]")
 	public static WebElement questionSetDropdown;
 
-	
+
 	@FindBy(xpath = "//input[contains(@name, 'question_1_')]")
 	public static WebElement question1;
 
@@ -114,11 +114,11 @@ public class NonMeasurableSetPage extends TestBase {
 
 	@FindBy(linkText = "Add Option")
 	public static WebElement addOption;
-	
+
 	@FindBy(xpath  = "//input[contains(@name,'ans_option')]/following-sibling::img[contains(@src,'delete')]")
 	public static WebElement addOptionDelete;
-	
-	
+
+
 
 	@FindBy(xpath = "//div[@data-info='question-1-1']//a")
 	public static WebElement addOptionQuestion1;
@@ -328,41 +328,51 @@ public class NonMeasurableSetPage extends TestBase {
 
 	@FindBy(xpath = "//button[normalize-space()='Stages']")
 	public WebElement stagesTab;
-	
+
 	@FindBy(xpath = "//select[@class='rule-select form-control font_14 firstselect section_c_param_dropdown']")
 	public WebElement selectQuestiontypeDropdown;
-	
+
+	@FindBy(xpath = "//div[@class='ipad-repons-margin']//a[text()='Add']")
+	public WebElement addNonSectionButton;
+
+	@FindBy(xpath = "//input[@name='section_name']")
+	public WebElement sectionInputField;
+
+	@FindBy(xpath = "//a[contains(@class,'add_section_c')]")
+	public WebElement sectionAddButton;
+
+
 	@FindBy(xpath = "(//button[@data-type='NonMesaurable'])[2]")
 	public WebElement sectionButton;
-	
+
 	@FindBy(xpath = "//label[normalize-space()='Non Measurable Set']//span")
 	public WebElement nonMeasurableRadioButton;
-	
+
 	@FindBy(xpath = "//div[@class='custom-select']//select")
 	public WebElement isConditonalSection1Question1;
 
 	@FindBy(xpath = "//img[@alt='table-edit' and @class='img-fluid stages_edit delete-dataset']")
 	public List<WebElement> editButtons;
-	
+
 	@FindBy(xpath = "//div[@data-info='section-1']//h5[contains(@class,'section-text')]")
 	public WebElement sectionName;
-	
+
 
 
 	public NonMeasurableSetPage() {
 		PageFactory.initElements(driver, this);
 	}
 
-	
-	 public static String generateQuestionSetName(String QuestionSetName) {
-	        
-				return QuestionSetName+" "+ fake.lastName2();
-	    }
-	
-		 
-	
+
+	public static String generateQuestionSetName(String QuestionSetName) {
+
+		return QuestionSetName+" "+ fake.lastName2();
+	}
+
+
+
 	final String sectionNameString="Section Name "+fake.lastName2();
-	
+
 	final int labelInt=1;
 	final int multipleChoiceInt=2;
 	final int shortAnswerInt=3;
@@ -374,7 +384,7 @@ public class NonMeasurableSetPage extends TestBase {
 	final int timeInt=9;
 	final int textBoxInt=10;
 	final int relativeMultiselectInt=11;
-	
+
 	private static String getRandomString(String[] array) {
 		// Generate a random index within the array length
 		Random random = new Random();
@@ -382,7 +392,7 @@ public class NonMeasurableSetPage extends TestBase {
 		return array[randomIndex];
 	}
 
-	public WebElement getElementByDynamicXPath(int q) {
+	public static WebElement getElementByDynamicXPath(int q) {
 		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
 		return driver.findElement(By.xpath(xpath));
 	}
@@ -416,7 +426,7 @@ public class NonMeasurableSetPage extends TestBase {
 		return driver.findElement(By.name(xpath));
 	}
 
-	
+
 	public void commonNavigation(String questionSetName)
 	{
 		click(driver, workFlowDesign);
@@ -430,35 +440,35 @@ public class NonMeasurableSetPage extends TestBase {
 		question1.sendKeys(generateQuestionSetName(questionSetName));
 	}
 
-	
+
 	public void multipleChoice() throws InterruptedException
 	{
 		commonNavigation("Multiple Choice");
 
-//		questionSetNameField.clear();
-//		questionSetNameField.sendKeys(generateQuestionSetName());
+		//		questionSetNameField.clear();
+		//		questionSetNameField.sendKeys(generateQuestionSetName());
 
 		click(driver, settingButton);
 		sectionField.clear();
 		sectionField.sendKeys(sectionNameString);
-		
+
 
 		assertTrue(isConditional.isEnabled());
 		assertTrue(isRelativeParent.isEnabled());
 
 		Assert.assertTrue(questionSetDropdown.isDisplayed());
-		
+
 		Select select=new Select (questionSetDropdown);
-		
+
 		assertFalse(select.isMultiple());
 		Assert.assertNotNull(select);
 		System.out.println("Default Selected QUESTIONS SET: "+select.getFirstSelectedOption().getText());
-		
+
 		List<WebElement> options=select.getOptions();
-		
+
 		Assert.assertTrue(select.getOptions().size()>2);
-		
-		
+
+
 		for(int o=1;o<options.size();o++)
 		{
 			System.out.println("LOAD QUESTIONS FROM PREVIOUS RULE option "+o+":" +options.get(o).getText());
@@ -477,36 +487,36 @@ public class NonMeasurableSetPage extends TestBase {
 		clickElementMultipleTimes(driver, addOption, 3);
 		clickElementMultipleTimes(driver, addOptionDelete, 3);
 		clickElementMultipleTimes(driver, addOption, 3);
-		
+
 		sendKeys(driver.findElement(By.xpath("(//div[@class='parttwo']//div[@class='input-delete d-flex']//input)[1]")),"Options 1" );
 		sendKeys(driver.findElement(By.xpath("(//div[@class='parttwo']//div[@class='input-delete d-flex']//input)[2]")),"Options 2" );
 		sendKeys(driver.findElement(By.xpath("(//div[@class='parttwo']//div[@class='input-delete d-flex']//input)[3]")),"Options 3" );
 		sendKeys(driver.findElement(By.xpath("(//div[@class='parttwo']//div[@class='input-delete d-flex']//input)[4]")),"Options 4" );
-		
-		
 
-//		for(int a=0;a<optionTextbox.size();a++)
-//		{
-//			optionTextbox.get(a).sendKeys("Options "+(a+1));
-//		}
-		
+
+
+		//		for(int a=0;a<optionTextbox.size();a++)
+		//		{
+		//			optionTextbox.get(a).sendKeys("Options "+(a+1));
+		//		}
+
 		Thread.sleep(2000);
-		
+
 		click(driver, questionSaveButton);
 		Thread.sleep(2000);
 		click(driver, questionSaveContinueButton);
-	
-		
-		
+
+
+
 	}
 
 	public void shortAnswer()
 	{
 		commonNavigation("Short Answer");
 		click(driver, questionTypeShortAnswer);
-		
-		
-//		Sending Question Names
+
+
+		//		Sending Question Names
 		question1.clear();
 		String questionName=setQuestionTypes(1,1,shortAnswerInt).getText();
 		System.out.println("Selected Question Type: "+questionName);
@@ -515,18 +525,18 @@ public class NonMeasurableSetPage extends TestBase {
 
 		click(driver, shortAnswerTextArea);
 
-//		Short Answer Setting panel Validation
+		//		Short Answer Setting panel Validation
 		assertEquals(shortAnswerMinLen.getAttribute("value"), "1");
 		assertEquals(shortAnswerMaxLen.getAttribute("value"), "250");
 
-//		sendKeys(shortAnswerMinLen, "-98"); sendKeys(shortAnswerMaxLen, "-98");
+		//		sendKeys(shortAnswerMinLen, "-98"); sendKeys(shortAnswerMaxLen, "-98");
 
 		Select valType= new Select(shortAnswerValTypeDropdown);
 		assertFalse(valType.isMultiple());
 		Assert.assertNotNull(valType);
 		System.out.println("Default Selected QUESTIONS SET: "+valType.getFirstSelectedOption().getText());
-		
-		
+
+
 
 		List<String>actualOptions=new ArrayList<>();
 
@@ -536,24 +546,24 @@ public class NonMeasurableSetPage extends TestBase {
 			//			System.out.println(opt);
 			actualOptions.add(opt);
 		}
-		
-//		Question
-		
+
+		//		Question
+
 
 		List<String> expectedOptions=Arrays.asList("All","Only Text","Only Number");
 
 
 		assertEquals(actualOptions, expectedOptions,"It is Not Equal");
-		
+
 		assertTrue(shortAnswerAllowSpChar.isEnabled(),"Short Answer Allow Special Character is not Enabled");
 
 		System.out.println(expectedOptions);
 		System.out.println(actualOptions);
-		
+
 		saveRecord();
 
 	}
-	
+
 	public void defaultAndIsFatalValidation()
 	{
 		Assert.assertTrue(dropdownSetAsDefault.isEnabled());
@@ -579,30 +589,30 @@ public class NonMeasurableSetPage extends TestBase {
 		Assert.assertTrue(addOption.isEnabled());
 		Assert.assertTrue(choiceDelete.get(0).isEnabled());
 		dropdownTextArea.click();
-		
+
 		//		Asserting Set as Default and Is Fatal toggle button is Enabled or not
 
 		defaultAndIsFatalValidation();
 
-		
-			for(int q=1;q<=3;q++)
-			{
-				addOption.click();
-			}
-			
-		
+
+		for(int q=1;q<=3;q++)
+		{
+			addOption.click();
+		}
+
+
 		for(int t=0;t<optionTextbox.size();t++)
 		{
 			optionTextbox.get(t).sendKeys("DropDown "+(t+1));
 		}
 
-//		Saving the record
+		//		Saving the record
 		saveRecord();
-		
+
 	}
-	public void saveRecord()
+	public static void saveRecord()
 	{
-//		Saving the record
+		//		Saving the record
 		click(driver, saveButtonOfCreateQuestionSet);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 		System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
@@ -618,12 +628,12 @@ public class NonMeasurableSetPage extends TestBase {
 		Assert.assertTrue(addOption.isEnabled());
 		Assert.assertTrue(choiceDelete.get(0).isEnabled());
 		dropdownTextArea.click();
-		
+
 		//		Asserting Set as Default and Is Fatal toggle button is Enabled or not
 		defaultAndIsFatalValidation();
 
 		//		Asserting Adding and Deleting BackAndForth
-		
+
 		/*
 		 * for(int a=1;a<3;a++) { for(int q=1;q<=3;q++) { addOption.click(); }
 		 * List<WebElement> deleteButton=choiceDelete;
@@ -638,9 +648,9 @@ public class NonMeasurableSetPage extends TestBase {
 		{
 			optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
 		}
-//		Saving the record
+		//		Saving the record
 		saveRecord();
-		
+
 
 	}
 
@@ -651,14 +661,14 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, nonMeasurableTab);
 		click(driver, NonMeasurableEditbuttons.get(0));
 		click(driver, question1);
-		
-//		commonNavigation("Relative Dropdown");
-		
+
+		//		commonNavigation("Relative Dropdown");
+
 		click(driver, questionTypeFileUpload);
 		assertTrue(fileUploadBrowse.isEnabled());
 		click(driver, fileUploadSetting);
 		jsClick(driver, allowedFormatDropdown); 
-		
+
 
 		String[] fileFormats = {
 				".yml",".json",
@@ -679,41 +689,40 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, fileFormatAddAdditionalFormat);
 		sendKeys(fileFormatAddAdditionalFormatInputBox, fileformat);
 		System.out.println("Adding this file format: "+fileformat);
-				click(driver, fileFormatAddFormatButton);
-				
+		click(driver, fileFormatAddFormatButton);
+
 		try
 		{ Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-			if(fileAlreadyExistsContinueButton.isDisplayed()) {
-				System.out.println(fileformat+" Already Exist");
-				fileAlreadyExistsContinueButton.click();
-			}
+		if(fileAlreadyExistsContinueButton.isDisplayed()) {
+			System.out.println(fileformat+" Already Exist");
+			fileAlreadyExistsContinueButton.click();
+		}
 
 		}catch (NoSuchElementException | NullPointerException e) {
 
 		} 
-		
+
 		saveRecord();
 		click(driver, fileUploadSetting);
 		Select allowedFormat=new Select(allowedFormatDropdown);
 		List<String> listOfFileFormats = new ArrayList<String>();
 		for(WebElement allowFormat:allowedFormat.getOptions())
 		{
-//			System.out.println(allowFormat.getText());
+			//			System.out.println(allowFormat.getText());
 			listOfFileFormats.add(allowFormat.getText());
 		}
 		assertTrue(listOfFileFormats.contains(fileformat));
-		
+
 	}
 
-	
 
-	public void createNormalView()
+
+	public static void createNormalView(String questionName)
 	{
 		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
 		click(driver, nonMeasurableTab);
 		click(driver, addNonMeasurableSetButton);
-		String questionName= "Software Testing "+fake.lastName2();
 		sendKeys(questionSetNameField,questionName );
 
 		List<WebElement> questionsList=questionList;
@@ -852,13 +861,17 @@ public class NonMeasurableSetPage extends TestBase {
 			break;
 			}
 
-			
+
 
 		}
-		click(driver, questionSaveButton);
-		
-		click(driver, questionSaveContinueButton);
-
+		//		click(driver, questionSaveButton);
+		//		
+		//		click(driver, questionSaveContinueButton);
+		//
+		//		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
+		//		assertEquals(questionName,actualQuestionSet);
+		saveRecord();
+		nonMeasurableBackButton.click();
 		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
 		assertEquals(questionName,actualQuestionSet);
 
@@ -866,6 +879,45 @@ public class NonMeasurableSetPage extends TestBase {
 	}
 
 
+
+	@FindBy(css="table.w-100 tbody")
+	WebElement formsTableBody;
+
+	@FindBy(xpath="//button[text()='Delete']")
+	WebElement tableDelete;
+	@FindBy(xpath="(//button[text()='Continue'])[1]")
+	WebElement continueButton;
+
+	public NonMeasurableSetPage deleteRecordByName( String nameToDelete)
+	{
+		workFlowDesign.click();
+		click(driver, masterParameterTab);
+		click(driver, nonMeasurableTab);
+
+		// Find all rows within the table
+		List<WebElement> rows = formsTableBody.findElements(By.xpath("tr"));
+
+		for (WebElement row:rows)
+		{
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			if(nameToDelete.equals(usernameColumn.getText()))
+			{
+				System.out.println( usernameColumn.getText());
+				click(driver,row.findElement(By.xpath("//img[@alt='delete-icon ']")));
+				tableDelete.click();
+				unWait(2);
+				continueButton.click();
+				break;
+			}else {
+
+			}
+		}
+		return this;
+	}
+
+	@FindBy(css="img.arrow-left")
+	static
+	WebElement nonMeasurableBackButton;
 
 	public void createColumnView()
 	{
@@ -1024,115 +1076,125 @@ public class NonMeasurableSetPage extends TestBase {
 			break;
 			}
 
-			
+
 
 		}
-//		saveButtonInEditPage.click();
-//
-//		jsClick(driver, backButton);
-//
-//		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
-//		assertEquals(actualQuestionSet,questionName);
+		//		saveButtonInEditPage.click();
+		//
+		//		jsClick(driver, backButton);
+		//
+		//		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
+		//		assertEquals(actualQuestionSet,questionName);
 
 	}
 
 
-	
+
 
 
 
 	public void isConditional() throws Throwable
 	{
 
-
 		click(driver, workFlowDesign);
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-		String QuestionSetName=fake.lastName2();
-		questionSetNameField.clear();
-		questionSetNameField.sendKeys(QuestionSetName);
+		//		click(driver, masterParameterTab);
+		//		click(driver, nonMeasurableTab);
+		//		click(driver, addNonMeasurableSetButton);
+		//		String QuestionSetName=fake.lastName2();
+		//		questionSetNameField.clear();
+		//		questionSetNameField.sendKeys(QuestionSetName);
+		//
+		//		question1.clear();
+		//		question1.sendKeys("Select Any Options from the Dropdown");
+		//
+		//		click(driver, sec1Ques1DropDowntype);
+		//		clickElementMultipleTimes(driver, addOptionQuestion1, 3);
+		//		List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@data-info='question-1-1']//div[@class='input-delete d-flex']//input"));
+		//		DropDownOption.get(0).sendKeys("Windows");
+		//		DropDownOption.get(1).sendKeys("Mac Os");
+		//		DropDownOption.get(2).sendKeys("Linux");
+		//		DropDownOption.get(3).sendKeys("Unix");
+		//
+		//		//		Section 2
+		//		jsClick(driver, addSectionButton);
+		//		sendKeys(section2Question, "Have you ever used Windows systems?");
+		//		setQuestionTypes(2,1,7).click();
+		//		List<WebElement> radioOptions=driver.findElements(By.xpath("//div[@data-info='question-2-1']//input[contains(@name,'ans_option_')]"));
+		//		radioOptions.get(0).sendKeys("Yes");
+		//		radioOptions.get(1).sendKeys("No");
+		//		jsClick(driver, sectionsSettings(2));
+		//		jsClick(driver, sectionIsConditional(2));
+		//
+		//		saveButtonInEditPage.click();
+		//		Thread.sleep(2000);
+		//
+		//		assertTrue(afterNonMeasurableUpdatedContinueButton.isDisplayed());
+		//
+		//		afterNonMeasurableUpdatedContinueButton.click();
+		//		Thread.sleep(2000);
+		//
+		//		for(int i=1;i<=4;i++) {
+		//
+		//			WebElement addCon=driver.findElement(By.name("next_condition_1_1_1"));
+		//			String optionsName = "ans_option_1_1_"+i;
+		//			WebElement options = driver.findElement(By.name(optionsName));
+		//
+		//			if(i==1) {
+		//
+		//				click(driver, options);
+		//				Select addCondition= new Select(addCon);
+		//				addCondition.selectByVisibleText("Section 2");
+		//
+		//			}
+		//
+		//		}
+		//		saveButtonInEditPage.click();
+		//		Thread.sleep(2000);
+		//
+		//
+		//		afterNonMeasurableUpdatedContinueButton.click();
+		//		Thread.sleep(2000);
+		//		jsClick(driver, backButton);
+		//
+		//		String ActualCreateName=nonMeasurableQuestionSet.get(0).getText();
+		//		System.out.println(ActualCreateName);
+		//		assertEquals(QuestionSetName,ActualCreateName);
 
-		question1.clear();
-		question1.sendKeys("Select Any Options from the Dropdown");
-
-		click(driver, sec1Ques1DropDowntype);
-		clickElementMultipleTimes(driver, addOptionQuestion1, 3);
-		List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@data-info='question-1-1']//div[@class='input-delete d-flex']//input"));
-		DropDownOption.get(0).sendKeys("Windows");
-		DropDownOption.get(1).sendKeys("Mac Os");
-		DropDownOption.get(2).sendKeys("Linux");
-		DropDownOption.get(3).sendKeys("Unix");
-
-		//		Section 2
-		jsClick(driver, addSectionButton);
-		sendKeys(section2Question, "Have you ever used Windows systems?");
-		setQuestionTypes(2,1,7).click();
-		List<WebElement> radioOptions=driver.findElements(By.xpath("//div[@data-info='question-2-1']//input[contains(@name,'ans_option_')]"));
-		radioOptions.get(0).sendKeys("Yes");
-		radioOptions.get(1).sendKeys("No");
-		jsClick(driver, sectionsSettings(2));
-		jsClick(driver, sectionIsConditional(2));
-
-		saveButtonInEditPage.click();
-		Thread.sleep(2000);
-
-		assertTrue(afterNonMeasurableUpdatedContinueButton.isDisplayed());
-
-		afterNonMeasurableUpdatedContinueButton.click();
-		Thread.sleep(2000);
-
-		for(int i=1;i<=4;i++) {
-
-			WebElement addCon=driver.findElement(By.name("next_condition_1_1_1"));
-			String optionsName = "ans_option_1_1_"+i;
-			WebElement options = driver.findElement(By.name(optionsName));
-
-			if(i==1) {
-
-				click(driver, options);
-				Select addCondition= new Select(addCon);
-				addCondition.selectByVisibleText("Section 2");
-
-			}
-
-		}
-		saveButtonInEditPage.click();
-		Thread.sleep(2000);
-
-
-		afterNonMeasurableUpdatedContinueButton.click();
-		Thread.sleep(2000);
-		jsClick(driver, backButton);
-
-		String ActualCreateName=nonMeasurableQuestionSet.get(0).getText();
-		System.out.println(ActualCreateName);
-		assertEquals(QuestionSetName,ActualCreateName);
-		
 		stagesTab.click();
 		editButtons.get(0).click();
-		
+		jsClick(driver, addNonSectionButton);
+		sectionInputField.sendKeys("Test");
+		unWait(2);
+		jsClick(driver,sectionAddButton);
+
 		jsClick(driver, sectionButton);
 		jsClick(driver, nonMeasurableRadioButton);
-		
-		
+
+
 		Select nonMeasurSelectQuestionType=new Select(selectQuestiontypeDropdown);
-		
-		nonMeasurSelectQuestionType.selectByVisibleText(ActualCreateName);
-		
+
+		nonMeasurSelectQuestionType.selectByVisibleText("Dare");
+
 		Select selectionAnyOptions=new Select(isConditonalSection1Question1);
-		
+
 		selectionAnyOptions.selectByVisibleText("Windows");
-		
+
 		List<WebElement> questions=driver.findElements(By.xpath("//div[contains(@class,'row section_c_tab_question_type')]//div[contains(@class,'col-md-3')]"));
-		
+
 		Assert.assertTrue(questions.size()>1);
-		
+
 
 	}
 
 
-	
+
+
+
+
+
+
+
+
 
 
 
@@ -1468,7 +1530,11 @@ public class NonMeasurableSetPage extends TestBase {
 
 	//	##########################################################################################################
 
-
-
+@FindBy(linkText = "SMS Template")
+WebElement smsTemplate;
+	public void smsTemp()
+	{
+		jsClick(driver, smsTemplate);
+	}
 
 }

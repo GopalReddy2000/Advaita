@@ -18,6 +18,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.ScreenShorts;
 import com.github.javafaker.Faker;
@@ -177,23 +178,23 @@ public class DataSet extends TestBase {
 
 	@FindBy(xpath ="//div[@id='id_confrm_popp']//button[text()='Delete']")
 	public static WebElement popDeleteButton;
-	
+
 	@FindBy(xpath="//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
 	public static WebElement notificationTxt;
-	
+
 
 	@FindBy(xpath="//img[@alt='rgt_arrow']//parent::a")
 	public static WebElement paginationRightArrow;
-	
+
 	@FindBy(xpath="//p[@class='show_entries m-0 font_13']")
 	public static WebElement showingNumberOfRecords;
-	
-	
-	
+
+
+
 	@FindBy(xpath="//div[@class='mt_20']//button[@type='submit']")
 	public static WebElement recordDeleteButton;
-	
-	
+
+
 
 	ScreenShorts ss = new ScreenShorts();
 	Pagination pg = new Pagination();
@@ -203,12 +204,17 @@ public class DataSet extends TestBase {
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
+	
+	public void navToDataSetup()
+	{
+		
+	}
 
-	public void createDataSet(String fieldName, String labelName, String maxLength, String type)
+	public void createDataSet(String type)
 			throws Throwable {
 
 		//		Faker faker = new Faker();
-
+		HomePage.clickOnProcessManagementCreate();
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
@@ -301,7 +307,7 @@ public class DataSet extends TestBase {
 			assertTrue(maxLengthField.isEnabled());
 			maxLengthField.click();
 			//		assertTrue(maxLengthField.isSelected());
-			maxLengthField.sendKeys(maxLength);
+			maxLengthField.sendKeys("10");
 
 			assertTrue(mandetoryDropDown.isDisplayed());
 			Select select4 = new Select(mandetoryDropDown);
@@ -384,6 +390,8 @@ public class DataSet extends TestBase {
 		System.out.println("After Result: " + afterResult);
 
 		assertEquals(afterResult, beforeTotalRecored);
+		
+		System.out.println("The User is Able to Create Dataset");
 
 	}
 
@@ -523,48 +531,49 @@ public class DataSet extends TestBase {
 		//		Thread.sleep(3000);
 
 	}
-	
-	 public static WebElement getRandomElement(List<WebElement> elements) {
-	        int randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
-	        return elements.get(randomIndex);
-	    }
 
-	 
-	 public static void clickMultipleTimes(WebElement element, int times) {
-	        for (int i = 0; i < times; i++) {
-	            jsClick(driver,element);
-	            }
-	        }
-	 
-	 public static int generateRandomNumber(int a) {
-	        return ThreadLocalRandom.current().nextInt(1, a);
-	    }
-	 
+	public static WebElement getRandomElement(List<WebElement> elements) {
+		int randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
+		return elements.get(randomIndex);
+	}
+
+
+	public static void clickMultipleTimes(WebElement element, int times) {
+		for (int i = 0; i < times; i++) {
+			jsClick(driver,element);
+		}
+	}
+
+	public static int generateRandomNumber(int a) {
+		return ThreadLocalRandom.current().nextInt(1, a);
+	}
+
 	public void deleteDataSet()
 	{
-		
+
 		dataSetup.click();
 		dataSetTab.click();
 		String text= showingNumberOfRecords.getText();
 		int numberOfPages=Integer.parseInt(text.substring(text.indexOf("of")+3,text.length()-1));
 		clickMultipleTimes(paginationRightArrow,generateRandomNumber(numberOfPages));
 		String text1= showingNumberOfRecords.getText();
-		
+
 		System.out.println(text1);
-		
-		
+
+
 		for(int a=0;a<deleteDataSet.size();a++)
-		
+
 		{
 			System.out.println((a+1)+"st Delete Button is Enabled: "+deleteDataSet.get(a).isEnabled());
 		}
-		
+
 		jsClick(driver, getRandomElement(deleteDataSet)); 
 		jsClick(driver, recordDeleteButton);
 		wait.until(ExpectedConditions.visibilityOf(notificationTxt));
 		System.out.println(notificationTxt.getText());
-		Assert.assertEquals(notificationTxt.getText(), "Dataset has been deleted successfully");		
-						
+		Assert.assertEquals(notificationTxt.getText(), "Dataset has been deleted successfully");
+
+
 	}
 
 

@@ -348,7 +348,7 @@ public class Disposition extends TestBase {
 	public WebElement sectionName;
 	
 	@FindBy(css =  "img.arrow-left")
-	public WebElement dispositionBackButton;
+	public static WebElement dispositionBackButton;
 	
 
 
@@ -561,7 +561,7 @@ public class Disposition extends TestBase {
 		saveRecord();
 		
 	}
-	public void saveRecord()
+	public static void saveRecord()
 	{
 //		Saving the record
 		click(driver, saveButtonOfCreateQuestionSet);
@@ -673,13 +673,13 @@ public class Disposition extends TestBase {
 		return array[randomIndex];
 	}
 
-	public WebElement getElementByDynamicXPath(int q) {
+	public static WebElement getElementByDynamicXPath(int q) {
 		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
 		return driver.findElement(By.xpath(xpath));
 	}
 
 
-	public void createNormalView()
+	public static void createNormalView(String questionName)
 	{
 		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
@@ -687,7 +687,7 @@ public class Disposition extends TestBase {
 		click(driver, addNonMeasurableSetButton);
 		
 		
-		String questionName= "Software Testing "+fake.lastName2();
+		
 		sendKeys(questionSetNameField,questionName );
 
 		List<WebElement> questionTypeList =selectQuestionType;
@@ -840,6 +840,43 @@ public class Disposition extends TestBase {
 
 
 
+	}
+	
+
+	@FindBy(css="table.w-100 tbody")
+	WebElement formsTableBody;
+
+	@FindBy(xpath="//button[text()='Delete']")
+	WebElement tableDelete;
+	@FindBy(xpath="(//button[text()='Continue'])[1]")
+	WebElement continueButton;
+
+	public Disposition deleteRecordByName( String nameToDelete)
+	{
+		workFlowDesign.click();
+		click(driver, masterParameterTab);
+		click(driver, nonMeasurableTab);
+
+		// Find all rows within the table
+		List<WebElement> rows = formsTableBody.findElements(By.xpath("tr"));
+
+		for (WebElement row:rows)
+		{
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			
+			if(nameToDelete.equals(usernameColumn.getText()))
+			{
+				System.out.println( usernameColumn.getText());
+				click(driver,row.findElement(By.xpath("//img[@alt='delete-icon ']")));
+				tableDelete.click();
+				unWait(2);
+				continueButton.click();
+				break;
+			}else {
+
+			}
+		}
+		return this;
 	}
 
 

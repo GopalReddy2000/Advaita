@@ -74,8 +74,8 @@ public class TestDataSetCreate extends TestBase {
 	public void verifyCreateDataset() throws Throwable {
 
 		test = reports.createTest("verifyCreateDataset");
-		homePage.clickOnProcessManagementCreate();
-		dataset.createDataSet("Test Field Name", "Test Label Name", "100", "Text Area");
+		HomePage.clickOnProcessManagementCreate();
+		dataset.createDataSet("Text Area");
 
 	}
 
