@@ -6,12 +6,15 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,7 +47,8 @@ public class MasterFormPage extends TestBase {
 	public String metaDataName = "Test " + FakeData.lastName2();
 
 	public final static String formName = "FN " + FakeData.lastName2();
-	public final static String FieldName = "FN " + FakeData.lastName2();
+	public final static String FieldName1 = "FN " + FakeData.lastName2();
+	public final static String FieldName2 = "FN " + FakeData.lastName2();
 
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
@@ -52,6 +56,7 @@ public class MasterFormPage extends TestBase {
 	public static String fetchMetaDataRecord;
 
 	public static String fetchFieldSetRecord;
+	public static String fetchFieldSetRecord2;
 
 	@FindBy(xpath = "//span[normalize-space()='Data Setup']")
 	public static WebElement DataSetUpButton;
@@ -96,7 +101,10 @@ public class MasterFormPage extends TestBase {
 	public static WebElement questionSetNameFieldElement;
 
 	@FindBy(xpath = "(//table/tbody/tr[1]/td[5]/div/img[last()])")
-	public static WebElement fieldSetEditButton;
+	public static WebElement fieldSetEditButton2;
+
+	@FindBy(xpath = "(//table/tbody/tr[2]/td[5]/div/img[last()])")
+	public static WebElement fieldSetEditButton1;
 
 	@FindBy(xpath = "//div[@data-info='section-1']//h5[contains(text(), 'Question ')]/..//input[@type='text']")
 	public static List<WebElement> section1QuesElements;
@@ -110,6 +118,9 @@ public class MasterFormPage extends TestBase {
 	@FindBy(xpath = "//div[@class='row'][1]//div//div//label[1]")
 	public static List<WebElement> section1QuesElementsInMasterForm;
 
+	@FindBy(xpath = "(//label[@class='form-check-label ']/../..//div[@class='row'][1]//div//div//label[1])")
+	public static List<WebElement> section1QuesElementsAddSec2InMasterForm;
+
 	@FindBy(xpath = "//div[@class='row'][2]//div/label")
 	public static List<WebElement> section2QuesElementsInMasterForm;
 
@@ -121,6 +132,18 @@ public class MasterFormPage extends TestBase {
 
 	@FindBy(id = "pills-MasterForms-tab")
 	public static WebElement masterFormsTab;
+
+	@FindBy(xpath = "//table/tbody/tr[1]/td[6]/div/img[@alt='delete-icon '][@class='img-fluid delete-dataset delete_stages'][1]")
+	public static WebElement masterFormsFirstRecoredDelete;
+
+	@FindBy(xpath = "//button[text()='Delete']")
+	public static WebElement deleteButton;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Masters Form has been Deleted successfully']")
+	public static WebElement afterDeleteConfirmationPopUp;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Masters Form has been Deleted successfully']/..//button[text()='Continue']")
+	public static WebElement afterDeleteConfirmationPopUpContinueButton;
 
 	@FindBy(xpath = "//a[@class='btn-primary'][text()='+ Create']")
 	public static WebElement masterFormCreateButton;
@@ -139,6 +162,9 @@ public class MasterFormPage extends TestBase {
 
 	@FindBy(xpath = "(//h6[text()='Please Add Some Section']/following-sibling::a[text()='Add'][1])[1]")
 	public static WebElement primarySectioAddButton;
+
+	@FindBy(xpath = "(//h6[text()='Please Add Some Section']/following-sibling::a[text()='Add'][1])[2]")
+	public static WebElement sectio2AddButton;
 
 	@FindBy(xpath = "//h1[text()='Add Section']")
 	public static WebElement primarySectioAddPopUp;
@@ -206,6 +232,57 @@ public class MasterFormPage extends TestBase {
 	@FindBy(xpath = "//table[@class='metadata_subtable skyblue-border dataset_subtable ']/tbody/tr[1]/td[5]/select")
 	public static WebElement roleSelectDropDown1;
 
+	@FindBy(xpath = "//button[@class='btn-primary'][normalize-space()='Save']")
+	public static WebElement saveButtonInMetaDataPopUp;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Metadata unique fields updated Successfully']")
+	public static WebElement metaDataSuccessPopUp;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Metadata unique fields updated Successfully']/..//button[text()='Continue']")
+	public static WebElement metaDataSuccessPopUpContinue;
+
+	@FindBy(xpath = "//table/tbody/tr[1]/td[6]/div/a/img[@title='Master Filter']")
+	public static WebElement masterFilterButton;
+
+	@FindBy(xpath = "//table/tbody/tr[1]/td[6]/div/a/img[@title='Master Fields']")
+	public static WebElement masterFieldsButton;
+
+	@FindBy(xpath = "//button[@id='multiselect_rightSelected']")
+	public static WebElement singleRightSelectedButtonDropDown;
+
+	@FindBy(xpath = "//button[@id='unique_multiselect_rightSelected']")
+	public static WebElement singleRightSelectedButtonDatePicker;
+
+	@FindBy(xpath = "//button[@id='muti_unique_multiselect_rightSelected']")
+	public static WebElement singleRightSelectedButtonMultiSelect;
+
+	@FindBy(xpath = "//button[@id='multiselect_rightSelected']//img[@class='doubleright-arrow']")
+	public static WebElement singleRightSelectedButtonTextBox;
+
+	@FindBy(xpath = "//button[@id='textbox_multiselect_rightSelected']")
+	public static WebElement singleRightSelectedButtonInMasterFillter;
+
+	@FindBy(xpath = "//input[@placeholder='Search...']/..//select[@id='multiselect']")
+	public static WebElement multiselectMasterField;
+
+	@FindBy(xpath = "//label[normalize-space()='Text Box']/..//select[@id='textbox_multiselect']")
+	public static WebElement multiselectMasterFilter;
+
+	@FindBy(xpath = "//button[text()='Save']")
+	public static WebElement saveButtonInMasterFilter;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Masters Filter has been created successfully']")
+	public static WebElement afterSaveButtonInMasterFilterSuccessPopup;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Master Field has been created successfully']")
+	public static WebElement afterSaveButtonInMasterFieldSuccessPopup;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Masters Filter has been created successfully']/..//button[text()='Continue']")
+	public static WebElement afterSaveButtonInMasterFilterSuccessPopupContinueButton;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Master Field has been created successfully']/..//button[text()='Continue']")
+	public static WebElement afterSaveButtonInMasterFieldSuccessPopupContinueButton;
+
 	public MasterFormPage() {
 
 		PageFactory.initElements(driver, this);
@@ -270,7 +347,7 @@ public class MasterFormPage extends TestBase {
 		assertNotNull(fetchSubSubProcessRecord, "fetchSubSubProcessRecord is null.");
 	}
 
-	public void navigationToFieldSet() throws Throwable {
+	public void navigationToFieldSet2() throws Throwable {
 
 		click(driver, HomePage.workflowDesign);
 		assertTrue(HomePage.masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
@@ -296,7 +373,7 @@ public class MasterFormPage extends TestBase {
 	public void getFieldSetSection1QuestionsForComparision() throws Throwable {
 
 		Thread.sleep(2000);
-		ClickUtilities.click(driver, fieldSetEditButton);
+		ClickUtilities.click(driver, fieldSetEditButton2);
 
 		fetchFieldSetRecord = questionSetNameFieldElement.getAttribute("value");
 
@@ -346,203 +423,37 @@ public class MasterFormPage extends TestBase {
 		int section = 1;
 		for (int i = 1; i <= a; i++) {
 
-			if (i == 1) {
+			String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_" + section
+					+ "_" + i + "']/following-sibling::div//h6";
 
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
+			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
+//				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, section, i), 2);
 
-				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-
-				String selectedType = null;
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
+			String selectedType = null;
+			for (WebElement type : checkQuestionTypes) {
+				// Check the parent div for a class or style indicating selection
+				WebElement parentDiv = type.findElement(By.xpath("./.."));
+				String backgroundColor = parentDiv.getCssValue("background-color");
 
 //					System.out.println("backgroundColor : "+backgroundColor);
 
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
+				// Assuming the selected item has a green background
+				// You may need to adjust this condition based on the actual CSS
 
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
+				if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
+					selectedType = type.getText();
 
-						assertNotNull(selectedType);
+					assertNotNull(selectedType);
 //						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
+					break;
 				}
-				selectedTypesFieldSetSec1.add(selectedType);
 			}
+			selectedTypesFieldSetSec1.add(selectedType);
+
 //			*****************************************************
 
-			if (i == 2) {
-
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
-
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
-
-				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-
-				String selectedType = null;
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
-
-//					System.out.println("backgroundColor : "+backgroundColor);
-
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
-
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
-
-						assertNotNull(selectedType);
-						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
-				}
-				selectedTypesFieldSetSec1.add(selectedType);
-			}
-//			***********************************************************************************
-
-			if (i == 3) {
-
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
-
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
-
-				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
-
-				String selectedType = null;
-
-//				wait.until(ExpectedConditions.visibilityOfAllElements(checkQuestionTypes));
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
-
-//					System.out.println("backgroundColor : "+backgroundColor);
-
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
-
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
-
-						assertNotNull(selectedType);
-//						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
-				}
-				selectedTypesFieldSetSec1.add(selectedType);
-			}
-//***********************************************************************************************
-
-			if (i == 4) {
-
-				actions.moveToElement(driverIninteractable).perform();
-
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
-
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
-
-//				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
-
-				String selectedType = null;
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
-
-//					System.out.println("backgroundColor : "+backgroundColor);
-
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
-
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
-
-						assertNotNull(selectedType);
-//						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
-				}
-				selectedTypesFieldSetSec1.add(selectedType);
-			}
-//***********************************************************************************************
-
-			if (i == 5) {
-
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
-
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
-
-//				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
-
-				String selectedType = null;
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
-
-//					System.out.println("backgroundColor : "+backgroundColor);
-
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
-
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
-
-						assertNotNull(selectedType);
-//						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
-				}
-				selectedTypesFieldSetSec1.add(selectedType);
-			}
-//***********************************************************************************************
-
-			if (i == 6) {
-
-				String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-						+ section + "_" + i + "']/following-sibling::div//h6";
-
-				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
-
-//				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
-
-				String selectedType = null;
-				for (WebElement type : checkQuestionTypes) {
-					// Check the parent div for a class or style indicating selection
-					WebElement parentDiv = type.findElement(By.xpath("./.."));
-					String backgroundColor = parentDiv.getCssValue("background-color");
-
-//					System.out.println("backgroundColor : "+backgroundColor);
-
-					// Assuming the selected item has a green background
-					// You may need to adjust this condition based on the actual CSS
-
-					if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
-						selectedType = type.getText();
-
-						assertNotNull(selectedType);
-//						System.out.println("selectedType" + i + " : " + selectedType);
-						break;
-					}
-				}
-				selectedTypesFieldSetSec1.add(selectedType);
-			}
 //***********************************************************************************************
 		}
 
@@ -813,10 +724,90 @@ public class MasterFormPage extends TestBase {
 
 	// ###############################################################################################################################################
 
+	public void masterFormsFirstRecoredDelete() throws Throwable {
+
+		click(driver, masterFormsFirstRecoredDelete);
+		click(driver, deleteButton);
+		wait.until(ExpectedConditions.visibilityOf(afterDeleteConfirmationPopUp));
+		assertTrue(afterDeleteConfirmationPopUp.isDisplayed(), "afterDeleteConfirmationPopUp is not displayed.");
+		click(driver, afterDeleteConfirmationPopUpContinueButton);
+
+	}
+
 	public void navigateToMasterForm() throws Throwable {
 
 		click(driver, leftArrowToGoBackTablePage);
 		click(driver, masterFormsTab);
+	}
+
+//	##############################################################################################################################
+
+	final static List<String> section1fieldSetSectionQues2 = new ArrayList<>();
+	List<String> selectedTypesFieldSetSec12 = new ArrayList<>();
+
+	int n1 = 0;
+
+	public void fieldSet2QuestionAndFetchQuestionType() throws Throwable {
+
+		click(driver, leftArrowToGoBackTablePage);
+
+		ClickUtilities.click(driver, fieldSetEditButton2);
+
+		fetchFieldSetRecord2 = questionSetNameFieldElement.getAttribute("value");
+
+		for (WebElement element : section1QuesElements) {
+			section1fieldSetSectionQues2.add(element.getAttribute("value"));
+
+			n1++;
+
+			System.out.println("section1fieldSetSectionQues2 : " + element.getAttribute("value"));
+
+		}
+
+		int section = 1;
+		for (int i = 1; i <= n1; i++) {
+
+			String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_" + section
+					+ "_" + i + "']/following-sibling::div//h6";
+
+			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
+
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
+
+			String selectedType = null;
+			for (WebElement type : checkQuestionTypes) {
+				// Check the parent div for a class or style indicating selection
+				WebElement parentDiv = type.findElement(By.xpath("./.."));
+				String backgroundColor = parentDiv.getCssValue("background-color");
+
+//					System.out.println("backgroundColor : "+backgroundColor);
+
+				// Assuming the selected item has a green background
+				// You may need to adjust this condition based on the actual CSS
+
+				if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
+					selectedType = type.getText();
+
+					assertNotNull(selectedType);
+//						System.out.println("selectedType" + i + " : " + selectedType);
+					break;
+				}
+			}
+			selectedTypesFieldSetSec12.add(selectedType);
+
+		}
+
+		ClickUtilities.clickWithRetry(DynamicXpath.questionTypeOptions(1, 1, 1), 2);
+
+		Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(1, 1));
+
+//		Check default selected value
+		WebElement defaultSelectedOption = valueTypeDropDown.getFirstSelectedOption();
+		String expectedDefaultOption = "Only Number"; // Replace with expected default value
+		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
+
+		System.out.println("defaultSelectedOption MasterForm 2 : " + defaultSelectedOption.getText());
+
 	}
 
 	public void createButtonMasterForm() throws Throwable {
@@ -889,7 +880,7 @@ public class MasterFormPage extends TestBase {
 		}
 
 		// Select each option by index and verify the selection
-		for (int k = 0; k < options.size(); k++) {
+		for (int k = 0; k < Math.min(10, options.size()); k++) {
 			process.selectByIndex(k);
 			WebElement selectedOption = process.getFirstSelectedOption();
 			assertEquals(selectedOption.getText(), options.get(k).getText(),
@@ -965,12 +956,6 @@ public class MasterFormPage extends TestBase {
 		assertTrue(options.size() > 0, "Dropdown has no options.");
 		System.out.println("Number of options in the dropdown: " + options.size());
 
-//		Check default selected value
-//		WebElement defaultSelectedOption = process.getFirstSelectedOption();
-//		String expectedDefaultOption = "MB"; // Replace with expected default value
-//		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption,
-//				"Default selected option is incorrect.");
-
 		// Print all options and check for duplicates
 		Set<String> uniqueOptions = new HashSet<>();
 		System.out.println("Dropdown options:");
@@ -995,6 +980,11 @@ public class MasterFormPage extends TestBase {
 //		DropDown.selectWithRetry(subSubProcessDropDown, fetchSubSubProcessRecord);
 		subSubProcess.selectByVisibleText(fetchSubSubProcessRecord);
 
+//		Check selected value
+		WebElement defaultSelectedOption = subSubProcess.getFirstSelectedOption();
+		String expectedDefaultOption = fetchSubSubProcessRecord; // Replace with expected default value
+		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
+
 	}
 
 	public static void primarySectionAddSectionNameField() throws Throwable {
@@ -1012,9 +1002,9 @@ public class MasterFormPage extends TestBase {
 		assertTrue(existingText.isEmpty(), "addSectionFieldName is not empty before entering text.");
 
 		// Validate the role name (example: not empty and no special characters)
-		assertNotNull(FieldName, "sectionFieldName is null.");
-		assertFalse(FieldName.trim().isEmpty(), "sectionFieldName is empty.");
-		assertTrue(FieldName.matches("^[a-zA-Z0-9 ]+$"), "sectionFieldName contains special characters.");
+		assertNotNull(FieldName1, "sectionFieldName is null.");
+		assertFalse(FieldName1.trim().isEmpty(), "sectionFieldName is empty.");
+		assertTrue(FieldName1.matches("^[a-zA-Z0-9 ]+$"), "sectionFieldName contains special characters.");
 
 		// Optionally, check if the role name already exists (pseudo-code, depends on
 		// the application)
@@ -1022,17 +1012,17 @@ public class MasterFormPage extends TestBase {
 		// assertFalse(roleExists, "Role name already exists.");
 
 		// Enter the role name into the role field
-		addSectionFieldName.sendKeys(FieldName);
+		addSectionFieldName.sendKeys(FieldName1);
 
 		// Verify if the role name is correctly entered (optional)
 		String enteredText = addSectionFieldName.getAttribute("value");
-		assertEquals(enteredText, FieldName, "sectionFieldName is not correctly entered in the field.");
+		assertEquals(enteredText, FieldName1, "sectionFieldName is not correctly entered in the field.");
 
 	}
 
 	public static void selectQuestionSetInDropdown() throws Throwable {
 
-		String name = "sectionval_Mesaurable_value_" + FieldName.replaceAll("\\s", "");
+		String name = "sectionval_Mesaurable_value_" + FieldName1.replaceAll("\\s", "");
 		WebElement selectQuestionSet = driver.findElement(By.name(name));
 
 		Select selectQuestionSetDropDown = new Select(selectQuestionSet);
@@ -1072,6 +1062,7 @@ public class MasterFormPage extends TestBase {
 //		select.selectByVisibleText("Only Text");
 		Thread.sleep(1000);
 		selectQuestionSetDropDown.selectByVisibleText(fetchFieldSetRecord);
+		Thread.sleep(2000);
 
 	}
 
@@ -1111,6 +1102,18 @@ public class MasterFormPage extends TestBase {
 
 	}
 
+	final static List<String> MasterFormQuesAddSect2 = new ArrayList<>();
+
+	// Method to retrieve values from the input fields
+	public static void getFieldAddSect2SetSection1QuestionsInMasterForm() throws Throwable {
+
+		for (WebElement element : section1QuesElementsAddSec2InMasterForm) {
+			MasterFormQuesAddSect2.add(element.getText());
+			System.out.println("Values stored in 'values' InMasterForm section1QuesElementsAddSec2InMasterForm : "
+					+ element.getText());
+		}
+	}
+
 	static List<String> allQuestions = new ArrayList<>();
 
 	public static void getFieldSetAllSectionQuestionsInMasterForm() throws Throwable {
@@ -1141,7 +1144,7 @@ public class MasterFormPage extends TestBase {
 
 		click(driver, addSectionAddButton);
 
-		String xpath = "(//button[normalize-space()='" + FieldName + "'])[1]";
+		String xpath = "(//button[normalize-space()='" + FieldName1 + "'])[1]";
 
 		WebElement addedSectionInPrimarySection = driver.findElement(By.xpath(xpath));
 		click(driver, addedSectionInPrimarySection);
@@ -1323,9 +1326,9 @@ public class MasterFormPage extends TestBase {
 
 			case "Time":
 				// Example: Find date input and sendKeys
-				String[] times = { "00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00",
-						"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
-						"19:00", "20:00", "21:00", "22:00", "23:00" };
+				String[] times = { "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00",
+						"10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+						"20:00", "21:00", "22:00", "23:00" };
 
 				// Random object
 				Random randomTime = new Random();
@@ -1398,7 +1401,8 @@ public class MasterFormPage extends TestBase {
 						e.printStackTrace();
 					}
 				}
-				String xpathMC = "(//button[normalize-space()='" + FieldName + "'])[1]";
+				Thread.sleep(1000);
+				String xpathMC = "(//button[normalize-space()='" + FieldName1 + "'])[1]";
 
 				WebElement addedSectionInPrimarySection = driver.findElement(By.xpath(xpathMC));
 				click(driver, addedSectionInPrimarySection);
@@ -1531,6 +1535,99 @@ public class MasterFormPage extends TestBase {
 		}
 	}
 
+	public void addSection2InMasterForm() throws Throwable {
+
+		Thread.sleep(2000);
+
+		ClickUtilities.clickWithRetry(sectio2AddButton, 2);
+
+		wait.until(ExpectedConditions.visibilityOf(primarySectioAddPopUp));
+		assertTrue(primarySectioAddPopUp.isDisplayed(), "primarySectioAddPopUp is not displayed.");
+
+		// Check if the label ends with an asterisk
+		String text = driver.findElement(By.xpath("//label[text()='Section Name*']")).getText();
+		char lastChar = text.charAt(text.length() - 1);
+		assertEquals(lastChar, '*', "AddSectionNameField label does not end with '*'.");
+
+		// Ensure the role field is enabled
+		assertTrue(addSectionFieldName.isEnabled(), "addSectionFieldName is not enabled.");
+
+		// Check if the role field is empty before entering the role name
+		String existingText = addSectionFieldName.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "addSectionFieldName is not empty before entering text.");
+
+		// Validate the role name (example: not empty and no special characters)
+		assertNotNull(FieldName2, "sectionFieldName is null.");
+		assertFalse(FieldName2.trim().isEmpty(), "sectionFieldName is empty.");
+		assertTrue(FieldName2.matches("^[a-zA-Z0-9 ]+$"), "sectionFieldName contains special characters.");
+
+		// Enter the role name into the role field
+		addSectionFieldName.sendKeys(FieldName2);
+
+		// Verify if the role name is correctly entered (optional)
+		String enteredText = addSectionFieldName.getAttribute("value");
+		assertEquals(enteredText, FieldName2, "sectionFieldName is not correctly entered in the field.");
+
+		getFieldAddSect2SetSection1QuestionsInMasterForm();
+
+		click(driver, addSectionAddButton);
+
+		String xpath = "(//button[normalize-space()='" + FieldName2 + "'])[1]";
+
+		WebElement addedSectionInPrimarySection = driver.findElement(By.xpath(xpath));
+		ClickUtilities.clickWithRetry(addedSectionInPrimarySection, 2);
+//		click(driver, addedSectionInPrimarySection);
+
+		ClickUtilities.clickWithRetry(driverIninteractable
+				.findElement(By.xpath("//input[@class='is_condtional_checkbx']/..//span[@class='slider round ']")), 2);
+
+//		###################################################
+
+		String name = "sectionval_Mesaurable_value_" + FieldName2.replaceAll("\\s", "");
+		WebElement selectQuestionSet = driver.findElement(By.name(name));
+
+		Select selectQuestionSetDropDown = new Select(selectQuestionSet);
+
+		assertFalse(selectQuestionSetDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+		// Check for empty drop down
+		List<WebElement> options = selectQuestionSetDropDown.getOptions();
+		assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+//		Check default selected value
+//		WebElement defaultSelectedOption = process.getFirstSelectedOption();
+//		String expectedDefaultOption = "MB"; // Replace with expected default value
+//		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption,
+//				"Default selected option is incorrect.");
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (WebElement option : options) {
+			String optionText = option.getText();
+			System.out.println(optionText);
+			softAssert.assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int k = 0; k < Math.min(10, options.size()); k++) {
+			selectQuestionSetDropDown.selectByIndex(k);
+			WebElement selectedOption = selectQuestionSetDropDown.getFirstSelectedOption();
+			assertEquals(selectedOption.getText(), options.get(k).getText(),
+					"Failed to select the option by index " + k);
+			System.out
+					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+		}
+
+//		select.selectByVisibleText("Only Text");
+		Thread.sleep(1000);
+		selectQuestionSetDropDown.selectByVisibleText(fetchFieldSetRecord2);
+
+//		###################################################
+
+	}
+
 	public void saveButton() {
 
 		assertTrue(saveButton.isDisplayed() && saveButton.isEnabled(), "saveButton is not displayed and enabled.");
@@ -1552,6 +1649,8 @@ public class MasterFormPage extends TestBase {
 		click(driver, leftArrowButton);
 
 	}
+
+//	##########################################################################################################################
 
 	public void finalizeMasterFormInEditPage() throws Throwable {
 
@@ -1642,6 +1741,7 @@ public class MasterFormPage extends TestBase {
 		Thread.sleep(1000);
 		click(driver, clickOnFirstMetadata);
 
+		Thread.sleep(1000);
 		ClickUtilities.clickWithRetry(firstCheckBox, 2);
 
 		Thread.sleep(1000);
@@ -1649,8 +1749,269 @@ public class MasterFormPage extends TestBase {
 		Select select = new Select(roleSelectDropDown1);
 		Thread.sleep(1000);
 		select.selectByVisibleText("Agent");
-		
+
 		ClickUtilities.clickWithRetry(uniqueIdCheckBox, 2);
+
+		click(driver, saveButtonInMetaDataPopUp);
+
+		wait.until(ExpectedConditions.visibilityOf(metaDataSuccessPopUp));
+
+		assertTrue(metaDataSuccessPopUp.isDisplayed(), "metaDataSuccessPopUp is not displayed.");
+
+		click(driver, metaDataSuccessPopUpContinue);
+
+	}
+
+	public void masterFieldsAfterCreationOfMasterForm() throws Throwable {
+
+		List<Map<String, String>> questions = fieldSetMasterQuestionsAndQuestionTypes();
+
+		navigateToMasterForm();
+		Thread.sleep(2000);
+		ClickUtilities.clickWithRetry(masterFieldsButton, 2);
+
+		// Iterate through the list of questions and select the corresponding options in
+		// the dropdowns
+		for (Map<String, String> question : questions) {
+			selectQuestionBasedOnType(question, multiselectMasterField, singleRightSelectedButtonTextBox);
+		}
+
+		ClickUtilities.clickWithRetry(saveButtonInMasterFilter, 2);
+
+		wait.until(ExpectedConditions.visibilityOf(afterSaveButtonInMasterFieldSuccessPopup));
+
+		assertTrue(afterSaveButtonInMasterFieldSuccessPopup.isDisplayed(),
+				"afterSaveButtonInMasterFilterSuccessPopup is not displayed.");
+		ClickUtilities.clickWithRetry(afterSaveButtonInMasterFieldSuccessPopupContinueButton, 2);
+
+	}
+
+	public void masterFilterAfterCreationOfMasterFields() throws Throwable {
+
+		List<Map<String, String>> questions = fieldSetMasterQuestionsAndQuestionTypes();
+
+		navigateToMasterForm();
+		Thread.sleep(2000);
+		ClickUtilities.clickWithRetry(masterFilterButton, 2);
+
+		// Iterate through the list of questions and select the corresponding options in
+		// the dropdowns
+		for (Map<String, String> question : questions) {
+			selectQuestionBasedOnType(question, multiselectMasterFilter, singleRightSelectedButtonInMasterFillter);
+		}
+
+		ClickUtilities.clickWithRetry(saveButtonInMasterFilter, 2);
+
+		wait.until(ExpectedConditions.visibilityOf(afterSaveButtonInMasterFilterSuccessPopup));
+
+		assertTrue(afterSaveButtonInMasterFilterSuccessPopup.isDisplayed(),
+				"afterSaveButtonInMasterFilterSuccessPopup is not displayed.");
+		ClickUtilities.clickWithRetry(afterSaveButtonInMasterFilterSuccessPopupContinueButton, 2);
+
+	}
+
+	public List<Map<String, String>> fieldSetMasterQuestionsAndQuestionTypes() throws Throwable {
+
+		click(driver, HomePage.workflowDesign);
+		click(driver, masterTabElement);
+		click(driver, fieldSetTabElement);
+		click(driver, fieldSetEditButton2);
+
+		int a1 = 0;
+		for (WebElement element : section1QuesElements) {
+			System.out.println(element.getAttribute("value"));
+			a1++;
+		}
+
+		int section = 1;
+		List<Map<String, String>> questions = new ArrayList<>();
+
+		for (int i = 1; i <= a1; i++) {
+			String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_" + section
+					+ "_" + i + "']/following-sibling::div//h6";
+
+			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
+
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
+			WebElement element = DynamicXpath.questionField(i, 1, i);
+
+			String elementQuestion = element.getAttribute("value");
+			System.out.println("elementQuestion : " + elementQuestion);
+
+			String selectedType = null;
+			for (WebElement type : checkQuestionTypes) {
+				// Check the parent div for a class or style indicating selection
+				WebElement parentDiv = type.findElement(By.xpath("./.."));
+				String backgroundColor = parentDiv.getCssValue("background-color");
+
+				// Assuming the selected item has a green background
+				if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
+					selectedType = type.getText();
+					assertNotNull(selectedType);
+					break;
+				}
+			}
+
+			System.out.println("selectedType : " + selectedType);
+
+			// Add question and type to the list as a map
+			Map<String, String> question = new HashMap<>();
+			question.put("elementQuestion", elementQuestion);
+			question.put("selectedType", selectedType);
+			questions.add(question);
+		}
+
+		int a2 = 0;
+		for (WebElement element : section2QuesElements) {
+			System.out.println(element.getAttribute("value"));
+			a2++;
+		}
+
+		int section2 = 2;
+
+		for (int i = 1; i <= a2; i++) {
+			String xpath = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+					+ section2 + "_" + i + "']/following-sibling::div//h6";
+
+			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
+
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 2, i), 2);
+			WebElement element = DynamicXpath.questionField(i, 2, i);
+
+			String elementQuestion = element.getAttribute("value");
+			System.out.println("elementQuestion : " + elementQuestion);
+
+			String selectedType = null;
+			for (WebElement type : checkQuestionTypes) {
+				// Check the parent div for a class or style indicating selection
+				WebElement parentDiv = type.findElement(By.xpath("./.."));
+				String backgroundColor = parentDiv.getCssValue("background-color");
+
+				// Assuming the selected item has a green background
+				if (backgroundColor.equals("rgba(44, 163, 36, 1)") || backgroundColor.equals("rgb(0, 128, 0)")) {
+					selectedType = type.getText();
+					assertNotNull(selectedType);
+					break;
+				}
+			}
+
+			System.out.println("selectedType : " + selectedType);
+
+			// Add question and type to the list as a map
+			Map<String, String> question = new HashMap<>();
+			question.put("elementQuestion", elementQuestion);
+			question.put("selectedType", selectedType);
+			questions.add(question);
+		}
+
+		return questions;
+	}
+
+	private void selectQuestionBasedOnType(Map<String, String> question, WebElement element, WebElement sideClickType)
+			throws Throwable {
+		// Find the dropdown corresponding to the selectedType
+//		String questionXpath = null;
+
+		switch (question.get("selectedType")) {
+		case "Text Box":
+//			questionXpath = "//label[normalize-space()='Text Box']/..//select[@id='textbox_multiselect']";
+
+			// Master Fields
+//			questionXpath = "//input[@placeholder='Search...']/..//select[@id='multiselect']";
+//			WebElement dropdownTextBox = driver.findElement(By.xpath(questionXpath));
+			selectOptionFromDropdown(element, question.get("elementQuestion"));
+			ClickUtilities.jsClick(driver, sideClickType);
+
+			break;
+
+//		case "Date":
+////			questionXpath = "//label[normalize-space()='Date Picker']/..//select[@id='unique_multiselect']";
+//			questionXpath = "//input[@placeholder='Search...']/..//select[@id='multiselect']";
+//			WebElement dropdownDatePicker = driver.findElement(By.xpath(questionXpath));
+//			selectOptionFromDropdown(dropdownDatePicker, question.get("elementQuestion"));
+//			ClickUtilities.clickWithRetry(singleRightSelectedButtonDatePicker, 2);
+//			break;
+//
+//		case "Multiple Choice":
+////			questionXpath = "//label[normalize-space()='Multi Select']/..//select[@id='muti_unique_multiselect']";
+//			questionXpath = "//input[@placeholder='Search...']/..//select[@id='multiselect']";
+//			WebElement dropdownMultiSelect = driver.findElement(By.xpath(questionXpath));
+//			selectOptionFromDropdown(dropdownMultiSelect, question.get("elementQuestion"));
+//			ClickUtilities.clickWithRetry(singleRightSelectedButtonMultiSelect, 2);
+//			break;
+//
+//		case "Drop Down":
+////			questionXpath = "//label[normalize-space()='Dropdown']/..//select[@id='multiselect']";
+//			questionXpath = "//input[@placeholder='Search...']/..//select[@id='multiselect']";
+//			WebElement dropDown = driver.findElement(By.xpath(questionXpath));
+//			selectOptionFromDropdown(dropDown, question.get("elementQuestion"));
+//			ClickUtilities.clickWithRetry(singleRightSelectedButtonDropDown, 2);
+//			break;
+
+		default:
+			System.out.println("Unknown type: " + question.get("selectedType"));
+			return;
+		}
+
+	}
+
+	private void selectOptionFromDropdown(WebElement dropdown, String optionText) {
+		List<WebElement> options = dropdown.findElements(By.tagName("option"));
+		for (WebElement option : options) {
+			if (option.getText().equals(optionText)) {
+				option.click();
+				break;
+			}
+		}
+	}
+
+
+	public void validationsAfterMasterFilterAndMasterFields() throws Throwable {
+
+//		Validations after Master Filter
+
+		commonNaviagationToMasterForm();
+
+		ClickUtilities.clickWithRetry(masterFieldsButton, 2);
+
+		// Locate the first dropdown element
+		WebElement firstDropdown = driver.findElement(By.id("multiselect_to"));
+		Select selectFirst = new Select(firstDropdown);
+
+		// Retrieve all options from the first dropdown
+		List<WebElement> firstOptions = selectFirst.getOptions();
+		List<String> firstOptionsText = new ArrayList<>();
+		for (WebElement option : firstOptions) {
+			firstOptionsText.add(option.getText());
+		}
+
+		// Perform click actions
+		ClickUtilities.clickWithRetry(leftArrowButton, 2);
+		Thread.sleep(2000); // Sleep to wait for the UI to update
+
+		ClickUtilities.clickWithRetry(masterFilterButton, 2);
+
+		// Locate the list of dropdowns
+		List<WebElement> dropdownList = wait.until(ExpectedConditions
+				.visibilityOfAllElementsLocatedBy(By.xpath("//select[contains(@id,'multiselect_to')]")));
+
+		for (WebElement dropdownElement : dropdownList) {
+			// Retrieve all options from the current dropdown using JavaScriptExecutor
+			@SuppressWarnings("unchecked")
+			List<String> dropdownOptionsText = (List<String>) js.executeScript(
+					"return Array.from(arguments[0].options).map(option => option.text);", dropdownElement);
+
+			if (dropdownOptionsText.isEmpty()) {
+				System.out.println("Dropdown with id: " + dropdownElement.getAttribute("id") + " has no options.");
+				continue; // Skip this dropdown if it has no options
+			}
+
+			// Print the options for debugging
+			System.out.println("First Array: " + firstOptionsText + "\nSecond Array: " + dropdownOptionsText);
+
+			// Assert equality of the two arrays
+			assertEquals(firstOptionsText, dropdownOptionsText, "The dropdown options are not equal.");
+		}
 
 	}
 

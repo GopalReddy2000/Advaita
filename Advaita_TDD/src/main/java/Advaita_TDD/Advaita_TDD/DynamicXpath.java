@@ -70,18 +70,18 @@ public class DynamicXpath extends TestBase {
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
-	public static WebElement questionType(int sectionNumber, int subSectionNumber, int subSubSectionNumber) {
+	public static WebElement questionType(int sectionNumber, int questionNumber, int questionType) {
 		String xpath = String.format(
 				"//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_%d_%d']/following-sibling::div[%d]//h6",
-				sectionNumber, subSectionNumber, subSubSectionNumber);
+				sectionNumber, questionNumber, questionType);
 		return driver.findElement(By.xpath(xpath));
 	}
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
-	public static WebElement questionTypeOptions(int sectionNumber, int subSectionNumber, int subSubSectionNumber) {
-		String xpath = String.format("//input[@name='ans_option_%d_%d_%d']", sectionNumber, subSectionNumber,
-				subSubSectionNumber);
+	public static WebElement questionTypeOptions(int sectionNumber, int questionNumber, int questionOptionNumber) {
+		String xpath = String.format("//input[@name='ans_option_%d_%d_%d']", sectionNumber, questionNumber,
+				questionOptionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
 

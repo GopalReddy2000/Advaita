@@ -79,10 +79,10 @@ public class TestMasterFormsCreate extends TestBase {
 	}
 
 	@Test(priority = 3)
-	public void verifyNavigationToFieldSet() throws Throwable {
+	public void verifyNavigationToFieldSet2() throws Throwable {
 
-		test = reports.createTest("verifyNavigationToFieldSet");
-		masterForm.navigationToFieldSet();
+		test = reports.createTest("verifyNavigationToFieldSet2");
+		masterForm.navigationToFieldSet2();
 	}
 
 	@Test(priority = 4)
@@ -91,142 +91,176 @@ public class TestMasterFormsCreate extends TestBase {
 		test = reports.createTest("getFieldSetSection1QuestionsForComparision");
 		masterForm.getFieldSetSection1QuestionsForComparision();
 	}
-	
+
 	@Test(priority = 5)
 	public void verifyGetFieldSetSection2QuestionsForComparision() throws Throwable {
-		
+
 		test = reports.createTest("getFieldSetSection2QuestionsForComparision");
 		masterForm.getFieldSetSection2QuestionsForComparision();
 	}
-	
+
 	@Test(priority = 6)
 	public void verifyGetFieldSetSection3TableQuestionsForComparision() throws Throwable {
-		
+
 		test = reports.createTest("getFieldSetSection3TableQuestionsForComparision");
 		masterForm.getFieldSetSection3TableQuestionsForComparision();
 	}
-	
+
 	@Test(priority = 7)
 	public void verifyGetFieldSetSection1QuestionsType() throws Throwable {
-		
+
 		test = reports.createTest("getFieldSetSection1QuestionsType");
 		masterForm.getFieldSetSection1QuestionsType();
 	}
-	
+
 	@Test(priority = 8)
 	public void verifyGetFieldSetSection2QuestionsType() throws Throwable {
-		
+
 		test = reports.createTest("getFieldSetSection2QuestionsType");
 		masterForm.getFieldSetSection2QuestionsType();
 	}
-	
+
 	@Test(priority = 9)
 	public void verifyGetFieldSetSection3QuestionsType() throws Throwable {
-		
+
 		test = reports.createTest("getFieldSetSection3QuestionsType");
 		masterForm.getFieldSetSection3QuestionsType();
 	}
 
-	@Test(priority = 10)
+//	@Test(priority = 10)
+//	public void verifyfieldSet2QuestionAndFetchQuestionType() throws Throwable {
+//
+//		test = reports.createTest("fieldSet2QuestionAndFetchQuestionType");
+//		masterForm.fieldSet2QuestionAndFetchQuestionType();
+//	}
+
+	@Test(priority = 11)
 	public void verifyNavigateToMasterForm() throws Throwable {
 
 		test = reports.createTest("navigateToMasterForm");
 		masterForm.navigateToMasterForm();
+//		masterForm.masterFormsFirstRecoredDelete();
 	}
 
-	@Test(priority = 11)
+	@Test(priority = 12)
 	public void verifyCreateButtonMasterForm() throws Throwable {
 
 		test = reports.createTest("createButtonMasterForm");
 		masterForm.createButtonMasterForm();
 	}
 
-	@Test(priority = 12)
+	@Test(priority = 13)
 	public void verifyFormNameField() throws Throwable {
 
 		test = reports.createTest("formNameField");
 		masterForm.formNameField();
 	}
 
-	@Test(priority = 13)
+	@Test(priority = 14)
 	public void verifyProcessDropdown() throws Throwable {
 
 		test = reports.createTest("procesDropdown");
 		masterForm.procesDropdown();
 	}
 
-	@Test(priority = 14)
+	@Test(priority = 15)
 	public void verifySubProcessDropdown() throws Throwable {
 
 		test = reports.createTest("subProcesDropdown");
 		masterForm.subProcesDropdown();
 	}
 
-	@Test(priority = 15)
+	@Test(priority = 16)
 	public void verifySubSubProcessDropdown() throws Throwable {
 
 		test = reports.createTest("subSubProcesDropdown");
 		masterForm.subSubProcesDropdown();
 	}
 
-	@Test(priority = 16)
+	@Test(priority = 17)
 	public void verifyprimarySection() throws Throwable {
 
 		test = reports.createTest("primarySection");
 		masterForm.primarySection();
 	}
-	
-	@Test(priority = 17)
+
+	@Test(priority = 18)
 	public void verifyPrimarySectionFormFill() throws Throwable {
-		
+
 		test = reports.createTest("primarySectionFormFill");
 		masterForm.primarySectionFormFill();
 	}
-	
-	@Test(priority = 18)
+
+	@Test(priority = 19)
 	public void verifyPrimarySection2FormFill() throws Throwable {
-		
+
 		test = reports.createTest("primarySection2FormFill");
 		masterForm.primarySection2FormFill();
 	}
-	
-	@Test(priority = 19)
+
+	@Test(priority = 20)
 	public void verifyPrimarySection3FormFill() throws Throwable {
-		
+
 		test = reports.createTest("primarySection3FormFill");
 		masterForm.primarySection3FormFill();
 	}
-	
-	@Test(priority = 20)
+
+//	@Test(priority = 21)
+//	public void verifyaddSection2InMasterForml() throws Throwable {
+//		
+//		test = reports.createTest("addSection2InMasterForm");
+//		masterForm.addSection2InMasterForm();
+//	}
+
+	@Test(priority = 22)
 	public void verifySaveButton() throws Throwable {
-		
+
 		test = reports.createTest("saveButton");
 		masterForm.saveButton();
 	}
-	
-	@Test(priority = 21)
+
+	@Test(priority = 23)
 	public void verifyFinalizeMasterFormInEditPage() throws Throwable {
-		
+
 		test = reports.createTest("finalizeMasterFormInEditPage");
 		masterForm.finalizeMasterFormInEditPage();
 	}
-	
-	@Test(priority = 22)
+
+	@Test(priority = 24)
 	public void verifyDataSetValidationAfterCreationOfMasterForm() throws Throwable {
-		
+
 		test = reports.createTest("dataSetValidationAfterCreationOfMasterForm");
 		masterForm.dataSetValidationAfterCreationOfMasterForm();
 	}
-	
-	@Test(priority = 23)
+
+	@Test(priority = 25)
 	public void verifyMetaDataValidationAfterCreationOfMasterForm() throws Throwable {
-		
+
 		test = reports.createTest("metaDataValidationAfterCreationOfMasterForm");
 		masterForm.metaDataValidationAfterCreationOfMasterForm();
 	}
 	
+	@Test(priority = 26)
+	public void verifyMasterFieldsAfterCreationOfMasterForm() throws Throwable {
+		
+		test = reports.createTest("masterFieldsAfterCreationOfMasterForm");
+		masterForm.masterFieldsAfterCreationOfMasterForm();
+	}
 	
-//	
+	@Test(priority = 27)
+	public void verifyMasterFillterAfterCreationOfMasterFields() throws Throwable {
+		
+		test = reports.createTest("masterFillterAfterCreationOfMasterFields");
+		masterForm.masterFilterAfterCreationOfMasterFields();
+	}
+	
+	@Test(priority = 28)
+	public void validationsAfterMasterFilterAndMasterFields() throws Throwable {
+		
+		test = reports.createTest("validationsAfterMasterFilterAndMasterFields");
+		masterForm.validationsAfterMasterFilterAndMasterFields();
+	}
+
 	
 
 	@AfterMethod
@@ -250,8 +284,8 @@ public class TestMasterFormsCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
+		driver.manage().window().minimize();
+		driver.quit();
 		reports.flush();
 	}
 }

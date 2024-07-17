@@ -5,7 +5,6 @@ import java.awt.Robot;
 import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -113,7 +112,6 @@ public class TestBase {
 	public static void jsClick(WebDriver driver, WebElement element) {
 		js.executeScript("arguments[0].click();", element);
 	}
-	
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -125,26 +123,23 @@ public class TestBase {
 
 		return Integer.parseInt(numberAsString.toString());
 	}
-	
-	public static void unWait(int seconds)
-	{
-	 	Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+
+	public static void unWait(int seconds) {
+		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
 	}
-	
+
 //	Random Index
-	
-	 public static WebElement getRandomElement(List<WebElement> elements) {
-	        int randomIndex = 0;
-			try {
-				randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        return elements.get(randomIndex);
-	    }
-	
-	
+
+	public static WebElement getRandomElement(List<WebElement> elements) {
+		int randomIndex = 0;
+		try {
+			randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return elements.get(randomIndex);
+	}
 
 	// Click Action
 

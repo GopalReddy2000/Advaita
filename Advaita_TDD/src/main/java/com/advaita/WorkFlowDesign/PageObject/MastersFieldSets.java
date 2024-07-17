@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.SendDataUtils;
@@ -183,7 +184,16 @@ public class MastersFieldSets extends TestBase {
 	public MastersFieldSets() {
 
 		PageFactory.initElements(driver, this);
-		
+
+	}
+
+	public static void commonNavigation() {
+
+		click(driver, HomePage.workflowDesign);
+		click(driver, masterTabElement);
+		click(driver, masterTabElement);
+		click(driver, fieldSetTabElement);
+
 	}
 
 	public void verifyTabsForFieldSetCreate() {
@@ -252,11 +262,13 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
+	int sizeOfQuestion = 8;
+
 	public void verifyDefaultSection1andAddingQuestion() throws Throwable {
 
 		assertTrue(section1Element.isDisplayed(), "section1Element is not displayed.");
 
-		int sizeOfQuestion = 7;
+//		int sizeOfQuestion = 8;
 
 		ClickUtilities.multiClick(driver, addQuestionsButttonElement, sizeOfQuestion);
 
@@ -302,329 +314,12 @@ public class MastersFieldSets extends TestBase {
 	final static int TEXT_BOX = 10;
 	final static int RELATIVE_MULTISELECT = 11;
 
-//	final static int section1 = 1;
-//
-//	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
-//
-//		Map<Integer, Integer> questionTypes = new HashMap<>();
-//		questionTypes.put(1, TEXT_BOX);
-//		questionTypes.put(2, SHORT_ANSWER);
-//		questionTypes.put(3, DATE);
-//		questionTypes.put(4, TIME);
-//		questionTypes.put(5, RADIO_BUTTON);
-//		questionTypes.put(6, DROP_DOWN);
-//
-//		for (int i = 1; i <= 6; i++) {
-//			String xpathQuestionTextField = "//div[h5[contains(text(), 'Question " + i
-//					+ "')]]//input[@name='question_1_" + i + "']";
-//
-//			WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
-//
-//			int questionType = questionTypes.get(i);
-//
-//			switch (questionType) {
-//			case TEXT_BOX:
-//				handleTextBoxQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			case SHORT_ANSWER:
-//				handleShortAnswerQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			case DATE:
-//				handleDateQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			case TIME:
-//				handleTimeQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			case RADIO_BUTTON:
-//				handleRadioButtonQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			case DROP_DOWN:
-//				handleDropDownQuestion(i, xpathQuestionTextField, questionFields);
-//				break;
-//			default:
-//				throw new IllegalArgumentException("Unsupported question type: " + questionType);
-//			}
-//		}
-//	}
-//
-//	private void handleTextBoxQuestion(int i, String xpathQuestionTextField, WebElement questionFields)
-//			throws InterruptedException {
-//		questionFields.sendKeys("Name Of The Customer ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + TEXT_BOX + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		// Additional handling for text box question type
-//		toggleRequiredFields(i);
-//		setMaxLengthFieldForQuestion(i, "250");
-//		configureTextFieldValueTypeDropDown(i);
-//		toggleAllowSpecialCharacters(i);
-//	}
-//
-//	private void handleShortAnswerQuestion(int i, String xpathQuestionTextField, WebElement questionFields)
-//			throws InterruptedException {
-//		questionFields.sendKeys("Address Of The Customer ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + SHORT_ANSWER + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		setShortAnswerLengthFields(i, "1", "100");
-//		configureShortAnswerValueTypeDropDown(i);
-//		toggleAllowSpecialCharacters(i);
-//	}
-//
-//	private void handleDateQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
-//		questionFields.sendKeys("Date of the call ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + DATE + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		assertTrue(driver.findElement(By.id("startDate")).isDisplayed());
-//	}
-//
-//	private void handleTimeQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
-//		questionFields.sendKeys("Time of the call ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + TIME + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		assertTrue(driver.findElement(By.id("startTime")).isDisplayed());
-//	}
-//
-//	private void handleRadioButtonQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
-//		questionFields.sendKeys("Was the call picked by the Customer ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + RADIO_BUTTON + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		configureRadioButtonOptions(i, typeElement);
-////		toggleRadioButtonAllowMultipleSelection();
-////		toggleAllowNotApplicable();
-//	}
-//
-//	private void handleDropDownQuestion(int i, String xpathQuestionTextField, WebElement questionFields) {
-//		questionFields.sendKeys("Was the call handled effectively ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_" + i
-//				+ "']/following-sibling::div[" + DROP_DOWN + "]//h6";
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//		typeElement.click();
-//		configureDropDownOptions(i, questionFields);
-////		toggleDropDownAllowMultipleSelection();
-////		toggleAllowNotApplicable();
-//	}
-//
-//	private void toggleRequiredFields(int i) {
-//		WebElement requiredToggleButton = driver.findElement(
-//				By.xpath("//h5[normalize-space()='REQUIRED']/following::label/input[@name='question_required_"
-//						+ section1 + "_" + i + "']"));
-//		WebElement escalatedFieldToggleButton = driver.findElement(
-//				By.xpath("//h5[normalize-space()='ESCALATED FIELD']/following::label/input[@name='question_escalated_"
-//						+ section1 + "_" + i + "']"));
-//		requiredToggleButton.click();
-//		escalatedFieldToggleButton.click();
-//	}
-//
-//	private void setMaxLengthFieldForQuestion(int i, String maxLength) {
-//		WebElement maxLengthFieldForQuestion = driver.findElement(By
-//				.xpath("//h6[normalize-space()='Max Length']/following::input[@name='dataset_field_section_max_length_"
-//						+ section1 + "_" + i + "']"));
-//		maxLengthFieldForQuestion.sendKeys(maxLength);
-//	}
-//
-//	private void configureTextFieldValueTypeDropDown(int i) throws InterruptedException {
-//		Select valueTypeDropDown = new Select(driver.findElement(
-//				By.xpath("//h6[normalize-space()='Value-Type']/following::select[@name='textbox_settings_value_type_"
-//						+ section1 + "_" + i + "']")));
-//		List<WebElement> options = valueTypeDropDown.getOptions();
-//		for (WebElement option : options) {
-//			valueTypeDropDown.selectByVisibleText(option.getText());
-//			Thread.sleep(200); // Adding a small delay for UI interaction
-//		}
-//		valueTypeDropDown.selectByVisibleText("All");
-//	}
-//
-//	private void toggleAllowSpecialCharacters(int i) throws InterruptedException {
-//		WebElement allowSpCharToggleButton = driver.findElement(
-//				By.cssSelector("//h6[text()='Allow-Sp-Char']/..//input[@name='textbox_settings_allow_sp_char_"
-//						+ section1 + "_" + i + "']/..//span[@class='slider round']"));
-//		allowSpCharToggleButton.click();
-//		Thread.sleep(500);
-//		allowSpCharToggleButton.click();
-//	}
-//
-//	private void setShortAnswerLengthFields(int i, String minLength, String maxLength) {
-//		WebElement shortAnswerMinLengthField = driver.findElement(
-//				By.xpath("//div[contains(@class, 'increament-input')]//input[@name='shortans_settings_min_length_"
-//						+ section1 + "_" + i + "' and @value='1']"));
-//		WebElement shortAnswerMaxLengthField = driver
-//				.findElement(By.xpath("(//input[@name='shortans_settings_max_length_" + section1 + "_" + i + "'])[1]"));
-//		shortAnswerMinLengthField.clear();
-//		shortAnswerMinLengthField.sendKeys(minLength);
-//		shortAnswerMaxLengthField.clear();
-//		shortAnswerMaxLengthField.sendKeys(maxLength);
-//	}
-//
-//	private void configureShortAnswerValueTypeDropDown(int i) throws InterruptedException {
-//		Select shortAnswerValueTypeDropDown = new Select(driver.findElement(By.cssSelector(
-//				"//h6[normalize-space()='Value-Type']/following::select[@name='shortans_settings_value_type_" + section1
-//						+ "_" + i + "']")));
-//		List<WebElement> options = shortAnswerValueTypeDropDown.getOptions();
-//		for (WebElement option : options) {
-//			shortAnswerValueTypeDropDown.selectByVisibleText(option.getText());
-//			Thread.sleep(200); // Adding a small delay for UI interaction
-//		}
-//		shortAnswerValueTypeDropDown.selectByVisibleText("All");
-//	}
-//
-//	private void configureRadioButtonOptions(int questionIndex, WebElement questionFields) {
-////		questionTypes 6 : Radio Button
-//		// Example interaction: setting text in the question fields
-//		questionFields.sendKeys("Did you picked your call ?");
-//		String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_"
-//				+ questionIndex + "']/following-sibling::div[" + RADIO_BUTTON + "]//h6";
-//
-//		WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
-//
-//		ClickUtilities.jsClick(driver, typeElement);
-//
-//		for (int a = 1; a <= 2; a++) {
-//
-//			String radioOption = questionFields
-//					+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + questionIndex
-//					+ "_" + a + "']";
-//
-//			System.out.println("radioOption : " + radioOption);
-//
-//			WebElement radioOptionField = driver.findElement(By.xpath(radioOption));
-//
-//			if (a == 1) {
-//
-//				radioOptionField.sendKeys("Yes");
-//
-//			}
-//			if (a == 2) {
-//
-//				radioOptionField.sendKeys("No");
-//
-//				String xpathAdd = "(" + questionFields
-//						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-//
-//				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
-//
-////				driver.findElement(By.xpath(xpath)).click();
-//
-//			}
-//
-//		}
-//
-//		String radioOption1 = questionFields
-//				+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + questionIndex + "_"
-//				+ (questionIndex - 2) + "']";
-//
-//		System.out.println("radioOption1 : " + radioOption1);
-//
-//		WebElement radioOptionField1 = driver.findElement(By.xpath(radioOption1));
-//
-//		radioOptionField1.sendKeys("NA");
-//	}
-//
-//	private void toggleRadioButtonAllowMultipleSelection() {
-//		WebElement radioButtonAllowMulSelToggleButton = driver
-//				.findElement(By.cssSelector("selector-for-radio-button-allow-multiple-selection-toggle"));
-//		radioButtonAllowMulSelToggleButton.click();
-//	}
-//
-//	private void toggleAllowNotApplicable() {
-//		WebElement allowNotApplicableToggleButton = driver
-//				.findElement(By.cssSelector("selector-for-allow-not-applicable-toggle"));
-//		allowNotApplicableToggleButton.click();
-//	}
-//
-//	private void configureDropDownOptions(int i, WebElement questionFields) {
-//
-//		for (int x = 1; x <= 3; x++) {
-//			//
-//			String xpathAdd = "(" + questionFields
-//					+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-//
-//			ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
-//
-//		}
-//
-//		for (int y = 1; y <= 4; y++) {
-//
-//			if (y == 1) {
-//				String xpathDropDownOption1 = questionFields
-//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
-//						+ "']";
-//
-//				WebElement dropDownOptions1 = driver.findElement(By.xpath(xpathDropDownOption1));
-//
-//				dropDownOptions1.sendKeys("Male");
-//
-//			}
-//
-//			if (y == 2) {
-//
-//				String xpathDropDownOption = questionFields
-//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
-//						+ "']";
-//
-//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
-//
-//				dropDownOptions.sendKeys("Female");
-//
-//			}
-//
-//			if (y == 3) {
-//
-//				String xpathDropDownOption = questionFields
-//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
-//						+ "']";
-//
-//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
-//
-//				dropDownOptions.sendKeys("Transgender");
-//
-//			}
-//
-//			if (y == 4) {
-//
-//				String xpathDropDownOption = questionFields
-//						+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_1_" + i + "_" + y
-//						+ "']";
-//
-//				WebElement dropDownOptions = driver.findElement(By.xpath(xpathDropDownOption));
-//
-//				dropDownOptions.sendKeys("Others");
-//
-//			}
-//
-//		}
-//
-////		WebElement dropDownAddOption1 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-1"));
-////		WebElement dropDownAddOption2 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-2"));
-////		WebElement dropDownAddOption3 = driver.findElement(By.cssSelector("selector-for-drop-down-add-option-3"));
-////		dropDownAddOption1.click();
-////		dropDownAddOption2.click();
-////		dropDownAddOption3.click();
-////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_1")).sendKeys("Yes");
-////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_2")).sendKeys("No");
-////		driver.findElement(By.name("ans_option_1_" + questionIndex + "_3")).sendKeys("Partially");
-//	}
-//
-//	private void toggleDropDownAllowMultipleSelection() {
-//		WebElement dropDownAllowMulSelToggleButton = driver
-//				.findElement(By.cssSelector("selector-for-drop-down-allow-multiple-selection-toggle"));
-//		dropDownAllowMulSelToggleButton.click();
-//	}
-
 //	########################################################################################################################################################
 	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
 
 		// Interact with the questionFields elements by index, excluding the last one
 
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= sizeOfQuestion - 1; i++) {
 
 			String xpathQuestionTextField = "//div[h5[contains(text(), 'Question " + i
 					+ "')]]//input[@name='question_1_" + i + "']";
@@ -975,7 +670,75 @@ public class MastersFieldSets extends TestBase {
 				}
 			}
 
-//	#############################################			
+//	#############################################	
+
+			if (i == 7) {
+
+				String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_"
+						+ i + "']/following-sibling::div[" + TEXT_BOX + "]//h6";
+
+				System.out.println(xpathForTypeQ);
+				WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+
+//				questionTypes 9 : Text Box
+				// Example interaction: setting text in the question fields
+				js.executeScript("arguments[0].scrollIntoView(true);", questionFields);
+				questionFields.sendKeys("Number Of The Customer ?");
+
+				assertTrue(typeElement.isDisplayed());
+				ClickUtilities.jsClick(driver, typeElement);
+
+				ClickUtilities.clickWithRetry(DynamicXpath.questionTypeOptions(1, i, 1), 2);
+
+				SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(1, i), "10");
+
+				SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(1, i), "14");
+
+				Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(1, i));
+
+				assertFalse(valueTypeDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+				// Check for empty drop down
+				List<WebElement> options = valueTypeDropDown.getOptions();
+				assertTrue(options.size() > 0, "Dropdown has no options.");
+				System.out.println("Number of options in the dropdown: " + options.size());
+
+//				Check default selected value
+				WebElement defaultSelectedOption = valueTypeDropDown.getFirstSelectedOption();
+				String expectedDefaultOption = "All"; // Replace with expected default value
+				assertEquals(defaultSelectedOption.getText(), expectedDefaultOption,
+						"Default selected option is incorrect.");
+
+//		        Verify the order of options (if applicable)
+				String[] expectedOrder = { "All", "Only Text", "Only Number" }; // Replace with the expected order
+				for (int n = 0; n < expectedOrder.length; n++) {
+					assertEquals(options.get(n).getText(), expectedOrder[n], "Option order is incorrect at index " + n);
+				}
+
+				// Print all options and check for duplicates
+				Set<String> uniqueOptions = new HashSet<>();
+				System.out.println("Dropdown options:");
+				for (WebElement option : options) {
+					String optionText = option.getText();
+					System.out.println(optionText);
+					assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+				}
+
+				// Select each option by index and verify the selection
+				for (int k = 0; k < options.size(); k++) {
+					valueTypeDropDown.selectByIndex(k);
+					WebElement selectedOption = valueTypeDropDown.getFirstSelectedOption();
+					assertEquals(selectedOption.getText(), options.get(k).getText(),
+							"Failed to select the option by index " + k);
+					System.out.println(
+							"Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+				}
+
+//				valueTypeDropDown.selectByVisibleText("Only Text");
+//				valueTypeDropDown.selectByVisibleText("All");
+				valueTypeDropDown.selectByVisibleText("Only Number");
+
+			}
 
 		}
 
@@ -1457,6 +1220,75 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
+	}
+
+	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
+
+//		commonNavigation();
+		verifyBeforeFieldSetCreatedCount();
+		verifyFieldSetCreateButton();
+
+		verifyQuestionSetNameField();
+
+		verifyRemarkField();
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.questionField(1, 1, 1), "Mobile Number");
+
+		ClickUtilities.clickWithRetry(DynamicXpath.questionType(1, 1, TEXT_BOX), 2);
+
+		ClickUtilities.clickWithRetry(DynamicXpath.questionTypeOptions(1, 1, 1), 2);
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(1, 1), "1");
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(1, 1), "10");
+
+		Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(1, 1));
+
+		assertFalse(valueTypeDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+		// Check for empty drop down
+		List<WebElement> options = valueTypeDropDown.getOptions();
+		assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+//		Check default selected value
+		WebElement defaultSelectedOption = valueTypeDropDown.getFirstSelectedOption();
+		String expectedDefaultOption = "All"; // Replace with expected default value
+		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
+
+//        Verify the order of options (if applicable)
+		String[] expectedOrder = { "All", "Only Text", "Only Number" }; // Replace with the expected order
+		for (int n = 0; n < expectedOrder.length; n++) {
+			assertEquals(options.get(n).getText(), expectedOrder[n], "Option order is incorrect at index " + n);
+		}
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (WebElement option : options) {
+			String optionText = option.getText();
+			System.out.println(optionText);
+			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int k = 0; k < options.size(); k++) {
+			valueTypeDropDown.selectByIndex(k);
+			WebElement selectedOption = valueTypeDropDown.getFirstSelectedOption();
+			assertEquals(selectedOption.getText(), options.get(k).getText(),
+					"Failed to select the option by index " + k);
+			System.out
+					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+		}
+
+//		valueTypeDropDown.selectByVisibleText("Only Text");
+//		valueTypeDropDown.selectByVisibleText("All");
+		valueTypeDropDown.selectByVisibleText("Only Number");
+
+		verifySaveInCreateFieldSet();
+
+		verifyAfterFieldSetCreatedCount();
+
 	}
 
 //	**********************************************************Create Ended**************************************************************************************************************

@@ -3,14 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestMasterFormsCreate">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
           <include name="setUp"/>
-          <include name="verifyMetaDataValidationAfterCreationOfMasterForm"/>
           <include name="tearDown"/>
           <include name="getResult"/>
+          <include name="verifySelectMetaDataInAddBlockSectionB"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestMasterFormsCreate -->
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
