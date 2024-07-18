@@ -3,25 +3,55 @@
 <suite name="Failed suite [Suite-Advaita]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestMeasurableSetCreate">
+      <class name="com.advaita.TestCreate.TestMasterFormsCreate">
         <methods>
+          <include name="verifyGetFieldSetSection2QuestionsType"/>
+          <include name="setUp"/>
+          <include name="verifyPrimarySection2FormFill"/>
+          <include name="verifyGetFieldSetSection3QuestionsType"/>
+          <include name="verifySubProcessDropdown"/>
+          <include name="verifyGetFieldSetSection1QuestionsType"/>
+          <include name="verifyNavigateToMasterForm"/>
+          <include name="verifyPrimarySection3FormFill"/>
+          <include name="verifyGetFieldSetSection1QuestionsForComparision"/>
+          <include name="verifyNavigationToProcessAndFetch"/>
+          <include name="verifySubSubProcessDropdown"/>
+          <include name="verifyMasterFillterAfterCreationOfMasterFields"/>
+          <include name="validationsAfterMasterFilterAndMasterFields"/>
+          <include name="verifyMasterFieldsAfterCreationOfMasterForm"/>
+          <include name="verifyGetFieldSetSection3TableQuestionsForComparision"/>
+          <include name="verifyDataSetValidationAfterCreationOfMasterForm"/>
+          <include name="verifySaveButton"/>
+          <include name="verifyGetFieldSetSection2QuestionsForComparision"/>
+          <include name="verifyPrimarySectionFormFill"/>
+          <include name="verifyFormNameField"/>
+          <include name="verifyMetaDataValidationAfterCreationOfMasterForm"/>
+          <include name="verifyProcessDropdown"/>
+          <include name="verifyprimarySection"/>
           <include name="getResult"/>
-          <include name="verifyMeasurableSetCreatePage"/>
+          <include name="verifyFinalizeMasterFormInEditPage"/>
           <include name="tearDown"/>
-          <include name="setUp"/>
+          <include name="verifyCreateButtonMasterForm"/>
+          <include name="verifyNavigationToFieldSet2"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestMeasurableSetCreate -->
-      <class name="com.advaita.TestTable.TestMasterFieldsSetTable">
+      </class> <!-- com.advaita.TestCreate.TestMasterFormsCreate -->
+      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
         <methods>
-          <include name="verifyTableClearFilter"/>
-          <include name="setUp"/>
+          <include name="verifyCreateFieldSetTabularView"/>
+          <include name="verifyafterFieldSetCount"/>
+          <include name="verifyDefaultSection1"/>
           <include name="tearDown"/>
-          <include name="verifyTablePageSearch"/>
-          <include name="verifyTablePagePaginationr"/>
+          <include name="getResult"/>
+          <include name="verifyAddedSection2"/>
           <include name="verifyTabsForFieldSetCreate"/>
-          <include name="getResult"/>
+          <include name="setUp"/>
+          <include name="verifySaveInCreateFieldSet"/>
+          <include name="verifyFieldSetCreateButton"/>
+          <include name="verifyByAddingQuestionsAndQuestionsTypeInSection2"/>
+          <include name="verifyQuestionSetNameField"/>
+          <include name="verifyByAddingQuestionsAndQuestionsType"/>
         </methods>
-      </class> <!-- com.advaita.TestTable.TestMasterFieldsSetTable -->
+      </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite-Advaita] -->

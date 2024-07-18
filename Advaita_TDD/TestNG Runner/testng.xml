@@ -26,7 +26,9 @@
 <!--      <class name="com.advaita.TestCase.VerifyLoginPage"/>-->
 <!--      <class name="com.advaita.TestCase.VerifyProcess"/>-->
 <!--      <class name="com.advaita.TestCreate.TestStagesCreate"/>-->
-      <class name="com.advaita.TestCreate.TestMeasurableSetCreate"/>
+<!--      <class name="com.advaita.TestCreate.TestMeasurableSetCreate"/>-->
+      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate"/>
+      <class name="com.advaita.TestCreate.TestMasterFormsCreate"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

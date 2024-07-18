@@ -1,5 +1,7 @@
 package com.advaita.Utilities;
 
+import static org.testng.Assert.assertTrue;
+
 import java.time.Duration;
 
 import org.openqa.selenium.Keys;
@@ -125,6 +127,7 @@ public class ClickUtilities extends TestBase {
 
 //	ElementUtils.clickWithRetry(submitButton, 3);
 	public static void clickWithRetry(WebElement element, int maxAttempts) {
+		assertTrue(element.isDisplayed());
 		int attempts = 0;
 		while (attempts < maxAttempts) {
 			try {

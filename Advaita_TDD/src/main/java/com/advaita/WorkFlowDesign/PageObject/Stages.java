@@ -269,8 +269,8 @@ public class Stages extends TestBase {
 
 		}
 
-//		select.selectByVisibleText("Question Wise");
-		select.selectByVisibleText("Domain Wise");
+		select.selectByVisibleText("Question Wise");
+//		select.selectByVisibleText("Domain Wise");
 //		select.selectByVisibleText("Parameter Wise");
 
 	}
@@ -381,11 +381,11 @@ public class Stages extends TestBase {
 
 			Select select = new Select(blockNameMetaDataDropDown);
 			
-//			List<WebElement> options = select.getOptions();
-//			for (WebElement option : options) {
-//				String optionText = option.getText();
-//				System.out.println(optionText);
-//			}
+			List<WebElement> options = select.getOptions();
+			for (WebElement option : options) {
+				String optionText = option.getText();
+				System.out.println(optionText);
+			}
 			
 			select.selectByVisibleText(fetchMetaDataRecord);
 			
