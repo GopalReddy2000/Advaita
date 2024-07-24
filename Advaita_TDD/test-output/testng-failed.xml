@@ -3,18 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestMasterMenusCreate">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
-          <include name="getResult"/>
-          <include name="verifyMasterFormDropDown"/>
-          <include name="verifyMasterMenuSaveButton"/>
-          <include name="verifyMenuNameField"/>
           <include name="setUp"/>
-          <include name="verifyCreateMasterMenusButton"/>
           <include name="tearDown"/>
-          <include name="verifyNavigateToMasterMenus"/>
+          <include name="getResult"/>
+          <include name="verifySelectMetaDataInAddBlockSectionB"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestMasterMenusCreate -->
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -41,16 +41,16 @@ public class TestBase {
 	public static void initialization() throws AWTException {
 
 //		 Incognito Mode Execution
-		options = new ChromeOptions();
-		options.addArguments("--incognito");
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(ChromeOptions.CAPABILITY, options);
-		cap.setCapability("applicationCacheEnabled", false);
-		options.merge(cap);
-		driver = new ChromeDriver(options);
+//		options = new ChromeOptions();
+//		options.addArguments("--incognito");
+//		DesiredCapabilities cap = new DesiredCapabilities();
+//		cap.setCapability(ChromeOptions.CAPABILITY, options);
+//		cap.setCapability("applicationCacheEnabled", false);
+//		options.merge(cap);
+//		driver = new ChromeDriver(options);
 
 		// Normal Execution
-//		driver = new ChromeDriver();
+		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));

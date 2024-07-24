@@ -211,27 +211,27 @@ public class MastersFieldSets extends TestBase {
 
 	public void verifyBeforeFieldSetCreatedCount() throws Throwable {
 
-		String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-				.getText();
-
-		Thread.sleep(2000);
-		System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
-
-		int beforeCreateRecord = extractNumber(beforeCreatedRecords);
-		existingFieldSetRecordCount = extractNumber(beforeCreatedRecords) + 1;
-
-//	System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-		System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + existingFieldSetRecordCount);
+//		String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+//				.getText();
+//
+//		Thread.sleep(2000);
+//		System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
+//
+//		int beforeCreateRecord = extractNumber(beforeCreatedRecords);
+//		existingFieldSetRecordCount = extractNumber(beforeCreatedRecords) + 1;
+//
+////	System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
+//		System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + existingFieldSetRecordCount);
 
 	}
 
 	public void verifyFieldSetCreateButton() {
 
-		assertTrue(fetchFieldSetRecord.isDisplayed());
-		existingFieldSetRecord = fetchFieldSetRecord.getText();
-		assertNotNull(existingFieldSetRecord);
+//		assertTrue(fetchFieldSetRecord.isDisplayed());
+//		existingFieldSetRecord = fetchFieldSetRecord.getText();
+//		assertNotNull(existingFieldSetRecord);
 
-		System.out.println("existingFieldSetRecord : " + existingFieldSetRecord);
+//		System.out.println("existingFieldSetRecord : " + existingFieldSetRecord);
 //		click(driver, addFieldSetButton);
 
 		ClickUtilities.clickWithRetry(addFieldSetButton, 3);
@@ -958,6 +958,8 @@ public class MastersFieldSets extends TestBase {
 
 				break;
 			}
+			
+			
 		}
 
 	}

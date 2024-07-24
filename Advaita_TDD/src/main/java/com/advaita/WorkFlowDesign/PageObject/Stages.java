@@ -390,7 +390,7 @@ public class Stages extends TestBase {
 			select.selectByVisibleText(fetchMetaDataRecord);
 			
 			List<WebElement> checkBoxElements = wait.until(
-					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
+					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
 
 			for (int i = 0; i < checkBoxElements.size(); i++) {
 				WebElement element = checkBoxElements.get(i);

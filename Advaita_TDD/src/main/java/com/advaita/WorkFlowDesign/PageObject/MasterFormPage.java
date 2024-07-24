@@ -2011,7 +2011,13 @@ public class MasterFormPage extends TestBase {
 			// Assert equality of the two arrays
 			assertEquals(firstOptionsText, dropdownOptionsText, "The dropdown options are not equal.");
 		}
+		
+		ClickUtilities.clickWithRetry(leftArrowButton, 2);
+		
+		Thread.sleep(1000);
 
 	}
+	
+	
 
 }

@@ -56,6 +56,13 @@ public class MasterMenusPage extends TestBase {
 
 	@FindBy(xpath = "//button[@class='btn-primary'][normalize-space()='Save']")
 	public static WebElement saveButton;
+	
+	
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(normalize-space(),'Masters Menu has been Created successfully')]")
+	public static WebElement successPopUp;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(normalize-space(),'Masters Menu has been Created successfully')]/..//button[text()='Continue']")
+	public static WebElement successPopUpContinueButton;
 
 	public MasterMenusPage() {
 
@@ -151,11 +158,6 @@ public class MasterMenusPage extends TestBase {
 		assertFalse(menuName.trim().isEmpty(), "Role name is empty.");
 		assertTrue(menuName.matches("^[a-zA-Z0-9 ]+$"), "menuName contains special characters.");
 
-		// Optionally, check if the role name already exists (pseudo-code, depends on
-		// the application)
-		// boolean roleExists = checkRoleExists(roleName);
-		// assertFalse(roleExists, "Role name already exists.");
-
 		// Enter the role name into the role field
 		menuNameField.sendKeys(menuName);
 
@@ -167,11 +169,19 @@ public class MasterMenusPage extends TestBase {
 
 	public void masterMenuSaveButton() {
 
-		assertTrue(masterMenuCreateButton.isDisplayed() && masterMenuCreateButton.isEnabled(),
-				"masterMenuCreateButton is not displayed and enabled.");
-		click(driver, masterMenuCreateButton);
+		assertTrue(saveButton.isDisplayed() && saveButton.isEnabled(),
+				"saveButton is not displayed and enabled.");
+		click(driver, saveButton);
 
-		assertFalse(masterMenuCreatePopUp.isDisplayed(), "masterMenuCreatePopUp is not displayed.");
+		assertFalse(masterMenuCreatePopUp.isDisplayed(), "masterMenuCreatePopUp is displayed.");
+		
+		confirmationAfterClickOnSaveButton();
 
+	}
+	public void confirmationAfterClickOnSaveButton() {
+
+		wait.until(ExpectedConditions.visibilityOf(successPopUp));
+		assertTrue(successPopUp.isDisplayed(), "successPopUp is not displayed.");
+		click(driver, successPopUpContinueButton);
 	}
 }
