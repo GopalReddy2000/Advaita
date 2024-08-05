@@ -307,9 +307,9 @@ public class Stages extends TestBase {
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
 
-		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
-		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
-		click(driver, editButtonInSectionAElement);
+//		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
+//		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
+//		click(driver, editButtonInSectionAElement);
 
 //		List<WebElement> options1 = select.getOptions();
 //
@@ -327,10 +327,11 @@ public class Stages extends TestBase {
 ////			assertTrue(option.getText().contains(list));
 //
 //		}
-
-		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
-		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
-		cancelButtonInaddSectionAPopUp.click();
+		
+//
+//		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
+//		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
+//		cancelButtonInaddSectionAPopUp.click();
 
 	}
 

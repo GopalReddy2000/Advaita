@@ -51,7 +51,7 @@
               <ul>
                 <li>
                   <a href="#" panel-name="test-xml-Default_suite" class="navigator-link ">
-                    <span>C:\Users\W2129\AppData\Local\Temp\testng-eclipse--790001704\testng-customsuite.xml</span>
+                    <span>C:\Users\W2129\AppData\Local\Temp\testng-eclipse--257128363\testng-customsuite.xml</span>
                   </a> <!-- navigator-link  -->
                 </li>
                 <li>
@@ -189,13 +189,30 @@
                   <a name="verifySelectMetaDataInAddBlockSectionB">
                   </a> <!-- verifySelectMetaDataInAddBlockSectionB -->
                   <span class="method-name">verifySelectMetaDataInAddBlockSectionB</span>
-                  <div class="stack-trace">org.openqa.selenium.NoSuchElementException: Cannot locate option with text: FN Lindgren_metadata
-For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+                  <div class="stack-trace">org.openqa.selenium.JavascriptException: javascript error: {&quot;status&quot;:11,&quot;value&quot;:&quot;Element is not currently visible and may not be manipulated&quot;}
+  (Session info: chrome=126.0.6478.183)
 Build info: version: &apos;4.19.1&apos;, revision: &apos;abe0ee07dc&apos;
 System info: os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;21.0.2&apos;
-Driver info: driver.version: unknown
-	at org.openqa.selenium.support.ui.Select.selectByVisibleText(Select.java:153)
-	at com.advaita.WorkFlowDesign.PageObject.Stages.selectMetaDataInAddBlockSectionB(Stages.java:390)
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [164b4d5e9f40ddc9efb2b41731f4b951, clickElement {id=f.962ADEB687D4E685D2DCAEA3A7D1F9E7.d.8436C1F996666394177CD6D19EDE5D75.e.503}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 126.0.6478.183, chrome: {chromedriverVersion: 126.0.6478.182 (5b5d8292ddf..., userDataDir: C:\Users\W2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59058}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59058/devtoo..., se:cdpVersion: 126.0.6478.183, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[[[ChromeDriver: chrome on windows (164b4d5e9f40ddc9efb2b41731f4b951)] -&gt; xpath: //select[@id=&apos;sectionB_metadata_id&apos;]]] -&gt; xpath: .//option[normalize-space(.) = &quot;CsutomerdetailsZZZMF_metadata&quot;]]
+Session ID: 164b4d5e9f40ddc9efb2b41731f4b951
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+	at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
+	at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:518)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:223)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:76)
+	at org.openqa.selenium.support.ui.Select.setSelected(Select.java:315)
+	at org.openqa.selenium.support.ui.Select.selectByVisibleText(Select.java:119)
+	at com.advaita.WorkFlowDesign.PageObject.Stages.selectMetaDataInAddBlockSectionB(Stages.java:391)
 	at com.advaita.TestCreate.TestStagesCreate.verifySelectMetaDataInAddBlockSectionB(TestStagesCreate.java:186)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
@@ -310,7 +327,7 @@ Driver info: driver.version: unknown
         </div> <!-- panel Default_suite -->
         <div panel-name="test-xml-Default_suite" class="panel">
           <div class="main-panel-header rounded-window-top">
-            <span class="header-content">C:\Users\W2129\AppData\Local\Temp\testng-eclipse--790001704\testng-customsuite.xml</span>
+            <span class="header-content">C:\Users\W2129\AppData\Local\Temp\testng-eclipse--257128363\testng-customsuite.xml</span>
           </div> <!-- main-panel-header rounded-window-top -->
           <div class="main-panel-content rounded-window-bottom">
             <pre>
@@ -361,54 +378,54 @@ data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
 data.addRows(11);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'verifySelectMetaDataInAddBlockSectionB')
+data.setCell(0, 1, 'navigateFetchRecord')
 data.setCell(0, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(0, 3, 17803);
+data.setCell(0, 3, 9293);
 data.setCell(1, 0, 1)
-data.setCell(1, 1, 'navigateFetchRecord')
+data.setCell(1, 1, 'verifyAddSectionA')
 data.setCell(1, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(1, 3, 10319);
+data.setCell(1, 3, 1829);
 data.setCell(2, 0, 2)
-data.setCell(2, 1, 'verifyAddSectionA')
+data.setCell(2, 1, 'verifyStageSelectProcessDropDown')
 data.setCell(2, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(2, 3, 6234);
+data.setCell(2, 3, 1385);
 data.setCell(3, 0, 3)
-data.setCell(3, 1, 'verifySectionB_addBlock')
+data.setCell(3, 1, 'verifyStageSelectSubProcessDropDown')
 data.setCell(3, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(3, 3, 1892);
+data.setCell(3, 3, 1284);
 data.setCell(4, 0, 4)
-data.setCell(4, 1, 'verifyStageSelectProcessDropDown')
+data.setCell(4, 1, 'verifyStageSelectSubSubProcessDropDown')
 data.setCell(4, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(4, 3, 1612);
+data.setCell(4, 3, 1221);
 data.setCell(5, 0, 5)
-data.setCell(5, 1, 'verifyStageSelectSubProcessDropDown')
+data.setCell(5, 1, 'verifySectionB_addBlock')
 data.setCell(5, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(5, 3, 1580);
+data.setCell(5, 3, 1023);
 data.setCell(6, 0, 6)
-data.setCell(6, 1, 'verifyStageSelectSubSubProcessDropDown')
+data.setCell(6, 1, 'verifyCreateStagesButton')
 data.setCell(6, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(6, 3, 1368);
+data.setCell(6, 3, 970);
 data.setCell(7, 0, 7)
-data.setCell(7, 1, 'verifyCreateStagesButton')
+data.setCell(7, 1, 'verifySelectMetaDataInAddBlockSectionB')
 data.setCell(7, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(7, 3, 1319);
+data.setCell(7, 3, 383);
 data.setCell(8, 0, 8)
-data.setCell(8, 1, 'verifyStageCalculationTypeDropDown')
+data.setCell(8, 1, 'verifyStageNameTextBox')
 data.setCell(8, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(8, 3, 388);
+data.setCell(8, 3, 170);
 data.setCell(9, 0, 9)
-data.setCell(9, 1, 'verifyStageNameTextBox')
+data.setCell(9, 1, 'verifyStageCalculationTypeDropDown')
 data.setCell(9, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(9, 3, 367);
+data.setCell(9, 3, 149);
 data.setCell(10, 0, 10)
 data.setCell(10, 1, 'VerifyStagesTabIsDisplayed')
 data.setCell(10, 2, 'com.advaita.TestCreate.TestStagesCreate')
-data.setCell(10, 3, 88);
+data.setCell(10, 3, 101);
 window.suiteTableData['Default_suite']= { tableData: data, tableDiv: 'times-div-Default_suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 42 seconds</span>
+              <span class="suite-total-time">Total running time: 17 seconds</span>
               <div id="times-div-Default_suite">
               </div> <!-- times-div-Default_suite -->
             </div> <!-- times-div -->
@@ -441,99 +458,97 @@ return data;
               </div> <!-- configuration-test before -->
               <div class="test-method">
                 <span class="method-name">navigateFetchRecord</span>
-                <span class="method-start">10407 ms</span>
+                <span class="method-start">9190 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=navigateFetchRecord status=SUCCESS method=TestStagesCreate.navigateFetchRecord()[pr...)</span>
-                <span class="method-start">20732 ms</span>
+                <span class="method-start">18489 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">VerifyStagesTabIsDisplayed</span>
-                <span class="method-start">21919 ms</span>
+                <span class="method-start">19178 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=VerifyStagesTabIsDisplayed status=SUCCESS method=TestStagesCreate.VerifyStagesTabIs...)</span>
-                <span class="method-start">22012 ms</span>
+                <span class="method-start">19280 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyCreateStagesButton</span>
-                <span class="method-start">22049 ms</span>
+                <span class="method-start">19322 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyCreateStagesButton status=SUCCESS method=TestStagesCreate.verifyCreateStagesB...)</span>
-                <span class="method-start">23371 ms</span>
+                <span class="method-start">20295 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyStageNameTextBox</span>
-                <span class="method-start">23427 ms</span>
+                <span class="method-start">20313 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyStageNameTextBox status=SUCCESS method=TestStagesCreate.verifyStageNameTextBo...)</span>
-                <span class="method-start">23797 ms</span>
+                <span class="method-start">20484 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyStageSelectProcessDropDown</span>
-                <span class="method-start">23837 ms</span>
+                <span class="method-start">20504 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyStageSelectProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStage...)</span>
-                <span class="method-start">25453 ms</span>
+                <span class="method-start">21890 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyStageSelectSubProcessDropDown</span>
-                <span class="method-start">25527 ms</span>
+                <span class="method-start">21915 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyStageSelectSubProcessDropDown status=SUCCESS method=TestStagesCreate.verifySt...)</span>
-                <span class="method-start">27113 ms</span>
+                <span class="method-start">23204 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyStageSelectSubSubProcessDropDown</span>
-                <span class="method-start">27251 ms</span>
+                <span class="method-start">23229 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyStageSelectSubSubProcessDropDown status=SUCCESS method=TestStagesCreate.verif...)</span>
-                <span class="method-start">28622 ms</span>
+                <span class="method-start">24452 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyStageCalculationTypeDropDown</span>
-                <span class="method-start">28676 ms</span>
+                <span class="method-start">24497 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyStageCalculationTypeDropDown status=SUCCESS method=TestStagesCreate.verifySta...)</span>
-                <span class="method-start">29066 ms</span>
+                <span class="method-start">24647 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyAddSectionA</span>
-                <span class="method-start">29104 ms</span>
+                <span class="method-start">24663 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifyAddSectionA status=SUCCESS method=TestStagesCreate.verifyAddSectionA()[pri:13...)</span>
-                <span class="method-start">35343 ms</span>
+                <span class="method-start">26494 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifySectionB_addBlock</span>
-                <span class="method-start">35475 ms</span>
+                <span class="method-start">26513 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">getResult([TestResult name=verifySectionB_addBlock status=SUCCESS method=TestStagesCreate.verifySectionB_addBl...)</span>
-                <span class="method-start">37370 ms</span>
+                <span class="method-start">27537 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <img src="failed.png">
                 </img>
                 <span class="method-name">verifySelectMetaDataInAddBlockSectionB</span>
-                <span class="method-start">37396 ms</span>
+                <span class="method-start">27550 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <img src="failed.png">
-                </img>
                 <span class="method-name">getResult([TestResult name=verifySelectMetaDataInAddBlockSectionB status=FAILURE method=TestStagesCreate.verif...)</span>
-                <span class="method-start">55248 ms</span>
+                <span class="method-start">27940 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-test after">
                 <span class="method-name">tearDown</span>
-                <span class="method-start">59288 ms</span>
+                <span class="method-start">36261 ms</span>
               </div> <!-- configuration-test after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

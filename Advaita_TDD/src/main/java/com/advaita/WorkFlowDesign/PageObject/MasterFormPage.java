@@ -1110,6 +1110,8 @@ public class MasterFormPage extends TestBase {
 			MasterFormQuesAddSect2.add(element.getText());
 			System.out.println("Values stored in 'values' InMasterForm section1QuesElementsAddSec2InMasterForm : "
 					+ element.getText());
+			
+			
 		}
 	}
 
