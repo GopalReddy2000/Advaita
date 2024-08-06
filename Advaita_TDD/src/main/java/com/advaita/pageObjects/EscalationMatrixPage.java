@@ -443,8 +443,12 @@ public class EscalationMatrixPage extends TestBase {
 		searchIcon.click();
 		recordEyeButton.click();	
 		
+//	Bug	
+		
 		return this;
 	}
+	
+	
 	
 	
 
