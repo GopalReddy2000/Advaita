@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -296,13 +295,9 @@ public class StagePage extends TestBase{
 
 	@FindBy(xpath = "//select[@id='is_company_stages']")
 	public WebElement dispositionManualOutsideStages;
-
-
-
-
+	
 	@FindBy(id = "submt_single")
 	public WebElement editSave;
-
 
 	@FindBy(xpath = "(//button[normalize-space()='Continue'])[1]")
 	public WebElement editSuccessContinue;

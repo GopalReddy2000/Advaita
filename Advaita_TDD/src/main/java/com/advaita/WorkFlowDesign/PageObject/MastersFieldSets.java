@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.SendDataUtils;
@@ -183,6 +184,16 @@ public class MastersFieldSets extends TestBase {
 	public MastersFieldSets() {
 
 		PageFactory.initElements(driver, this);
+
+	}
+
+	public static void commonNavigation() {
+
+		click(driver, HomePage.workflowDesign);
+		click(driver, masterTabElement);
+		click(driver, masterTabElement);
+		click(driver, fieldSetTabElement);
+
 	}
 
 	public void verifyTabsForFieldSetCreate() {
@@ -238,7 +249,7 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(questionSetNameFieldElement.isDisplayed());
 
 		questionSetNameFieldElement.clear();
-		questionSetNameFieldElement.sendKeys(fake.lastName1() + " QS");
+		questionSetNameFieldElement.sendKeys(FakeData.lastName1() + " FS");
 
 	}
 
@@ -251,11 +262,13 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
+	int sizeOfQuestion = 8;
+
 	public void verifyDefaultSection1andAddingQuestion() throws Throwable {
 
 		assertTrue(section1Element.isDisplayed(), "section1Element is not displayed.");
 
-		int sizeOfQuestion = 7;
+//		int sizeOfQuestion = 8;
 
 		ClickUtilities.multiClick(driver, addQuestionsButttonElement, sizeOfQuestion);
 
@@ -276,36 +289,37 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
-	final int LABEL = 1;
-	final int MULTIPLE_CHOICE = 2;
-	final int SHORT_ANSWER = 3;
-	final int DROP_DOWN = 4;
-	final int RELATIVE_DROP_DOWN = 5;
-	final int FILE_UPLOAD = 6;
-	final int RADIO_BUTTON = 7;
-	final int DATE = 8;
-	final int TIME = 9;
-	final int TEXT_BOX = 10;
-	final int RELATIVE_MULTISELECT = 11;
+//	All 11 elements are present.
+//	questionTypes 1 : Label
+//	questionTypes 2 : Multiple Choice
+//	questionTypes 3 : Short Answer
+//	questionTypes 4 : Drop Down
+//	questionTypes 5 : Relative Drop down
+//	questionTypes 6 : File Upload
+//	questionTypes 7 : Radio Button
+//	questionTypes 8 : Date
+//	questionTypes 9 : Time
+//	questionTypes 10 : Text Box
+//	questionTypes 11 : Relative MultiSelect
 
+	final static int LABEL = 1;
+	final static int MULTIPLE_CHOICE = 2;
+	final static int SHORT_ANSWER = 3;
+	final static int DROP_DOWN = 4;
+	final static int RELATIVE_DROP_DOWN = 5;
+	final static int FILE_UPLOAD = 6;
+	final static int RADIO_BUTTON = 7;
+	final static int DATE = 8;
+	final static int TIME = 9;
+	final static int TEXT_BOX = 10;
+	final static int RELATIVE_MULTISELECT = 11;
+
+//	########################################################################################################################################################
 	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
-
-//		All 11 elements are present.
-//		questionTypes 1 : Label
-//		questionTypes 2 : Multiple Choice
-//		questionTypes 3 : Short Answer
-//		questionTypes 4 : Drop Down
-//		questionTypes 5 : Relative Drop down
-//		questionTypes 6 : File Upload
-//		questionTypes 7 : Radio Button
-//		questionTypes 8 : Date
-//		questionTypes 9 : Time
-//		questionTypes 10 : Text Box
-//		questionTypes 11 : Relative MultiSelect
 
 		// Interact with the questionFields elements by index, excluding the last one
 
-		for (int i = 1; i <= 6; i++) {
+		for (int i = 1; i <= sizeOfQuestion - 1; i++) {
 
 			String xpathQuestionTextField = "//div[h5[contains(text(), 'Question " + i
 					+ "')]]//input[@name='question_1_" + i + "']";
@@ -567,7 +581,7 @@ public class MastersFieldSets extends TestBase {
 
 						ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
 
-//						driver.findElement(By.xpath(xpath)).click();
+///////////////					driver.findElement(By.xpath(xpath)).click();
 
 					}
 
@@ -656,7 +670,75 @@ public class MastersFieldSets extends TestBase {
 				}
 			}
 
-//	#############################################			
+//	#############################################	
+
+			if (i == 7) {
+
+				String xpathForTypeQ = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_1_"
+						+ i + "']/following-sibling::div[" + TEXT_BOX + "]//h6";
+
+				System.out.println(xpathForTypeQ);
+				WebElement typeElement = driver.findElement(By.xpath(xpathForTypeQ));
+
+//				questionTypes 9 : Text Box
+				// Example interaction: setting text in the question fields
+				js.executeScript("arguments[0].scrollIntoView(true);", questionFields);
+				questionFields.sendKeys("Number Of The Customer ?");
+
+				assertTrue(typeElement.isDisplayed());
+				ClickUtilities.jsClick(driver, typeElement);
+
+				ClickUtilities.clickWithRetry(DynamicXpath.questionTypeOptions(1, i, 1), 2);
+
+				SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(1, i), "10");
+
+				SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(1, i), "14");
+
+				Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(1, i));
+
+				assertFalse(valueTypeDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+				// Check for empty drop down
+				List<WebElement> options = valueTypeDropDown.getOptions();
+				assertTrue(options.size() > 0, "Dropdown has no options.");
+				System.out.println("Number of options in the dropdown: " + options.size());
+
+//				Check default selected value
+				WebElement defaultSelectedOption = valueTypeDropDown.getFirstSelectedOption();
+				String expectedDefaultOption = "All"; // Replace with expected default value
+				assertEquals(defaultSelectedOption.getText(), expectedDefaultOption,
+						"Default selected option is incorrect.");
+
+//		        Verify the order of options (if applicable)
+				String[] expectedOrder = { "All", "Only Text", "Only Number" }; // Replace with the expected order
+				for (int n = 0; n < expectedOrder.length; n++) {
+					assertEquals(options.get(n).getText(), expectedOrder[n], "Option order is incorrect at index " + n);
+				}
+
+				// Print all options and check for duplicates
+				Set<String> uniqueOptions = new HashSet<>();
+				System.out.println("Dropdown options:");
+				for (WebElement option : options) {
+					String optionText = option.getText();
+					System.out.println(optionText);
+					assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+				}
+
+				// Select each option by index and verify the selection
+				for (int k = 0; k < options.size(); k++) {
+					valueTypeDropDown.selectByIndex(k);
+					WebElement selectedOption = valueTypeDropDown.getFirstSelectedOption();
+					assertEquals(selectedOption.getText(), options.get(k).getText(),
+							"Failed to select the option by index " + k);
+					System.out.println(
+							"Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+				}
+
+//				valueTypeDropDown.selectByVisibleText("Only Text");
+//				valueTypeDropDown.selectByVisibleText("All");
+				valueTypeDropDown.selectByVisibleText("Only Number");
+
+			}
 
 		}
 
@@ -1022,7 +1104,7 @@ public class MastersFieldSets extends TestBase {
 				sendDataColumn.sendKeys("Person Who Pick the Call");
 
 				wait.until(ExpectedConditions.elementToBeClickable(DynamicXpath.textBox(3, j)));
-				ClickUtilities.highlightElement(DynamicXpath.textBox(3, j), driver);
+//				ClickUtilities.highlightElement(DynamicXpath.textBox(3, j), driver);
 				SendDataUtils.clearAndSendKeys(DynamicXpath.textBox(3, j), "Radio");
 				ClickUtilities.clickWithRetry(DynamicXpath.textBox(3, j), 2);
 
@@ -1031,7 +1113,7 @@ public class MastersFieldSets extends TestBase {
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 1), "a");
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 2), "b");
 
-				ClickUtilities.highlightElement(DynamicXpath.addOptions(3, j), driver);
+//				ClickUtilities.highlightElement(DynamicXpath.addOptions(3, j), driver);
 				ClickUtilities.clickWithRetry(DynamicXpath.addOptions(3, j), 2);
 
 				SendDataUtils.clearAndSendKeys(DynamicXpath.questionTypeOptions(3, j, 3), "c");
@@ -1140,6 +1222,77 @@ public class MastersFieldSets extends TestBase {
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
 	}
 
+	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
+
+//		commonNavigation();
+		verifyBeforeFieldSetCreatedCount();
+		verifyFieldSetCreateButton();
+
+		verifyQuestionSetNameField();
+
+		verifyRemarkField();
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.questionField(1, 1, 1), "Mobile Number");
+
+		ClickUtilities.clickWithRetry(DynamicXpath.questionType(1, 1, TEXT_BOX), 2);
+
+		ClickUtilities.clickWithRetry(DynamicXpath.questionTypeOptions(1, 1, 1), 2);
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(1, 1), "1");
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(1, 1), "10");
+
+		Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(1, 1));
+
+		assertFalse(valueTypeDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+		// Check for empty drop down
+		List<WebElement> options = valueTypeDropDown.getOptions();
+		assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+//		Check default selected value
+		WebElement defaultSelectedOption = valueTypeDropDown.getFirstSelectedOption();
+		String expectedDefaultOption = "All"; // Replace with expected default value
+		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
+
+//        Verify the order of options (if applicable)
+		String[] expectedOrder = { "All", "Only Text", "Only Number" }; // Replace with the expected order
+		for (int n = 0; n < expectedOrder.length; n++) {
+			assertEquals(options.get(n).getText(), expectedOrder[n], "Option order is incorrect at index " + n);
+		}
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (WebElement option : options) {
+			String optionText = option.getText();
+			System.out.println(optionText);
+			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int k = 0; k < options.size(); k++) {
+			valueTypeDropDown.selectByIndex(k);
+			WebElement selectedOption = valueTypeDropDown.getFirstSelectedOption();
+			assertEquals(selectedOption.getText(), options.get(k).getText(),
+					"Failed to select the option by index " + k);
+			System.out
+					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+		}
+
+//		valueTypeDropDown.selectByVisibleText("Only Text");
+//		valueTypeDropDown.selectByVisibleText("All");
+		valueTypeDropDown.selectByVisibleText("Only Number");
+
+		verifySaveInCreateFieldSet();
+
+		verifyAfterFieldSetCreatedCount();
+
+	}
+
+//	**********************************************************Create Ended**************************************************************************************************************
+
 	public void verifyAfterFieldSetCreatedCount() throws Throwable {
 
 		click(driver, leftArrowToGoBackTablePage);
@@ -1179,8 +1332,9 @@ public class MastersFieldSets extends TestBase {
 		// Parse the remaining string to an integer
 		return Integer.parseInt(numberAsString.toString());
 	}
+//	**********************************************************Edit Started**************************************************************************************************************
 
-//	**********************************************************Create Edit**************************************************************************************************************
+//	**********************************************************Table Started**************************************************************************************************************
 
 	public void tablePageSearch() throws Throwable {
 
@@ -1206,7 +1360,7 @@ public class MastersFieldSets extends TestBase {
 		createdDatePicker.click();
 		createdDatePicker.sendKeys("25-04-2024");
 		createdDatePicker.sendKeys(Keys.ENTER);
-		
+
 		click(driver, searchButton);
 	}
 
@@ -1218,8 +1372,8 @@ public class MastersFieldSets extends TestBase {
 	public void tablePagePagination() throws Throwable {
 
 //		Pagination.paginate(driver, rightArrow, leftArrow);
-		
-		Pagination.paginateWithCount(driver, rightArrow, leftArrow,3);
+
+		Pagination.paginateWithCount(driver, rightArrow, leftArrow, 3);
 
 		driver.navigate().refresh();
 //		---------------------------------------------------------------------------

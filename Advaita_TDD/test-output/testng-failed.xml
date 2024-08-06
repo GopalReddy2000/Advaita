@@ -3,6 +3,7 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
+<<<<<<< HEAD
       <class name="com.advaita.TestCase.EscalationMatrixTest">
         <methods>
           <include name="tearDown"/>
@@ -10,6 +11,20 @@
           <include name="escalationMatrixCreateTest"/>
         </methods>
       </class> <!-- com.advaita.TestCase.EscalationMatrixTest -->
+=======
+      <class name="com.advaita.TestCreate.TestMasterMenusCreate">
+        <methods>
+          <include name="getResult"/>
+          <include name="verifyMasterFormDropDown"/>
+          <include name="verifyMasterMenuSaveButton"/>
+          <include name="verifyMenuNameField"/>
+          <include name="setUp"/>
+          <include name="verifyCreateMasterMenusButton"/>
+          <include name="tearDown"/>
+          <include name="verifyNavigateToMasterMenus"/>
+        </methods>
+      </class> <!-- com.advaita.TestCreate.TestMasterMenusCreate -->
+>>>>>>> a4f565925a2e10e89de894cc7ce41bbe513466f4
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

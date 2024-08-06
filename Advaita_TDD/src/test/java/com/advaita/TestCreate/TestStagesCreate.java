@@ -30,14 +30,14 @@ public class TestStagesCreate extends TestBase {
 
 	FakeData fake = new FakeData();
 
-	public String processName = "P " + fake.lastName1();
+	public String processName = "P " + FakeData.lastName1();
 	public String processDesc = "P Desc";
-	public String subProcessName = "SP" + fake.lastName1();
+	public String subProcessName = "SP" + FakeData.lastName1();
 	public String subProcessDesc = "SP Desc";
-	public String subSubProcessName = "SSP " + fake.lastName1();
+	public String subSubProcessName = "SSP " + FakeData.lastName1();
 	public String subSubProcessDesc = "SSP Desc";
 
-	public String metaDataName = "Test " + fake.lastName1();
+	public String metaDataName = "Test " + FakeData.lastName1();
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -141,7 +141,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 7)
 	public void verifyStageNameTextBox() throws Throwable {
 		test = reports.createTest("verifyStageNameTextBox");
-		stages.verifyStageNameTextBox(fake.firstCapString());
+		stages.verifyStageNameTextBox(FakeData.firstCapString());
 	}
 
 	@Test(priority = 8)
@@ -174,6 +174,18 @@ public class TestStagesCreate extends TestBase {
 		stages.verifyAddSectionA();
 	}
 
+	@Test(priority = 14)
+	public void verifySectionB_addBlock() throws Throwable {
+		test = reports.createTest("verifyAddBlockInSectionB");
+		stages.verifyAddBlockInSectionB(5);
+	}
+
+	@Test(priority = 15)
+	public void verifySelectMetaDataInAddBlockSectionB() throws Throwable {
+		test = reports.createTest("selectMetaDataInAddBlockSectionB");
+		stages.selectMetaDataInAddBlockSectionB(3);
+	}
+
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
 		if (result.getStatus() == ITestResult.FAILURE) {
@@ -198,8 +210,8 @@ public class TestStagesCreate extends TestBase {
 	@AfterTest
 	public void tearDown() {
 
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 
 	}

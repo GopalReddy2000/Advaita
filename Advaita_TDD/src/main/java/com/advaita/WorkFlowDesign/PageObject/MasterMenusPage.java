@@ -175,3 +175,4 @@ public class MasterMenusPage extends TestBase {
 
 	}
 }
+

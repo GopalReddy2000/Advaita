@@ -2,7 +2,6 @@ package com.advaita.DataSetUp.PageObject;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -15,19 +14,17 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.ScreenShorts;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class DataSet extends TestBase {
 
-	@FindBy(xpath="//a[normalize-space()='Data Setup']")
+	@FindBy(xpath = "//a[normalize-space()='Data Setup']")
 	private static WebElement dataSetup;
 
 	@FindBy(id = "pills-dataset-tab")
@@ -173,17 +170,20 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "(//h6[normalize-space()='Clear All Filters'])[1]")
 	public static WebElement clearButton;
 
-	@FindBy(xpath ="//table[@class='w-100']//tr//td//img[1]")
-	public static List <WebElement> deleteDataSet;
+	@FindBy(xpath = "//table[@class='w-100']//tr//td//img[1]")
+	public static List<WebElement> deleteDataSet;
 
-	@FindBy(xpath ="//div[@id='id_confrm_popp']//button[text()='Delete']")
+	@FindBy(xpath = "//div[@id='id_confrm_popp']//button[text()='Delete']")
 	public static WebElement popDeleteButton;
 
 	@FindBy(xpath="//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
 	public static WebElement notificationTxt;
 
 
-	@FindBy(xpath="//img[@alt='rgt_arrow']//parent::a")
+//	@FindBy(xpath = "//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
+//	public static WebElement notificationTxt;
+
+	@FindBy(xpath = "//img[@alt='rgt_arrow']//parent::a")
 	public static WebElement paginationRightArrow;
 
 	@FindBy(xpath="//p[@class='show_entries m-0 font_13']")
@@ -215,7 +215,7 @@ public class DataSet extends TestBase {
 
 		//		Faker faker = new Faker();
 		HomePage.clickOnProcessManagementCreate();
-		dropDown1.isDisplayed();
+		dropDown1.isDisplayed();	
 		dropDown1.click();
 		Thread.sleep(1000);
 		dropDown2.isDisplayed();
@@ -229,11 +229,11 @@ public class DataSet extends TestBase {
 		System.out.println("process : " + process + "\n" + "subProcess : " + subProcess + "\n" + "subSubProcess : "
 				+ subSubProcess);
 
-		//		Assert whether Datasetup Button is Displayed on the left Navigation Menu
-		assertTrue(dataSetup.isDisplayed(),"DataSetup is not Displayed");
+		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
+		assertTrue(dataSetup.isDisplayed(), "DataSetup is not Displayed");
 		dataSetup.click();
 
-		assertTrue(dataSetTab.isDisplayed(),"Datasetup Tab is not Displayed");
+		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
 		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
@@ -258,21 +258,21 @@ public class DataSet extends TestBase {
 			assertTrue(dataSetNameField.isDisplayed());
 			assertTrue(dataSetNameField.isEnabled());
 			dataSetNameField.click();
-			//		assertTrue(dataSetNameField.isSelected());
+			// assertTrue(dataSetNameField.isSelected());
 			if (i == 1) {
-				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
+				dataSetNameField.sendKeys(FakeData.firstCapString() + " Name");
 			}
 
 			if (i == 2) {
-				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
+				dataSetNameField.sendKeys(FakeData.firstCapString() + " Name");
 			}
 
 			if (i == 3) {
-				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
+				dataSetNameField.sendKeys(FakeData.firstCapString() + " Name");
 			}
 
 			if (i == 4) {
-				dataSetNameField.sendKeys(fake.firstCapString()+" Name");
+				dataSetNameField.sendKeys(FakeData.firstCapString() + " Name");
 			}
 
 			assertTrue(processDropDown.isDisplayed());
@@ -290,14 +290,14 @@ public class DataSet extends TestBase {
 			assertTrue(fieldNameField.isDisplayed());
 			assertTrue(fieldNameField.isEnabled());
 			fieldNameField.click();
-			//		assertTrue(fieldNameField.isSelected());
-			fieldNameField.sendKeys(fake.lastName1()+" Field");
+			// assertTrue(fieldNameField.isSelected());
+			fieldNameField.sendKeys(FakeData.lastName1() + " Field");
 
 			assertTrue(labelField.isDisplayed());
 			assertTrue(labelField.isEnabled());
 			labelField.click();
-			//		assertTrue(labelField.isSelected());
-			labelField.sendKeys(fake.lastName1()+" Field");
+			// assertTrue(labelField.isSelected());
+			labelField.sendKeys(FakeData.lastName1() + " Field");
 
 			assertTrue(typeDropDown.isDisplayed());
 			Select select3 = new Select(typeDropDown);
@@ -320,14 +320,14 @@ public class DataSet extends TestBase {
 			assertTrue(fieldNameField1.isDisplayed());
 			assertTrue(fieldNameField1.isEnabled());
 			fieldNameField1.click();
-			//		assertTrue(fieldNameField.isSelected());
-			fieldNameField1.sendKeys(fake.lastName1()+" Field");
+			// assertTrue(fieldNameField.isSelected());
+			fieldNameField1.sendKeys(FakeData.lastName1() + " Field");
 
 			assertTrue(labelField1.isDisplayed());
 			assertTrue(labelField1.isEnabled());
 			labelField1.click();
-			//		assertTrue(labelField.isSelected());
-			labelField1.sendKeys(fake.lastName1()+" Field");
+			// assertTrue(labelField.isSelected());
+			labelField1.sendKeys(FakeData.lastName1() + " Field");
 
 			assertTrue(typeDropDown1.isDisplayed());
 			Select select5 = new Select(typeDropDown1);
@@ -336,7 +336,7 @@ public class DataSet extends TestBase {
 			assertTrue(maxLengthField1.isDisplayed());
 			assertTrue(maxLengthField1.isEnabled());
 			maxLengthField1.click();
-			//		assertTrue(maxLengthField.isSelected());
+			// assertTrue(maxLengthField.isSelected());
 			maxLengthField1.sendKeys("300");
 
 			assertTrue(mandetoryDropDown1.isDisplayed());
@@ -348,13 +348,13 @@ public class DataSet extends TestBase {
 			assertTrue(fieldNameField2.isDisplayed());
 			assertTrue(fieldNameField2.isEnabled());
 			fieldNameField2.click();
-			//		assertTrue(fieldNameField.isSelected());
-			fieldNameField2.sendKeys(fake.lastName1()+" Field");
+			// assertTrue(fieldNameField.isSelected());
+			fieldNameField2.sendKeys(FakeData.lastName1() + " Field");
 
 			assertTrue(labelField2.isDisplayed());
 			assertTrue(labelField2.isEnabled());
 			labelField2.click();
-			//		assertTrue(labelField.isSelected());
+			// assertTrue(labelField.isSelected());
 			labelField2.sendKeys("Test Label 3");
 
 			assertTrue(typeDropDown2.isDisplayed());
@@ -364,7 +364,7 @@ public class DataSet extends TestBase {
 			assertTrue(maxLengthField2.isDisplayed());
 			assertTrue(maxLengthField2.isEnabled());
 			maxLengthField2.click();
-			//		assertTrue(maxLengthField.isSelected());
+			// assertTrue(maxLengthField.isSelected());
 			maxLengthField2.sendKeys("400");
 
 			assertTrue(mandetoryDropDown2.isDisplayed());
@@ -399,7 +399,7 @@ public class DataSet extends TestBase {
 
 	public void editDataSet(String editDatasetName) throws Throwable {
 
-		//		dataSetTab.click();
+		// dataSetTab.click();
 		click(driver, dataSetTab);
 
 		assertTrue(editButton.isDisplayed(), "editButton is not displayed.");
@@ -428,13 +428,13 @@ public class DataSet extends TestBase {
 		assertTrue(editFieldName.isDisplayed());
 		assertTrue(editFieldName.isEnabled());
 		editFieldName.click();
-		//		assertTrue(fieldNameField.isSelected());
+		// assertTrue(fieldNameField.isSelected());
 		editFieldName.sendKeys("Edit Test Field Name 3");
 
 		assertTrue(editLabelField.isDisplayed());
 		assertTrue(editLabelField.isEnabled());
 		editLabelField.click();
-		//		assertTrue(labelField.isSelected());
+		// assertTrue(labelField.isSelected());
 		editLabelField.sendKeys("Edit Test Label 3");
 
 		assertTrue(editTypeDropDown.isDisplayed());
@@ -444,7 +444,7 @@ public class DataSet extends TestBase {
 		assertTrue(editMaxLengthField.isDisplayed());
 		assertTrue(editMaxLengthField.isEnabled());
 		editMaxLengthField.click();
-		//		assertTrue(maxLengthField.isSelected());
+		// assertTrue(maxLengthField.isSelected());
 		editMaxLengthField.sendKeys("400");
 
 		assertTrue(editMandetoryDropDown.isDisplayed());
@@ -490,14 +490,14 @@ public class DataSet extends TestBase {
 
 		assertTrue(searchBar.isDisplayed(), "searchBar is not displayed.");
 
-		//		Validate the X and Y Axes of all Boxes and bars in dataset page
-		Point searchLocation=searchBar.getLocation();
+		// Validate the X and Y Axes of all Boxes and bars in dataset page
+		Point searchLocation = searchBar.getLocation();
 		// Get the location (X and Y coordinates) of the searchBar element
-		int xCoordinate= searchLocation.getX();
-		int yCoordinate= searchLocation.getY();
+		int xCoordinate = searchLocation.getX();
+		int yCoordinate = searchLocation.getY();
 
-		System.out.println("X Coordinates:"+ xCoordinate+"\n"+"Y Coordinates:"+yCoordinate);
-		assertEquals(300,xCoordinate);
+		System.out.println("X Coordinates:" + xCoordinate + "\n" + "Y Coordinates:" + yCoordinate);
+		assertEquals(300, xCoordinate);
 
 		searchBar.clear();
 		searchBar.sendKeys(createdDataSet);
@@ -513,22 +513,20 @@ public class DataSet extends TestBase {
 		assertTrue(searchButon.isDisplayed(), "searchButon is not displayed.");
 		searchButon.click();
 
-		//		Thread.sleep(2000);
-		//		ss.takeScreenShot("afterSearch");
+		// Thread.sleep(2000);
+		// ss.takeScreenShot("afterSearch");
 
-
-		//		Validate Clear All filters button
+		// Validate Clear All filters button
 		clearButton.click();
-
 
 		Thread.sleep(2000);
 		// Find the pagination element
 		Pagination.goToNextPage(driver, 5);
 		Pagination.goToPreviousPage(driver, 4);
-		//		Pagination.lastAndFirstPagination(driver,7);
-		//		Pagination.lastAndFirstPagination(driver,1);
+		// Pagination.lastAndFirstPagination(driver,7);
+		// Pagination.lastAndFirstPagination(driver,1);
 
-		//		Thread.sleep(3000);
+		// Thread.sleep(3000);
 
 	}
 
@@ -564,7 +562,7 @@ public class DataSet extends TestBase {
 		for(int a=0;a<deleteDataSet.size();a++)
 
 		{
-			System.out.println((a+1)+"st Delete Button is Enabled: "+deleteDataSet.get(a).isEnabled());
+			System.out.println((a + 1) + "st Delete Button is Enabled: " + deleteDataSet.get(a).isEnabled());
 		}
 
 		jsClick(driver, getRandomElement(deleteDataSet)); 
@@ -575,6 +573,5 @@ public class DataSet extends TestBase {
 
 
 	}
-
 
 }

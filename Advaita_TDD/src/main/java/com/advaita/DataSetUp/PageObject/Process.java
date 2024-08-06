@@ -5,7 +5,6 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -213,7 +212,7 @@ public class Process extends TestBase {
 
 	@FindBy(xpath = "//div[@class='table_footer d-flex align-items-center justify-content-between']//p[@class='show_entries m-0 font_13']")
 	public static WebElement showing_pageniation;
-	
+
 	@FindBy(xpath = "//li//a//img[@alt='left_arrow']")
 	public static WebElement leftArrowOfPagination;
 
@@ -226,7 +225,7 @@ public class Process extends TestBase {
 	FakeData fake = new FakeData();
 
 	public Process() {
-		
+
 		PageFactory.initElements(driver, this);
 	}
 
@@ -825,13 +824,15 @@ public class Process extends TestBase {
 	public void NavigateToNextTablePageClick_leftarrow() {
 		assertTrue(LeftnavigationButton_table.isDisplayed(), "LeftnavigationButton_table is not dispalyed");
 		// LeftnavigationButton_table.click();
-		driver.getCurrentUrl();
+		String beforeClickURL = driver.getCurrentUrl();
 		click(driver, LeftnavigationButton_table);
 
-		if (driver.getCurrentUrl().equals(driver.getCurrentUrl())) {
-			System.out.println("Sucessfully landed in next page");
-		} else {
+		if (driver.getCurrentUrl().equals(beforeClickURL)) {
 			System.out.println("It is not landed in next page");
+			assertTrue(false);
+		} else {
+			assertTrue(true);
+			System.out.println("Sucessfully landed in next page");
 		}
 
 		assertTrue(showing_pageniation.isDisplayed(), "showing_pageniation is not displayed");
@@ -839,7 +840,5 @@ public class Process extends TestBase {
 		System.out.println(showing_pageniation.getText() + "Showing pagination");
 
 	}
-	
-	
 
 }

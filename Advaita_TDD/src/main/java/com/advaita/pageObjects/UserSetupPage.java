@@ -137,13 +137,13 @@ public class UserSetupPage extends TestBase {
 	@FindBy(id = "menulist1")
 	WebElement userSetup;
 
-	@FindBy(linkText  = "User Management")
+	@FindBy(linkText = "User Management")
 	WebElement userManagement;
 
-	@FindBy(linkText  = "Role & Permissions")
+	@FindBy(linkText = "Role & Permissions")
 	WebElement roleAndPermissions;
 
-	@FindBy(linkText  = "+ Create")
+	@FindBy(linkText = "+ Create")
 	WebElement roleAndPermissionsCreate;
 
 	@FindBy(xpath = "//select[@id='multiselect']")
@@ -152,25 +152,25 @@ public class UserSetupPage extends TestBase {
 	@FindBy(css = "table.w-100 tbody")
 	WebElement formsTableBody;
 
-	@FindBy(linkText  = "System Names")
+	@FindBy(linkText = "System Names")
 	WebElement systemNames;
 
-	@FindBy(id =  "exampleInputPassword1")
+	@FindBy(id = "exampleInputPassword1")
 	WebElement searchBox;
 
-	@FindBy(xpath =  "//select[@id='selected_role']")
+	@FindBy(xpath = "//select[@id='selected_role']")
 	WebElement roleDropdown;
 
-	@FindBy(xpath =  "//select[@id='from_user']")
+	@FindBy(xpath = "//select[@id='from_user']")
 	WebElement superiorDropdown;
 
-	@FindBy(xpath =  "//select[@name='status']")
+	@FindBy(xpath = "//select[@name='status']")
 	WebElement statusDropdown;
 
-	@FindBy(xpath =  "//button[contains(@class,'filter_search')]")
+	@FindBy(xpath = "//button[contains(@class,'filter_search')]")
 	WebElement searchButton;
 
-	@FindBy(xpath =  "//h6[text()='Clear All Filters']")
+	@FindBy(xpath = "//h6[text()='Clear All Filters']")
 	WebElement clearAllFilter;
 
 	@FindBy(linkText = "+ Create")
@@ -224,13 +224,10 @@ public class UserSetupPage extends TestBase {
 	@FindBy(xpath = "//select[@id='multiselect_group_to']")
 	WebElement groupsMultiSelectToDropdown;
 
-	//	----Roles And Permissions-----------
-
-
+	// ----Roles And Permissions-----------
 
 	@FindBy(xpath = "//tbody//td[1]")
-	public
-	List<WebElement> roleTableNames;
+	public List<WebElement> roleTableNames;
 
 	@FindBy(id = "group_name")
 	WebElement inputGroupName;
@@ -243,8 +240,6 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
 	WebElement roleContinueButton;
-
-
 
 	@FindBy(xpath = "//select[@name='permission_id']")
 	WebElement permissionsMultiSelectDropdown;
@@ -284,7 +279,6 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//button[normalize-space()='Cancel']")
 	WebElement userAccountCancelButton;
-
 
 	@FindBy(xpath = "//button[text()='Delete']")
 	WebElement roleTableDelete;
@@ -396,26 +390,26 @@ public class UserSetupPage extends TestBase {
 	
 	
 	public int getRandomIndex(List<WebElement> element) {
-		if (element.size()>0) {
+		if (element.size() > 0) {
 			Random rand = new Random();
 			return rand.nextInt(element.size());
-		}else {
+		} else {
 
 			throw new IllegalArgumentException("List size must be greater than zero.");
 		}
 
-
 	}
-	public static List<String> RolesCreated=new ArrayList<>();
 
+	public static List<String> RolesCreated = new ArrayList<>();
 
 	static FakeData fake = new FakeData();
-	static SoftAssert softAssert= new SoftAssert();
+	static SoftAssert softAssert = new SoftAssert();
 
-	public UserSetupPage(){
+	public UserSetupPage() {
 		PageFactory.initElements(driver, this);
 
 	}
+
 	String firstName;
 	String lastName;
 	String password;
@@ -428,7 +422,7 @@ public class UserSetupPage extends TestBase {
 	public ExcelUtils excelToUploadViewPermissions = new ExcelUtils(permissionsfilePath, "View Permissions");
 
 	private static void assertElements(WebElement textBox) {
-		softAssert.assertTrue(textBox.isEnabled()) ;
+		softAssert.assertTrue(textBox.isEnabled());
 		softAssert.assertTrue(textBox.isDisplayed());
 
 	}
@@ -440,8 +434,7 @@ public class UserSetupPage extends TestBase {
 		return this;
 	}
 
-	public void assertElements()
-	{
+	public void assertElements() {
 		userManagementCreateButton.click();
 		assertElements(inputUserName);
 		assertElements(inputFirstName);
@@ -450,8 +443,7 @@ public class UserSetupPage extends TestBase {
 		assertElements(inputPassword);
 		assertElements(inputConfirmPassword);
 
-		if (activeCheckBox.isSelected())
-		{
+		if (activeCheckBox.isSelected()) {
 			System.out.println(activeCheckBox.isSelected());
 			activeCheckBox.click();
 			System.out.println(activeCheckBox.isSelected());
@@ -490,13 +482,12 @@ public class UserSetupPage extends TestBase {
 		inputPassword.sendKeys(password);
 		inputConfirmPassword.sendKeys(password);
 		System.out.println(UserName);
-		if(!activeCheckBox.isSelected())
-		{
+		if (!activeCheckBox.isSelected()) {
 			System.out.println("Active Checkbox is not selected");
 			activeCheckBox.click();
 			System.out.println("Active Checkbox Checked now");
 
-		}else {
+		} else {
 			System.out.println("Active Checkbox Checked");
 
 		}
@@ -532,7 +523,7 @@ public class UserSetupPage extends TestBase {
 	{
 		Select singleGroup=new Select(groupsMultiSelectDropdown);
 		singleGroup.selectByVisibleText(selectGroup);
-		click(driver,groupsSingleRight);
+		click(driver, groupsSingleRight);
 		return this;
 	}
 
@@ -568,19 +559,18 @@ public class UserSetupPage extends TestBase {
 	{
 		sendKeys(inputGroupName,inputgroupname);
 
-		Select fromGroupsDrp=new Select(permissionsMultiSelectDropdown);
+		Select fromGroupsDrp = new Select(permissionsMultiSelectDropdown);
 
 		//		
 		List<String> groupsToSelect= utils.getColumnDataByName(getGroupNameFromExcel);
 
-		for (String options:groupsToSelect)
-		{
+		for (String options : groupsToSelect) {
 			fromGroupsDrp.selectByVisibleText(options);
 		}
 
 		permissionsSingleRight.click();
 		roleCreateButton.click();
-		//		roleCancelButton.click();
+		// roleCancelButton.click();
 		unWait(2);
 		roleContinueButton.click();
 		RolesCreated.add(inputgroupname);
@@ -593,10 +583,9 @@ public class UserSetupPage extends TestBase {
 
 	}
 
-	public UserSetupPage validateGroupNameInputField(String groupName)
-	{
+	public UserSetupPage validateGroupNameInputField(String groupName) {
 
-		System.out.println(groupName);		
+		System.out.println(groupName);
 		roleAndPermissionsCreate.click();
 
 		inputGroupName.sendKeys(groupName);
@@ -606,18 +595,17 @@ public class UserSetupPage extends TestBase {
 
 	}
 
-	public UserSetupPage createUserWithRoleAll(String groupName)
-	{
+	public UserSetupPage createUserWithRoleAll(String groupName) {
 		inputGroupName.sendKeys(groupName);
 		permissionsAllRight.click();
 		roleCreateButton.click();
 
-		click(driver,roleContinueButton);
+		click(driver, roleContinueButton);
 		unWait(2);
-		click(driver,userManagement);
+		click(driver, userManagement);
 		userManagementCreateButton.click();
 
-		Select groupDrop=new Select(groupsMultiSelectDropdown);
+		Select groupDrop = new Select(groupsMultiSelectDropdown);
 		groupDrop.selectByVisibleText(groupName);
 		RolesCreated.add(groupName);
 		return this;
@@ -700,7 +688,7 @@ public class UserSetupPage extends TestBase {
 				roleContinueButton.click();
 				System.out.println(nameToDelete+" Role Record Successfully Deleted");
 				break;
-			}else {
+			} else {
 
 			}
 

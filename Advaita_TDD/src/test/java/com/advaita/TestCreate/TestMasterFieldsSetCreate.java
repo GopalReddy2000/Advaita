@@ -184,6 +184,16 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyAfterFieldSetCreatedCount();
 
 	}
+	
+//	@Test(priority = 15)
+//	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
+//		
+//		test = reports.createTest("verifyNumberFieldInCreateFieldSet");
+//		
+////		MastersFieldSets.commonNavigation();
+//		masterFieldSet.verifyNumberFieldInCreateFieldSet();
+//		
+//	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {

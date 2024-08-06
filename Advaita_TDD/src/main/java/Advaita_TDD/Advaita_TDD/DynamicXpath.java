@@ -2,7 +2,6 @@ package Advaita_TDD.Advaita_TDD;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.advaita.BaseClass.TestBase;
 
@@ -71,18 +70,18 @@ public class DynamicXpath extends TestBase {
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
-	public static WebElement questionType(int sectionNumber, int subSectionNumber, int subSubSectionNumber) {
+	public static WebElement questionType(int sectionNumber, int questionNumber, int questionType) {
 		String xpath = String.format(
 				"//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_%d_%d']/following-sibling::div[%d]//h6",
-				sectionNumber, subSectionNumber, subSubSectionNumber);
+				sectionNumber, questionNumber, questionType);
 		return driver.findElement(By.xpath(xpath));
 	}
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
-	public static WebElement questionTypeOptions(int sectionNumber, int subSectionNumber, int subSubSectionNumber) {
-		String xpath = String.format("//input[@name='ans_option_%d_%d_%d']", sectionNumber, subSectionNumber,
-				subSubSectionNumber);
+	public static WebElement questionTypeOptions(int sectionNumber, int questionNumber, int questionOptionNumber) {
+		String xpath = String.format("//input[@name='ans_option_%d_%d_%d']", sectionNumber, questionNumber,
+				questionOptionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
 
@@ -134,6 +133,24 @@ public class DynamicXpath extends TestBase {
 		String xpath = String.format(
 				"(//div[@class='upload-cloud']/ancestor::div//img[@class='trashimg answer_option fileupload'])[%d]",
 				sectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+	
+	// Method to generate the dynamic XPath and return the WebElement %d-section or
+	// sub section number
+//	public static List<WebElement> checkQuestionTypes(int sectionNumber, int question) {
+//	    String xpath = String.format(
+//	        "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_%d_%d']/following-sibling::div//h6",
+//	        sectionNumber, question);
+//	    return driver.findElements(By.xpath(xpath));
+//	}
+	
+	// Method to generate the dynamic XPath and return the WebElement %d-section or
+	// sub section number
+	public static WebElement questionField(int questionNum,int sectionNumber,int questionFieldNum) {
+		String xpath = String.format(
+				"//div[h5[contains(text(), 'Question %d')]]//input[@name='question_%d_%d']",
+				questionNum,sectionNumber,questionFieldNum);
 		return driver.findElement(By.xpath(xpath));
 	}
 
