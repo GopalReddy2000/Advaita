@@ -1,4 +1,4 @@
-package com.advaita.TestCreate;
+package com.advaita.TestCase;
 
 import static org.testng.Assert.assertEquals;
 

@@ -3,7 +3,9 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.pageObjects.EmailTemplatePage;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 public class TestBase {
@@ -39,17 +43,22 @@ public class TestBase {
 
 	public static void initialization() throws AWTException {
 
-//		 Incognito Mode Execution
+		//		 Incognito Mode Execution
 		options = new ChromeOptions();
+		options.addArguments("--disable-notifications");
 		options.addArguments("--incognito");
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(ChromeOptions.CAPABILITY, options);
 		cap.setCapability("applicationCacheEnabled", false);
 		options.merge(cap);
+
+		Map<String, Object> prefs = new HashMap<>();
+		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
+		options.setExperimentalOption("prefs", prefs);
 		driver = new ChromeDriver(options);
 
 		// Normal Execution
-//		driver = new ChromeDriver();
+		//		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -94,7 +103,7 @@ public class TestBase {
 
 	}
 
-//	SendKeys
+	//	SendKeys
 
 	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
@@ -111,7 +120,7 @@ public class TestBase {
 	public static void jsClick(WebDriver driver, WebElement element) {
 		js.executeScript("arguments[0].click();", element);
 	}
-	
+
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -123,26 +132,35 @@ public class TestBase {
 
 		return Integer.parseInt(numberAsString.toString());
 	}
-	
+
 	public static void unWait(int seconds)
 	{
-	 	Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+	}
+
+	//	Random Index
+
+	public static WebElement getRandomElement(List<WebElement> elements) {
+		int randomIndex = 0;
+		try {
+			randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return elements.get(randomIndex);
 	}
 	
-//	Random Index
-	
-	 public static WebElement getRandomElement(List<WebElement> elements) {
-	        int randomIndex = 0;
-			try {
-				randomIndex = ThreadLocalRandom.current().nextInt(elements.size());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	        return elements.get(randomIndex);
-	    }
-	
-	
+	public void loginToUser(String UserName) {
+		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
+		
+		LoginPage.usernameField.sendKeys(UserName);
+		LoginPage.passwordField.sendKeys("Qwerty@123");
+		LoginPage.signInButton.click();
+		
+	}
+
+
 
 	// Click Action
 

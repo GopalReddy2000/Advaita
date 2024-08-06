@@ -1,36 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="9" total="10" passed="1" failed="0" skipped="0">
+<testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-07-17T10:54:01 IST" name="Default suite" finished-at="2024-07-17T10:54:33 IST" duration-ms="31865">
+  <suite started-at="2024-08-06T15:10:54 IST" name="Default suite" finished-at="2024-08-06T15:11:41 IST" duration-ms="46923">
     <groups>
     </groups>
-    <test started-at="2024-07-17T10:54:01 IST" name="Default test" finished-at="2024-07-17T10:54:33 IST" duration-ms="31865">
-      <class name="com.advaita.TestTable.TestNon_MeasurableTable">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestTable.TestNon_MeasurableTable@4d5650ae]" started-at="2024-07-17T10:54:01 IST" name="setUp" finished-at="2024-07-17T10:54:13 IST" duration-ms="11730" status="PASS">
+    <test started-at="2024-08-06T15:10:54 IST" name="Default test" finished-at="2024-08-06T15:11:41 IST" duration-ms="46923">
+      <class name="com.advaita.TestCase.EscalationMatrixTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:10:54 IST" name="setUp" finished-at="2024-08-06T15:11:05 IST" duration-ms="10486" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testcreateNormalView()[pri:0, instance:com.advaita.TestTable.TestNon_MeasurableTable@4d5650ae]" started-at="2024-07-17T10:54:13 IST" name="testcreateNormalView" finished-at="2024-07-17T10:54:32 IST" duration-ms="18892" status="PASS">
+        <test-method signature="escalationMatrixCreateTest()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:11:05 IST" name="escalationMatrixCreateTest" finished-at="2024-08-06T15:11:41 IST" duration-ms="36347" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- testcreateNormalView -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestTable.TestNon_MeasurableTable@4d5650ae]" started-at="2024-07-17T10:54:32 IST" name="getResult" finished-at="2024-07-17T10:54:33 IST" duration-ms="770" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=testcreateNormalView status=SUCCESS method=TestNon_MeasurableTable.testcreateNormalView()[pri:0, instance:com.advaita.TestTable.TestNon_MeasurableTable@4d5650ae] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestTable.TestNon_MeasurableTable@4d5650ae]" started-at="2024-07-17T10:54:33 IST" name="tearDown" finished-at="2024-07-17T10:54:33 IST" duration-ms="373" status="PASS">
+        </test-method> <!-- escalationMatrixCreateTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:11:41 IST" name="tearDown" finished-at="2024-08-06T15:11:41 IST" duration-ms="0" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- com.advaita.TestTable.TestNon_MeasurableTable -->
+      </class> <!-- com.advaita.TestCase.EscalationMatrixTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -3,12 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.UserSetupTest">
+      <class name="com.advaita.TestCase.EscalationMatrixTest">
         <methods>
+          <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="createAUserAccount" invocation-numbers="1"/>
+          <include name="escalationMatrixCreateTest"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.UserSetupTest -->
+      </class> <!-- com.advaita.TestCase.EscalationMatrixTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
