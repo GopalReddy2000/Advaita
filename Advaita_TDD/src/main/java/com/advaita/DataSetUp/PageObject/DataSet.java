@@ -195,7 +195,6 @@ public class DataSet extends TestBase {
 	public static WebElement recordDeleteButton;
 
 
-
 	ScreenShorts ss = new ScreenShorts();
 	Pagination pg = new Pagination();
 

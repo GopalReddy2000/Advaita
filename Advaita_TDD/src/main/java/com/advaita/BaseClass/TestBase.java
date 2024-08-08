@@ -1,15 +1,8 @@
 package com.advaita.BaseClass;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-
+import com.advaita.Login.Home.LoginPage;
+import com.google.common.util.concurrent.Uninterruptibles;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -19,18 +12,22 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.pageObjects.EmailTemplatePage;
-import com.google.common.util.concurrent.Uninterruptibles;
+import java.awt.*;
+import java.time.Duration;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
 	// Global Variable(Need to be Initialize)
 	// It should be only within class scopes
-	public static ChromeDriver driver;
+	public static WebDriver driver;
 	public static DevTools devTools;
 	// public static FirefoxDriver driver;
 	public static ChromeOptions options;
@@ -43,18 +40,19 @@ public class TestBase {
 	public static String mainURl = "https://test.capture.autosherpas.com/";
 
 	public static void initialization() throws AWTException {
-
+		WebDriverManager.chromedriver().setup();
 		//		 Incognito Mode Execution
 		options = new ChromeOptions();
 		options.addArguments("--disable-notifications");
 		options.addArguments("--incognito");
+
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(ChromeOptions.CAPABILITY, options);
 		cap.setCapability("applicationCacheEnabled", false);
 		options.merge(cap);
 
 		Map<String, Object> prefs = new HashMap<>();
-		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
+		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
 		options.setExperimentalOption("prefs", prefs);
 		driver = new ChromeDriver(options);
 
@@ -151,7 +149,20 @@ public class TestBase {
 		}
 		return elements.get(randomIndex);
 	}
+	@FindBy(id="menulist2")
+	WebElement alchemy;
+	public void navigateWithinAlchemy(WebElement element)
+	{
+		try{
+			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+			element.click();
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
+			alchemy.click();
+			element.click();
+		}
 
+	}
 	public void loginToUser(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 		

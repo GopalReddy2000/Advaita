@@ -1,18 +1,19 @@
 package com.advaita.pageObjects;
 
-import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.advaita.BaseClass.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.advaita.BaseClass.TestBase;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class EscalationMatrixPage extends TestBase {
 	public EscalationMatrixPage(){
@@ -93,9 +94,9 @@ public class EscalationMatrixPage extends TestBase {
 	WebElement stageSearchIcon;
 
 	@FindBy(xpath  ="//img[@alt='table-edit']")
-	WebElement recordEyeButton;
+	List<WebElement> recordEyeButton;
 
-	@FindBy(xpath  ="(//span[contains(@class,'select2-selection select2')]//span)[2]")
+	@FindBy(id  ="select2-current_Sec_id-container")
 	WebElement reviewDropdown;
 
 	@FindBy(xpath  ="//ul[@id='select2-current_Sec_id-results']//li")
@@ -139,23 +140,41 @@ public class EscalationMatrixPage extends TestBase {
 
 	@FindBy(xpath ="//label[text()='Remarks ']/following-sibling::textarea")
 	WebElement escalateInputField;
-	
+
 	@FindBy(css  ="img.arrow-left")
 	WebElement backButton;
-	
+
+	@FindBy(linkText  ="Rejected Audit Form")
+	WebElement rejectAuditForm;
+
+	@FindBy(xpath  ="//select[@id='page-size-select']")
+	WebElement itemsPerPage;
+
+
+	//	-------------------Master-----------
+	@FindBy(id  ="menulist3")
+	WebElement mastersMenu;
+
+	@FindBy(linkText  ="View/Modify Insurance")
+	WebElement viewModifyInsurance;
+
+	@FindBy(xpath  ="//img[@title='View Assignees']")
+	WebElement viewAssigness;
+
+	@FindBy(xpath  ="//button[text()='Assign']")
+	WebElement assignButton;
 
 
 
-
-	String CustomerEmail;
-	String NameOfTheCustomer;
+	String customerEmail;
+	String nameOfTheCustomer;
 	String phoneNumber;
 
 	List<String> levels = List.of(
 			"--Select--", "0", "1", "2", "3", "4", "5", "6", "7", "8",
 			"9", "10", "11", "12", "13", "14", "15", "16", "17", "18",
 			"19", "20"
-			);
+	);
 
 	List<String> roles = List.of(
 			"--Select--",
@@ -175,17 +194,17 @@ public class EscalationMatrixPage extends TestBase {
 			"View",
 			"View 2",
 			"View Alchemy"
-			);
+	);
 
 	List<String> QuestionID = List.of(
 			"--Select--","Manager Review"
-			);
+	);
 
 	List<String> DecisionOption = List.of(
 			"--Select--",
 			"Accept",
 			"Reject"
-			);
+	);
 
 	List<String> ToRole = List.of(
 
@@ -206,13 +225,45 @@ public class EscalationMatrixPage extends TestBase {
 			"View 2",
 			"View Alchemy",
 			"End"
-			);
+	);
 
 	List<String> ToStage = List.of(
 			"-",
 			"Agency Validation",
 			"Rejected Audit Form"
-			);
+	);
+
+	public static void selectDate(WebDriver driver, int day, int year, String month) {
+		// Click on the date picker trigger to open the date picker
+		/*WebElement datePickerTrigger = driver.findElement(By.id("id_of_datepicker_trigger_element"));
+		datePickerTrigger.click();*/
+
+		// Click on the year label to open the year selector
+		WebElement yearLabel = driver.findElement(By.cssSelector("div.xdsoft_label.xdsoft_year"));
+		unWait(1);
+		yearLabel.click();
+
+		// Select the desired year
+		WebElement yearOption = driver.findElement(By.cssSelector("div.xdsoft_option[data-value='" + year + "']"));
+		unWait(1);
+		yearOption.click();
+
+		// Click on the month label to open the month selector
+		WebElement monthLabel = driver.findElement(By.cssSelector("div.xdsoft_label.xdsoft_month"));
+		unWait(1);
+		monthLabel.click();
+
+		// Select the desired month
+		WebElement monthOption = driver.findElement(By.xpath("//div[contains(@class, 'xdsoft_option') and text()='" + month + "']"));
+		unWait(1);
+		monthOption.click();
+
+		// Select the desired date (day)
+		WebElement dateOption = driver.findElement(By.cssSelector("div.xdsoft_option[data-value='"+day+"']"));
+		unWait(1);
+		dateOption.click();
+	}
+
 
 	public void selectByVisibleText(WebElement select,String Value)
 	{
@@ -369,7 +420,7 @@ public class EscalationMatrixPage extends TestBase {
 
 		for(WebElement options:ProcessDrp.getOptions())
 		{
-			System.out.println(options.getText()); 
+			System.out.println(options.getText());
 		}
 	}
 
@@ -385,29 +436,65 @@ public class EscalationMatrixPage extends TestBase {
 
 		return this;
 	}
-	
+
 	public EscalationMatrixPage escalateRecord(String escalateMessage)
 	{
-		callLogTabView.click();
+		navigateWithinAlchemy(callLogTabView);
+		// Click on necessary tabs and stages
+
 		insuranceStage.click();
-		NameOfTheCustomer=driver.findElement(By.xpath("//tbody//td[5]")).getText();
-		phoneNumber=driver.findElement(By.xpath("//tbody//td[7]")).getText();
-		unWait(1);
-		CustomerEmail=custEmail.getText();
-		eyeButton.click();
-		escalateInputField.sendKeys(escalateMessage);
-		
+
+		// Retrieve customer details
+
+
+		try {
+			// Attempt to click the eye button and escalate
+			nameOfTheCustomer = driver.findElement(By.xpath("//tbody//td[5]")).getText();
+			phoneNumber = driver.findElement(By.xpath("//tbody//td[7]")).getText();
+			unWait(1); // Assuming this is a method that waits for 1 second
+			customerEmail = custEmail.getText();
+			eyeButton.click();
+			escalateInputField.sendKeys(escalateMessage);
+			saveRecord();
+		} catch (NoSuchElementException e) {
+			// If the eye button is not found, assign the record and retry the process
+			assignRecord();
+
+			// Re-navigate and re-retrieve customer details
+			navigateWithinAlchemy(callLogTabView);
+			insuranceStage.click();
+			nameOfTheCustomer = driver.findElement(By.xpath("//tbody//td[5]")).getText();
+			phoneNumber = driver.findElement(By.xpath("//tbody//td[7]")).getText();
+			unWait(1);
+			String customerEmail = custEmail.getText();
+
+			// Retry the escalation process
+			eyeButton.click();
+			escalateInputField.sendKeys(escalateMessage);
+			saveRecord();
+		}
+
+
 		return this;
 	}
-	
 
-	public EscalationMatrixPage agencyValidation(String managerDecision )
+	private void saveRecord()
+	{
+		jsClick(driver,save);
+		unWait(1);
+		continueButton.click();
+	}
+
+	public EscalationMatrixPage agencyValidation(String managerDecision,String assertEscalatedMessage,String escalationType )
 	{
 		alchemy.click();
 		agencyValidaion.click();
 		selectByVisibleText(stageSearch, "Insurance Stage");
 		searchIcon.click();
-		recordEyeButton.click();
+
+		selectByVisibleText(itemsPerPage,"50");
+
+		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
 
 
 		js.executeScript("window.scrollTo(0, 500);");
@@ -425,38 +512,78 @@ public class EscalationMatrixPage extends TestBase {
 
 		String remarks= escaltionTextArea.getText();
 		System.out.println(remarks);
-		
-				
-		jsClick(driver, backButton);
+		assertEquals(remarks,assertEscalatedMessage);
+		if (escalationType.equals("Escalation")) {
+			saveRecord();
+		}else {
+
+		}
 		return this;
 	}
 
 	public EscalationMatrixPage validationStatusReport()
 	{
-		validationStatusReport.click();
+		navigateWithinAlchemy(validationStatusReport);
 		selectByVisibleText(processSearch, "AJP");
 		selectByVisibleText(subProcessSearch, "Sub AJP");
 		selectByVisibleText(subSubProcessSearch, "Sub Sub AJP");
 		selectByVisibleText(stageSearch, "Insurance Stage");
-		fromDate.sendKeys("01-08-2024");
-		toDate.sendKeys("06-08-2024");
+		fromDate.click();
+		selectDate(driver,1,2024,"August");
+		toDate.click();
+		selectDate(driver,7,2024,"August");
 		searchIcon.click();
-		recordEyeButton.click();	
-		
+		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+
 //	Bug	
-		
+
 		return this;
 	}
-	
-	
-	
-	
+	public EscalationMatrixPage rejectAuditForm(String reEscalatedMessage)
+	{
+		navigateWithinAlchemy(rejectAuditForm);
+		selectByVisibleText(stageSearch,"Insurance Stage");
+		searchIcon.click();
+		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+		js.executeScript("window.scrollTo(0, 500);");
+		unWait(1);
+		String reviewDecision=reviewDropdown.getText();
+		System.out.println(reviewDecision);
+		assertEquals(reviewDecision,"Reject");
+		escalateInputField.clear();
+		escalateInputField.sendKeys(reEscalatedMessage);
+
+		saveRecord();
+		return this;
+	}
+	public EscalationMatrixPage auditRejectedEscalation()
+	{
+		navigateWithinAlchemy(agencyValidaion);
+
+		return this;
+	}
 
 
 
+	public EscalationMatrixPage assignRecord()
+	{
+		mastersMenu.click();
+		viewOrModifyXpath("Insurance");
+		viewAssigness.click();
+		unWait(1);
+		assignButton.click();
+		unWait(1);
+		jsClick(driver,backButton);
 
+		return this;
+	}
 
-
+	private void viewOrModifyXpath(String masterName)
+	{
+		String linkText= "View/Modify "+masterName;
+		WebElement element= driver.findElement(By.linkText(linkText));
+		jsClick(driver,element);
+	}
 
 
 

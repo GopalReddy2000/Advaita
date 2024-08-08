@@ -1,21 +1,20 @@
 package com.advaita.TestCase;
 
-import java.awt.AWTException;
-
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.pageObjects.EscalationMatrixPage;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.awt.*;
 
 public class EscalationMatrixTest extends TestBase{
 	LoginPage loginPage;
 	HomePage homePage;
 	EscalationMatrixPage escalationMatrixPage;
-	
+
 	EscalationMatrixTest()
 	{
 		super();
@@ -39,60 +38,76 @@ public class EscalationMatrixTest extends TestBase{
 
 		escalationMatrixPage =new EscalationMatrixPage();
 	}
-	
-	
+
+
 	@Test
 	public void tableCheck()
 	{
 		escalationMatrixPage.navigationToTablePage()
-		.table("Insurance Stage")
-		.dropdownValidations()
-		
+				.table("Insurance Stage")
+				.dropdownValidations()
+
 		;
 	}
-	
-	String managerDecision="";
-	
+
+	String managerDecision="Reject";
+	String escalatedMessage="Escalated";
+	String reEscalatedMessage="Re-Escalated";
+
 	@Test
 	public void escalationMatrixCreateTest()
 	{
 		escalationMatrixPage.navigationToTablePage()
-		.table("Stage Test")
-		.escalationCreation();
+				.table("Insurance Stage")
+				.escalationCreation();
 		loginToUser("Agent");
-		escalationMatrixPage.escalateRecord("");
+		escalationMatrixPage.escalateRecord(escalatedMessage);
 		loginToUser("Team Lead");
-		escalationMatrixPage.agencyValidation(managerDecision);
-		
+		escalationMatrixPage.agencyValidation(managerDecision,escalatedMessage,"Escalation");
+
 		switch(managerDecision) {
-		case "Accept": 
-			escalationMatrixPage.validationStatusReport();
-			
+			case "Accept":
+				escalationMatrixPage.validationStatusReport();
+			case "Reject":
+				loginToUser("Agent");
+				escalationMatrixPage.rejectAuditForm(reEscalatedMessage);
+				loginToUser("Team Lead");
+				escalationMatrixPage.agencyValidation(managerDecision,reEscalatedMessage,"reEscalation");
+
 		}
 	}
-	
-	
+
+
 	@Test
 	public void agencyTest()
 	{
 		loginToUser("Team Lead");
-		escalationMatrixPage.agencyValidation("Accept");
+		escalationMatrixPage.validationStatusReport();
 	}
-	
+
 	@Test
 	public void escalateRecordTest()
 	{
 		loginToUser("Agent");
-		escalationMatrixPage.escalateRecord("");
+		escalationMatrixPage.assignRecord();
 	}
-	
-	
-	
-	
+
+	@Test
+	public void rejectAuditForm()
+	{
+		loginToUser("Agent");
+		escalationMatrixPage.rejectAuditForm(reEscalatedMessage);
+	}
+
+
+
+
+
+
 	@AfterTest
 	public void tearDown()
 	{
 //		driver.quit();
 	}
-	
+
 }
