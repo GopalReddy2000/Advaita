@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class TestBase {
 
+
 	// Global Variable(Need to be Initialize)
 	// It should be only within class scopes
 	public static WebDriver driver;
@@ -109,7 +110,21 @@ public class TestBase {
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
+	@FindBy(xpath  ="(//button[text()='Continue'])[1]")
+	WebElement continueButton;
 
+	@FindBy(xpath ="//button[text()='Save']")
+	WebElement save;
+	@FindBy(css ="img.arrow-left")
+	protected WebElement backButton;
+
+
+	protected void saveRecord()
+	{
+		jsClick(driver,save);
+		unWait(1);
+		continueButton.click();
+	}
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 //			jsClick(driver, element);
@@ -155,11 +170,11 @@ public class TestBase {
 	{
 		try{
 			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-			element.click();
+			jsClick(driver,element);
 		}catch (org.openqa.selenium.NoSuchElementException e)
 		{
-			alchemy.click();
-			element.click();
+			jsClick(driver,alchemy);
+			jsClick(driver,element);
 		}
 
 	}

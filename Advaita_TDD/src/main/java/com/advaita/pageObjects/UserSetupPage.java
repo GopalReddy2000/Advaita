@@ -1,13 +1,10 @@
 package com.advaita.pageObjects;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
+import Advaita_TDD.Advaita_TDD.FakeData;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ExcelUtils;
+import com.advaita.Utilities.ExcelWrite;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
@@ -16,12 +13,13 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ExcelUtils;
-import com.advaita.Utilities.ExcelWrite;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class UserSetupPage extends TestBase {
 
@@ -320,75 +318,75 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//button[text()='Save']")
 	WebElement UMSaveButton;
-	
+
 	@FindBy(xpath =  "//button[text()='User superior mapping ']")
 	WebElement UserSuperiorMappingTab;
-	
+
 	@FindBy(xpath =  "//td[1]//select[not(contains(@name,'prefix'))]")
 	WebElement USMStagesDropdown;
 
 	@FindBy(xpath =  "//td[2]//select[not(contains(@name,'__prefix__'))]")
 	WebElement USMRoleDropdown;
-	
+
 	@FindBy(xpath =  "//td[3]//select[not(contains(@name,'__prefix__'))]")
 	WebElement USMNameDropdown;
-	
+
 	@FindBy(xpath =  "//td[4]//input[not(contains(@name,'__prefix__'))]")
 	WebElement USMFromDate;
-	
+
 	@FindBy(xpath =  "//td[5]//input[not(contains(@name,'__prefix__'))]")
 	WebElement USMToDate;
-	
+
 	@FindBy(xpath =  "//tr[not(@id='empty_form')]//img[not(contains(@class,'edit_delete '))]")
 	WebElement deleteButton;
-	
+
 	@FindBy(xpath =  "(//button[text()='Continue'])[1]")
 	WebElement continueButton;
-	
+
 	@FindBy(xpath =  "//tbody//td//select[not(contains(@name,'__prefix__'))]")
 	WebElement SMSystemName;
-	
+
 	@FindBy(xpath =  "//input[@type='text' and not(contains(@id,'prefix'))]")
 	WebElement SMSystemValue;
-	
+
 	@FindBy(id =  "group_name")
 	WebElement systemNameInputField;
-	
+
 	@FindBy(xpath =  "//button[text()='Create']")
 	WebElement systemNameSaveButton;
-	
+
 	@FindBy(xpath =  "//button[text()='Cancel']")
 	WebElement systemNameCancelButton;
-	
-	
+
+
 	@FindBy(xpath =  "//img[@alt='rgt_arrow']")
 	WebElement paginationRightButton;
-	
-	
+
+
 	@FindBy(xpath =  "//a[@id='uploadBtn']")
 	WebElement userCreateUploadButton;
-	
+
 	@FindBy(xpath =  "(//input[@class='select2-search__field'])[1]")
 	WebElement uploadStagesButton;
-	
+
 	@FindBy(xpath =  "//li[@class='select2-results__option']")
 	List<WebElement> uploadStagesOptions;
-	
+
 	@FindBy(xpath =  "//input[@id='newOption']")
 	WebElement uploadNewButton;
-	
+
 	@FindBy(xpath =  "//input[@id='updateOption']")
 	WebElement uploadUpdateButton;
-	
+
 	@FindBy(xpath =  "//input[@id='Browse']")
 	WebElement uploadFileColumn;
-	
+
 	@FindBy(xpath =  "//button[text()='Upload']")
 	WebElement fileUploadButton;
-	
 
-	
-	
+
+
+
 	public int getRandomIndex(List<WebElement> element) {
 		if (element.size() > 0) {
 			Random rand = new Random();
@@ -492,9 +490,9 @@ public class UserSetupPage extends TestBase {
 
 		}
 
-		
+
 		userCreated.add(UserName);
-		
+
 		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userCreated), permissionsfilePath, userManagementSheetName);
 
 
@@ -515,10 +513,9 @@ public class UserSetupPage extends TestBase {
 		jsClick(driver, userAccountCreateButton);
 		System.out.println(dupUserNameError.getAttribute("id"));
 		assertTrue(dupUserNameError.getAttribute("id").equals("user_name-error"));
-		
+
 	}
-	
-	
+
 	public UserSetupPage singleGroupSelect(String selectGroup)
 	{
 		Select singleGroup=new Select(groupsMultiSelectDropdown);
@@ -561,7 +558,7 @@ public class UserSetupPage extends TestBase {
 
 		Select fromGroupsDrp = new Select(permissionsMultiSelectDropdown);
 
-		//		
+
 		List<String> groupsToSelect= utils.getColumnDataByName(getGroupNameFromExcel);
 
 		for (String options : groupsToSelect) {
@@ -647,7 +644,6 @@ public class UserSetupPage extends TestBase {
 		return this;
 	}
 
-
 	List<String> recordNames = new ArrayList<>();
 	public List<String> fetchRecordNames() {
 
@@ -696,14 +692,14 @@ public class UserSetupPage extends TestBase {
 		userSetup.click();
 		return this;
 	}
-	
+
 	public void getRolesName()
 	{
 		roleAndPermissions.click();
 		List <WebElement> roleNames=driver.findElements(By.xpath("//tr//td[1]"));
 		for(WebElement roleName:roleNames)
 		{
-		System.out.println(roleName.getText());
+			System.out.println(roleName.getText());
 		}
 	}
 
@@ -731,7 +727,7 @@ public class UserSetupPage extends TestBase {
 		isElementVisible(createButton,"Process Create Button is Displayed");
 		isElementVisible(processEditButton,"Process Edit Button is Displayed");
 
-		jsClick(driver, processRecords.get(0)); 
+		jsClick(driver, processRecords.get(0));
 		isElementVisible(processSecondEditButton,"Process Second Process Edit Button is Displayed");
 
 		dataSetTab.click();
@@ -773,9 +769,6 @@ public class UserSetupPage extends TestBase {
 		//		NonMeasurableSetPage.createNormalView();
 		//		Disposition.createNormalView();
 
-
-
-
 	}
 
 	public void dropdownValidation(WebElement Dropdown)
@@ -799,7 +792,7 @@ public class UserSetupPage extends TestBase {
 	{
 		userSetup.click();
 		userManagement.click();
-		
+
 //		try {
 //			userManagement.click();
 //			
@@ -807,7 +800,7 @@ public class UserSetupPage extends TestBase {
 //			userSetup.click();
 //			userManagement.click();
 //		}
-		
+
 
 		return this;
 	}
@@ -825,24 +818,24 @@ public class UserSetupPage extends TestBase {
 				UserMappingBtn.click();
 				break;
 			}
-			
+
 		}
 		return this;
 	}
-	
+
 	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName,String SubSubProcess,String Stages)
 	{
 		// Adjust timeout as needed
 		try {
-		    if (!deleteButton.isDisplayed()) {
-		        System.out.println("Rows are already added.");
-		    }
+			if (!deleteButton.isDisplayed()) {
+				System.out.println("Rows are already added.");
+			}
 		} catch (Exception e) {
-		   
+
 			AddRow.click();// Handle other exceptions if necessary
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
-		
+
 //		
 //		try {
 //			if(!deleteButton.get(0).isDisplayed()) {
@@ -853,59 +846,58 @@ public class UserSetupPage extends TestBase {
 //				AddRow.click();
 //			}
 //				uMProcessTab.click();
-				
-				dropdownValidation(UMProcessNameDropdown);
-				selectByVisibleText(UMProcessNameDropdown, ProcessName);
 
-				dropdownValidation(UMSubProcessNameDropdown);
-				selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
+		dropdownValidation(UMProcessNameDropdown);
+		selectByVisibleText(UMProcessNameDropdown, ProcessName);
 
-				dropdownValidation(UMSubSubProcessNameDropdown);
-				selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+		dropdownValidation(UMSubProcessNameDropdown);
+		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
 
-				dropdownValidation(UMStageNameDropdown);
-				selectByVisibleText(UMStageNameDropdown, Stages);
-				
-				UMSaveButton.click();
-				unWait(1);
-				continueButton.click();
-			
+		dropdownValidation(UMSubSubProcessNameDropdown);
+		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+
+		dropdownValidation(UMStageNameDropdown);
+		selectByVisibleText(UMStageNameDropdown, Stages);
+
+		UMSaveButton.click();
+		unWait(1);
+		continueButton.click();
+
 		return this;
 	}
 
-	
 	public UserSetupPage userMappingUserSuperior(String Stages,String role,String name)
 	{
 		try {
-		    if (!deleteButton.isDisplayed()) {
-		        System.out.println("Rows are already added.");
-		    }
+			if (!deleteButton.isDisplayed()) {
+				System.out.println("Rows are already added.");
+			}
 		} catch (Exception e) {
-		   
+
 			AddRow.click();// Handle other exceptions if necessary
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 //		UserSuperiorMappingTab.click();
 //		dropdownValidation(USMStagesDropdown);
 		selectByVisibleText(USMStagesDropdown,Stages);
-		
+
 //		dropdownValidation(USMRoleDropdown);
 		selectByVisibleText(USMRoleDropdown,role);
-		
+
 //		dropdownValidation(USMNameDropdown);
 		selectByVisibleText(USMNameDropdown,name);
-		
+
 //		USMFromDate.sendKeys("02-07-2024");
 //		sendKeys(USMFromDate, "02-07-2024");
 //		USMToDate.sendKeys("06-07-2024");
 //		sendKeys(USMToDate, "06-07-2024");
-		
+
 		UMSaveButton.click();
 		unWait(1);
 		continueButton.click();
 		return this;
 	}
-	
+
 	public UserSetupPage systemMapping(String visibleText,String value)
 	{
 		selectByVisibleText(SMSystemName,visibleText);
@@ -919,11 +911,11 @@ public class UserSetupPage extends TestBase {
 		systemNames.click();
 		return this;
 	}
-	
-//	--------System Names-------------
+
+	//	--------System Names-------------
 	public UserSetupPage systemNames(String systemName)
 	{
-		
+
 		createButton.click();
 		systemNameInputField.sendKeys(systemName);
 		systemNameSaveButton.click();
@@ -931,7 +923,7 @@ public class UserSetupPage extends TestBase {
 		continueButton.click();
 		userSetup.click();
 		return this;
-		
+
 	}
 	public UserSetupPage deleteSystemNames(String systemNames)
 	{
@@ -945,7 +937,7 @@ public class UserSetupPage extends TestBase {
 				unWait(2);
 				roleContinueButton.click();
 				System.out.println(systemNames+"  Record Successfully Deleted");
-				
+
 				break;
 			}
 		}
@@ -961,14 +953,14 @@ public class UserSetupPage extends TestBase {
 		userSetup.click();
 		userManagement.click();
 		do {
-		List<WebElement>records=driver.findElements(By.xpath("//td[1]"));
-		for(WebElement record:records)
-		{
-			userAcount.add(record.getText());
-			
-		}
-		
-		jsClick(driver,paginationRightButton);
+			List<WebElement>records=driver.findElements(By.xpath("//td[1]"));
+			for(WebElement record:records)
+			{
+				userAcount.add(record.getText());
+
+			}
+
+			jsClick(driver,paginationRightButton);
 //		roleAndPermissions.click();
 //
 //		List<WebElement>roles=driver.findElements(By.xpath("//td[1]"));
@@ -981,10 +973,10 @@ public class UserSetupPage extends TestBase {
 		}
 		while(paginationRightButton.isEnabled());
 		{
-			
+
 		}
 		ExcelWrite.updateExcelWithData(Map.of("User Accounts",userAcount), permissionsfilePath, "Already Existing Records");
-		
+
 	}
 
 	String user_data=System.getProperty("user.dir")+"\\Upload Files\\user_data.xlsx";
@@ -994,22 +986,22 @@ public class UserSetupPage extends TestBase {
 		userCreateUploadButton.click();
 		uploadStagesButton.click();
 		uploadStagesOptions.get(0).click();
-		
+
 		uploadNewButton.click();
 		uploadFileColumn.sendKeys(user_data);
-		
+
 		fileUploadButton.click();
 		List<String> userNames=uploadToCreateUser.getColumnDataByName("User Name");
 		for(String userName:userNames) {
 			System.out.println(userName);
 		}
-		
+
 		assertEquals(userNames.get(0), roleTableNames.get(3).getText());
-		
+
 		return this;
 	}
-	
-	
+
+
 
 
 

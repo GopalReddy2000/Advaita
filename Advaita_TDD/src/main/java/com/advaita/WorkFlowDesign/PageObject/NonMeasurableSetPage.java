@@ -1,16 +1,9 @@
 package com.advaita.WorkFlowDesign.PageObject;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
+import Advaita_TDD.Advaita_TDD.FakeData;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.Pagination;
+import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -21,11 +14,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.Pagination;
-import com.google.common.util.concurrent.Uninterruptibles;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
+import static org.testng.Assert.*;
 
 public class NonMeasurableSetPage extends TestBase {
 
@@ -391,7 +386,6 @@ public class NonMeasurableSetPage extends TestBase {
 		int randomIndex = random.nextInt(array.length);
 		return array[randomIndex];
 	}
-
 	public static WebElement getElementByDynamicXPath(int q) {
 		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
 		return driver.findElement(By.xpath(xpath));
@@ -406,28 +400,22 @@ public class NonMeasurableSetPage extends TestBase {
 
 		return driver.findElement(By.xpath(xpath));
 	}
-
 	public WebElement sectionsSettings(int a) {
 		String xpath = "(//img[@alt='settingicon'])["+a+"]";
 
 		return driver.findElement(By.xpath(xpath));
 	}
-
-
 	public WebElement sectionIsConditional(int a) {
 		String xpath = "is_conditional_"+a;
 
 		return driver.findElement(By.name(xpath));
 	}
-
 	public WebElement addSectionQuestion(int s) {
 		String xpath = "//div[@data-info='question-"+s+"-1']/following-sibling::div//a[normalize-space()='Add Question']";
 
 		return driver.findElement(By.name(xpath));
 	}
-
-
-	public void commonNavigation(String questionSetName)
+	public NonMeasurableSetPage commonNavigation(String questionSetName)
 	{
 		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
@@ -438,9 +426,8 @@ public class NonMeasurableSetPage extends TestBase {
 
 		question1.clear();
 		question1.sendKeys(generateQuestionSetName(questionSetName));
+		return this;
 	}
-
-
 	public void multipleChoice() throws InterruptedException
 	{
 		commonNavigation("Multiple Choice");
@@ -509,7 +496,6 @@ public class NonMeasurableSetPage extends TestBase {
 
 
 	}
-
 	public void shortAnswer()
 	{
 		commonNavigation("Short Answer");
@@ -563,7 +549,6 @@ public class NonMeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-
 	public void defaultAndIsFatalValidation()
 	{
 		Assert.assertTrue(dropdownSetAsDefault.isEnabled());
@@ -579,7 +564,6 @@ public class NonMeasurableSetPage extends TestBase {
 
 		}
 	}
-
 	public void questionTypeDropDown()
 	{
 		commonNavigation("DropDown");
@@ -610,7 +594,7 @@ public class NonMeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-	public static void saveRecord()
+	public void saveRecord()
 	{
 		//		Saving the record
 		click(driver, saveButtonOfCreateQuestionSet);
@@ -619,7 +603,6 @@ public class NonMeasurableSetPage extends TestBase {
 		Assert.assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
 		click(driver, questionSaveContinueButton);
 	}
-
 	public void questionTypeRelativeDropdown()
 	{
 		commonNavigation("Relative Dropdown");
@@ -637,7 +620,7 @@ public class NonMeasurableSetPage extends TestBase {
 		/*
 		 * for(int a=1;a<3;a++) { for(int q=1;q<=3;q++) { addOption.click(); }
 		 * List<WebElement> deleteButton=choiceDelete;
-		 * 
+		 *
 		 * for(WebElement delete:deleteButton) { delete.click(); } }
 		 */
 		for(int q=1;q<=3;q++)
@@ -653,7 +636,6 @@ public class NonMeasurableSetPage extends TestBase {
 
 
 	}
-
 	public void fileUpload()
 	{
 		click(driver, workFlowDesign);
@@ -667,7 +649,7 @@ public class NonMeasurableSetPage extends TestBase {
 		click(driver, questionTypeFileUpload);
 		assertTrue(fileUploadBrowse.isEnabled());
 		click(driver, fileUploadSetting);
-		jsClick(driver, allowedFormatDropdown); 
+		jsClick(driver, allowedFormatDropdown);
 
 
 		String[] fileFormats = {
@@ -693,14 +675,14 @@ public class NonMeasurableSetPage extends TestBase {
 
 		try
 		{ Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		if(fileAlreadyExistsContinueButton.isDisplayed()) {
-			System.out.println(fileformat+" Already Exist");
-			fileAlreadyExistsContinueButton.click();
-		}
+			if(fileAlreadyExistsContinueButton.isDisplayed()) {
+				System.out.println(fileformat+" Already Exist");
+				fileAlreadyExistsContinueButton.click();
+			}
 
 		}catch (NoSuchElementException | NullPointerException e) {
 
-		} 
+		}
 
 		saveRecord();
 		click(driver, fileUploadSetting);
@@ -714,10 +696,7 @@ public class NonMeasurableSetPage extends TestBase {
 		assertTrue(listOfFileFormats.contains(fileformat));
 
 	}
-
-
-
-	public static void createNormalView(String questionName)
+	public void createNormalView(String questionName)
 	{
 		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
@@ -735,130 +714,130 @@ public class NonMeasurableSetPage extends TestBase {
 
 			switch(q)
 			{
-			//			Label
-			case(0):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver,getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Advaita Testing");
-			click(driver, addQuestionButton);
+				//			Label
+				case(0):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver,getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "Advaita Testing");
+					click(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			MultipleChoice
-			case(1):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What Level of Software Testing are you doing?");
+				//			MultipleChoice
+				case(1):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "What Level of Software Testing are you doing?");
 
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[2]")), 2);
-			List<WebElement>options=driver.findElements(By.xpath("//div[@class='question qsn_number_2']//div[@class='input-delete d-flex']//input"));
-			options.get(0).sendKeys("System Testing");
-			options.get(1).sendKeys("Unit Testing");
-			options.get(2).sendKeys("Integration Testing");
-			jsClick(driver, addQuestionButton);
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[2]")), 2);
+					List<WebElement>options=driver.findElements(By.xpath("//div[@class='question qsn_number_2']//div[@class='input-delete d-flex']//input"));
+					options.get(0).sendKeys("System Testing");
+					options.get(1).sendKeys("Unit Testing");
+					options.get(2).sendKeys("Integration Testing");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			ShortAnswer
-			case(2):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What is the software you're testing?");
-			jsClick(driver, addQuestionButton);
+				//			ShortAnswer
+				case(2):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "What is the software you're testing?");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Dropdown
-			case(3):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What is the Operating system you're Testing on?");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[4]")), 3);
-			List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@class='question qsn_number_4']//div[@class='input-delete d-flex']//input"));
-			DropDownOption.get(0).sendKeys("Windows");
-			DropDownOption.get(1).sendKeys("Mac Os");
-			DropDownOption.get(2).sendKeys("Linux");
-			DropDownOption.get(3).sendKeys("Unix");
-			jsClick(driver, addQuestionButton);
+				//			Dropdown
+				case(3):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "What is the Operating system you're Testing on?");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[4]")), 3);
+					List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@class='question qsn_number_4']//div[@class='input-delete d-flex']//input"));
+					DropDownOption.get(0).sendKeys("Windows");
+					DropDownOption.get(1).sendKeys("Mac Os");
+					DropDownOption.get(2).sendKeys("Linux");
+					DropDownOption.get(3).sendKeys("Unix");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Relative Dropdown
-			case(4):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "In Which Browser you're Running the Test Scripts?");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[5]")), 3);
-			List<WebElement>relativeOption=driver.findElements(By.xpath("//div[@class='question qsn_number_5']//div[@class='input-delete d-flex']//input"));
-			relativeOption.get(0).sendKeys("Chrome");
-			relativeOption.get(1).sendKeys("Edge");
-			relativeOption.get(2).sendKeys("Firefox");
-			relativeOption.get(3).sendKeys("Opera");
-			jsClick(driver, addQuestionButton);
+				//			Relative Dropdown
+				case(4):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "In Which Browser you're Running the Test Scripts?");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[5]")), 3);
+					List<WebElement>relativeOption=driver.findElements(By.xpath("//div[@class='question qsn_number_5']//div[@class='input-delete d-flex']//input"));
+					relativeOption.get(0).sendKeys("Chrome");
+					relativeOption.get(1).sendKeys("Edge");
+					relativeOption.get(2).sendKeys("Firefox");
+					relativeOption.get(3).sendKeys("Opera");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			FileUpload
-			case(5):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Upload you UseCases");
-			jsClick(driver, addQuestionButton);
+				//			FileUpload
+				case(5):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "Upload you UseCases");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Radio Button
-			case(6):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Which Type of Testing are you doing?");
-			List<WebElement>radioOption=driver.findElements(By.xpath("//div[@class='question qsn_number_7']//div[@class='input-delete d-flex']//input"));
-			radioOption.get(0).sendKeys("Manual Testing");
-			radioOption.get(1).sendKeys("Automation Testing");
-			jsClick(driver, addQuestionButton);
+				//			Radio Button
+				case(6):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "Which Type of Testing are you doing?");
+					List<WebElement>radioOption=driver.findElements(By.xpath("//div[@class='question qsn_number_7']//div[@class='input-delete d-flex']//input"));
+					radioOption.get(0).sendKeys("Manual Testing");
+					radioOption.get(1).sendKeys("Automation Testing");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Date
-			case(7):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "When Did you start you testing?");
-			jsClick(driver, addQuestionButton);
+				//			Date
+				case(7):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "When Did you start you testing?");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Time
-			case(8):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "When will Test Execution Begin?");
-			jsClick(driver, addQuestionButton);
+				//			Time
+				case(8):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "When will Test Execution Begin?");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			TextBox
-			case(9):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Test Case Written By?");
-			jsClick(driver, addQuestionButton);
+				//			TextBox
+				case(9):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver, getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "Test Case Written By?");
+					jsClick(driver, addQuestionButton);
 
-			break;
+					break;
 
-			//			Relative Multiselect
-			case(10):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver,getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Select your Team Members");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[11]")), 3);
-			List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//div[@class='question qsn_number_11']//div[@class='input-delete d-flex']//input"));
-			relativeMultiOption.get(0).sendKeys("James Paul R");
-			relativeMultiOption.get(1).sendKeys("Gopal Reddy");
-			relativeMultiOption.get(2).sendKeys("Abjith Das");
-			relativeMultiOption.get(3).sendKeys("Boya Pavan");
+				//			Relative Multiselect
+				case(10):
+					jsClick(driver, questionsList.get(q));
+					jsClick(driver,getElementByDynamicXPath(q));
+					sendKeys(questionsList.get(q), "Select your Team Members");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[11]")), 3);
+					List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//div[@class='question qsn_number_11']//div[@class='input-delete d-flex']//input"));
+					relativeMultiOption.get(0).sendKeys("James Paul R");
+					relativeMultiOption.get(1).sendKeys("Gopal Reddy");
+					relativeMultiOption.get(2).sendKeys("Abjith Das");
+					relativeMultiOption.get(3).sendKeys("Boya Pavan");
 
-			break;
+					break;
 			}
 
 
@@ -877,7 +856,6 @@ public class NonMeasurableSetPage extends TestBase {
 
 
 	}
-
 
 
 	@FindBy(css="table.w-100 tbody")
@@ -943,137 +921,137 @@ public class NonMeasurableSetPage extends TestBase {
 			switch(a)
 			{
 
-			//			label
-			case 0:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Advaita Testing");
-				break;
+				//			label
+				case 0:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver,getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "Advaita Testing");
+					break;
 
 				//				Multiple Choice
-			case 1:
-				//				jsClick(driver, columnInputs.get(a));
+				case 1:
+					//				jsClick(driver, columnInputs.get(a));
 
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What Level of Software Testing are you doing?");
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[9]")), 2);
-				List<WebElement> mulOptions=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_2_')]"));
-				jsClick(driver, columnInputs.get(a));
-				mulOptions.get(0).sendKeys("System Testing");
-				mulOptions.get(1).sendKeys("Unit Testing");
-				mulOptions.get(2).sendKeys("Integration Testing");
-				break;
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "What Level of Software Testing are you doing?");
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver,getElementByDynamicXPath(a));
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[9]")), 2);
+					List<WebElement> mulOptions=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_2_')]"));
+					jsClick(driver, columnInputs.get(a));
+					mulOptions.get(0).sendKeys("System Testing");
+					mulOptions.get(1).sendKeys("Unit Testing");
+					mulOptions.get(2).sendKeys("Integration Testing");
+					break;
 
 				//				Short Answer
-			case 2:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What is the software you're testing?");
-				break;
+				case 2:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver,getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "What is the software you're testing?");
+					break;
 
 				//				Dropdown
-			case 3:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What is the Operating system you're Testing on?");
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_4']//a")), 3);
-				List<WebElement>DropDownOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_4_')]"));
-				jsClick(driver, columnInputs.get(a));
-				DropDownOption.get(0).sendKeys("Windows");
-				DropDownOption.get(1).sendKeys("Mac Os");
-				DropDownOption.get(2).sendKeys("Linux");
-				DropDownOption.get(3).sendKeys("Unix");
-				break;
+				case 3:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver,getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "What is the Operating system you're Testing on?");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_4']//a")), 3);
+					List<WebElement>DropDownOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_4_')]"));
+					jsClick(driver, columnInputs.get(a));
+					DropDownOption.get(0).sendKeys("Windows");
+					DropDownOption.get(1).sendKeys("Mac Os");
+					DropDownOption.get(2).sendKeys("Linux");
+					DropDownOption.get(3).sendKeys("Unix");
+					break;
 
 				//				Relative DropDown
-			case 4:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "In Which Browser you're Running the Test Scripts?");
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
-				List<WebElement>relativeOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_5_')]"));
-				jsClick(driver, columnInputs.get(a));
-				relativeOption.get(0).sendKeys("Chrome");
-				relativeOption.get(1).sendKeys("Edge");
-				relativeOption.get(2).sendKeys("Firefox");
-				relativeOption.get(3).sendKeys("Opera");
-				break;
+				case 4:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver, getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "In Which Browser you're Running the Test Scripts?");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
+					List<WebElement>relativeOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_5_')]"));
+					jsClick(driver, columnInputs.get(a));
+					relativeOption.get(0).sendKeys("Chrome");
+					relativeOption.get(1).sendKeys("Edge");
+					relativeOption.get(2).sendKeys("Firefox");
+					relativeOption.get(3).sendKeys("Opera");
+					break;
 
 				//				File Upload
-			case 5:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Upload you UseCases");
-				break;
+				case 5:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver, getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "Upload you UseCases");
+					break;
 
 				//				Radio Button
-			case 6:
+				case 6:
 
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Which Type of Testing are you doing?");
-				jsClick(driver, columnInputs.get(a));
-				click(driver, getElementByDynamicXPath(a));
-				click(driver, getElementByDynamicXPath(a));
-				//				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
-				List<WebElement>radioOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_7_')]"));
-				jsClick(driver, columnInputs.get(a));		
-				radioOption.get(0).sendKeys("Manual Testing");
-				jsClick(driver, driver.findElement(By.xpath("//div[@data-info='1_7']//a")));
-				sendKeys(driver.findElement(By.xpath("//input[@name='ans_option_1_7_2']")), "Automation Testing");
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "Which Type of Testing are you doing?");
+					jsClick(driver, columnInputs.get(a));
+					click(driver, getElementByDynamicXPath(a));
+					click(driver, getElementByDynamicXPath(a));
+					//				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
+					List<WebElement>radioOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_7_')]"));
+					jsClick(driver, columnInputs.get(a));
+					radioOption.get(0).sendKeys("Manual Testing");
+					jsClick(driver, driver.findElement(By.xpath("//div[@data-info='1_7']//a")));
+					sendKeys(driver.findElement(By.xpath("//input[@name='ans_option_1_7_2']")), "Automation Testing");
 
 
-				break;
+					break;
 
 				//				Date
 
-			case 7:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "When Did you start you testing?");
-				break;
+				case 7:
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver, getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "When Did you start you testing?");
+					break;
 
 				//				Time
-			case(8):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver, getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "When will Test Execution Begin?");
+				case(8):
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver, getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "When will Test Execution Begin?");
 
 
-			break;
+					break;
 
-			//			TextBox
-			case(9):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver, getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "Test Case Written By?");
+				//			TextBox
+				case(9):
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver, getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "Test Case Written By?");
 
-			break;
+					break;
 
-			//				Relative Multiselect
-			case(10):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver,getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "Select your Team Members");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_11']//a")), 3);
-			List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_11_')]"));
-			jsClick(driver, columnInputs.get(a));
-			relativeMultiOption.get(0).sendKeys("James Paul R");
-			relativeMultiOption.get(1).sendKeys("Gopal Reddy");
-			relativeMultiOption.get(2).sendKeys("Abjith Das");
-			relativeMultiOption.get(3).sendKeys("Boya Pavan");
+				//				Relative Multiselect
+				case(10):
+					jsClick(driver, columnInputs.get(a));
+					jsClick(driver,getElementByDynamicXPath(a));
+					jsClick(driver, columns.get(a));
+					sendKeys(columnName.get(a), "Select your Team Members");
+					clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_11']//a")), 3);
+					List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_11_')]"));
+					jsClick(driver, columnInputs.get(a));
+					relativeMultiOption.get(0).sendKeys("James Paul R");
+					relativeMultiOption.get(1).sendKeys("Gopal Reddy");
+					relativeMultiOption.get(2).sendKeys("Abjith Das");
+					relativeMultiOption.get(3).sendKeys("Boya Pavan");
 
-			break;
+					break;
 			}
 
 
@@ -1087,12 +1065,6 @@ public class NonMeasurableSetPage extends TestBase {
 		//		assertEquals(actualQuestionSet,questionName);
 
 	}
-
-
-
-
-
-
 	public void isConditional() throws Throwable
 	{
 
@@ -1187,6 +1159,13 @@ public class NonMeasurableSetPage extends TestBase {
 	}
 
 
+	public void createQuestion()
+	{
+		getSectionQuestion(1,1).clear();
+		getSectionQuestion(1,1).sendKeys("");
+
+
+	}
 
 
 
@@ -1530,11 +1509,19 @@ public class NonMeasurableSetPage extends TestBase {
 
 	//	##########################################################################################################
 
-@FindBy(linkText = "SMS Template")
-WebElement smsTemplate;
+	@FindBy(linkText = "SMS Template")
+	WebElement smsTemplate;
 	public void smsTemp()
 	{
 		jsClick(driver, smsTemplate);
 	}
 
+
+
+
+
 }
+
+
+
+

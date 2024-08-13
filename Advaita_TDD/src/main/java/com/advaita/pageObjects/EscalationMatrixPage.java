@@ -448,6 +448,7 @@ public class EscalationMatrixPage extends TestBase {
 
 
 		try {
+
 			// Attempt to click the eye button and escalate
 			nameOfTheCustomer = driver.findElement(By.xpath("//tbody//td[5]")).getText();
 			phoneNumber = driver.findElement(By.xpath("//tbody//td[7]")).getText();
@@ -478,12 +479,7 @@ public class EscalationMatrixPage extends TestBase {
 		return this;
 	}
 
-	private void saveRecord()
-	{
-		jsClick(driver,save);
-		unWait(1);
-		continueButton.click();
-	}
+
 
 	public EscalationMatrixPage agencyValidation(String managerDecision,String assertEscalatedMessage,String escalationType )
 	{
