@@ -147,7 +147,7 @@ public class FakeData {
 		randomLastName = randomLastName.replaceAll("[^a-zA-Z]", "");
 
 		// Print the random last name
-		System.out.println("Random Last Name: " + randomLastName);
+//		System.out.println("Random Last Name: " + randomLastName);
 
 		return randomLastName;
 	}

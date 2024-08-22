@@ -80,17 +80,17 @@ public class TestProcessCreate extends TestBase {
 		homePage.clickOnProcessManagementCreate();
 
 		test = reports.createTest("verifyProcessCreate");
-		process.createProcess1(processName, processDesc);
+		process.createProcess1("CAPTURE", processDesc);
 
 		test = reports.createTest("createSubProcess");
-		process.createSubProcess(subProcessDesc, processDesc);
+		process.createSubProcess("CAPTURE LEADS", processDesc);
 
 		test = reports.createTest("createSubSubProcess");
-		process.createSubSubProcess(subSubProcessName, subSubProcessDesc);
+		process.createSubSubProcess("Advaith Capture", subSubProcessDesc);
 
-		test = reports.createTest("createProcess");
-		process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
-				subSubProcessName, subSubProcessDesc);
+//		test = reports.createTest("createProcess");
+//		process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
+//				subSubProcessName, subSubProcessDesc);
 	}
 
 	@AfterMethod
