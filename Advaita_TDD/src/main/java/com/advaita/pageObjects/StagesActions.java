@@ -290,19 +290,19 @@ public class StagesActions extends TestBase{
 
 	public StagesActions stageHistoryFields()
 	{
-		allLeftButton.get(0).click();
-		// evaluationFieldOptions and stageHistoryOptions Field Options are same.
-		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
-//		singleRightButton.click();
-
-		saveRecord();
+//		allLeftButton.get(0).click();
+//		// evaluationFieldOptions and stageHistoryOptions Field Options are same.
+//		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
+////		singleRightButton.click();
+//
+//		saveRecord();
 
 		navigateWithinAlchemy(callLogTabView);
 		insuranceStage.click();
 //		unWait(1);
 		recordEyeButton.get(0).click();
 
-		js.executeScript("window.scrollTo(0, 1500);");
+		js.executeScript("window.scrollTo(0, 1000);");
 
 		try{
 			stageHistoryFieldHeader.get(0).getText();

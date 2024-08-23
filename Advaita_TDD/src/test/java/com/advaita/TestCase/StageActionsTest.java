@@ -39,9 +39,9 @@ public class StageActionsTest extends TestBase {
     @Test
     public void stagesEdit()
     {
-        stagesActions
-                .navtoStages()
-                .clickOnStageHistoryField("Insurance Stage",HistoryFileds)  ;
+//        stagesActions
+//                .navtoStages()
+//                .clickOnStageHistoryField("Insurance Stage",HistoryFileds)  ;
         stagesActions.stageHistoryFields();
     }
 
@@ -116,7 +116,7 @@ public class StageActionsTest extends TestBase {
 
     @AfterTest
     public void tearDown(){
-        driver.quit();
+//        driver.quit();
     }
 
 

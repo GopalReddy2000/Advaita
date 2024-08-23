@@ -171,7 +171,7 @@ public class UserSetupPage extends TestBase {
 	@FindBy(xpath = "//h6[text()='Clear All Filters']")
 	WebElement clearAllFilter;
 
-	@FindBy(linkText = "+ Create")
+	@FindBy(linkText = "+ Create User")
 	WebElement userManagementCreateButton;
 
 	@FindBy(xpath = "//a[@id='uploadBtn']")

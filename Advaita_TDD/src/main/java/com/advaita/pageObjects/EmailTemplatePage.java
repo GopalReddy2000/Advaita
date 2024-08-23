@@ -1,11 +1,8 @@
 package com.advaita.pageObjects;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.FetchDataFromInputTagWithJS;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -13,9 +10,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.FetchDataFromInputTagWithJS;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class EmailTemplatePage extends TestBase{
 
@@ -372,11 +371,10 @@ public class EmailTemplatePage extends TestBase{
 	}
 
 	FetchDataFromInputTagWithJS inputTagText= new FetchDataFromInputTagWithJS();
+
 	public EmailTemplatePage verifyTemplate(String TemplateName,
 			String fromMail,String CCMail,String BCC,String Subject,String Message)
 	{
-
-
 		emailButton.click();
 		unWait(1);
 		selectByVisibleText(selectEmailDrp, TemplateName);

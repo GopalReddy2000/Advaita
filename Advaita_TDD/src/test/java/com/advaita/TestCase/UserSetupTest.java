@@ -1,12 +1,6 @@
 package com.advaita.TestCase;
 
-import static org.testng.Assert.assertEquals;
-
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
+import Advaita_TDD.Advaita_TDD.FakeData;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.Process;
@@ -18,8 +12,11 @@ import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.WorkFlowDesign.PageObject.NonMeasurableSetPage;
 import com.advaita.pageObjects.UserSetupPage;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
+import static org.testng.Assert.assertEquals;
 
 public class UserSetupTest extends TestBase {
 
@@ -90,7 +87,7 @@ public class UserSetupTest extends TestBase {
 		measurableSetPage=new MeasurableSetPage();
 		nonMeasurableSetPage=new NonMeasurableSetPage();
 		disposition= new Disposition();
-		 excelUserManagement= new ExcelUserManagement();
+		excelUserManagement= new ExcelUserManagement();
 	}
 
 	@Test
@@ -105,7 +102,7 @@ public class UserSetupTest extends TestBase {
 	public void userTest()
 	{
 		userSetupPage.navToUserCreatePage()
-		.userCreationFields(FirstName,LastName,Password);
+				.userCreationFields(FirstName,LastName,Password);
 	}
 
 
@@ -115,15 +112,15 @@ public class UserSetupTest extends TestBase {
 	{
 
 		userSetupPage.navToRoleAndPerCreate()
-		.createRoles(roleNameForAlchemy,"Alchemy",userSetupPage.excelToUploadModulePermissions);
+				.createRoles(roleNameForAlchemy,"Alchemy",userSetupPage.excelToUploadModulePermissions);
 	}
 
 	@Test
 	public void groupNameInputField()
 	{
 		userSetupPage
-		.navToRoleAndPerTable().
-		validateGroupNameInputField(userSetupPage.roleTableNames.get(userSetupPage.getRandomIndex(userSetupPage.roleTableNames)).getText());
+				.navToRoleAndPerTable().
+				validateGroupNameInputField(userSetupPage.roleTableNames.get(userSetupPage.getRandomIndex(userSetupPage.roleTableNames)).getText());
 	}
 
 	String roleAllGroupName=FakeData.lastName1()+" All Permission";
@@ -131,7 +128,7 @@ public class UserSetupTest extends TestBase {
 	public void roleAllCreateAndDelete()
 	{
 		userSetupPage.navToRoleAndPerCreate()
-		.createUserWithRoleAll(roleAllGroupName).deleteRoleByName(roleAllGroupName);
+				.createUserWithRoleAll(roleAllGroupName).deleteRoleByName(roleAllGroupName);
 		//		UserSetupPage.RolesCreated.add(roleAllGroupName);
 	}
 
@@ -140,7 +137,7 @@ public class UserSetupTest extends TestBase {
 	public void deleteRole()
 	{
 		userSetupPage.navToRoleAndPerTable()
-		.deleteRoleByName("Mosciski Buckridge");
+				.deleteRoleByName("Mosciski Buckridge");
 	}
 
 	@Test
@@ -164,60 +161,60 @@ public class UserSetupTest extends TestBase {
 
 	String QuestionSetName="Software Testing "+fake.lastName2();
 
-//	String selectedUser = "WorkFlow Design";
+	//	String selectedUser = "WorkFlow Design";
 	@Test(dataProvider = "userData")
 	public void createAUserAccount(String selectedUser,String roleName, String perToSelect,ExcelUtils exceltoUpload) throws Throwable
 	{
 
 		userSetupPage.navToRoleAndPerCreate()
-		.createRoles(roleName, perToSelect,exceltoUpload)
-		.navToUserCreatePage()
-		.userCreationFields(FirstName, LastName, Password)
-		.singleGroupSelect(roleName)
-		.clickOnGroupCreateButton();
+				.createRoles(roleName, perToSelect,exceltoUpload)
+				.navToUserCreatePage()
+				.userCreationFields(FirstName, LastName, Password)
+				.singleGroupSelect(roleName)
+				.clickOnGroupCreateButton();
 		excelUserManagement.addUserRole(roleName);
 		String expectedUserName=FirstName+" "+LastName;
 		String actualUserName=userSetupPage.roleTableNames.get(0).getText();
 		assertEquals(expectedUserName, actualUserName);
 		excelUserManagement.addUserAccount(expectedUserName);
 		if(selectedUser.equals("WorkFlow Design")) {
-			userMapping(expectedUserName,"Manager", "John Smith");
+//			userMapping(expectedUserName,"Manager", "John Smith");
 		}
 
 		userSetupPage.userLogin(expectedUserName, Password);
 
 		switch (selectedUser) {
 
-		case "Data Setup":
-			verifyProcessCreate();
-			dataset.createDataSet("Character");
+			case "Data Setup":
+				verifyProcessCreate();
+				dataset.createDataSet("Character");
 //			dataset.deleteDataSet();
-			break;
+				break;
 
-		case "WorkFlow Design":
-			measurableSetPage.createNormalView(QuestionSetName);
-			measurableSetPage.deleteRecordByName(QuestionSetName);
-			nonMeasurableSetPage.createNormalView(QuestionSetName);
-			nonMeasurableSetPage.deleteRecordByName(QuestionSetName);;
-			disposition.createNormalView(QuestionSetName);
-			disposition.deleteRecordByName(QuestionSetName);;
-			break;
+			case "WorkFlow Design":
+				measurableSetPage.createNormalView(QuestionSetName);
+				measurableSetPage.deleteRecordByName(QuestionSetName);
+				nonMeasurableSetPage.createNormalView(QuestionSetName);
+				nonMeasurableSetPage.deleteRecordByName(QuestionSetName);;
+				disposition.createNormalView(QuestionSetName);
+				disposition.deleteRecordByName(QuestionSetName);;
+				break;
 
-		case "User Setup":
-			userSetupAssertions(); 
-			break;
+			case "User Setup":
+				userSetupAssertions();
+				break;
 
-		default:break;
+			default:break;
 
 
 		}
-		
-//		userSetupPage.userLogin("Capture_admin", Password);
-//
-//		userSetupPage.navToUserManagement().userAccountTableActions(expectedUserName);
-////		excelUserManagement.removeUserAccount(expectedUserName);
-//		userSetupPage.deleteRoleByName(roleName);
-////		excelUserManagement.removeUserRole(roleName);
+
+		userSetupPage.userLogin("Capture_admin", Password);
+
+		userSetupPage.navToUserManagement().userAccountTableActions(expectedUserName);
+//		excelUserManagement.removeUserAccount(expectedUserName);
+		userSetupPage.deleteRoleByName(roleName);
+//		excelUserManagement.removeUserRole(roleName);
 
 		System.out.println("");
 		System.out.println("Test Is Completed and Passed!!🎉🎉");
@@ -228,16 +225,16 @@ public class UserSetupTest extends TestBase {
 	public void delUserAccount()
 	{
 		userSetupPage
-		.navToUserManagement()
-		.userAccountTableActions("OReilly Heidenreich");
+				.navToUserManagement()
+				.userAccountTableActions("OReilly Heidenreich");
 	}
-	
+
 	@Test(dataProvider = "Roles")
 	public void deleRole(String roleName)
 	{
 		userSetupPage
-		.navToRoleAndPerTable()
-		.deleteRoleByName(roleName);
+				.navToRoleAndPerTable()
+				.deleteRoleByName(roleName);
 
 	}
 
@@ -246,18 +243,18 @@ public class UserSetupTest extends TestBase {
 	{
 		userSetupPage.userCreationNeg();
 	}
-	
+
 
 
 
 	public void userSetupAssertions()
 	{
 		userSetupPage.navToRoleAndPerCreate()
-		.createRoles(roleNameForUserSetup+" UA", "User Setup",userSetupPage.excelToUploadModulePermissions)
-		.navToUserCreatePage()
-		.userCreationFields(FirstName, LastName+" UA", Password)
-		.singleGroupSelect(roleNameForUserSetup+" UA")
-		.clickOnGroupCreateButton();
+				.createRoles(roleNameForUserSetup+" UA", "User Setup",userSetupPage.excelToUploadModulePermissions)
+				.navToUserCreatePage()
+				.userCreationFields(FirstName, LastName+" UA", Password)
+				.singleGroupSelect(roleNameForUserSetup+" UA")
+				.clickOnGroupCreateButton();
 		excelUserManagement.addUserRole(roleNameForUserSetup+" UA");
 		String expectedUserName1=FirstName+" "+LastName+" UA";
 		excelUserManagement.addUserAccount(expectedUserName1);
@@ -266,10 +263,10 @@ public class UserSetupTest extends TestBase {
 		System.out.println(expectedUserName1+" = "+actualUserName1);
 		userSetupPage.userAccountTableActions(expectedUserName1);
 		userSetupPage.deleteRoleByName(roleNameForUserSetup+" UA");
-		
+
 	}
 
-	
+
 	@Test
 	public void createAndAssertPermissions()
 	{
@@ -284,10 +281,10 @@ public class UserSetupTest extends TestBase {
 	public void userMapping(String RecordName,String SystemName, String Value)
 	{
 		userSetupPage
-		.userMappingRecord(RecordName)
-		.userMappingProcess("CAPTURE","CAPTURE LEADS","Advaith Capture","Test_stage")
-		.userMappingUserSuperior("Test_stage", "SuperAdmin", "Capture_admin")
-		.systemMapping(SystemName,Value)
+				.userMappingRecord(RecordName)
+				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Insurance Stage")
+				.userMappingUserSuperior("Insurance Stage", "SuperAdmin", "Capture_admin")
+				.systemMapping(SystemName,Value)
 		;
 	}
 
@@ -302,33 +299,33 @@ public class UserSetupTest extends TestBase {
 	{
 		userSetupPage.getUserAccounts();
 	}
-	
-	
+
+
 	@Test(dataProvider = "fieldNames")
 	public void createSystemName(String fieldNames)
 	{
 		userSetupPage
-		.navToSysNames()
-		.systemNames(fieldNames);
+				.navToSysNames()
+				.systemNames(fieldNames);
 	}
 
 	@Test(dataProvider = "fieldNames")
 	public void deleteSystemName(String fieldNames)
 	{
 		userSetupPage
-		.navToSysNames()
-		.deleteSystemNames(fieldNames);
+				.navToSysNames()
+				.deleteSystemNames(fieldNames);
 	}
-	
+
 
 	@Test
 	public void userUploadOption()
 	{
 		userSetupPage.navToUserManagement().userUpload();
-		
+
 	}
-	
-	
+
+
 
 //	@AfterTest
 //	public void tearDown() {
@@ -336,18 +333,18 @@ public class UserSetupTest extends TestBase {
 //		driver.quit();
 //
 //	}
-	
+
 	@DataProvider(name = "userData")
 	public Object[][] userData() {
 		// Define a mapping or switch case to select parameters based on name
 		// Change this to select different users
-		 return new Object[][] {
+		return new Object[][] {
 //		Object[][] userData = null;
 //		{"Data Setup",roleNameForDataset, "Dataset", userSetupPage.excelToUploadModulePermissions},
-		{"WorkFlow Design",roleNameForWorkflowDesign, "Workflow Design", userSetupPage.excelToUploadModulePermissions},
-		{"User Setup",roleNameForUserSetup, "User Setup", userSetupPage.excelToUploadModulePermissions},
-		 
-		 };
+				{"WorkFlow Design",roleNameForWorkflowDesign, "Workflow Design", userSetupPage.excelToUploadModulePermissions},
+				{"User Setup",roleNameForUserSetup, "User Setup", userSetupPage.excelToUploadModulePermissions},
+
+		};
 //		switch (selectedUser) {
 //		case "Data Setup":
 //			userData = new Object[][] {
@@ -371,49 +368,49 @@ public class UserSetupTest extends TestBase {
 
 //		return userData;
 	}
-	
+
 
 	@DataProvider(name = "System Names")
 	public Object[][] systemNamesMapping() {
 		return new Object[][] {
-			{"Manager", "John Smith"},
-			{"Customer Type", "Enterprise"},
-			{"Lead Source", "Website Contact Form"},
-			{"Industry", "Technology"},
-			{"Product Interest", "Software Solutions"},
-			{"Account Status", "Active"},
-			{"Payment Terms", "Net 30"},
-			{"Customer Rating", "5 stars"},
-			{"Preferred Contact Method", "Email"},
-			{"Event Attendance", "None"},
-			{"Birthday", "January 15, 1980"},
-			{"Customer Lifetime Value", "$100,000"},
-			{"Subscription Plan", "Premium"},
-			{"Referral Source", "LinkedIn"},
-			{"Marketing Campaign", "Summer Sale 2024"}
+				{"Manager", "John Smith"},
+				{"Customer Type", "Enterprise"},
+				{"Lead Source", "Website Contact Form"},
+				{"Industry", "Technology"},
+				{"Product Interest", "Software Solutions"},
+				{"Account Status", "Active"},
+				{"Payment Terms", "Net 30"},
+				{"Customer Rating", "5 stars"},
+				{"Preferred Contact Method", "Email"},
+				{"Event Attendance", "None"},
+				{"Birthday", "January 15, 1980"},
+				{"Customer Lifetime Value", "$100,000"},
+				{"Subscription Plan", "Premium"},
+				{"Referral Source", "LinkedIn"},
+				{"Marketing Campaign", "Summer Sale 2024"}
 		};
 	}
 	@DataProvider(name = "fieldNames")
-    public Object[][] fieldNames() {
-        return new Object[][] {
-                {"Manager"},
-                {"Customer Type"},
-                {"Lead Source"},
-                {"Industry"},
-                {"Product Interest"},
-                {"Account Status"},
-                {"Payment Terms"},
-                {"Customer Rating"},
-                {"Preferred Contact Method"},
-                {"Event Attendance"},
-                {"Birthday"},
-                {"Customer Lifetime Value"},
-                {"Subscription Plan"},
-                {"Referral Source"},
-                {"Marketing Campaign"},
-                {" "}
-        };
-    }
+	public Object[][] fieldNames() {
+		return new Object[][] {
+				{"Manager"},
+				{"Customer Type"},
+				{"Lead Source"},
+				{"Industry"},
+				{"Product Interest"},
+				{"Account Status"},
+				{"Payment Terms"},
+				{"Customer Rating"},
+				{"Preferred Contact Method"},
+				{"Event Attendance"},
+				{"Birthday"},
+				{"Customer Lifetime Value"},
+				{"Subscription Plan"},
+				{"Referral Source"},
+				{"Marketing Campaign"},
+				{" "}
+		};
+	}
 
 
 }

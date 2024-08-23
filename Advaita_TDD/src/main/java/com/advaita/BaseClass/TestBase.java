@@ -13,6 +13,7 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
@@ -127,7 +128,7 @@ public class TestBase {
 	}
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
-//			jsClick(driver, element);
+			jsClick(driver, element);
 		}
 	}
 
@@ -145,6 +146,13 @@ public class TestBase {
 		}
 
 		return Integer.parseInt(numberAsString.toString());
+	}
+
+	protected static void selectByVisibleText(WebElement dropdownElement, String optionText) {
+		// Create a Select object for the dropdown
+		Select dropdown = new Select(dropdownElement);
+
+		dropdown.selectByVisibleText(optionText);
 	}
 
 	public static void unWait(int seconds)
@@ -184,8 +192,7 @@ public class TestBase {
 		LoginPage.usernameField.sendKeys(UserName);
 		LoginPage.passwordField.sendKeys("Qwerty@123");
 		LoginPage.signInButton.click();
-
-		
+		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
 	}
 
 
