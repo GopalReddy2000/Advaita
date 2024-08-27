@@ -2,7 +2,6 @@ package com.advaita.TestCreate;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -21,6 +20,8 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class TestMeasurableSetCreate extends TestBase {
 
@@ -76,7 +77,7 @@ public class TestMeasurableSetCreate extends TestBase {
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
 		
-		measurableSetPage.createMeasurableSet(createCount);
+		measurableSetPage.createNormalView("Software Testing "+FakeData.lastName2());
 
 	}
 

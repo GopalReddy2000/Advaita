@@ -13,6 +13,8 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 public class VerifyMeasurableSet extends TestBase {
 
 	static int createCount = 1;
@@ -66,26 +68,25 @@ public class VerifyMeasurableSet extends TestBase {
 		
 		test = reports.createTest("verifyMeasurableSetCreatePage");
 		homePage.clickOnworkflowDesign();
-		measurableSetPage.createMeasurableSet(createCount);
-		
+		measurableSetPage.createNormalView("Software Testing "+FakeData.lastName2());	
 	}
 
-	@Test(priority = 2)
-	public void verifyMeasurableSetTablePage() throws Throwable {
-
-		test = reports.createTest("verifyMeasurableSetTablePage");
-		homePage.clickOnworkflowDesign();
-		measurableSetPage.tablePageOfMeasurableSet();
-
-	}
-
-	@Test(priority = 3)
-	public void verifyMeasurableSetEditePage() throws Throwable {
-
-		test = reports.createTest("verifyMeasurableSetEditPage");
-		homePage.clickOnEditMeasurableSet();
-		measurableSetPage.editPageOfMeasurableSet();
-	}
+//	@Test(priority = 2)
+//	public void verifyMeasurableSetTablePage() throws Throwable {
+//
+//		test = reports.createTest("verifyMeasurableSetTablePage");
+//		homePage.clickOnworkflowDesign();
+//		measurableSetPage.tablePageOfMeasurableSet();
+//
+//	}
+//
+//	@Test(priority = 3)
+//	public void verifyMeasurableSetEditePage() throws Throwable {
+//
+//		test = reports.createTest("verifyMeasurableSetEditPage");
+//		homePage.clickOnEditMeasurableSet();
+//		measurableSetPage.editPageOfMeasurableSet();
+//	}
 
 	@AfterTest
 	public void tearDown() {

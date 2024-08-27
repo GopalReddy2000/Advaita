@@ -8,7 +8,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -482,6 +481,7 @@ public class Process extends TestBase {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		unWait(2);
 		Assert.assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
 
@@ -503,6 +503,8 @@ public class Process extends TestBase {
 		dropDown2.isDisplayed();
 		dropDown2.click();
 		Thread.sleep(1000);
+		
+		
 	}
 
 	public static int extractNumber(String input) {
@@ -875,13 +877,15 @@ public class Process extends TestBase {
 	public void NavigateToNextTablePageClick_leftarrow() {
 		assertTrue(LeftnavigationButton_table.isDisplayed(), "LeftnavigationButton_table is not dispalyed");
 		// LeftnavigationButton_table.click();
-		driver.getCurrentUrl();
+		String beforeClickURL = driver.getCurrentUrl();
 		click(driver, LeftnavigationButton_table);
 
-		if (driver.getCurrentUrl().equals(driver.getCurrentUrl())) {
-			System.out.println("Sucessfully landed in next page");
-		} else {
+		if (driver.getCurrentUrl().equals(beforeClickURL)) {
 			System.out.println("It is not landed in next page");
+			assertTrue(false);
+		} else {
+			assertTrue(true);
+			System.out.println("Sucessfully landed in next page");
 		}
 
 		assertTrue(showing_pageniation.isDisplayed(), "showing_pageniation is not displayed");

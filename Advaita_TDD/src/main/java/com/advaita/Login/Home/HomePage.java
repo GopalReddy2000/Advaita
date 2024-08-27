@@ -1,14 +1,14 @@
 package com.advaita.Login.Home;
 
-import static org.testng.Assert.assertTrue;
-
+import com.advaita.BaseClass.TestBase;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.advaita.BaseClass.TestBase;
+import static org.testng.Assert.assertTrue;
 
 public class HomePage extends TestBase {
+
 
 	@FindBy(xpath = "//span[normalize-space()='Data Setup']")
 	public static WebElement DataSetUpButton;
@@ -45,7 +45,7 @@ public class HomePage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void clickOnProcessManagementCreate() {
+	public static void clickOnProcessManagementCreate() {
 
 		click(driver, DataSetUpButton);
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");

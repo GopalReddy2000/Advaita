@@ -1,9 +1,5 @@
 package com.advaita.TestCase;
 
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
@@ -12,6 +8,11 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 public class VerifyNonMeasurableSetPage extends TestBase {
 
@@ -88,13 +89,62 @@ public class VerifyNonMeasurableSetPage extends TestBase {
 	}
 
 
+	@Test
+	public void testUpload()
+	{
+		nonMeasurableSetPage
+				.NavToNonMeasurableTablePage()
+				.createQuestionSetName("Dropdown")
+				.dropdownAndMultiSelect(dropDownInt,1,1,"Dropdown1",dropdownOptions,"no","yes","yes")
+				.addQuestion(1)
+				.dropdownAndMultiSelect(multipleChoiceInt,1,2,"Dropdown2",dropdownOptions,"yes","no","yes")
+				.addSection()
+				.dropdownAndMultiSelect(relativeDropdownInt,2,1,"Dropdown3",dropdownOptions,"yes","no","no")
+				.saveRecord2();
+
+				;
+
+	}
+
+	List<String> dropdownOptions = List.of(
+			"Option 1",
+			"Option 2",
+			"Option 3",
+			"Option 4",
+			"Option 5"
+	);
+
+	@Test
+	public void clickOnUpload(){
+		nonMeasurableSetPage
+				.NavToNonMeasurableTablePage()
+				.clickOnUploadButton("Dropdown","1")
+				.uploadOptions()
+		;
+	}
+
+
+
+
+	final int labelInt=1;
+	final int multipleChoiceInt=2;
+	final int shortAnswerInt=3;
+	final int dropDownInt=4;
+	final int relativeDropdownInt=5;
+	final int fileUploadInt=6;
+	final int radioButtonInt=7;
+	final int dateInt=8;
+	final int timeInt=9;
+	final int textBoxInt=10;
+	final int relativeMultiselectInt=11;
+
 
 	@AfterTest
 	public void tearDown() {
 
-		driver.manage().window().minimize();
-		driver.quit();
-		reports.flush();
+//		driver.manage().window().minimize();
+//		driver.quit();
+//		reports.flush();
 
 	}
 

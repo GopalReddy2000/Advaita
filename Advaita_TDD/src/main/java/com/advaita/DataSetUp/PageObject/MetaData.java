@@ -5,14 +5,11 @@ import static org.testng.Assert.assertTrue;
 import java.util.List;
 import java.util.Random;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.yaml.snakeyaml.events.Event.ID;
 
 import com.advaita.BaseClass.TestBase;
 
@@ -287,7 +284,7 @@ public class MetaData extends TestBase {
 
 		assertTrue(metaDataNameField.isDisplayed(), "metaDataNameField is not displayed.");
 		metaDataNameField.clear();
-		metaDataNameField.sendKeys("Test " + fake.lastName1());
+		metaDataNameField.sendKeys("Test " + FakeData.lastName1());
 
 		assertTrue(addPlusColumn.isDisplayed(), "addPlusRow is not displayed."); //
 //		click(driver, addPlusColumn);

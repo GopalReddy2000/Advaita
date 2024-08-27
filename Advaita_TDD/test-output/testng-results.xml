@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+=======
+<<<<<<< HEAD
+<testng-results ignored="0" total="11" passed="10" failed="1" skipped="0">
+=======
+<<<<<<< HEAD
+<testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
   <reporter-output>
   </reporter-output>
+<<<<<<< HEAD
   <suite started-at="2024-08-22T11:25:27 IST" name="Default suite" finished-at="2024-08-22T11:26:11 IST" duration-ms="44889">
+=======
+  <suite started-at="2024-08-06T15:10:54 IST" name="Default suite" finished-at="2024-08-06T15:11:41 IST" duration-ms="46923">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     <groups>
     </groups>
+<<<<<<< HEAD
     <test started-at="2024-08-22T11:25:27 IST" name="Default test" finished-at="2024-08-22T11:26:11 IST" duration-ms="44889">
       <class name="com.advaita.TestCreate.TestNotificationTemplateCreate">
         <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestNotificationTemplateCreate@3e3861d7]" started-at="2024-08-22T11:25:27 IST" name="setUp" finished-at="2024-08-22T11:25:35 IST" duration-ms="8227" status="PASS">
+=======
+    <test started-at="2024-08-06T15:10:54 IST" name="Default test" finished-at="2024-08-06T15:11:41 IST" duration-ms="46923">
+      <class name="com.advaita.TestCase.EscalationMatrixTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:10:54 IST" name="setUp" finished-at="2024-08-06T15:11:05 IST" duration-ms="10486" status="PASS">
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
+<<<<<<< HEAD
         <test-method signature="NotificationTemplateCreate()[pri:1, instance:com.advaita.TestCreate.TestNotificationTemplateCreate@3e3861d7]" started-at="2024-08-22T11:25:35 IST" name="NotificationTemplateCreate" finished-at="2024-08-22T11:26:11 IST" duration-ms="36611" status="FAIL">
           <exception class="java.lang.AssertionError">
             <message>
@@ -59,6 +78,273 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           </reporter-output>
         </test-method> <!-- NotificationTemplateCreate -->
       </class> <!-- com.advaita.TestCreate.TestNotificationTemplateCreate -->
+=======
+        <test-method signature="escalationMatrixCreateTest()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:11:05 IST" name="escalationMatrixCreateTest" finished-at="2024-08-06T15:11:41 IST" duration-ms="36347" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- escalationMatrixCreateTest -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCase.EscalationMatrixTest@3527942a]" started-at="2024-08-06T15:11:41 IST" name="tearDown" finished-at="2024-08-06T15:11:41 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.advaita.TestCase.EscalationMatrixTest -->
+=======
+<testng-results ignored="0" total="5" passed="0" failed="0" skipped="5">
+>>>>>>> 9fc016aa2019aa32afb21b61b6c69d5c809010e5
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-07-24T12:57:32 IST" name="Default suite" finished-at="2024-07-24T12:58:08 IST" duration-ms="36292">
+    <groups>
+    </groups>
+    <test started-at="2024-07-24T12:57:32 IST" name="Default test" finished-at="2024-07-24T12:58:08 IST" duration-ms="36292">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:32 IST" name="setUp" finished-at="2024-07-24T12:57:41 IST" duration-ms="9155" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="navigateFetchRecord()[pri:4, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:41 IST" name="navigateFetchRecord" finished-at="2024-07-24T12:57:51 IST" duration-ms="9293" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- navigateFetchRecord -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:51 IST" name="getResult" finished-at="2024-07-24T12:57:51 IST" duration-ms="669" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=navigateFetchRecord status=SUCCESS method=TestStagesCreate.navigateFetchRecord()[pri:4, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="VerifyStagesTabIsDisplayed()[pri:5, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:51 IST" name="VerifyStagesTabIsDisplayed" finished-at="2024-07-24T12:57:51 IST" duration-ms="101" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- VerifyStagesTabIsDisplayed -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:51 IST" name="getResult" finished-at="2024-07-24T12:57:51 IST" duration-ms="41" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=VerifyStagesTabIsDisplayed status=SUCCESS method=TestStagesCreate.VerifyStagesTabIsDisplayed()[pri:5, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyCreateStagesButton()[pri:6, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:51 IST" name="verifyCreateStagesButton" finished-at="2024-07-24T12:57:52 IST" duration-ms="970" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateStagesButton -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:52 IST" name="getResult" finished-at="2024-07-24T12:57:52 IST" duration-ms="18" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyCreateStagesButton status=SUCCESS method=TestStagesCreate.verifyCreateStagesButton()[pri:6, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageNameTextBox()[pri:7, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:52 IST" name="verifyStageNameTextBox" finished-at="2024-07-24T12:57:53 IST" duration-ms="170" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageNameTextBox -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:53 IST" name="getResult" finished-at="2024-07-24T12:57:53 IST" duration-ms="19" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageNameTextBox status=SUCCESS method=TestStagesCreate.verifyStageNameTextBox()[pri:7, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectProcessDropDown()[pri:8, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:53 IST" name="verifyStageSelectProcessDropDown" finished-at="2024-07-24T12:57:54 IST" duration-ms="1385" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:54 IST" name="getResult" finished-at="2024-07-24T12:57:54 IST" duration-ms="25" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectProcessDropDown()[pri:8, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectSubProcessDropDown()[pri:10, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:54 IST" name="verifyStageSelectSubProcessDropDown" finished-at="2024-07-24T12:57:55 IST" duration-ms="1284" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectSubProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:55 IST" name="getResult" finished-at="2024-07-24T12:57:55 IST" duration-ms="25" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectSubProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectSubProcessDropDown()[pri:10, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectSubSubProcessDropDown()[pri:11, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:55 IST" name="verifyStageSelectSubSubProcessDropDown" finished-at="2024-07-24T12:57:57 IST" duration-ms="1221" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectSubSubProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:57 IST" name="getResult" finished-at="2024-07-24T12:57:57 IST" duration-ms="45" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectSubSubProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectSubSubProcessDropDown()[pri:11, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageCalculationTypeDropDown()[pri:12, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:57 IST" name="verifyStageCalculationTypeDropDown" finished-at="2024-07-24T12:57:57 IST" duration-ms="149" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageCalculationTypeDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:57 IST" name="getResult" finished-at="2024-07-24T12:57:57 IST" duration-ms="16" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageCalculationTypeDropDown status=SUCCESS method=TestStagesCreate.verifyStageCalculationTypeDropDown()[pri:12, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyAddSectionA()[pri:13, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:57 IST" name="verifyAddSectionA" finished-at="2024-07-24T12:57:59 IST" duration-ms="1829" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAddSectionA -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:59 IST" name="getResult" finished-at="2024-07-24T12:57:59 IST" duration-ms="19" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAddSectionA status=SUCCESS method=TestStagesCreate.verifyAddSectionA()[pri:13, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifySectionB_addBlock()[pri:14, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:57:59 IST" name="verifySectionB_addBlock" finished-at="2024-07-24T12:58:00 IST" duration-ms="1023" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySectionB_addBlock -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:58:00 IST" name="getResult" finished-at="2024-07-24T12:58:00 IST" duration-ms="12" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifySectionB_addBlock status=SUCCESS method=TestStagesCreate.verifySectionB_addBlock()[pri:14, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifySelectMetaDataInAddBlockSectionB()[pri:15, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:58:00 IST" name="verifySelectMetaDataInAddBlockSectionB" finished-at="2024-07-24T12:58:00 IST" duration-ms="383" status="FAIL">
+          <exception class="org.openqa.selenium.JavascriptException">
+            <message>
+              <![CDATA[javascript error: {"status":11,"value":"Element is not currently visible and may not be manipulated"}
+  (Session info: chrome=126.0.6478.183)
+Build info: version: '4.19.1', revision: 'abe0ee07dc'
+System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.2'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [164b4d5e9f40ddc9efb2b41731f4b951, clickElement {id=f.962ADEB687D4E685D2DCAEA3A7D1F9E7.d.8436C1F996666394177CD6D19EDE5D75.e.503}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 126.0.6478.183, chrome: {chromedriverVersion: 126.0.6478.182 (5b5d8292ddf..., userDataDir: C:\Users\W2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59058}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59058/devtoo..., se:cdpVersion: 126.0.6478.183, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[[[ChromeDriver: chrome on windows (164b4d5e9f40ddc9efb2b41731f4b951)] -> xpath: //select[@id='sectionB_metadata_id']]] -> xpath: .//option[normalize-space(.) = "CsutomerdetailsZZZMF_metadata"]]
+Session ID: 164b4d5e9f40ddc9efb2b41731f4b951]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[org.openqa.selenium.JavascriptException: javascript error: {"status":11,"value":"Element is not currently visible and may not be manipulated"}
+  (Session info: chrome=126.0.6478.183)
+Build info: version: '4.19.1', revision: 'abe0ee07dc'
+System info: os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '21.0.2'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [164b4d5e9f40ddc9efb2b41731f4b951, clickElement {id=f.962ADEB687D4E685D2DCAEA3A7D1F9E7.d.8436C1F996666394177CD6D19EDE5D75.e.503}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 126.0.6478.183, chrome: {chromedriverVersion: 126.0.6478.182 (5b5d8292ddf..., userDataDir: C:\Users\W2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:59058}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:59058/devtoo..., se:cdpVersion: 126.0.6478.183, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Element: [[[[ChromeDriver: chrome on windows (164b4d5e9f40ddc9efb2b41731f4b951)] -> xpath: //select[@id='sectionB_metadata_id']]] -> xpath: .//option[normalize-space(.) = "CsutomerdetailsZZZMF_metadata"]]
+Session ID: 164b4d5e9f40ddc9efb2b41731f4b951
+at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
+at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
+at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
+at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
+at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
+at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
+at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
+at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
+at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:518)
+at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:223)
+at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:76)
+at org.openqa.selenium.support.ui.Select.setSelected(Select.java:315)
+at org.openqa.selenium.support.ui.Select.selectByVisibleText(Select.java:119)
+at com.advaita.WorkFlowDesign.PageObject.Stages.selectMetaDataInAddBlockSectionB(Stages.java:391)
+at com.advaita.TestCreate.TestStagesCreate.verifySelectMetaDataInAddBlockSectionB(TestStagesCreate.java:186)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:133)
+at org.testng.internal.TestInvoker.invokeMethod(TestInvoker.java:598)
+at org.testng.internal.TestInvoker.invokeTestMethod(TestInvoker.java:173)
+at org.testng.internal.MethodRunner.runInSequence(MethodRunner.java:46)
+at org.testng.internal.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:824)
+at org.testng.internal.TestInvoker.invokeTestMethods(TestInvoker.java:146)
+at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:146)
+at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+at org.testng.TestRunner.privateRun(TestRunner.java:794)
+at org.testng.TestRunner.run(TestRunner.java:596)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:377)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:371)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:332)
+at org.testng.SuiteRunner.run(SuiteRunner.java:276)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:96)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1212)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1134)
+at org.testng.TestNG.runSuites(TestNG.java:1063)
+at org.testng.TestNG.run(TestNG.java:1031)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.openqa.selenium.JavascriptException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySelectMetaDataInAddBlockSectionB -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:58:00 IST" name="getResult" finished-at="2024-07-24T12:58:08 IST" duration-ms="8318" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifySelectMetaDataInAddBlockSectionB status=FAILURE method=TestStagesCreate.verifySelectMetaDataInAddBlockSectionB()[pri:15, instance:com.advaita.TestCreate.TestStagesCreate@33060020] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@33060020]" started-at="2024-07-24T12:58:08 IST" name="tearDown" finished-at="2024-07-24T12:58:08 IST" duration-ms="11" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+<<<<<<< HEAD
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
+=======
+      </class> <!-- com.advaita.TestCreate.TestMasterMenusCreate -->
+>>>>>>> a4f565925a2e10e89de894cc7ce41bbe513466f4
+>>>>>>> 9fc016aa2019aa32afb21b61b6c69d5c809010e5
+>>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

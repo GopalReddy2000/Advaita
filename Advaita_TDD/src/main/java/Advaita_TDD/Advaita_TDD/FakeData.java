@@ -4,8 +4,10 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -15,9 +17,28 @@ public class FakeData {
 
 	public static void main(String[] args) {
 
-//		Faker faker = new Faker();
+		Faker faker = new Faker();
+		
 
-		FakeData fd = new FakeData();
+//		// Generate a fake drop-down question
+//        String question = "What is your favorite " + faker.food().ingredient() + "?";
+//
+//        // Generate 5 fake options for the drop-down list
+//        List<String> options = new ArrayList<>();
+//        options.add(faker.food().ingredient());
+//        options.add(faker.food().ingredient());
+//        options.add(faker.food().ingredient());
+//        options.add(faker.food().ingredient());
+//        options.add(faker.food().ingredient());
+//
+//        // Print the question and the options
+//        System.out.println(question);
+//        System.out.println("-------------------");
+//        for (String option : options) {
+//            System.out.println(option);
+//        }
+        
+//		FakeData fd = new FakeData();
 
 //		System.out.println(faker.date().future(100, TimeUnit.DAYS));
 //		
@@ -57,7 +78,7 @@ public class FakeData {
 //        
 	}
 
-	public String firstCapString() {
+	public static String firstCapString() {
 		// Create a Faker instance
 		Faker faker = new Faker();
 
@@ -93,7 +114,7 @@ public class FakeData {
 	}
 	
 	private static final Set<String> generatedLastNames = new HashSet<>();
-    public String lastName1() {
+    public static String lastName2() {
         // Create a Faker instance
         Faker faker = new Faker();
 
@@ -115,21 +136,21 @@ public class FakeData {
         return randomLastName;
     }
 
-//	public String lastName1() {
-//		// Create a Faker instance
-//		Faker faker = new Faker();
-//
-//		// Generate a random last name
-//		String randomLastName = faker.name().lastName();
-//
-//		// Remove special characters using regex
-//		randomLastName = randomLastName.replaceAll("[^a-zA-Z]", "");
-//
-//		// Print the random last name
+	public static String lastName1() {
+		// Create a Faker instance
+		Faker faker = new Faker();
+
+		// Generate a random last name
+		String randomLastName = faker.name().lastName();
+
+		// Remove special characters using regex
+		randomLastName = randomLastName.replaceAll("[^a-zA-Z]", "");
+
+		// Print the random last name
 //		System.out.println("Random Last Name: " + randomLastName);
-//
-//		return randomLastName;
-//	}
+
+		return randomLastName;
+	}
 
 	public static void firstName() {
 		// Create a Faker instance

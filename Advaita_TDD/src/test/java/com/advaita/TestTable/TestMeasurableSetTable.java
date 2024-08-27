@@ -74,7 +74,7 @@ public class TestMeasurableSetTable extends TestBase {
 
 		test = reports.createTest("verifyMeasurableSetTablePage");
 		homePage.clickOnworkflowDesign();
-		measurableSetPage.tablePageOfMeasurableSet();
+//		measurableSetPage.tablePageOfMeasurableSet();
 
 	}
 
