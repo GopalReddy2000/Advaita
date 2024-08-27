@@ -126,7 +126,7 @@ public class ClickUtilities extends TestBase {
 	}
 
 //	ElementUtils.clickWithRetry(submitButton, 3);
-	public static void clickWithRetry(WebElement element, int maxAttempts) {
+	public static void clickWithRetry(WebElement element, int maxAttempts) throws Throwable {
 		assertTrue(element.isDisplayed());
 		int attempts = 0;
 		while (attempts < maxAttempts) {
@@ -136,6 +136,7 @@ public class ClickUtilities extends TestBase {
 			} catch (Exception e) {
 				// Handle StaleElementReferenceException or other exceptions
 				attempts++;
+				Thread.sleep(200);
 			}
 		}
 	}
@@ -193,7 +194,7 @@ public class ClickUtilities extends TestBase {
 	}
 
 //	ElementUtils.clickAndHighlightElement(elementToHighlight, driver);
-	public static void clickAndHighlightElement(WebElement element, WebDriver driver) {
+	public static void clickAndHighlightElement(WebElement element, WebDriver driver) throws Throwable {
 		js.executeScript("arguments[0].style.backgroundColor = 'yellow';", element);
 		try {
 
