@@ -53,22 +53,22 @@ public class TestProcessTable extends TestBase {
 		loginPage = new LoginPage();
 		homePage = loginPage.login("capture_admin", "Qwerty@123");
 
-		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/ProcessTable.html");
-		reports = new ExtentReports();
-		reports.attachReporter(htmlReporter);
-
-		// add environment details
-		reports.setSystemInfo("Machine", "Testpc1");
-		reports.setSystemInfo("OS", "Windows 11");
-		reports.setSystemInfo("user", "Gopal");
-		reports.setSystemInfo("Browser", "Chrome");
-
-		// Configuration to change look and feel
-		htmlReporter.config().setDocumentTitle("Extent Report for Process");
-		htmlReporter.config().setReportName("TEST Advaita");
-		htmlReporter.config().setTheme(Theme.STANDARD);
-		htmlReporter.config().setTimelineEnabled(true);
-		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
+//		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/ProcessTable.html");
+//		reports = new ExtentReports();
+//		reports.attachReporter(htmlReporter);
+//
+//		// add environment details
+//		reports.setSystemInfo("Machine", "Testpc1");
+//		reports.setSystemInfo("OS", "Windows 11");
+//		reports.setSystemInfo("user", "Gopal");
+//		reports.setSystemInfo("Browser", "Chrome");
+//
+//		// Configuration to change look and feel
+//		htmlReporter.config().setDocumentTitle("Extent Report for Process");
+//		htmlReporter.config().setReportName("TEST Advaita");
+//		htmlReporter.config().setTheme(Theme.STANDARD);
+//		htmlReporter.config().setTimelineEnabled(true);
+//		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		process = new Process();
 
@@ -89,36 +89,45 @@ public class TestProcessTable extends TestBase {
 //		process.SearchCreatedProcesbySelctingStatus_InAnctive();
 //		process.NavigateToNextTablePageClick_Rightarrow();
 //		process.NavigateToNextTablePageClick_leftarrow();
+		
+		
+		//ProcessSetup
+		process.allActiveProcesss();
+		process.fetchProcessAndStatus();
+		process.SingleProcessOnly();
+		
+		
+		
 
-		test = reports.createTest("verifyProcessTable");
-		process.tablePage();
+//		test = reports.createTest("verifyProcessTable");
+//		process.tablePage();
 
 	}
 	
-	@AfterMethod
-	public void getResult(ITestResult result) throws IOException, Throwable {
-		if (result.getStatus() == ITestResult.FAILURE) {
-			// Mark the test as failed in the ExtentReports
-			test.fail(result.getThrowable());
-			// Add screenshot to ExtentReports
-			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
-			test.addScreenCaptureFromPath(screenshotPath);
-			
-			// Add logs
-	        test.log(Status.FAIL, "Test failed at " + new Date());
+//	@AfterMethod
+//	public void getResult(ITestResult result) throws IOException, Throwable {
+//		if (result.getStatus() == ITestResult.FAILURE) {
+//			// Mark the test as failed in the ExtentReports
+//			test.fail(result.getThrowable());
+//			// Add screenshot to ExtentReports
+//			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
+//			test.addScreenCaptureFromPath(screenshotPath);
+//			
+//			// Add logs
+//	        test.log(Status.FAIL, "Test failed at " + new Date());
+//
+//	        // Add custom HTML block
+//	        test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+//		}
+//		// Close ExtentReports
+//		reports.flush();
+//	}
 
-	        // Add custom HTML block
-	        test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
-		}
-		// Close ExtentReports
-		reports.flush();
-	}
-
-	@AfterTest
+	//@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();
-		reports.flush();
+		//reports.flush();
 	}
 
 }

@@ -1,10 +1,10 @@
 package com.advaita.BaseClass;
 
-import static org.testng.Assert.assertTrue;
-
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -39,11 +39,14 @@ public class TestBase {
 //		 Incognito Mode Execution
 		options = new ChromeOptions();
 		options.addArguments("--incognito");
+		options.addArguments("use-fake-ui-for-media-stream");
 		DesiredCapabilities cap = new DesiredCapabilities();
 		cap.setCapability(ChromeOptions.CAPABILITY, options);
 		cap.setCapability("applicationCacheEnabled", false);
+		// Setting the default behavior to block the microphone
 		options.merge(cap);
 		driver = new ChromeDriver(options);
+		
 
 		// Normal Execution
 //		driver = new ChromeDriver();

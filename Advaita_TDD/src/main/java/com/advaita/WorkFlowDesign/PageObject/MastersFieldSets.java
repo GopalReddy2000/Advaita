@@ -1180,7 +1180,7 @@ public class MastersFieldSets extends TestBase {
 		return Integer.parseInt(numberAsString.toString());
 	}
 
-//	**********************************************************Create Edit**************************************************************************************************************
+//	**********************************************************Create End**************************************************************************************************************
 
 	public void tablePageSearch() throws Throwable {
 
@@ -1219,7 +1219,7 @@ public class MastersFieldSets extends TestBase {
 
 //		Pagination.paginate(driver, rightArrow, leftArrow);
 		
-		Pagination.paginateWithCount(driver, rightArrow, leftArrow,3);
+		Pagination.paginateWithCount(driver, rightArrow, leftArrow,6);
 
 		driver.navigate().refresh();
 //		---------------------------------------------------------------------------

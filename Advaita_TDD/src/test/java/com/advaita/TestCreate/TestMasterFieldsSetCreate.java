@@ -22,14 +22,13 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
 
-public class TestMasterFieldsSetCreate extends TestBase {
+public class TestMasterFieldsSetCreate extends TestBase 
+{
 
 	Faker faker = new Faker();
 
 	public String metaDataName = "Test " + faker.name().firstName();
 
-//	public String num = "7";
-//	public String metaDataName = "Test Single MetaData" + num;
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -72,6 +71,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 	}
 
+	
 	@Test(priority = 1)
 	public void verifyTabsForFieldSetCreate() throws Throwable {
 
