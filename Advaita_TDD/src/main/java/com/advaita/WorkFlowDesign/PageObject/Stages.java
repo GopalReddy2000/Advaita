@@ -342,7 +342,7 @@ public class Stages extends TestBase {
 
 	}
 
-	public void verifyAddBlockInSectionB(int count) {
+	public void verifyAddBlockInSectionB(int count) throws Throwable {
 
 		verifySectionB();
 
@@ -366,7 +366,7 @@ public class Stages extends TestBase {
 
 	}
 
-	public void selectMetaDataInAddBlockSectionB(int count) {
+	public void selectMetaDataInAddBlockSectionB(int count) throws Throwable {
 
 		for (int i = 1; i <= count; i++) {
 

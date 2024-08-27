@@ -4,6 +4,7 @@
   <test thread-count="5" name="Default test(failed)">
     <classes>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <class name="com.advaita.TestCreate.TestNotificationTemplateCreate">
 =======
 <<<<<<< HEAD
@@ -12,11 +13,15 @@
 <<<<<<< HEAD
       <class name="com.advaita.TestCase.EscalationMatrixTest">
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+=======
+      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
+>>>>>>> 348d2a37d2fc45e165400c5bdb57b1dcbdd1f726
         <methods>
 <<<<<<< HEAD
           <include name="NotificationTemplateCreate"/>
 =======
           <include name="tearDown"/>
+<<<<<<< HEAD
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
           <include name="setUp"/>
 <<<<<<< HEAD
@@ -34,9 +39,13 @@
         <methods>
           <include name="setUp"/>
           <include name="tearDown"/>
+=======
+>>>>>>> 348d2a37d2fc45e165400c5bdb57b1dcbdd1f726
           <include name="getResult"/>
-          <include name="verifySelectMetaDataInAddBlockSectionB"/>
+          <include name="setUp"/>
+          <include name="verifyAddFormFieldSetInCreateFieldSet"/>
         </methods>
+<<<<<<< HEAD
 <<<<<<< HEAD
       </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
 =======
@@ -44,6 +53,9 @@
 >>>>>>> a4f565925a2e10e89de894cc7ce41bbe513466f4
 >>>>>>> 9fc016aa2019aa32afb21b61b6c69d5c809010e5
 >>>>>>> branch 'master' of https://github.com/GopalReddy2000/Advaita.git
+=======
+      </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
+>>>>>>> 348d2a37d2fc45e165400c5bdb57b1dcbdd1f726
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

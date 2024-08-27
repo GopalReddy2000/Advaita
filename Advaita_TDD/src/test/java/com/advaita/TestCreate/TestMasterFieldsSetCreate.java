@@ -1,7 +1,9 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -184,7 +186,7 @@ public class TestMasterFieldsSetCreate extends TestBase
 		masterFieldSet.verifyAfterFieldSetCreatedCount();
 
 	}
-	
+
 //	@Test(priority = 15)
 //	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
 //		
@@ -194,6 +196,45 @@ public class TestMasterFieldsSetCreate extends TestBase
 //		masterFieldSet.verifyNumberFieldInCreateFieldSet();
 //		
 //	}
+
+	@Test(priority = 16)
+	public void verifyAddFormFieldSetInCreateFieldSet() throws Throwable {
+
+		test = reports.createTest("verifyAddFormFieldSetInCreateFieldSet");
+
+		MastersFieldSets.commonNavigation();
+		masterFieldSet.verifyTabsForFieldSetCreate();
+		masterFieldSet.verifyFieldSetCreateButton();
+
+		String questionSetNameString = "DropDown Ques";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+
+
+		String minLength = "10";
+		String maxLength = "14";
+		String expectedDefaultOption = "All";
+		String[] expectedOrder = { "All", "Only Text", "Only Number" };
+		
+		
+		
+		// Usage
+		List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD", "OptionE");
+		masterFieldSet
+		             .addDropDownRelatedQuestions("Create Drop Down ?", 
+						1, //Section
+						1, //Question
+						MastersFieldSets.DROP_DOWN, options)
+						.addQuestions(1)//index based on which section
+						.addTextBoxRelatedQuestions("Number Of The Customer?",
+						1, //Section
+						2, //Question
+						MastersFieldSets.TEXT_BOX, 
+						minLength,
+						maxLength, 
+						expectedDefaultOption, 
+						expectedOrder);
+
+	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
@@ -216,8 +257,8 @@ public class TestMasterFieldsSetCreate extends TestBase
 
 	@AfterTest
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 	}
 }

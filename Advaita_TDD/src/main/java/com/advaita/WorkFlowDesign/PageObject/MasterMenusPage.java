@@ -71,7 +71,7 @@ public class MasterMenusPage extends TestBase {
 
 	HomePage hp = new HomePage();
 
-	public void navigateToMasterMenus() {
+	public void navigateToMasterMenus() throws Throwable {
 
 		String expectURL = mainURl + "en/masters/masters_menu_list/";
 
