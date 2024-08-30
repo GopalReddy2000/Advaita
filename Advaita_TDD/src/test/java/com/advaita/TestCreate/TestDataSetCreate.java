@@ -2,6 +2,8 @@ package com.advaita.TestCreate;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -13,6 +15,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -70,14 +73,50 @@ public class TestDataSetCreate extends TestBase {
 
 	}
 
-	@Test(priority = 1)
-	public void verifyCreateDataset() throws Throwable {
+//	@Test(priority = 1)
+//	public void verifyCreateDataset() throws Throwable {
+//
+//		test = reports.createTest("verifyCreateDataset");
+//		HomePage.clickOnProcessManagementCreate();
+//		dataset.createDataSet("Text Area");
+//
+//	}
+//	
 
-		test = reports.createTest("verifyCreateDataset");
+	@Test(priority = 2)
+	public void verifyCreateNewDataset() throws Throwable {
+		test = reports.createTest("verifyCreateNewDataset");
 		HomePage.clickOnProcessManagementCreate();
-		dataset.createDataSet("Text Area");
+		
+//		final String dataSetName = "Emplyee Details";
+//		 // Data for multiple rows
+//	    List<Map<String, String>> fieldData = List.of(
+//	        Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+//	        Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+//	        Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
+//	        Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No")
+//	    );
+//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData);
 
-	}
+		    final String dataSetName = "Employee Details";
+
+		    // Get all questions
+		    List<Map<String, String>> allQuestions = DataSet.generateEmployeeQuestions();
+		    // Select 5 random questions (or sequentially, set randomSelection to false)
+    		// all questions, NumberOfQuestions, boolean randomSelection
+		    /**
+		     * Select a specific number of questions from a list.
+		     *
+		     * @param questions List of all available questions.
+		     * @param numberOfQuestions Number of questions to select.
+		     * @param randomSelection Whether to select questions randomly or not.
+		     * @return List of selected questions.
+		     */
+		    List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, 5, false);
+
+		    dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions);
+		}
+
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
@@ -87,12 +126,12 @@ public class TestDataSetCreate extends TestBase {
 			// Add screenshot to ExtentReports
 			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
 			test.addScreenCaptureFromPath(screenshotPath);
-			
-			// Add logs
-	        test.log(Status.FAIL, "Test failed at " + new Date());
 
-	        // Add custom HTML block
-	        test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
 		}
 		// Close ExtentReports
 		reports.flush();
@@ -100,8 +139,8 @@ public class TestDataSetCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 	}
 

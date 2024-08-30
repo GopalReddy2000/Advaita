@@ -215,24 +215,56 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		String expectedDefaultOption = "All";
 		String[] expectedOrder = { "All", "Only Text", "Only Number" };
 		
+		String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
+		
 		
 		
 		// Usage
-		List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD", "OptionE");
-		masterFieldSet
-		             .addDropDownRelatedQuestions("Create Drop Down ?", 
-						1, //Section
-						1, //Question
-						MastersFieldSets.DROP_DOWN, options)
-						.addQuestions(1)//index based on which section
-						.addTextBoxRelatedQuestions("Number Of The Customer?",
-						1, //Section
-						2, //Question
-						MastersFieldSets.TEXT_BOX, 
-						minLength,
-						maxLength, 
-						expectedDefaultOption, 
-						expectedOrder);
+//		List<String> options = Arrays.asList("OptionA", "OptionB");
+
+//		masterFieldSet
+//		             .addDropDownRelatedQuestions("Create Drop Down ?", 
+//						1, //Section
+//						1, //Question
+//						MastersFieldSets.DROP_DOWN, options)
+//						.addQuestions(1)//index based on which section
+//						.addTextBoxRelatedQuestions("Number Of The Customer?",
+//						1, //Section
+//						2, //Question
+//						MastersFieldSets.TEXT_BOX, 
+//						minLength,
+//						maxLength, 
+//						expectedDefaultOption, 
+//						expectedOrder,
+//						typeOfValue);
+		
+		
+		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?",
+				1, //Section
+				1, //Question
+				MastersFieldSets.TEXT_BOX, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
+		
+		List<String> sector = Arrays.asList("core", "it","electronics");
+		masterFieldSet.addQuestions(1)
+		.addDropDownRelatedQuestions("Create Drop Down ?", 
+			1, //Section
+			2, //Question
+			MastersFieldSets.RELATIVE_DROP_DOWN, sector);
+		
+		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?",
+				2, //Section
+				1, //Question
+				MastersFieldSets.SHORT_ANSWER, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
 
 	}
 
@@ -257,8 +289,10 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
+		
 //		driver.manage().window().minimize();
 //		driver.quit();
+		
 		reports.flush();
 	}
 }

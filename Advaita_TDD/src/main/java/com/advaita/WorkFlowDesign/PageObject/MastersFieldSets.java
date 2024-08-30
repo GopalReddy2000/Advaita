@@ -1425,7 +1425,8 @@ public class MastersFieldSets extends TestBase {
 			if (i > 0) { // Add the "Add Option" button click only for options beyond the first one
 				String xpathAdd = "(" + baseXPath
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
+				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
+				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
 			}
 
 			// Input the option text
@@ -1445,8 +1446,8 @@ public class MastersFieldSets extends TestBase {
 //	addDropDownRelatedQuestions("Create Drop Down ?", 1, 6, DROP_DOWN, options);
 
 	public MastersFieldSets addTextBoxRelatedQuestions(String question, int sectionIndex, int questionIndex,
-			int questionType, String minLength, String maxLength, String expectedDefaultOption, String[] expectedOrder)
-			throws Throwable {
+			int questionType, String minLength, String maxLength, String expectedDefaultOption, String[] expectedOrder,
+			String typeOfValue) throws Throwable {
 
 		// Construct XPath for the question text field and find the element
 		String baseXPath = "//div[h5[contains(text(), 'Question " + questionIndex + "')]]";
@@ -1461,20 +1462,57 @@ public class MastersFieldSets extends TestBase {
 		// Construct XPath for the question type and click on it
 		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
+
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
-		// Set minLength and maxLength
-		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
-		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
+		if (questionType == 10) {
+
+			click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
+
+		} else {
+			// Handle default or unexpected questionType
+			click(driver, DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex, 1));
+		}
+
+		if (questionType == 10) {
+			// Set minLength and maxLength
+			SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
+			SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
+		} else {
+
+			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMinLength(sectionIndex, questionIndex), minLength);
+			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMaxLength(sectionIndex, questionIndex), maxLength);
+		}
 
 		// Create a Select object for the dropdown element
-		Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(sectionIndex, questionIndex));
+		if (questionType == 10) {
+			Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(sectionIndex, questionIndex));
+			// Validate the dropdown options, default selection, and order
+			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
 
-		// Validate the dropdown options, default selection, and order
-		DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
+			// Select the desired option by visible text (if needed)
+			valueTypeDropDown.selectByVisibleText(typeOfValue);
+		} else {
+			Select valueTypeDropDown = new Select(DynamicXpath.shortValueTypeDropDown(sectionIndex, questionIndex));
+			// Validate the dropdown options, default selection, and order
+			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
 
-		// Select the desired option by visible text (if needed)
-		valueTypeDropDown.selectByVisibleText("Only Number");
+			// Select the desired option by visible text (if needed)
+			valueTypeDropDown.selectByVisibleText(typeOfValue);
+		}
+
+		if (questionType == 10) {
+
+			click(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex));
+			Thread.sleep(400);
+			click(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex));
+
+		} else {
+
+			click(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex));
+			Thread.sleep(400);
+			click(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex));
+		}
 
 		return this;
 	}
@@ -1487,6 +1525,7 @@ public class MastersFieldSets extends TestBase {
 //    String maxLength = "14";
 //    String expectedDefaultOption = "All";
 //    String[] expectedOrder = { "All", "Only Text", "Only Number" };
+//	  String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
 //
 //    // Call the method to add and validate text box related questions
 //    addTextBoxRelatedQuestions(question, sectionIndex, questionIndex, questionType, minLength, maxLength, 
@@ -1504,9 +1543,12 @@ public class MastersFieldSets extends TestBase {
 		return this;
 	}
 
-	public void verifyAddSection() throws Throwable {
+	public MastersFieldSets addSection() throws Throwable {
 
-		ClickUtilities.clickWithRetry(addSectionButton, 2);
+		js.executeScript("arguments[0].scrollIntoView(true);", addSectionButton);
+		jsClick(driver, addSectionButton);
+
+		return this;
 	}
 
 }

@@ -1,13 +1,19 @@
 package com.advaita.DataSetUp.PageObject;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -17,8 +23,11 @@ import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
+import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.DynamicXpath;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.ScreenShorts;
+import com.advaita.Utilities.SendDataUtils;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -54,7 +63,7 @@ public class DataSet extends TestBase {
 	@FindBy(id = "id_form-0-ds_is_mandatory")
 	public static WebElement mandetoryDropDown;
 
-	@FindBy(xpath = "(//a[normalize-space()='+ Add Row'])[1]")
+	@FindBy(xpath = "//a[@id='add_more'][normalize-space()='+ Add Row']")
 	public static WebElement addRowButton;
 
 	@FindBy(xpath = "//input[@name='form-1-dataset_fieldname']")
@@ -176,9 +185,8 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "//div[@id='id_confrm_popp']//button[text()='Delete']")
 	public static WebElement popDeleteButton;
 
-	@FindBy(xpath="//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
+	@FindBy(xpath = "//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
 	public static WebElement notificationTxt;
-
 
 //	@FindBy(xpath = "//h3[@class='page_heading mb_8']/following-sibling::span[@id='change_msg']")
 //	public static WebElement notificationTxt;
@@ -186,35 +194,32 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "//img[@alt='rgt_arrow']//parent::a")
 	public static WebElement paginationRightArrow;
 
-	@FindBy(xpath="//p[@class='show_entries m-0 font_13']")
+	@FindBy(xpath = "//p[@class='show_entries m-0 font_13']")
 	public static WebElement showingNumberOfRecords;
 
-
-
-	@FindBy(xpath="//div[@class='mt_20']//button[@type='submit']")
+	@FindBy(xpath = "//div[@class='mt_20']//button[@type='submit']")
 	public static WebElement recordDeleteButton;
-
 
 	ScreenShorts ss = new ScreenShorts();
 	Pagination pg = new Pagination();
 
 	FakeData fake = new FakeData();
 
+	String processValue;
+	String subProcessValue;
+	String subSubProcessValue;
+
+	String dataSetName1 = FakeData.firstCapString() + " Name";
+
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
-	
-	public void navToDataSetup()
-	{
-		
-	}
 
-	public void createDataSet(String type)
-			throws Throwable {
+	public void createDataSet(String type) throws Throwable {
 
-		//		Faker faker = new Faker();
+		// Faker faker = new Faker();
 		HomePage.clickOnProcessManagementCreate();
-		dropDown1.isDisplayed();	
+		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
 		dropDown2.isDisplayed();
@@ -305,7 +310,7 @@ public class DataSet extends TestBase {
 			assertTrue(maxLengthField.isDisplayed());
 			assertTrue(maxLengthField.isEnabled());
 			maxLengthField.click();
-			//		assertTrue(maxLengthField.isSelected());
+			// assertTrue(maxLengthField.isSelected());
 			maxLengthField.sendKeys("10");
 
 			assertTrue(mandetoryDropDown.isDisplayed());
@@ -389,7 +394,7 @@ public class DataSet extends TestBase {
 		System.out.println("After Result: " + afterResult);
 
 		assertEquals(afterResult, beforeTotalRecored);
-		
+
 		System.out.println("The User is Able to Create Dataset");
 
 	}
@@ -534,10 +539,9 @@ public class DataSet extends TestBase {
 		return elements.get(randomIndex);
 	}
 
-
 	public static void clickMultipleTimes(WebElement element, int times) {
 		for (int i = 0; i < times; i++) {
-			jsClick(driver,element);
+			jsClick(driver, element);
 		}
 	}
 
@@ -545,32 +549,364 @@ public class DataSet extends TestBase {
 		return ThreadLocalRandom.current().nextInt(1, a);
 	}
 
-	public void deleteDataSet()
-	{
+	public void deleteDataSet() {
 
 		dataSetup.click();
 		dataSetTab.click();
-		String text= showingNumberOfRecords.getText();
-		int numberOfPages=Integer.parseInt(text.substring(text.indexOf("of")+3,text.length()-1));
-		clickMultipleTimes(paginationRightArrow,generateRandomNumber(numberOfPages));
-		String text1= showingNumberOfRecords.getText();
+		String text = showingNumberOfRecords.getText();
+		int numberOfPages = Integer.parseInt(text.substring(text.indexOf("of") + 3, text.length() - 1));
+		clickMultipleTimes(paginationRightArrow, generateRandomNumber(numberOfPages));
+		String text1 = showingNumberOfRecords.getText();
 
 		System.out.println(text1);
 
-
-		for(int a=0;a<deleteDataSet.size();a++)
+		for (int a = 0; a < deleteDataSet.size(); a++)
 
 		{
 			System.out.println((a + 1) + "st Delete Button is Enabled: " + deleteDataSet.get(a).isEnabled());
 		}
 
-		jsClick(driver, getRandomElement(deleteDataSet)); 
+		jsClick(driver, getRandomElement(deleteDataSet));
 		jsClick(driver, recordDeleteButton);
 		wait.until(ExpectedConditions.visibilityOf(notificationTxt));
 		System.out.println(notificationTxt.getText());
 		Assert.assertEquals(notificationTxt.getText(), "Dataset has been deleted successfully");
 
-
 	}
+
+//	##############################################################################################################################
+//	##############################################################################################################################
+//	##############################################################################################################################
+//	##############################################################################################################################
+
+	public DataSet navigateToDataSetup() throws Throwable {
+
+		// Faker faker = new Faker();
+		HomePage.clickOnProcessManagementCreate();
+		dropDown1.isDisplayed();
+		dropDown1.click();
+		Thread.sleep(1000);
+		dropDown2.isDisplayed();
+		dropDown2.click();
+		Thread.sleep(1000);
+
+		processValue = fetchProcess.getText();
+		subProcessValue = fetchsubProcess.getText();
+		subSubProcessValue = fetchsubSubProcess.getText();
+
+		System.out.println("process : " + processValue + "\n" + "subProcess : " + subProcessValue + "\n"
+				+ "subSubProcess : " + subSubProcessValue);
+
+		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
+		assertTrue(dataSetup.isDisplayed(), "DataSetup is not Displayed");
+		dataSetup.click();
+
+		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
+		dataSetTab.click();
+
+		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
+
+		String actualURL = driver.getCurrentUrl();
+
+		assertEquals(actualURL, expecteddURL);
+
+		return this;
+	}
+
+	public DataSet createNewDataSet(String dataSetName) {
+
+		click(driver, createDataSetButton);
+
+		wait.until(ExpectedConditions.visibilityOf(createDataSetPupup));
+		assertTrue(createDataSetPupup.isDisplayed());
+
+		verifyDataSetNameField(dataSetName);
+
+		processDropDownSelect().subProcessDropDownSelect().subSubProcessDropDownSelect();
+
+		return this;
+	}
+
+	public void verifyDataSetNameField(String dataSetName) {
+
+		assertTrue(createDataSetPupup.isDisplayed(), "createDataSetPupup is not displayed.");
+
+		String text = driver.findElement(By.xpath("//label[normalize-space()='Dataset Name*']")).getText();
+		char lastChar = text.charAt(text.length() - 1);
+		assertEquals(lastChar, '*', "dataSetNameField label does not end with '*'.");
+
+		assertTrue(dataSetNameField.isEnabled(), "dataSetNameField is not enabled.");
+
+		String existingText = dataSetNameField.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "dataSetNameField is not empty before entering text.");
+
+		assertNotNull(dataSetName, "dataSetName is null.");
+		assertFalse(dataSetName.trim().isEmpty(), "dataSetName is empty.");
+		assertTrue(dataSetName.matches("^[a-zA-Z0-9 ]+$"), "dataSetName contains special characters.");
+
+		SendDataUtils.clearAndSendKeys(dataSetNameField, dataSetName);
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+
+		try {
+			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+					"//label[normalize-space()='Dataset Name*']/..//label[normalize-space()='This field is required.']"))));
+		} catch (TimeoutException e) {
+			System.out.println(
+					"Exception : " + e + "\n" + "Exsting User Displayed Or Not : " + dataSetName + " is Displayed.");
+			assertFalse(true, "dataSetName is displayed");
+		}
+
+		String enteredText = dataSetNameField.getAttribute("value");
+		assertEquals(enteredText, dataSetName, "dataSetName is not correctly entered in the field.");
+	}
+
+	
+	public DataSet enterFieldNameAndValidations(List<Map<String, String>> fieldData) throws Throwable {
+
+
+	    for (int i = 0; i < fieldData.size(); i++) {
+	        Map<String, String> row = fieldData.get(i);
+
+	        String fieldName = row.get("FieldName");
+	        String type = row.get("Type");
+	        String maxLength = row.get("MaxLength");
+	        String isMandatory = row.get("IsMandatory");
+
+	        // Verify and input field name
+//	        WebElement fieldNameField = DynamicXpath.dataSetField(i);
+	        verifyFieldNameField(DynamicXpath.dataSetField(i), fieldName);
+
+	        // Verify and input label name
+//	        WebElement labelNameField = DynamicXpath.dataSetLabelField(i);
+	        verifyLabelNameField(DynamicXpath.dataSetLabelField(i), fieldName);
+
+	        // Select type from dropdown
+	        typeDropDownSelect(i, type);
+
+	        // Handle maxLength only if the type is not True/False
+	            verifyMaxLengthField(DynamicXpath.dataSetMaxLength(i), maxLength);
+
+	        // Select mandatory option
+//	        WebElement mandatoryDropDown = DynamicXpath.dataSetMandatoryDropDown(i);
+	        mandatoryDropDownSelect(i, isMandatory);
+
+	        // Add a new row unless it's the last iteration
+	        if (i < fieldData.size() - 1) {
+	        	click(driver, addRowButton);
+	        }
+	    }
+
+	    return this;
+	}
+
+
+	public DataSet verifyFieldNameField(WebElement fieldNameField, String fieldName) {
+
+		assertTrue(fieldNameField.isEnabled(), "fieldNameField is not enabled.");
+
+		String existingText = fieldNameField.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "fieldNameField is not empty before entering text.");
+
+		assertNotNull(fieldName, "fieldName is null.");
+		assertFalse(fieldName.trim().isEmpty(), "fieldName is empty.");
+//		assertTrue(fieldName.matches("^[a-zA-Z0-9 ]+$"), "fieldName contains special characters.");
+
+		SendDataUtils.clearAndSendKeys(fieldNameField, fieldName);
+
+		String enteredText = fieldNameField.getAttribute("value");
+		assertEquals(enteredText, fieldName, "fieldName is not correctly entered in the field.");
+
+		return this;
+	}
+
+	public DataSet verifyLabelNameField(WebElement labelNameField, String labelName) {
+
+		assertTrue(labelNameField.isEnabled(), "fieldNameField is not enabled.");
+
+		String existingText = labelNameField.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "fieldNameField is not empty before entering text.");
+
+		assertNotNull(labelName, "fieldName is null.");
+		assertFalse(labelName.trim().isEmpty(), "fieldName is empty.");
+//		assertTrue(labelName.matches("^[a-zA-Z0-9 ]+$"), "fieldName contains special characters.");
+
+		SendDataUtils.clearAndSendKeys(labelNameField, labelName);
+
+		String enteredText = labelNameField.getAttribute("value");
+		assertEquals(enteredText, labelName, "fieldName is not correctly entered in the field.");
+
+		return this;
+	}
+
+	public DataSet verifyMaxLengthField(WebElement maxLengthField, String maxLength) {
+
+		assertTrue(maxLengthField.isEnabled(), "maxLengthField is not enabled.");
+
+		String existingText = maxLengthField.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "maxLengthField is not empty before entering text.");
+
+		assertNotNull(maxLength, "maxLength is null.");
+		assertFalse(maxLength.trim().isEmpty(), "maxLength is empty.");
+//		assertTrue(maxLength.matches("^[a-zA-Z0-9 ]+$"), "maxLength contains special characters.");
+
+		SendDataUtils.clearAndSendKeys(maxLengthField, maxLength);
+
+		String enteredText = maxLengthField.getAttribute("value");
+		assertEquals(enteredText, maxLength, "maxLength is not correctly entered in the field.");
+
+		return this;
+	}
+
+	public DataSet typeDropDownSelect(int index, String type) throws Throwable {
+
+		DropDown.dropdownWithAllPosibleValidation(DynamicXpath.dataSetTypeDropDown(index), "Character", type);
+
+		return this;
+	}
+
+	public DataSet mandatoryDropDownSelect(int index, String isMandatory) throws Throwable {
+
+		DropDown.dropdownWithAllPosibleValidation(DynamicXpath.dataSetMandatoryDropDown(index), "Yes", isMandatory);
+
+		return this;
+	}
+
+	public DataSet processDropDownSelect() {
+
+		assertTrue(processDropDown.isDisplayed());
+		Select select = new Select(processDropDown);
+		select.selectByVisibleText(processValue);
+
+		return this;
+	}
+
+	public DataSet subProcessDropDownSelect() {
+
+		assertTrue(subProcessDropDown.isDisplayed());
+		Select select1 = new Select(subProcessDropDown);
+		select1.selectByVisibleText(subProcessValue);
+
+		return this;
+	}
+
+	public DataSet subSubProcessDropDownSelect() {
+
+		assertTrue(subSubProcessDropDown.isDisplayed());
+		Select select = new Select(subSubProcessDropDown);
+		select.selectByVisibleText(subSubProcessValue);
+
+		return this;
+	}
+	
+	
+	
+	
+	public static List<Map<String, String>> generateEmployeeQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Employee Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Employee ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Department", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Position", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Date of Joining", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Salary", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Email", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Phone Number", "Type", "Number", "MaxLength", "15", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Address", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Emergency Contact", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "No"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateCustomerQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Customer Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Customer ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Number", "Type", "Number", "MaxLength", "15", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Email Address", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Address", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Date of Registration", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Preferred Contact Method", "Type", "DropDown", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Feedback", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Purchase History", "Type", "Text Area", "MaxLength", "300", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Loyalty Points", "Type", "Number", "MaxLength", "10", "IsMandatory", "No"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateVendorQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Vendor Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Vendor ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Person", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Number", "Type", "Number", "MaxLength", "15", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Email Address", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Address", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Business Type", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Registration Number", "Type", "Text Area", "MaxLength", "20", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Date of Onboarding", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Payment Terms", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "No"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateCompanyQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Company Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Company ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Industry", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Person", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Number", "Type", "Number", "MaxLength", "15", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Email Address", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Address", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Registration Date", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Tax ID", "Type", "Text Area", "MaxLength", "20", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Business Type", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateStudentQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Student Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Student ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Date of Birth", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Gender", "Type", "DropDown", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Course", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Year of Study", "Type", "Text Area", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Contact Number", "Type", "Number", "MaxLength", "15", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Email Address", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Address", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Emergency Contact", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "No"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateTechEduQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Student Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Student ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Course Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Enrollment Date", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Grade", "Type", "Text Area", "MaxLength", "5", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Instructor Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Semester", "Type", "DropDown", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Attendance", "Type", "Text Area", "MaxLength", "10", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Assignments Completed", "Type", "Number", "MaxLength", "5", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Extra-Curricular Activities", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "No"));
+	    return questions;
+	}
+
+	public static List<Map<String, String>> generateMedicalQuestions() {
+	    List<Map<String, String>> questions = new ArrayList<>();
+	    questions.add(Map.of("FieldName", "Patient Name", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Patient ID", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Date of Birth", "Type", "Date", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Gender", "Type", "DropDown", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Blood Type", "Type", "DropDown", "MaxLength", "", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Allergies", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Medical History", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Current Medication", "Type", "Text Area", "MaxLength", "100", "IsMandatory", "No"));
+	    questions.add(Map.of("FieldName", "Emergency Contact", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"));
+	    questions.add(Map.of("FieldName", "Insurance Provider", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "No"));
+	    return questions;
+	}
+
+
 
 }
