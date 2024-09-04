@@ -245,7 +245,7 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
-	public void selectByVisibleText(WebElement select,String Value)
+	public void selectByVisibleText(WebElement select, String Value)
 	{
 		Select subSubProcessDrp=new Select(select);
 		subSubProcessDrp.selectByVisibleText(Value);

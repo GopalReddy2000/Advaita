@@ -1,4 +1,4 @@
-package com.advaita.TestCase;
+package com.advaita.TestClass;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;

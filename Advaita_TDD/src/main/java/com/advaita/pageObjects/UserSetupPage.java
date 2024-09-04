@@ -286,6 +286,12 @@ public class UserSetupPage extends TestBase {
 	@FindBy(css="img[title='User Mapping']")
 	WebElement userMappingbutton;
 
+	@FindBy(xpath="//button[text()='User Documents']")
+	WebElement userDocuments;
+
+	@FindBy(xpath="//select[not(contains(@id,'prefix'))]")
+	List<WebElement> userDocumentsDropdown;
+
 	@FindBy(xpath="//button[normalize-space()='Admin Process']")
 	WebElement uMAdminProcessTab;
 
@@ -782,11 +788,11 @@ public class UserSetupPage extends TestBase {
 		System.out.println("Dropdown is Validated");
 	}
 
-	public void selectByVisibleText(WebElement dropdown, String VisibleText)
-	{
-		Select process=new Select(dropdown);
-		process.selectByVisibleText(VisibleText);
-	}
+//	public void selectByVisibleText(WebElement dropdown, String VisibleText)
+//	{
+//		Select process=new Select(dropdown);
+//		process.selectByVisibleText(VisibleText);
+//	}
 
 	public UserSetupPage userMappingNav()
 	{

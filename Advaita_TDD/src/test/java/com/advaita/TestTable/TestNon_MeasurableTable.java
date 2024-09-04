@@ -5,7 +5,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ScreenShorts;
-import com.advaita.WorkFlowDesign.PageObject.NonMeasurableSetPage;
+import com.advaita.pageObjects.NonMeasurableSetPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -93,7 +93,7 @@ public class TestNon_MeasurableTable extends TestBase {
 
 	@Test
 	public void testfileUpload() {
-		nonMeasurableSetPage.fileUpload();
+		nonMeasurableSetPage.fileUpload1();
 	}
 
 	@Test
