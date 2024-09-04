@@ -22,6 +22,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.github.dockerjava.core.command.CreateContainerCmdImpl.NetworkingConfig;
 import com.github.javafaker.Faker;
 
 public class TestMasterFieldsSetCreate extends TestBase 
@@ -218,22 +219,38 @@ public class TestMasterFieldsSetCreate extends TestBase
 		
 		
 		// Usage
-		List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD", "OptionE");
-		masterFieldSet
-		             .addDropDownRelatedQuestions("Create Drop Down ?", 
-						1, //Section
-						1, //Question
-						MastersFieldSets.DROP_DOWN, options)
-						.addQuestions(1)//index based on which section
-						.addTextBoxRelatedQuestions("Number Of The Customer?",
-						1, //Section
-						2, //Question
-						MastersFieldSets.TEXT_BOX, 
-						minLength,
-						maxLength, 
-						expectedDefaultOption, 
-						expectedOrder);
-
+//		List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD", "OptionE");
+//		masterFieldSet
+//		             .addDropDownRelatedQuestions("Create Drop Down ?", 
+//						1, //Section
+//						1, //Question
+//						MastersFieldSets.DROP_DOWN, options)
+//						.addQuestions(1)//index based on which section
+//						.addTextBoxRelatedQuestions("Number Of The Customer?",
+//						1, //Section
+//						2, //Question
+//						MastersFieldSets.TEXT_BOX, 
+//						minLength,
+//						maxLength, 
+//						expectedDefaultOption, 
+//						expectedOrder);
+		
+		
+		masterFieldSet.addTextBoxRelatedQuestions("employee Name",
+				1, 
+				1, 
+				MastersFieldSets.TEXT_BOX, 
+				minLength, 
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder);
+		
+		List<String> sector = Arrays.asList("core", "it","electrical","civil");
+		masterFieldSet.addQuestions(1).addDropDownRelatedQuestions("working in whic sector",
+				1,
+				2,
+				MastersFieldSets.DROP_DOWN,
+				sector);
 	}
 
 	@AfterMethod

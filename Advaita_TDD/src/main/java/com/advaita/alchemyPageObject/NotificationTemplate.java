@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -102,13 +100,15 @@ public class NotificationTemplate extends TestBase {
 	@FindBy(xpath = "//span[@class='select2-results']//ul//li")
 	public static List<WebElement> selectStage_disposition;
 
-	// Super admin Account
-
-	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']")
+	
+	//SuperAdmin Admin
+	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']//span[text()='Admin Super Admin']")
 	public static WebElement profileDropdown;
-
+	
 	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown']/..//li//a)[3]")
 	public static WebElement logout;
+	
+	
 
 	// user Login
 	@FindBy(xpath = "//h2[text()='Sign In']")

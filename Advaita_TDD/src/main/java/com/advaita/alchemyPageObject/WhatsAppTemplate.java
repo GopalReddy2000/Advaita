@@ -21,7 +21,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.advaita.BaseClass.TestBase;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import dev.failsafe.event.CircuitBreakerStateChangedEvent;
+
 
 public class WhatsAppTemplate extends TestBase // Create_Class and extend base class
 {

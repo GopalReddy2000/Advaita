@@ -1418,6 +1418,7 @@ public class MastersFieldSets extends TestBase {
 		// Construct XPath for the question type and click on it
 		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
+		
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
 		// Add options and input them into the dropdown fields
@@ -1426,7 +1427,9 @@ public class MastersFieldSets extends TestBase {
 			if (i > 0) { // Add the "Add Option" button click only for options beyond the first one
 				String xpathAdd = "(" + baseXPath
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
+//				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
+				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
+				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
 			}
 
 			// Input the option text
@@ -1464,7 +1467,12 @@ public class MastersFieldSets extends TestBase {
 				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
+		click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
+		
 		// Set minLength and maxLength
+		
+//		js.executeScript("arguments[0].scrollIntoView(true);", DynamicXpath.minLength(sectionIndex, questionIndex));
+		
 		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
 		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
 
@@ -1475,7 +1483,7 @@ public class MastersFieldSets extends TestBase {
 		DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
 
 		// Select the desired option by visible text (if needed)
-		valueTypeDropDown.selectByVisibleText("Only Number");
+		valueTypeDropDown.selectByVisibleText("All");
 
 		return this;
 	}
