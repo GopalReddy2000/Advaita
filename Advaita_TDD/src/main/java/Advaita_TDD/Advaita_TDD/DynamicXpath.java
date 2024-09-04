@@ -68,6 +68,12 @@ public class DynamicXpath extends TestBase {
 		return driver.findElement(By.xpath(xpath));
 	}
 
+	public static WebElement shortAnswerQuestionOpt(int sectionNumber, int questionNumber, int questionOptionNumber) {
+		String xpath = String.format("//textarea[@name='ans_option_%d_%d_%d']", sectionNumber, questionNumber,
+				questionOptionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 	public static WebElement questionType(int sectionNumber, int questionNumber, int questionType) {
@@ -101,10 +107,22 @@ public class DynamicXpath extends TestBase {
 		return driver.findElement(By.xpath(xpath));
 	}
 
+	public static WebElement shortMaxLength(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format("(//input[@name='shortans_settings_max_length_%d_%d'])[1]", sectionNumber,
+				subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 	public static WebElement minLength(int sectionNumber, int subSectionNumber) {
 		String xpath = String.format("(//input[@name='textbox_settings_min_length_%d_%d'])[1]", sectionNumber,
+				subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public static WebElement shortMinLength(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format("(//input[@name='shortans_settings_min_length_%d_%d'])[1]", sectionNumber,
 				subSectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
@@ -117,6 +135,27 @@ public class DynamicXpath extends TestBase {
 				sectionNumber, subSectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
+	
+	public static WebElement shortValueTypeDropDown(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format(
+				"//h6[normalize-space()='Value-Type']/following::select[@name='shortans_settings_value_type_%d_%d']",
+				sectionNumber, subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+	
+	public static WebElement allowSpCharToggle(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format(
+				"//h6[normalize-space()='Allow-Sp-Char']/following::label/input[@name='textbox_settings_allow_sp_char_%d_%d']/../span",
+				sectionNumber, subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+	
+	public static WebElement shortAllowSpCharToggle(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format(
+				"//h6[normalize-space()='Allow-Sp-Char']/following::label/input[@name='shortans_settings_allow_sp_char_%d_%d']/../span",
+				sectionNumber, subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
@@ -126,7 +165,7 @@ public class DynamicXpath extends TestBase {
 				sectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
-	
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 	public static WebElement fileUploadFormatDropDown(int sectionNumber) {
@@ -135,7 +174,7 @@ public class DynamicXpath extends TestBase {
 				sectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
-	
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 //	public static List<WebElement> checkQuestionTypes(int sectionNumber, int question) {
@@ -144,13 +183,12 @@ public class DynamicXpath extends TestBase {
 //	        sectionNumber, question);
 //	    return driver.findElements(By.xpath(xpath));
 //	}
-	
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
-	public static WebElement questionField(int questionNum,int sectionNumber,int questionFieldNum) {
-		String xpath = String.format(
-				"//div[h5[contains(text(), 'Question %d')]]//input[@name='question_%d_%d']",
-				questionNum,sectionNumber,questionFieldNum);
+	public static WebElement questionField(int questionNum, int sectionNumber, int questionFieldNum) {
+		String xpath = String.format("//div[h5[contains(text(), 'Question %d')]]//input[@name='question_%d_%d']",
+				questionNum, sectionNumber, questionFieldNum);
 		return driver.findElement(By.xpath(xpath));
 	}
 

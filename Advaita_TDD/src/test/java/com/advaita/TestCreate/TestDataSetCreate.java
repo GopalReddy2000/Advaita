@@ -1,7 +1,11 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -13,6 +17,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -21,6 +26,8 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
+
+import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestDataSetCreate extends TestBase {
 
@@ -70,13 +77,66 @@ public class TestDataSetCreate extends TestBase {
 
 	}
 
-	@Test(priority = 1)
-	public void verifyCreateDataset() throws Throwable {
+//	@Test(priority = 1)
+//	public void verifyCreateDataset() throws Throwable {
+//
+//		test = reports.createTest("verifyCreateDataset");
+//		HomePage.clickOnProcessManagementCreate();
+//		dataset.createDataSet("Text Area");
+//
+//	}
+//	
 
-		test = reports.createTest("verifyCreateDataset");
+	@Test(priority = 2)
+	public void verifyManualCreateNewDataset() throws Throwable {
+		test = reports.createTest("verifyCreateNewDataset");
 		HomePage.clickOnProcessManagementCreate();
-		dataset.createDataSet("Text Area");
 
+		final String dataSetName = "Emplyee Details";
+		// Data for multiple rows
+		List<Map<String, String>> fieldData = List.of(
+				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
+				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"));
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
+				.createDataSetButtonAndConfirmation();
+
+	}
+
+	@Test(priority = 3)
+	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+		HomePage.clickOnProcessManagementCreate();
+
+		final String dataSetName = "Employee Details";
+		// Get all questions
+		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+		// Define the types and order of questions you want to select
+		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+		List<String> types = Arrays.asList("Character", "Date Time", "Boolean", "Date");
+		// Select questions based on types and order
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 8, true);
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+				.createDataSetButtonAndConfirmation();
+
+	}
+
+	@Test(priority = 4)
+	public void verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType");
+		HomePage.clickOnProcessManagementCreate();
+
+		final String dataSetName = "Customer Details";
+		// Get all questions
+		List<Map<String, String>> allQuestions = Questions.generateCustomerQuestions();
+
+//	    Without specifying the Type (new ArrayList<>())
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, new ArrayList<>(),
+				5, true);
+
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+				.createDataSetButtonAndConfirmation();
 	}
 
 	@AfterMethod
@@ -87,12 +147,12 @@ public class TestDataSetCreate extends TestBase {
 			// Add screenshot to ExtentReports
 			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
 			test.addScreenCaptureFromPath(screenshotPath);
-			
-			// Add logs
-	        test.log(Status.FAIL, "Test failed at " + new Date());
 
-	        // Add custom HTML block
-	        test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
 		}
 		// Close ExtentReports
 		reports.flush();
@@ -100,8 +160,8 @@ public class TestDataSetCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 	}
 

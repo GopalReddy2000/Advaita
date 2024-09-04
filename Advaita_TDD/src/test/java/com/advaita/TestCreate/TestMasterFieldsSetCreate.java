@@ -216,10 +216,17 @@ public class TestMasterFieldsSetCreate extends TestBase
 		String expectedDefaultOption = "All";
 		String[] expectedOrder = { "All", "Only Text", "Only Number" };
 		
+		String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
+		
 		
 		
 		// Usage
+<<<<<<< HEAD
 //		List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD", "OptionE");
+=======
+//		List<String> options = Arrays.asList("OptionA", "OptionB");
+
+>>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 //		masterFieldSet
 //		             .addDropDownRelatedQuestions("Create Drop Down ?", 
 //						1, //Section
@@ -233,6 +240,7 @@ public class TestMasterFieldsSetCreate extends TestBase
 //						minLength,
 //						maxLength, 
 //						expectedDefaultOption, 
+<<<<<<< HEAD
 //						expectedOrder);
 		
 		
@@ -251,6 +259,39 @@ public class TestMasterFieldsSetCreate extends TestBase
 				2,
 				MastersFieldSets.DROP_DOWN,
 				sector);
+=======
+//						expectedOrder,
+//						typeOfValue);
+		
+		
+		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?",
+				1, //Section
+				1, //Question
+				MastersFieldSets.TEXT_BOX, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
+		
+		List<String> sector = Arrays.asList("core", "it","electronics");
+		masterFieldSet.addQuestions(1)
+		.addDropDownRelatedQuestions("Create Drop Down ?", 
+			1, //Section
+			2, //Question
+			MastersFieldSets.RELATIVE_DROP_DOWN, sector);
+		
+		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?",
+				2, //Section
+				1, //Question
+				MastersFieldSets.SHORT_ANSWER, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
+
+>>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 	}
 
 	@AfterMethod
@@ -274,8 +315,10 @@ public class TestMasterFieldsSetCreate extends TestBase
 
 	@AfterTest
 	public void tearDown() {
+		
 //		driver.manage().window().minimize();
 //		driver.quit();
+		
 		reports.flush();
 	}
 }

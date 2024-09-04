@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
@@ -59,6 +60,70 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           </reporter-output>
         </test-method> <!-- createHideStatus -->
       </class> <!-- com.advaita.TestCreate.TestUserStatusCreate -->
+=======
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-09-04T11:11:52 IST" name="Default suite" finished-at="2024-09-04T11:13:57 IST" duration-ms="124980">
+    <groups>
+    </groups>
+    <test started-at="2024-09-04T11:11:52 IST" name="Default test" finished-at="2024-09-04T11:13:57 IST" duration-ms="124980">
+      <class name="com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:11:52 IST" name="setUp" finished-at="2024-09-04T11:12:04 IST" duration-ms="11591" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:1, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:12:04 IST" name="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType" finished-at="2024-09-04T11:13:10 IST" duration-ms="66413" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:10 IST" name="getResult" finished-at="2024-09-04T11:13:11 IST" duration-ms="522" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType status=SUCCESS method=DataSetUpEndToEnd.verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:1, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifynewCreateMetaData()[pri:2, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:11 IST" name="verifynewCreateMetaData" finished-at="2024-09-04T11:13:34 IST" duration-ms="23076" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifynewCreateMetaData -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:34 IST" name="getResult" finished-at="2024-09-04T11:13:34 IST" duration-ms="70" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifynewCreateMetaData status=SUCCESS method=DataSetUpEndToEnd.verifynewCreateMetaData()[pri:2, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyCreateManualUpload()[pri:3, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:34 IST" name="verifyCreateManualUpload" finished-at="2024-09-04T11:13:57 IST" duration-ms="23156" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateManualUpload -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:57 IST" name="getResult" finished-at="2024-09-04T11:13:57 IST" duration-ms="63" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyCreateManualUpload status=SUCCESS method=DataSetUpEndToEnd.verifyCreateManualUpload()[pri:3, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:57 IST" name="tearDown" finished-at="2024-09-04T11:13:57 IST" duration-ms="13" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd -->
+>>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

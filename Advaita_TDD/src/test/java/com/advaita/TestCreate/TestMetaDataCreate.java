@@ -75,10 +75,23 @@ public class TestMetaDataCreate extends TestBase {
 	public void verifyCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifyCreateMetaData");
-		homePage.clickOnProcessManagementCreate();
+		HomePage.clickOnProcessManagementCreate();
 		metaData.createMetaData(metaDataName);
 
 	}
+
+	@Test(priority = 2)
+	public void verifynewCreateMetaData() throws Throwable {
+
+		test = reports.createTest("verifynewCreateMetaData");
+		HomePage.clickOnProcessManagementCreate();
+
+		final String metaDataName = "Customer Details MetaData";
+		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation();
+
+	}
+	
+	
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
@@ -101,8 +114,8 @@ public class TestMetaDataCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 	}
 
