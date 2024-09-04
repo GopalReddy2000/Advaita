@@ -1,6 +1,8 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,8 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
+
+import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestDataSetCreate extends TestBase {
 
@@ -84,39 +88,56 @@ public class TestDataSetCreate extends TestBase {
 //	
 
 	@Test(priority = 2)
-	public void verifyCreateNewDataset() throws Throwable {
+	public void verifyManualCreateNewDataset() throws Throwable {
 		test = reports.createTest("verifyCreateNewDataset");
 		HomePage.clickOnProcessManagementCreate();
-		
-//		final String dataSetName = "Emplyee Details";
-//		 // Data for multiple rows
-//	    List<Map<String, String>> fieldData = List.of(
-//	        Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
-//	        Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
-//	        Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
-//	        Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No")
-//	    );
-//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData);
 
-		    final String dataSetName = "Employee Details";
+		final String dataSetName = "Emplyee Details";
+		// Data for multiple rows
+		List<Map<String, String>> fieldData = List.of(
+				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
+				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"));
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
+				.createDataSetButtonAndConfirmation();
 
-		    // Get all questions
-		    List<Map<String, String>> allQuestions = DataSet.generateEmployeeQuestions();
-		    // Select 5 random questions (or sequentially, set randomSelection to false)
-    		// all questions, NumberOfQuestions, boolean randomSelection
-		    /**
-		     * Select a specific number of questions from a list.
-		     *
-		     * @param questions List of all available questions.
-		     * @param numberOfQuestions Number of questions to select.
-		     * @param randomSelection Whether to select questions randomly or not.
-		     * @return List of selected questions.
-		     */
-		    List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, 5, false);
+	}
 
-		    dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions);
-		}
+	@Test(priority = 3)
+	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+		HomePage.clickOnProcessManagementCreate();
 
+		final String dataSetName = "Employee Details";
+		// Get all questions
+		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+		// Define the types and order of questions you want to select
+		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+		List<String> types = Arrays.asList("Character", "Date Time", "Boolean", "Date");
+		// Select questions based on types and order
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 8, true);
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+				.createDataSetButtonAndConfirmation();
+
+	}
+
+	@Test(priority = 4)
+	public void verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType");
+		HomePage.clickOnProcessManagementCreate();
+
+		final String dataSetName = "Customer Details";
+		// Get all questions
+		List<Map<String, String>> allQuestions = Questions.generateCustomerQuestions();
+
+//	    Without specifying the Type (new ArrayList<>())
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, new ArrayList<>(),
+				5, true);
+
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+				.createDataSetButtonAndConfirmation();
+	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {

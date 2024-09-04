@@ -1,8 +1,13 @@
 package com.advaita.BaseClass;
 
-import com.advaita.Login.Home.LoginPage;
-import com.google.common.util.concurrent.Uninterruptibles;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -11,21 +16,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import java.awt.*;
-import java.time.Duration;
-import java.util.List;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import com.advaita.Login.Home.LoginPage;
+import com.google.common.util.concurrent.Uninterruptibles;
 
 public class TestBase {
-
 
 	// Global Variable(Need to be Initialize)
 	// It should be only within class scopes
@@ -42,24 +41,24 @@ public class TestBase {
 	public static String mainURl = "https://test.capture.autosherpas.com/";
 
 	public static void initialization() throws AWTException {
-		WebDriverManager.chromedriver().setup();
-		//		 Incognito Mode Execution
-		options = new ChromeOptions();
-		options.addArguments("--disable-notifications");
-		options.addArguments("--incognito");
-
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(ChromeOptions.CAPABILITY, options);
-		cap.setCapability("applicationCacheEnabled", false);
-		options.merge(cap);
-
-		Map<String, Object> prefs = new HashMap<>();
-		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-		options.setExperimentalOption("prefs", prefs);
-		driver = new ChromeDriver(options);
+//		WebDriverManager.chromedriver().setup();
+		// Incognito Mode Execution
+//		options = new ChromeOptions();
+//		options.addArguments("--disable-notifications");
+//		options.addArguments("--incognito");
+//
+//		DesiredCapabilities cap = new DesiredCapabilities();
+//		cap.setCapability(ChromeOptions.CAPABILITY, options);
+//		cap.setCapability("applicationCacheEnabled", false);
+//		options.merge(cap);
+//
+//		Map<String, Object> prefs = new HashMap<>();
+//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
+//		options.setExperimentalOption("prefs", prefs);
+//		driver = new ChromeDriver(options);
 
 		// Normal Execution
-		//		driver = new ChromeDriver();
+		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -100,32 +99,32 @@ public class TestBase {
 		// }
 		// });
 
-		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
+		driver.get(mainURl + "en/myprofile/login/");
 
 	}
 
-	//	SendKeys
+	// SendKeys
 
 	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
-	@FindBy(xpath  ="(//button[text()='Continue'])[1]")
+
+	@FindBy(xpath = "(//button[text()='Continue'])[1]")
 	WebElement continueButton;
 
-	@FindBy(xpath ="//button[text()='Save']")
+	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
-	@FindBy(css ="img.arrow-left")
+	@FindBy(css = "img.arrow-left")
 	protected WebElement backButton;
 
-
-	protected void saveRecord()
-	{
-		jsClick(driver,save);
+	protected void saveRecord() {
+		jsClick(driver, save);
 		unWait(1);
 		continueButton.click();
 	}
+
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(driver, element);
@@ -135,7 +134,6 @@ public class TestBase {
 	public static void jsClick(WebDriver driver, WebElement element) {
 		js.executeScript("arguments[0].click();", element);
 	}
-
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -155,12 +153,11 @@ public class TestBase {
 		dropdown.selectByVisibleText(optionText);
 	}
 
-	public static void unWait(int seconds)
-	{
+	public static void unWait(int seconds) {
 		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
 	}
 
-	//	Random Index
+	// Random Index
 
 	public static WebElement getRandomElement(List<WebElement> elements) {
 		int randomIndex = 0;
@@ -172,30 +169,29 @@ public class TestBase {
 		}
 		return elements.get(randomIndex);
 	}
-	@FindBy(id="menulist2")
+
+	@FindBy(id = "menulist2")
 	WebElement alchemy;
-	public void navigateWithinAlchemy(WebElement element)
-	{
-		try{
+
+	public void navigateWithinAlchemy(WebElement element) {
+		try {
 			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-			jsClick(driver,element);
-		}catch (org.openqa.selenium.NoSuchElementException e)
-		{
-			jsClick(driver,alchemy);
-			jsClick(driver,element);
+			jsClick(driver, element);
+		} catch (org.openqa.selenium.NoSuchElementException e) {
+			jsClick(driver, alchemy);
+			jsClick(driver, element);
 		}
 
 	}
+
 	public void loginToUser(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
-		
+
 		LoginPage.usernameField.sendKeys(UserName);
 		LoginPage.passwordField.sendKeys("Qwerty@123");
 		LoginPage.signInButton.click();
 		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
 	}
-
-
 
 	// Click Action
 

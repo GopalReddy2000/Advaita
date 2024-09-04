@@ -3,14 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestDataSetCreate">
+      <class name="com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd">
         <methods>
           <include name="setUp"/>
-          <include name="verifyCreateNewDataset"/>
           <include name="getResult"/>
+          <include name="verifyCreateManualUpload"/>
           <include name="tearDown"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestDataSetCreate -->
+      </class> <!-- com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
