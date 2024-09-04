@@ -97,8 +97,7 @@ public class DocumentNamesTest extends TestBase
     public void search()
     {
         documentNamePage.navToDocumentNames()
-                .search("User Permissions Guide")
-                ;
+                .search("User Permissions Guide");
         assertEquals(documentNamePage.tableRecords.get(0).getText(),"User Permissions Guide");
     }
 
