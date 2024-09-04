@@ -132,7 +132,18 @@ public class TestBase {
 		}
 	}
 
+	public void jsWindowsScroll(int toScroll)
+	{
+		js.executeScript("window.scrollTo(0, "+toScroll+");");
+	}
+
+	public void jsWindowsScrollIntoView(WebElement element)
+	{
+		js.executeScript("arguments[0].scrollIntoView(true);", element);
+	}
+
 	public static void jsClick(WebDriver driver, WebElement element) {
+
 		js.executeScript("arguments[0].click();", element);
 	}
 
@@ -155,9 +166,21 @@ public class TestBase {
 		dropdown.selectByVisibleText(optionText);
 	}
 
+	protected static void selectByVisibleText(WebElement dropdownElement, List<String> optionText) {
+		// Create a Select object for the dropdown
+		Select dropdown = new Select(dropdownElement);
+		for(int a=0;a<optionText.size();a++) {
+			dropdown.selectByVisibleText(optionText.get(a));
+		}
+	}
+
 	public static void unWait(int seconds)
 	{
 		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+	}
+public static void unWaitInMilli(int milliSeconds)
+	{
+		Uninterruptibles.sleepUninterruptibly(milliSeconds, TimeUnit.MILLISECONDS);
 	}
 
 	//	Random Index
@@ -172,12 +195,13 @@ public class TestBase {
 		}
 		return elements.get(randomIndex);
 	}
+
 	@FindBy(id="menulist2")
 	WebElement alchemy;
 	public void navigateWithinAlchemy(WebElement element)
 	{
 		try{
-			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 			jsClick(driver,element);
 		}catch (org.openqa.selenium.NoSuchElementException e)
 		{
@@ -186,9 +210,25 @@ public class TestBase {
 		}
 
 	}
+	@FindBy(id="menulist1")
+	WebElement userSetup;
+	public void navigateWithinUserSetup(WebElement element)
+	{
+		try{
+			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			jsClick(driver,element);
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
+			jsClick(driver,userSetup);
+			jsClick(driver,element);
+		}
+
+	}
+
+
 	public void loginToUser(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
-		
+
 		LoginPage.usernameField.sendKeys(UserName);
 		LoginPage.passwordField.sendKeys("Qwerty@123");
 		LoginPage.signInButton.click();
@@ -196,6 +236,11 @@ public class TestBase {
 	}
 
 
+	public String jsInnerText(WebElement element)
+	{
+		Object monthObject=js.executeScript("return arguments[0].innerText;",element);
+		return (String) monthObject;
+	}
 
 	// Click Action
 
