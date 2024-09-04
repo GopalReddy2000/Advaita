@@ -1,129 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
-<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-09-04T12:04:42 IST" name="Default suite" finished-at="2024-09-04T12:05:27 IST" duration-ms="45240">
+  <suite started-at="2024-09-04T12:56:56 IST" name="Default suite" finished-at="2024-09-04T12:57:09 IST" duration-ms="13126">
     <groups>
     </groups>
-    <test started-at="2024-09-04T12:04:42 IST" name="Default test" finished-at="2024-09-04T12:05:27 IST" duration-ms="45240">
+    <test started-at="2024-09-04T12:56:56 IST" name="Default test" finished-at="2024-09-04T12:57:09 IST" duration-ms="13126">
       <class name="com.advaita.TestCreate.TestUserStatusCreate">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestUserStatusCreate@3976ebfa]" started-at="2024-09-04T12:04:42 IST" name="setUp" finished-at="2024-09-04T12:05:02 IST" duration-ms="20418" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestUserStatusCreate@3976ebfa]" started-at="2024-09-04T12:56:56 IST" name="setUp" finished-at="2024-09-04T12:57:04 IST" duration-ms="8059" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="createHideStatus()[pri:0, instance:com.advaita.TestCreate.TestUserStatusCreate@3976ebfa]" started-at="2024-09-04T12:05:02 IST" name="createHideStatus" finished-at="2024-09-04T12:05:27 IST" duration-ms="24750" status="FAIL">
-          <exception class="java.lang.AssertionError">
-            <message>
-              <![CDATA[The MENUS is not hiding for CreatedStatus expected [true] but found [false]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: The MENUS is not hiding for CreatedStatus expected [true] but found [false]
-at org.testng.Assert.fail(Assert.java:111)
-at org.testng.Assert.failNotEquals(Assert.java:1578)
-at org.testng.Assert.assertTrue(Assert.java:57)
-at com.advaita.UserStatus.pageobject.userStatus.verifyMenusAreHideSideMenusModule(userStatus.java:480)
-at com.advaita.UserStatus.pageobject.userStatus.selectStatusHideSingleMenus(userStatus.java:459)
-at com.advaita.TestCreate.TestUserStatusCreate.createHideStatus(TestUserStatusCreate.java:106)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-at org.testng.TestRunner.privateRun(TestRunner.java:739)
-at org.testng.TestRunner.run(TestRunner.java:614)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
-at org.testng.SuiteRunner.run(SuiteRunner.java:312)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
-at org.testng.TestNG.runSuites(TestNG.java:1112)
-at org.testng.TestNG.run(TestNG.java:1079)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
+        <test-method signature="navigateToAmdinProfile()[pri:0, instance:com.advaita.TestCreate.TestUserStatusCreate@3976ebfa]" started-at="2024-09-04T12:57:04 IST" name="navigateToAmdinProfile" finished-at="2024-09-04T12:57:09 IST" duration-ms="4987" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- createHideStatus -->
+        </test-method> <!-- navigateToAmdinProfile -->
       </class> <!-- com.advaita.TestCreate.TestUserStatusCreate -->
-=======
-<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
-  <reporter-output>
-  </reporter-output>
-  <suite started-at="2024-09-04T11:11:52 IST" name="Default suite" finished-at="2024-09-04T11:13:57 IST" duration-ms="124980">
-    <groups>
-    </groups>
-    <test started-at="2024-09-04T11:11:52 IST" name="Default test" finished-at="2024-09-04T11:13:57 IST" duration-ms="124980">
-      <class name="com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:11:52 IST" name="setUp" finished-at="2024-09-04T11:12:04 IST" duration-ms="11591" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method signature="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:1, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:12:04 IST" name="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType" finished-at="2024-09-04T11:13:10 IST" duration-ms="66413" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:10 IST" name="getResult" finished-at="2024-09-04T11:13:11 IST" duration-ms="522" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType status=SUCCESS method=DataSetUpEndToEnd.verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:1, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifynewCreateMetaData()[pri:2, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:11 IST" name="verifynewCreateMetaData" finished-at="2024-09-04T11:13:34 IST" duration-ms="23076" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifynewCreateMetaData -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:34 IST" name="getResult" finished-at="2024-09-04T11:13:34 IST" duration-ms="70" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifynewCreateMetaData status=SUCCESS method=DataSetUpEndToEnd.verifynewCreateMetaData()[pri:2, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateManualUpload()[pri:3, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:34 IST" name="verifyCreateManualUpload" finished-at="2024-09-04T11:13:57 IST" duration-ms="23156" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyCreateManualUpload -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:57 IST" name="getResult" finished-at="2024-09-04T11:13:57 IST" duration-ms="63" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateManualUpload status=SUCCESS method=DataSetUpEndToEnd.verifyCreateManualUpload()[pri:3, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd@5b8dfcc1]" started-at="2024-09-04T11:13:57 IST" name="tearDown" finished-at="2024-09-04T11:13:57 IST" duration-ms="13" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- tearDown -->
-      </class> <!-- com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd -->
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

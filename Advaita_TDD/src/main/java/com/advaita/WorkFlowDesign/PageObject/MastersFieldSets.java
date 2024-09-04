@@ -35,6 +35,7 @@ public class MastersFieldSets extends TestBase {
 	public static String existingFieldSetRecord;
 	public static int existingFieldSetRecordCount;
 
+	
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
 
@@ -1427,10 +1428,7 @@ public class MastersFieldSets extends TestBase {
 			if (i > 0) { // Add the "Add Option" button click only for options beyond the first one
 				String xpathAdd = "(" + baseXPath
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-<<<<<<< HEAD
 //				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
-=======
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
 				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
 			}
@@ -1471,7 +1469,6 @@ public class MastersFieldSets extends TestBase {
 
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
-<<<<<<< HEAD
 		click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
 		
 		// Set minLength and maxLength
@@ -1480,7 +1477,6 @@ public class MastersFieldSets extends TestBase {
 		
 		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
 		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
-=======
 		if (questionType == 10) {
 
 			click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
@@ -1499,7 +1495,6 @@ public class MastersFieldSets extends TestBase {
 			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMinLength(sectionIndex, questionIndex), minLength);
 			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMaxLength(sectionIndex, questionIndex), maxLength);
 		}
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 
 		// Create a Select object for the dropdown element
 		if (questionType == 10) {
@@ -1514,10 +1509,8 @@ public class MastersFieldSets extends TestBase {
 			// Validate the dropdown options, default selection, and order
 			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
 
-<<<<<<< HEAD
 		// Select the desired option by visible text (if needed)
 		valueTypeDropDown.selectByVisibleText("All");
-=======
 			// Select the desired option by visible text (if needed)
 			valueTypeDropDown.selectByVisibleText(typeOfValue);
 		}
@@ -1534,7 +1527,6 @@ public class MastersFieldSets extends TestBase {
 			Thread.sleep(400);
 			click(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex));
 		}
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 
 		return this;
 	}

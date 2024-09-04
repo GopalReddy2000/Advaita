@@ -1,6 +1,5 @@
 package com.advaita.TestCreate;
 
-import org.apache.xmlbeans.impl.repackage.EditBuildScript;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -91,7 +90,7 @@ public class TestUserStatusCreate extends TestBase {
 	
 //##########################
 	//Create
-	@Test
+	//@Test
 	public void createHideStatus() throws Throwable {
 		userStatus.navigateToMenuSetup();
 		userStatus.callLogatTabViewClick();
@@ -108,7 +107,7 @@ public class TestUserStatusCreate extends TestBase {
 	}
 	
 	//Table
-//	@Test
+	@Test
 	public void userStatusTable() throws Throwable {
 		userStatus.navigateToMenuSetup();
 		userStatus.callLogatTabViewClick();
@@ -131,12 +130,13 @@ public class TestUserStatusCreate extends TestBase {
 		userStatus.multiseletToMenuHide();
 	}
 	
-	//@Test
+	@Test
 	public void navigateToAmdinProfile() throws Throwable 
 	{
 		userStatus.navigateToMenuSetup();
 		userStatus.callLogatTabViewClick();
 		userStatus.NavigateToUserStatus();
+		
 		userStatus.createUserStatus();
 		userStatus.statusNameInputField("Admin");
 		userStatus.descriptionField();

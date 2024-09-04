@@ -3,21 +3,14 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
-<<<<<<< HEAD
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
-import com.advaita.Login.Home.LoginPage;
-import com.google.common.util.concurrent.Uninterruptibles;
-import io.github.bonigarcia.wdm.WebDriverManager;
-=======
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,6 +27,8 @@ import org.testng.asserts.SoftAssert;
 
 import com.advaita.Login.Home.LoginPage;
 import com.google.common.util.concurrent.Uninterruptibles;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestBase {
 
@@ -51,7 +47,6 @@ public class TestBase {
 	public static String mainURl = "https://test.capture.autosherpas.com/";
 
 	public static void initialization() throws AWTException {
-<<<<<<< HEAD
 		WebDriverManager.chromedriver().setup();
 		//		 Incognito Mode Execution
 		options = new ChromeOptions();
@@ -70,7 +65,6 @@ public class TestBase {
 		options.setExperimentalOption("prefs", prefs);
 		driver = new ChromeDriver(options);
 		
-=======
 //		WebDriverManager.chromedriver().setup();
 		// Incognito Mode Execution
 //		options = new ChromeOptions();
@@ -86,7 +80,6 @@ public class TestBase {
 //		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
 //		options.setExperimentalOption("prefs", prefs);
 //		driver = new ChromeDriver(options);
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
 
 		// Normal Execution
 		driver = new ChromeDriver();

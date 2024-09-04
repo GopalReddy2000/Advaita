@@ -3,23 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-<<<<<<< HEAD
       <class name="com.advaita.TestCreate.TestUserStatusCreate">
         <methods>
           <include name="setUp"/>
           <include name="createHideStatus"/>
+          <include name="UserStatusEdit"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestUserStatusCreate -->
-=======
-      <class name="com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd">
-        <methods>
-          <include name="setUp"/>
-          <include name="getResult"/>
-          <include name="verifyCreateManualUpload"/>
-          <include name="tearDown"/>
-        </methods>
-      </class> <!-- com.advaita.EndtoEnd.run.test.DataSetUpEndToEnd -->
->>>>>>> 328e03787d71df9490dc18f367c7bdbc727fe8b7
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
