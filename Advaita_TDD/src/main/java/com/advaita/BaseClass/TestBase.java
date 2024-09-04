@@ -32,6 +32,7 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestBase {
 
+
 	// Global Variable(Need to be Initialize)
 	// It should be only within class scopes
 	public static WebDriver driver;
@@ -65,24 +66,10 @@ public class TestBase {
 		options.setExperimentalOption("prefs", prefs);
 		driver = new ChromeDriver(options);
 		
-//		WebDriverManager.chromedriver().setup();
-		// Incognito Mode Execution
-//		options = new ChromeOptions();
-//		options.addArguments("--disable-notifications");
-//		options.addArguments("--incognito");
-//
-//		DesiredCapabilities cap = new DesiredCapabilities();
-//		cap.setCapability(ChromeOptions.CAPABILITY, options);
-//		cap.setCapability("applicationCacheEnabled", false);
-//		options.merge(cap);
-//
-//		Map<String, Object> prefs = new HashMap<>();
-//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-//		options.setExperimentalOption("prefs", prefs);
-//		driver = new ChromeDriver(options);
+		
 
 		// Normal Execution
-		driver = new ChromeDriver();
+		//		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -123,41 +110,53 @@ public class TestBase {
 		// }
 		// });
 
-		driver.get(mainURl + "en/myprofile/login/");
+		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 
 	}
 
-	// SendKeys
+	//	SendKeys
 
 	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
-
-	@FindBy(xpath = "(//button[text()='Continue'])[1]")
+	@FindBy(xpath  ="(//button[text()='Continue'])[1]")
 	WebElement continueButton;
 
-	@FindBy(xpath = "//button[text()='Save']")
+	@FindBy(xpath ="//button[text()='Save']")
 	WebElement save;
-	@FindBy(css = "img.arrow-left")
+	@FindBy(css ="img.arrow-left")
 	protected WebElement backButton;
 
-	protected void saveRecord() {
-		jsClick(driver, save);
+
+	protected void saveRecord()
+	{
+		jsClick(driver,save);
 		unWait(1);
 		continueButton.click();
 	}
-
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(driver, element);
 		}
 	}
 
+	public void jsWindowsScroll(int toScroll)
+	{
+		js.executeScript("window.scrollTo(0, "+toScroll+");");
+	}
+
+	public void jsWindowsScrollIntoView(WebElement element)
+	{
+		js.executeScript("arguments[0].scrollIntoView(true);", element);
+	}
+
 	public static void jsClick(WebDriver driver, WebElement element) {
+
 		js.executeScript("arguments[0].click();", element);
 	}
+
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -177,11 +176,24 @@ public class TestBase {
 		dropdown.selectByVisibleText(optionText);
 	}
 
-	public static void unWait(int seconds) {
-		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+	protected static void selectByVisibleText(WebElement dropdownElement, List<String> optionText) {
+		// Create a Select object for the dropdown
+		Select dropdown = new Select(dropdownElement);
+		for(int a=0;a<optionText.size();a++) {
+			dropdown.selectByVisibleText(optionText.get(a));
+		}
 	}
 
-	// Random Index
+	public static void unWait(int seconds)
+	{
+		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
+	}
+public static void unWaitInMilli(int milliSeconds)
+	{
+		Uninterruptibles.sleepUninterruptibly(milliSeconds, TimeUnit.MILLISECONDS);
+	}
+
+	//	Random Index
 
 	public static WebElement getRandomElement(List<WebElement> elements) {
 		int randomIndex = 0;
@@ -194,19 +206,35 @@ public class TestBase {
 		return elements.get(randomIndex);
 	}
 
-	@FindBy(id = "menulist2")
+	@FindBy(id="menulist2")
 	WebElement alchemy;
-
-	public void navigateWithinAlchemy(WebElement element) {
-		try {
-			driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-			jsClick(driver, element);
-		} catch (org.openqa.selenium.NoSuchElementException e) {
-			jsClick(driver, alchemy);
-			jsClick(driver, element);
+	public void navigateWithinAlchemy(WebElement element)
+	{
+		try{
+			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			jsClick(driver,element);
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
+			jsClick(driver,alchemy);
+			jsClick(driver,element);
 		}
 
 	}
+	@FindBy(id="menulist1")
+	WebElement userSetup;
+	public void navigateWithinUserSetup(WebElement element)
+	{
+		try{
+			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			jsClick(driver,element);
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
+			jsClick(driver,userSetup);
+			jsClick(driver,element);
+		}
+
+	}
+
 
 	public void loginToUser(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
@@ -215,6 +243,13 @@ public class TestBase {
 		LoginPage.passwordField.sendKeys("Qwerty@123");
 		LoginPage.signInButton.click();
 		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
+	}
+
+
+	public String jsInnerText(WebElement element)
+	{
+		Object monthObject=js.executeScript("return arguments[0].innerText;",element);
+		return (String) monthObject;
 	}
 
 	// Click Action
