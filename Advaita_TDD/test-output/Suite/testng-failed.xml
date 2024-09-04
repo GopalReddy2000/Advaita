@@ -3,7 +3,7 @@
 <suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Test(failed)">
     <classes>
-      <class name="com.advaita.TestCase.StageTest">
+      <class name="com.advaita.TestClass.StageTest">
         <methods>
           <include name="tearDown"/>
           <include name="testNumberOfStagesListed"/>
@@ -23,7 +23,7 @@
           <include name="testEditButtons"/>
           <include name="testViewingCreatedStage"/>
         </methods>
-      </class> <!-- com.advaita.TestCase.StageTest -->
+      </class> <!-- com.advaita.TestClass.StageTest -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

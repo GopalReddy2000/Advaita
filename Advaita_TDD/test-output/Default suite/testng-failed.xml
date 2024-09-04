@@ -4,13 +4,13 @@
   <test thread-count="5" name="Default test(failed)">
     <classes>
 <<<<<<< HEAD
-      <class name="com.advaita.TestCase.EscalationMatrixTest">
+      <class name="com.advaita.TestClass.EscalationMatrixTest">
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
           <include name="escalationMatrixCreateTest"/>
         </methods>
-      </class> <!-- com.advaita.TestCase.EscalationMatrixTest -->
+      </class> <!-- com.advaita.TestClass.EscalationMatrixTest -->
 =======
       <class name="com.advaita.TestCreate.TestMasterMenusCreate">
         <methods>
