@@ -197,6 +197,79 @@ public class TestMasterFieldsSetCreate extends TestBase
 //		masterFieldSet.verifyNumberFieldInCreateFieldSet();
 //		
 //	}
+	
+	@Test(priority = 16)
+	public void verifyAddFormFieldSetInCreateFieldSet() throws Throwable {
+
+		test = reports.createTest("verifyAddFormFieldSetInCreateFieldSet");
+
+		MastersFieldSets.commonNavigation();
+		masterFieldSet.verifyTabsForFieldSetCreate();
+		masterFieldSet.verifyFieldSetCreateButton();
+
+		String questionSetNameString = "DropDown Ques";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+
+
+		String minLength = "10";
+		String maxLength = "14";
+		String expectedDefaultOption = "All";
+		String[] expectedOrder = { "All", "Only Text", "Only Number" };
+		
+		String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
+		
+		// Usage
+//		List<String> options = Arrays.asList("OptionA", "OptionB");
+
+//		masterFieldSet
+//		             .addDropDownRelatedQuestions("Create Drop Down ?", 
+//						1, //Section
+//						1, //Question
+//						MastersFieldSets.DROP_DOWN, options)
+//						.addQuestions(1)//index based on which section
+//						.addTextBoxRelatedQuestions("Number Of The Customer?",
+//						1, //Section
+//						2, //Question
+//						MastersFieldSets.TEXT_BOX, 
+//						minLength,
+//						maxLength, 
+//						expectedDefaultOption, 
+//						expectedOrder,
+//						typeOfValue);
+		
+		
+		//Text Box
+		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?",
+				1, //Section
+				1, //Question
+				MastersFieldSets.TEXT_BOX, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
+		
+		
+		//Drop Down
+		List<String> sector = Arrays.asList("core", "it","electronics");
+		masterFieldSet.addQuestions(1)
+		.addDropDownRelatedQuestions("Create Drop Down ?", 
+			1, //Section
+			2, //Question
+			MastersFieldSets.RELATIVE_DROP_DOWN, sector);
+		
+		//Short Answer
+		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?",
+				2, //Section
+				1, //Question
+				MastersFieldSets.SHORT_ANSWER, 
+				minLength,
+				maxLength, 
+				expectedDefaultOption, 
+				expectedOrder,
+				typeOfValue);
+
+	}
 
 	
 
