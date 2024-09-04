@@ -217,8 +217,6 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		
 		String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
 		
-		
-		
 		// Usage
 //		List<String> options = Arrays.asList("OptionA", "OptionB");
 
@@ -239,6 +237,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 //						typeOfValue);
 		
 		
+		//Text Box
 		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?",
 				1, //Section
 				1, //Question
@@ -249,6 +248,8 @@ public class TestMasterFieldsSetCreate extends TestBase {
 				expectedOrder,
 				typeOfValue);
 		
+		
+		//Drop Down
 		List<String> sector = Arrays.asList("core", "it","electronics");
 		masterFieldSet.addQuestions(1)
 		.addDropDownRelatedQuestions("Create Drop Down ?", 
@@ -256,6 +257,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 			2, //Question
 			MastersFieldSets.RELATIVE_DROP_DOWN, sector);
 		
+		//Short Answer
 		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?",
 				2, //Section
 				1, //Question
