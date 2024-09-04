@@ -1,4 +1,4 @@
-package com.advaita.TestCase;
+package com.advaita.TestClass;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 import com.advaita.BaseClass.TestBase;
@@ -10,7 +10,7 @@ import com.advaita.Utilities.ExcelUserManagement;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
-import com.advaita.WorkFlowDesign.PageObject.NonMeasurableSetPage;
+import com.advaita.pageObjects.NonMeasurableSetPage;
 import com.advaita.pageObjects.UserSetupPage;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
@@ -192,7 +192,6 @@ public class UserSetupTest extends TestBase {
 				break;
 
 			case "WorkFlow Design":
-				measurableSetPage.createNormalView(QuestionSetName);
 				measurableSetPage.deleteRecordByName(QuestionSetName);
 				nonMeasurableSetPage.createNormalView(QuestionSetName);
 				nonMeasurableSetPage.deleteRecordByName(QuestionSetName);;

@@ -5,14 +5,12 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.Pagination;
 import com.google.common.util.concurrent.Uninterruptibles;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,10 +36,10 @@ public class MeasurableSetPage extends TestBase {
 	public static WebElement masterParameterTab;
 
 	@FindBy(id = "pills-MeasurableSet-tab")
-	public static WebElement nonMeasurableTab;
+	public static WebElement measurableTab;
 
 	@FindBy(linkText = "+ Add Measurable Set")
-	public static WebElement addNonMeasurableSetButton;
+	public static WebElement addMeasurableSetButton;
 
 	@FindBy(id = "questionSet_name")
 	public static WebElement questionSetNameField;
@@ -71,7 +69,7 @@ public class MeasurableSetPage extends TestBase {
 	public static List<WebElement> enterYourColumn;
 
 	@FindBy(xpath = "//tr[@class='Question-set']//td[1]")
-	public static List<WebElement> nonMeasurableQuestionSet;
+	public static List<WebElement> measurableQuestionSet;
 
 	@FindBy(xpath = "(//a[@data-value='Drop Down'])[1]")
 	public static WebElement sec1Ques1DropDowntype;
@@ -152,7 +150,7 @@ public class MeasurableSetPage extends TestBase {
 	public static WebElement dropdownIsFatal;
 
 	@FindBy(xpath = "//img[contains(@src,'table-edit')]")
-	public static List<WebElement> NonMeasurableEditbuttons;
+	public static List<WebElement> measurableEditbuttons;
 
 	@FindBy(xpath = "(//a[@data-value='Relative Dropdown'])[1]")
 	public static WebElement questionTypeRelativeDropdown;
@@ -300,13 +298,13 @@ public class MeasurableSetPage extends TestBase {
 	public static WebElement saveButtonInEditPage;
 
 	@FindBy(xpath = "//div//span[@id='change_msg']")
-	public static WebElement successfullyNonMeasurableUpdatedMassage;
+	public static WebElement successfullymeasurableUpdatedMassage;
 
 	@FindBy(xpath = "//span[@id='change_msg']/following-sibling::button")
-	public static WebElement afterNonMeasurableUpdatedContinueButton;
+	public static WebElement aftermeasurableUpdatedContinueButton;
 
 	@FindBy(xpath = "(//img[@alt='table-edit'])[1]")
-	public static WebElement editNonMeasurableSetButton;
+	public static WebElement editMeasurableSetButton;
 
 
 	@FindBy(xpath = "(//div[@class='form_group setsecond select-questionpad '])[1]//div//a//span")
@@ -327,23 +325,42 @@ public class MeasurableSetPage extends TestBase {
 	@FindBy(xpath = "//select[@class='rule-select form-control font_14 firstselect section_c_param_dropdown']")
 	public WebElement selectQuestiontypeDropdown;
 
+	@FindBy(xpath = "//div[@class='ipad-repons-margin']//a[text()='Add']")
+	public WebElement addNonSectionButton;
+
+	@FindBy(xpath = "//input[@name='section_name']")
+	public WebElement sectionInputField;
+
+	@FindBy(xpath = "//a[contains(@class,'add_section_c')]")
+	public WebElement sectionAddButton;
+
+
 	@FindBy(xpath = "(//button[@data-type='NonMesaurable'])[2]")
 	public WebElement sectionButton;
 
-	@FindBy(xpath = "//label[normalize-space()='Non Measurable Set']//span")
-	public WebElement nonMeasurableRadioButton;
+    /*@FindBy(xpath = "//label[normalize-space()='Non Measurable Set']//span")
+    public WebElement measurableRadioButton;*/
 
 	@FindBy(xpath = "//div[@class='custom-select']//select")
 	public WebElement isConditonalSection1Question1;
 
-	@FindBy(xpath = "//img[@alt='table-edit' and @class='img-fluid stages_edit delete-dataset']")
+	@FindBy(xpath = "//td//img[@alt='table-edit' and not(@title)]")
 	public List<WebElement> editButtons;
 
-	@FindBy(xpath = "//div[@data-info='section-1']//h5[contains(@class,'section-text')]")
+	@FindBy(xpath = "//label[text()='Add Section']/following-sibling::a")
+	public WebElement addSection;
+
+	@FindBy(xpath = "//input[@name='section_name']")
 	public WebElement sectionName;
 
-	@FindBy(css =  "img.arrow-left")
-	public static WebElement dispositionBackButton;
+	@FindBy(xpath = "//div[@id='addseconddataPopup']//a[text()='Add ']")
+	public WebElement add;
+
+	@FindBy(xpath = "//label[normalize-space()='Non Measurable Set']//span")
+	public WebElement MeasurableSetRadioBtn;
+
+
+
 
 
 
@@ -351,18 +368,6 @@ public class MeasurableSetPage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void commonNavigation(String questionSetName)
-	{
-		click(driver, workFlowDesign);
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-		questionSetNameField.clear();
-		questionSetNameField.sendKeys(generateQuestionSetName(questionSetName));
-
-		question1.clear();
-		question1.sendKeys(generateQuestionSetName(questionSetName));
-	}
 
 	public static String generateQuestionSetName(String QuestionSetName) {
 
@@ -385,8 +390,291 @@ public class MeasurableSetPage extends TestBase {
 	final int textBoxInt=10;
 	final int relativeMultiselectInt=11;
 
+	private static String getRandomString(String[] array) {
+		// Generate a random index within the array length
+		Random random = new Random();
+		int randomIndex = random.nextInt(array.length);
+		return array[randomIndex];
+	}
+	private static WebElement getElementByDynamicXPath(int q) {
+		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement SetSectionQuestionName(int s,int q) {
+		String xpath = "//div[@data-info='question-"+s+"-"+q+"']//input[@name='question_"+s+"_"+q+"']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement setQuestionTypes(int s,int q,int t) {
+		String xpath = "//input[@name='question_type_"+s+"_"+q+"']/following-sibling::div["+t+"]";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement optionsFields(int s, int q, int option) {
+		String xpath = " //input[@name='ans_option_"+s+"_"+q+"_"+option+"']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement addOptions(int s,int q) {
+		String xpath = " //div[@data-info='question-"+s+"-"+q+"']//a";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement required(int s,int q) {
+		String xpath = " //input[@name='question_required_"+s+"_"+q+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement escalationToggle(int s,int q) {
+		String xpath = " //input[@name='question_escalated_"+s+"_"+q+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement deleteOptions(int s,int q) {
+		String xpath = " //input[contains(@name,'ans_option_"+s+"_"+q+"')]//following-sibling::img";
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement uploadOptions(int s,int q) {
+		String xpath = " //div[@data-info='question-"+s+"-"+q+"']//input[@id='Browse']";
+		return driver.findElement(By.xpath(xpath));
+	}
 
 
+	private WebElement sectionsSettings(int a) {
+		String xpath = "(//img[@alt='settingicon'])["+a+"]";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement sectionIsConditional(int a) {
+		String xpath = "is_conditional_"+a;
+
+		return driver.findElement(By.name(xpath));
+	}
+	private WebElement addSectionQuestion(int s) {
+		String xpath = "//div[@data-info='question-"+s+"-1']/following-sibling::div//a[normalize-space()='Add Question']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement sectionCTabs(String name) {
+		String xpath = "(//ul[@id='pills-tab'])[2]//button[text()='"+name+"']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableDropdowns(String name) {
+		String xpath = "//label[text()='"+name+"']/following-sibling::select";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableRadioButton(String name) {
+		String xpath = "//div[@id='pills-"+name+"']//label[normalize-space()='Non Measurable Set']//span";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableDropdownQuestionDropdown(String name) {
+		String xpath = "//div[@id='pills-"+name+"']//select[contains(@name,'NonMesaurable')]";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableDropdownQuestions(String sectionName,String QuestionName) {
+		String xpath = "//div[@id='param_type_"+sectionName+"']/following-sibling::div//label[@text()='"+QuestionName+"]/following-sibling::select";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement textBoxAnswerField(int section,int Question) {
+		String xpath = "//input[@name='ans_option_"+section+"_"+Question+"_1']";
+		return driver.findElement(By.xpath(xpath));
+	}
+	private WebElement shortAnswerField(int section,int Question) {
+		String xpath = "//textarea[@name='ans_option_"+section+"_"+Question+"_1']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement minLengthTextBox(int section,int Question) {
+		String xpath = "//input[@name='textbox_settings_min_length_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxLengthTextBox(int section,int Question) {
+		String xpath = "//input[@name='textbox_settings_max_length_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement textBoxValueType(int section,int Question) {
+		String xpath = "//select[@name='textbox_settings_value_type_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement textBoxAllowSpecialChar(int section,int Question) {
+		String xpath = "//input[@name='textbox_settings_allow_sp_char_"+section+"_"+Question+"']//following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+
+	private WebElement minLengthShortAns(int section,int Question) {
+		String xpath = "//input[@name='shortans_settings_min_length_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxLengthShortAns(int section,int Question) {
+		String xpath = "//input[@name='shortans_settings_max_length_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement shortAnsValueType(int section,int Question) {
+		String xpath = "//select[@name='shortans_settings_value_type_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement shortAnsAllowSpecialChar(int section,int Question) {
+		String xpath = "//input[@name='shortans_settings_allow_sp_char_"+section+"_"+Question+"']//following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement fileUploadSettings(int section,int Question) {
+		String xpath = "//img[@name='ans_option_"+section+"_"+Question+"_1']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement allowedFormats(int section,int Question) {
+		String xpath = "//select[@name='file_upload_format_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement addAdditionalFormats(int section,int Question) {
+		String xpath = "//img[contains(@class,'format_settings_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement additionalFormatInput(int section,int Question) {
+		String xpath = "//input[contains(@class,'additionalformat_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement addFormat(int section,int Question) {
+		String xpath = "//button[@id='additionalFormatButton_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement uploadMultipleFiles(int section,int Question) {
+		String xpath = "//input[contains(@name,'multifile_"+section+"_"+Question+"')]/following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement allowDelete(int section,int Question) {
+		String xpath = "//input[contains(@name,'allowdelete_"+section+"_"+Question+"')]/following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxSizeInput(int section,int Question) {
+		String xpath = "//input[contains(@name,'maxsize_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxSizeDropdown(int section,int Question) {
+		String xpath = "//select[contains(@name,'sizeunit_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement dateOrTimeInput(int section,int Question) {
+		String xpath = "//input[@name='ans_option_"+section+"_"+Question+"_1']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement dataMaxDateDropdown(int section,int Question) {
+		String xpath = "//select[@name='date_settings_maxdate_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement dataMinDateDropdown(int section,int Question) {
+		String xpath = "//select[@name='date_settings_mindate_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement defaultDate(int section,int Question) {
+		String xpath = "//input[contains(@name,'defaultdate_"+1+"_"+1+"')]/following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxDateInput(int section,int Question) {
+		String xpath = "//input[contains(@name,'maxdate_input_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement minDateInput(int section,int Question) {
+		String xpath = "//input[contains(@name,'mindate_input_"+section+"_"+Question+"')]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxTime(int section,int Question) {
+		String xpath = "//select[@name='time_settings_maxtime_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement minTime(int section,int Question) {
+		String xpath = "//select[@name='time_settings_mintime_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement hoursFormat(int section,int Question) {
+		String xpath = "//input[contains(@name,'time_format_"+section+"_"+Question+"')]/following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement fetchFromDataset(int section,int Question) {
+		String xpath = "//input[@name='fetch_database_"+section+"_"+Question+"']/following-sibling::span";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement selectDataset(int section,int Question) {
+		String xpath = "(//div[@name='dropdownContainer_"+section+"_"+Question+"']//select)[1]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement selectColumnNames(int section,int Question) {
+		String xpath = "(//div[@name='dropdownContainer_"+section+"_"+Question+"']//select)[2]";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableParameterDrp(int section,int Question) {
+		String xpath = "//select[@name='measurable_parameter_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement minLimit(int section,int Question) {
+		String xpath = "//input[@name='min_limit_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement maxLimit(int section,int Question) {
+		String xpath = "//input[@name='max_limit_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+
+	private WebElement weightage(int section,int Question) {
+		String xpath = "//input[@name='weightage_"+section+"_"+Question+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+
+
+
+	public MeasurableSetPage commonNavigation(String questionSetName)
+	{
+		click(driver, workFlowDesign);
+		click(driver, masterParameterTab);
+		click(driver, measurableTab);
+		click(driver, addMeasurableSetButton);
+		questionSetNameField.clear();
+		questionSetNameField.sendKeys(generateQuestionSetName(questionSetName));
+
+		question1.clear();
+		question1.sendKeys(generateQuestionSetName(questionSetName));
+		return this;
+	}
 	public void multipleChoice() throws InterruptedException
 	{
 		commonNavigation("Multiple Choice");
@@ -402,17 +690,17 @@ public class MeasurableSetPage extends TestBase {
 		assertTrue(isConditional.isEnabled());
 		assertTrue(isRelativeParent.isEnabled());
 
-		Assert.assertTrue(questionSetDropdown.isDisplayed());
+		assertTrue(questionSetDropdown.isDisplayed());
 
 		Select select=new Select (questionSetDropdown);
 
 		assertFalse(select.isMultiple());
-		Assert.assertNotNull(select);
+		assertNotNull(select);
 		System.out.println("Default Selected QUESTIONS SET: "+select.getFirstSelectedOption().getText());
 
 		List<WebElement> options=select.getOptions();
 
-		Assert.assertTrue(select.getOptions().size()>2);
+		assertTrue(select.getOptions().size()>2);
 
 
 		for(int o=1;o<options.size();o++)
@@ -455,7 +743,6 @@ public class MeasurableSetPage extends TestBase {
 
 
 	}
-
 	public void shortAnswer()
 	{
 		commonNavigation("Short Answer");
@@ -479,7 +766,7 @@ public class MeasurableSetPage extends TestBase {
 
 		Select valType= new Select(shortAnswerValTypeDropdown);
 		assertFalse(valType.isMultiple());
-		Assert.assertNotNull(valType);
+		assertNotNull(valType);
 		System.out.println("Default Selected QUESTIONS SET: "+valType.getFirstSelectedOption().getText());
 
 
@@ -509,11 +796,10 @@ public class MeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-
 	public void defaultAndIsFatalValidation()
 	{
-		Assert.assertTrue(dropdownSetAsDefault.isEnabled());
-		Assert.assertTrue(dropdownIsFatal.isEnabled());
+		assertTrue(dropdownSetAsDefault.isEnabled());
+		assertTrue(dropdownIsFatal.isEnabled());
 
 		for(int a=1;a<3;a++) {
 
@@ -525,15 +811,14 @@ public class MeasurableSetPage extends TestBase {
 
 		}
 	}
-
 	public void questionTypeDropDown()
 	{
 		commonNavigation("DropDown");
 
 		click(driver, questionTypeDropdown);
 
-		Assert.assertTrue(addOption.isEnabled());
-		Assert.assertTrue(choiceDelete.get(0).isEnabled());
+		assertTrue(addOption.isEnabled());
+		assertTrue(choiceDelete.get(0).isEnabled());
 		dropdownTextArea.click();
 
 		//		Asserting Set as Default and Is Fatal toggle button is Enabled or not
@@ -556,23 +841,22 @@ public class MeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-	public void saveRecordMea()
+	public void saveRecord1()
 	{
 		//		Saving the record
 		click(driver, saveButtonOfCreateQuestionSet);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
-		Assert.assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been updated successfully") );
+		System.out.println(successfullymeasurableUpdatedMassage.getText());
+		assertTrue(successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
 		click(driver, questionSaveContinueButton);
 	}
-
 	public void questionTypeRelativeDropdown()
 	{
 		commonNavigation("Relative Dropdown");
 		click(driver,questionTypeRelativeDropdown);
 
-		Assert.assertTrue(addOption.isEnabled());
-		Assert.assertTrue(choiceDelete.get(0).isEnabled());
+		assertTrue(addOption.isEnabled());
+		assertTrue(choiceDelete.get(0).isEnabled());
 		dropdownTextArea.click();
 
 		//		Asserting Set as Default and Is Fatal toggle button is Enabled or not
@@ -583,7 +867,7 @@ public class MeasurableSetPage extends TestBase {
 		/*
 		 * for(int a=1;a<3;a++) { for(int q=1;q<=3;q++) { addOption.click(); }
 		 * List<WebElement> deleteButton=choiceDelete;
-		 * 
+		 *
 		 * for(WebElement delete:deleteButton) { delete.click(); } }
 		 */
 		for(int q=1;q<=3;q++)
@@ -595,17 +879,16 @@ public class MeasurableSetPage extends TestBase {
 			optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
 		}
 		//		Saving the record
-		saveRecord();
+		saveRecord1();
 
 
 	}
-
-	public void fileUpload()
+	public void fileUpload1()
 	{
 		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, NonMeasurableEditbuttons.get(0));
+		click(driver, measurableTab);
+		click(driver, measurableEditbuttons.get(0));
 		click(driver, question1);
 
 		//		commonNavigation("Relative Dropdown");
@@ -613,7 +896,7 @@ public class MeasurableSetPage extends TestBase {
 		click(driver, questionTypeFileUpload);
 		assertTrue(fileUploadBrowse.isEnabled());
 		click(driver, fileUploadSetting);
-		jsClick(driver, allowedFormatDropdown); 
+		jsClick(driver, allowedFormatDropdown);
 
 
 		String[] fileFormats = {
@@ -639,16 +922,16 @@ public class MeasurableSetPage extends TestBase {
 
 		try
 		{ Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		if(fileAlreadyExistsContinueButton.isDisplayed()) {
-			System.out.println(fileformat+" Already Exist");
-			fileAlreadyExistsContinueButton.click();
-		}
+			if(fileAlreadyExistsContinueButton.isDisplayed()) {
+				System.out.println(fileformat+" Already Exist");
+				fileAlreadyExistsContinueButton.click();
+			}
 
 		}catch (NoSuchElementException | NullPointerException e) {
 
-		} 
+		}
 
-		saveRecord();
+		saveRecord1();
 		click(driver, fileUploadSetting);
 		Select allowedFormat=new Select(allowedFormatDropdown);
 		List<String> listOfFileFormats = new ArrayList<String>();
@@ -660,181 +943,6 @@ public class MeasurableSetPage extends TestBase {
 		assertTrue(listOfFileFormats.contains(fileformat));
 
 	}
-
-	private static String getRandomString(String[] array) {
-		// Generate a random index within the array length
-		Random random = new Random();
-		int randomIndex = random.nextInt(array.length);
-		return array[randomIndex];
-	}
-
-	public static WebElement getElementByDynamicXPath(int q) {
-		String xpath = "(//input[contains(@name,'question_type_1_" + (q + 1) + "')]/following-sibling::div//a)[" + (q + 1) + "]";
-		return driver.findElement(By.xpath(xpath));
-	}
-
-
-	public void createNormalView(String questionName)
-	{
-		workFlowDesign.click();
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-
-
-		
-		sendKeys(questionSetNameField,questionName );
-
-		List<WebElement> questionTypeList =selectQuestionType;
-		List<WebElement> questionsList=questionList;
-
-
-
-		for (int q=0;q<questionTypeList.size();q++)
-		{
-
-
-			switch(q)
-			{
-			//			Label
-			case(0):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver,getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Advaita Testing");
-			click(driver, addQuestionButton);
-
-			break;
-
-			//			MultipleChoice
-			case(1):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What Level of Software Testing are you doing?");
-
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[2]")), 2);
-			List<WebElement>options=driver.findElements(By.xpath("//div[@class='question qsn_number_2']//div[@class='input-delete d-flex']//input"));
-			options.get(0).sendKeys("System Testing");
-			options.get(1).sendKeys("Unit Testing");
-			options.get(2).sendKeys("Integration Testing");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			ShortAnswer
-			case(2):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What is the software you're testing?");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Dropdown
-			case(3):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "What is the Operating system you're Testing on?");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[4]")), 3);
-			List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@class='question qsn_number_4']//div[@class='input-delete d-flex']//input"));
-			DropDownOption.get(0).sendKeys("Windows");
-			DropDownOption.get(1).sendKeys("Mac Os");
-			DropDownOption.get(2).sendKeys("Linux");
-			DropDownOption.get(3).sendKeys("Unix");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Relative Dropdown
-			case(4):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "In Which Browser you're Running the Test Scripts?");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[5]")), 3);
-			List<WebElement>relativeOption=driver.findElements(By.xpath("//div[@class='question qsn_number_5']//div[@class='input-delete d-flex']//input"));
-			relativeOption.get(0).sendKeys("Chrome");
-			relativeOption.get(1).sendKeys("Edge");
-			relativeOption.get(2).sendKeys("Firefox");
-			relativeOption.get(3).sendKeys("Opera");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			FileUpload
-			case(5):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Upload you UseCases");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Radio Button
-			case(6):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Which Type of Testing are you doing?");
-			List<WebElement>radioOption=driver.findElements(By.xpath("//div[@class='question qsn_number_7']//div[@class='input-delete d-flex']//input"));
-			radioOption.get(0).sendKeys("Manual Testing");
-			radioOption.get(1).sendKeys("Automation Testing");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Date
-			case(7):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "When Did you start you testing?");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Time
-			case(8):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "When will Test Execution Begin?");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			TextBox
-			case(9):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver, getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Test Case Written By?");
-			jsClick(driver, addQuestionButton);
-
-			break;
-
-			//			Relative Multiselect
-			case(10):
-				jsClick(driver, questionsList.get(q));
-			jsClick(driver,getElementByDynamicXPath(q));
-			sendKeys(questionsList.get(q), "Select your Team Members");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[11]")), 3);
-			List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//div[@class='question qsn_number_11']//div[@class='input-delete d-flex']//input"));
-			relativeMultiOption.get(0).sendKeys("James Paul R");
-			relativeMultiOption.get(1).sendKeys("Gopal Reddy");
-			relativeMultiOption.get(2).sendKeys("Abjith Das");
-			relativeMultiOption.get(3).sendKeys("Boya Pavan");
-
-			break;
-			}
-
-
-		}
-
-		saveRecordMea();
-		dispositionBackButton.click();
-		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
-		assertEquals(questionName,actualQuestionSet);
-
-
-
-	}
-
-
 
 	@FindBy(css="table.w-100 tbody")
 	WebElement formsTableBody;
@@ -848,7 +956,7 @@ public class MeasurableSetPage extends TestBase {
 	{
 		workFlowDesign.click();
 		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
+		click(driver, measurableTab);
 
 		// Find all rows within the table
 		List<WebElement> rows = formsTableBody.findElements(By.xpath("tr"));
@@ -871,286 +979,88 @@ public class MeasurableSetPage extends TestBase {
 		return this;
 	}
 
-	public void createColumnView()
-	{
-		click(driver, workFlowDesign);
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-		String questionName= "Software Testing "+ fake.lastName2();
-		sendKeys(questionSetNameField, questionName);
-
-
-		click(driver, settingButton);
-		click(driver, tableView);
-
-		clickElementMultipleTimes(driver, columnPlusButton, 7);
-		List <WebElement> columns=columnNames;
-		List<WebElement> columnInputs=columnInputField;
-		List<WebElement> columnName= enterYourColumn;
-
-		for(int a=0;a<columns.size();a++)
-		{
-
-			switch(a)
-			{
-
-			//			label
-			case 0:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Advaita Testing");
-				break;
-
-				//				Multiple Choice
-			case 1:
-				//				jsClick(driver, columnInputs.get(a));
-
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What Level of Software Testing are you doing?");
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[9]")), 2);
-				List<WebElement> mulOptions=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_2_')]"));
-				jsClick(driver, columnInputs.get(a));
-				mulOptions.get(0).sendKeys("System Testing");
-				mulOptions.get(1).sendKeys("Unit Testing");
-				mulOptions.get(2).sendKeys("Integration Testing");
-				break;
-
-				//				Short Answer
-			case 2:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What is the software you're testing?");
-				break;
-
-				//				Dropdown
-			case 3:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver,getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "What is the Operating system you're Testing on?");
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_4']//a")), 3);
-				List<WebElement>DropDownOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_4_')]"));
-				jsClick(driver, columnInputs.get(a));
-				DropDownOption.get(0).sendKeys("Windows");
-				DropDownOption.get(1).sendKeys("Mac Os");
-				DropDownOption.get(2).sendKeys("Linux");
-				DropDownOption.get(3).sendKeys("Unix");
-				break;
-
-				//				Relative DropDown
-			case 4:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "In Which Browser you're Running the Test Scripts?");
-				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
-				List<WebElement>relativeOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_5_')]"));
-				jsClick(driver, columnInputs.get(a));
-				relativeOption.get(0).sendKeys("Chrome");
-				relativeOption.get(1).sendKeys("Edge");
-				relativeOption.get(2).sendKeys("Firefox");
-				relativeOption.get(3).sendKeys("Opera");
-				break;
-
-				//				File Upload
-			case 5:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Upload you UseCases");
-				break;
-
-				//				Radio Button
-			case 6:
-
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "Which Type of Testing are you doing?");
-				jsClick(driver, columnInputs.get(a));
-				click(driver, getElementByDynamicXPath(a));
-				click(driver, getElementByDynamicXPath(a));
-				//				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
-				List<WebElement>radioOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_7_')]"));
-				jsClick(driver, columnInputs.get(a));		
-				radioOption.get(0).sendKeys("Manual Testing");
-				jsClick(driver, driver.findElement(By.xpath("//div[@data-info='1_7']//a")));
-				sendKeys(driver.findElement(By.xpath("//input[@name='ans_option_1_7_2']")), "Automation Testing");
-
-
-				break;
-
-				//				Date
-
-			case 7:
-				jsClick(driver, columnInputs.get(a));
-				jsClick(driver, getElementByDynamicXPath(a));
-				jsClick(driver, columns.get(a));
-				sendKeys(columnName.get(a), "When Did you start you testing?");
-				break;
-
-				//				Time
-			case(8):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver, getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "When will Test Execution Begin?");
-
-
-			break;
-
-			//			TextBox
-			case(9):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver, getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "Test Case Written By?");
-
-			break;
-
-			//				Relative Multiselect
-			case(10):
-				jsClick(driver, columnInputs.get(a));
-			jsClick(driver,getElementByDynamicXPath(a));
-			jsClick(driver, columns.get(a));
-			sendKeys(columnName.get(a), "Select your Team Members");
-			clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_11']//a")), 3);
-			List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_11_')]"));
-			jsClick(driver, columnInputs.get(a));
-			relativeMultiOption.get(0).sendKeys("James Paul R");
-			relativeMultiOption.get(1).sendKeys("Gopal Reddy");
-			relativeMultiOption.get(2).sendKeys("Abjith Das");
-			relativeMultiOption.get(3).sendKeys("Boya Pavan");
-
-			break;
-			}
-
-
-
-		}
-		//		saveButtonInEditPage.click();
-		//
-		//		jsClick(driver, backButton);
-		//
-		//		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
-		//		assertEquals(actualQuestionSet,questionName);
-
-	}
-
-
-	public WebElement getSectionQuestion(int s,int q) {
-		String xpath = "//div[@data-info='question-"+s+"-"+q+"']//input[@name='question_"+s+"_"+q+"']";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-	public WebElement setQuestionTypes(int s,int q,int t) {
-		String xpath = "//input[@name='question_type_"+s+"_"+q+"']/following-sibling::div["+t+"]";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-
-	public WebElement sectionsSettings(int a) {
-		String xpath = "(//img[@alt='settingicon'])["+a+"]";
-
-		return driver.findElement(By.xpath(xpath));
-	}
-
-
-	public WebElement sectionIsConditional(int a) {
-		String xpath = "is_conditional_"+a;
-
-		return driver.findElement(By.name(xpath));
-	}
-
-	public WebElement addSectionQuestion(int s) {
-		String xpath = "//div[@data-info='question-"+s+"-1']/following-sibling::div//a[normalize-space()='Add Question']";
-
-		return driver.findElement(By.name(xpath));
-	}
-
-
-
+	@FindBy(css="img.arrow-left")
+	static
+	WebElement measurableBackButton;
 	public void isConditional() throws Throwable
 	{
-
-
 		click(driver, workFlowDesign);
-		click(driver, masterParameterTab);
-		click(driver, nonMeasurableTab);
-		click(driver, addNonMeasurableSetButton);
-		String QuestionSetName=fake.lastName2();
-		questionSetNameField.clear();
-		questionSetNameField.sendKeys(QuestionSetName);
-
-		question1.clear();
-		question1.sendKeys("Select Any Options from the Dropdown");
-
-		click(driver, sec1Ques1DropDowntype);
-		clickElementMultipleTimes(driver, addOptionQuestion1, 3);
-		List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@data-info='question-1-1']//div[@class='input-delete d-flex']//input"));
-		DropDownOption.get(0).sendKeys("Windows");
-		DropDownOption.get(1).sendKeys("Mac Os");
-		DropDownOption.get(2).sendKeys("Linux");
-		DropDownOption.get(3).sendKeys("Unix");
-
-		//		Section 2
-		jsClick(driver, addSectionButton);
-		sendKeys(section2Question, "Have you ever used Windows systems?");
-		setQuestionTypes(2,1,7).click();
-		List<WebElement> radioOptions=driver.findElements(By.xpath("//div[@data-info='question-2-1']//input[contains(@name,'ans_option_')]"));
-		radioOptions.get(0).sendKeys("Yes");
-		radioOptions.get(1).sendKeys("No");
-		jsClick(driver, sectionsSettings(2));
-		jsClick(driver, sectionIsConditional(2));
-
-		saveButtonInEditPage.click();
-		Thread.sleep(2000);
-
-		assertTrue(afterNonMeasurableUpdatedContinueButton.isDisplayed());
-
-		afterNonMeasurableUpdatedContinueButton.click();
-		Thread.sleep(2000);
-
-		for(int i=1;i<=4;i++) {
-
-			WebElement addCon=driver.findElement(By.name("next_condition_1_1_1"));
-			String optionsName = "ans_option_1_1_"+i;
-			WebElement options = driver.findElement(By.name(optionsName));
-
-			if(i==1) {
-
-				click(driver, options);
-				Select addCondition= new Select(addCon);
-				addCondition.selectByVisibleText("Section 2");
-
-			}
-
-		}
-		saveButtonInEditPage.click();
-		Thread.sleep(2000);
-
-
-		afterNonMeasurableUpdatedContinueButton.click();
-		Thread.sleep(2000);
-		jsClick(driver, backButton);
-
-		String ActualCreateName=nonMeasurableQuestionSet.get(0).getText();
-		System.out.println(ActualCreateName);
-		assertEquals(QuestionSetName,ActualCreateName);
+		//		click(driver, masterParameterTab);
+		//		click(driver, measurableTab);
+		//		click(driver, addMeasurableSetButton);
+		//		String QuestionSetName=fake.lastName2();
+		//		questionSetNameField.clear();
+		//		questionSetNameField.sendKeys(QuestionSetName);
+		//
+		//		question1.clear();
+		//		question1.sendKeys("Select Any Options from the Dropdown");
+		//
+		//		click(driver, sec1Ques1DropDowntype);
+		//		clickElementMultipleTimes(driver, addOptionQuestion1, 3);
+		//		List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@data-info='question-1-1']//div[@class='input-delete d-flex']//input"));
+		//		DropDownOption.get(0).sendKeys("Windows");
+		//		DropDownOption.get(1).sendKeys("Mac Os");
+		//		DropDownOption.get(2).sendKeys("Linux");
+		//		DropDownOption.get(3).sendKeys("Unix");
+		//
+		//		//		Section 2
+		//		jsClick(driver, addSectionButton);
+		//		sendKeys(section2Question, "Have you ever used Windows systems?");
+		//		setQuestionTypes(2,1,7).click();
+		//		List<WebElement> radioOptions=driver.findElements(By.xpath("//div[@data-info='question-2-1']//input[contains(@name,'ans_option_')]"));
+		//		radioOptions.get(0).sendKeys("Yes");
+		//		radioOptions.get(1).sendKeys("No");
+		//		jsClick(driver, sectionsSettings(2));
+		//		jsClick(driver, sectionIsConditional(2));
+		//
+		//		saveButtonInEditPage.click();
+		//		Thread.sleep(2000);
+		//
+		//		assertTrue(aftermeasurableUpdatedContinueButton.isDisplayed());
+		//
+		//		aftermeasurableUpdatedContinueButton.click();
+		//		Thread.sleep(2000);
+		//
+		//		for(int i=1;i<=4;i++) {
+		//
+		//			WebElement addCon=driver.findElement(By.name("next_condition_1_1_1"));
+		//			String optionsName = "ans_option_1_1_"+i;
+		//			WebElement options = driver.findElement(By.name(optionsName));
+		//
+		//			if(i==1) {
+		//
+		//				click(driver, options);
+		//				Select addCondition= new Select(addCon);
+		//				addCondition.selectByVisibleText("Section 2");
+		//
+		//			}
+		//
+		//		}
+		//		saveButtonInEditPage.click();
+		//		Thread.sleep(2000);
+		//
+		//
+		//		aftermeasurableUpdatedContinueButton.click();
+		//		Thread.sleep(2000);
+		//		jsClick(driver, backButton);
+		//
+		//		String ActualCreateName=measurableQuestionSet.get(0).getText();
+		//		System.out.println(ActualCreateName);
+		//		assertEquals(QuestionSetName,ActualCreateName);
 
 		stagesTab.click();
 		editButtons.get(0).click();
+		jsClick(driver, addNonSectionButton);
+		sectionInputField.sendKeys("Test");
+		unWait(2);
+		jsClick(driver,sectionAddButton);
 
 		jsClick(driver, sectionButton);
-		jsClick(driver, nonMeasurableRadioButton);
-
+		jsClick(driver, MeasurableSetRadioBtn);
 
 		Select nonMeasurSelectQuestionType=new Select(selectQuestiontypeDropdown);
 
-		nonMeasurSelectQuestionType.selectByVisibleText(ActualCreateName);
+		nonMeasurSelectQuestionType.selectByVisibleText("Dare");
 
 		Select selectionAnyOptions=new Select(isConditonalSection1Question1);
 
@@ -1158,10 +1068,419 @@ public class MeasurableSetPage extends TestBase {
 
 		List<WebElement> questions=driver.findElements(By.xpath("//div[contains(@class,'row section_c_tab_question_type')]//div[contains(@class,'col-md-3')]"));
 
-		Assert.assertTrue(questions.size()>1);
-
+		assertTrue(questions.size()>1);
 
 	}
+
+	// This Method can be Used for Dropdown,Multiple Choice, Relative Dropdown and Relative MultiSelect.
+	public MeasurableSetPage dropdownAndMultiSelect(int questionType,int section,int question,String questionName, List<String> options,String requiredStatus,String EscalatedStatus,String uploadStatus ) {
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		switch (uploadStatus){
+			case "yes":
+				// Add options dynamically based on the size of the list
+				clickElementMultipleTimes(driver, addOptions(section,question), (options.size())-1);
+
+				// Iterate over the options list and send keys to each option field
+				for (int i = 0; i < options.size(); i++) {
+					sendKeys(optionsFields(section, question, i + 1), options.get(i));
+				}
+				break;
+			case "no":
+				jsClick(driver,deleteOptions(section,question));
+				break;
+
+		}
+
+		return this;
+	}
+
+	public MeasurableSetPage textBox(int questionType,int section,int question,String questionName,String requiredStatus,String EscalatedStatus,String minLength,String maxLength,String valueType,String allowSpecialChar)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		textBoxAnswerField(section,question).click();
+		sendKeys(minLengthTextBox(section,question),minLength);
+		sendKeys(maxLengthTextBox(section,question),maxLength);
+
+		selectByVisibleText(textBoxValueType(section,question),valueType);
+		if(allowSpecialChar.equals("no"))
+		{
+			jsClick(driver,textBoxAllowSpecialChar(section,question));
+		}
+
+		return this;
+	}
+
+	public MeasurableSetPage shortAnswer(int questionType,
+											int section,
+											int question,
+											String questionName,
+											String requiredStatus,
+											String EscalatedStatus,
+											String minLength,
+											String maxLength,
+											String valueType,
+											String allowSpecialChar)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		shortAnswerField(section,question).click();
+		sendKeys(minLengthShortAns(section,question),minLength);
+		sendKeys(maxLengthShortAns(section,question),maxLength);
+
+		selectByVisibleText(shortAnsValueType(section,question),valueType);
+		if(allowSpecialChar.equals("no"))
+		{
+			jsClick(driver,shortAnsAllowSpecialChar(section,question));
+		}
+
+		return this;
+	}
+
+	public MeasurableSetPage fileUpload(int questionType,
+										   int section,
+										   int question,
+										   String questionName,
+										   String requiredStatus,
+										   String EscalatedStatus,
+										   String addFileFormats,
+										   String doYouNeedMultipleUpload,
+										   String allowDelete,
+										   String fileSize,
+										   String sizeType
+	)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+		jsClick(driver,fileUploadSettings(section,question));
+		try {
+			selectByVisibleText(allowedFormats(section, question), addFileFormats);
+		}catch (Exception e)
+		{
+			addAdditionalFormats(section,question).click();
+			sendKeys(additionalFormatInput(section,question),addFileFormats);
+			jsClick(driver,addFormat(section,question));
+			unWait(1);
+			continueButton.click();
+			selectByVisibleText(allowedFormats(section, question), addFileFormats);
+		}
+		if(doYouNeedMultipleUpload.equals("no")) {
+			jsClick(driver,uploadMultipleFiles(section, question));
+		}
+		if(allowDelete.equals("no"))
+		{
+			jsClick(driver,allowDelete(section,question));
+		}
+		sendKeys(maxSizeInput(section,question),fileSize);
+		selectByVisibleText(maxSizeDropdown(section,question),sizeType);
+
+		return this;
+	}
+
+
+	public MeasurableSetPage radioButton(int questionType,
+											int section,
+											int question,
+											String questionName,
+											String requiredStatus,
+											String EscalatedStatus,
+											List<String>options
+	)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		// Add options dynamically based on the size of the list
+		clickElementMultipleTimes(driver, addOptions(section,question), (options.size())-2);
+
+		// Iterate over the options list and send keys to each option field
+		for (int i = 0; i < options.size(); i++) {
+			sendKeys(optionsFields(section, question, i + 1), options.get(i));
+		}
+
+		return this;
+	}
+
+	public MeasurableSetPage date(int questionType,
+									 int section,
+									 int question,
+									 String questionName,
+									 String requiredStatus,
+									 String EscalatedStatus,
+									 String maxDate,
+									 String maxdateinput,
+									 String minDate,
+									 String mindateinput,
+									 int defaultDate
+	)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		dateOrTimeInput(section,question).click();
+
+		selectByVisibleText(dataMaxDateDropdown(section,question),maxDate);
+		sendKeys( maxDateInput(section,question),maxdateinput);
+		selectByVisibleText(dataMinDateDropdown(section,question),minDate);
+		sendKeys( minDateInput(section,question),mindateinput);
+		if(defaultDate==1)
+		{
+			defaultDate(section,question).click();
+		}
+
+		return this;
+	}
+
+	public MeasurableSetPage time(int questionType,
+									 int section,
+									 int question,
+									 String questionName,
+									 String requiredStatus,
+									 String EscalatedStatus,
+									 String maxTime,
+									 String minTime,
+									 int hourFormat12)
+	{
+		// Enter the question name in the corresponding field
+		sendKeys(SetSectionQuestionName(section, question), questionName);
+
+		// Set the question type to dropdown
+		setQuestionTypes(section, question, questionType).click();
+
+		ToggleButton(required(section,question),requiredStatus);
+
+		ToggleButton(escalationToggle(section,question),EscalatedStatus);
+
+		dateOrTimeInput(section,question).click();
+		selectByVisibleText(maxTime(section,question),maxTime);
+
+		selectByVisibleText(minTime(section,question),minTime);
+		if(hourFormat12==1)
+		{
+			hoursFormat(section,question).click();
+		}
+
+		return this;
+	}
+
+
+	private MeasurableSetPage measurableParameter(int section,int question,String measurableString,String minLimit,String maxLimit)
+	{
+		selectByVisibleText(measurableParameterDrp(section,question),measurableString);
+		sendKeys(minLimit(section,question),minLimit);
+		sendKeys(maxLimit(section,question),maxLimit);
+		return this;
+	}
+
+
+	public void ToggleButton( WebElement toggleButton,String Action) {
+		if(Action.equals("yes")) {
+			jsClick(driver, toggleButton);
+		}
+	}
+
+	public MeasurableSetPage addQuestion(int section)
+	{
+		String xpath= "//div[@data-info='question-"+section+"-1']//following-sibling::div//a[not(text()='Add Option')]";
+		jsClick(driver,driver.findElement(By.xpath(xpath)));
+		return this;
+	}
+	public MeasurableSetPage addSection()
+	{
+		jsClick(driver,addSectionButton);
+		return this;
+	}
+
+	public MeasurableSetPage createQuestionSetName(String questionSetFieldName) {
+		jsClick(driver, addMeasurableSetButton);
+		sendKeys(questionSetNameField,questionSetFieldName);
+
+		return this;
+	}
+
+	public MeasurableSetPage NavToMeasurableTablePage()
+	{
+		workFlowDesign.click();
+		jsClick(driver, masterParameterTab);
+		jsClick(driver, measurableTab);
+
+		return this;
+	}
+
+
+	public MeasurableSetPage clickOnUploadButton( String nameToDelete,String uploadType)
+	{
+
+		// Find all rows within the table
+		List<WebElement> rows = formsTableBody.findElements(By.xpath("tr"));
+
+		for (WebElement row:rows)
+		{
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			if(nameToDelete.equals(usernameColumn.getText()))
+			{
+				System.out.println( usernameColumn.getText());
+				switch (uploadType){
+					case "1":   jsClick(driver,row.findElement(By.xpath("./td//a[1]//img")));
+						break;
+
+					case "2":jsClick(driver,row.findElement(By.xpath("./td//a[2]//img")));
+						break;
+
+				}
+				break;
+			}
+		}
+		return this;
+	}
+
+	private String dropdownPath(String dropdownName)
+	{
+		return System.getProperty("user.dir")+"\\Upload Files\\"+dropdownName+".xlsx";
+	}
+
+	public MeasurableSetPage uploadOptions()
+	{
+		uploadOptions(1,1).sendKeys(dropdownPath("Dropdown 1"));
+		uploadOptions(1,2).sendKeys(dropdownPath("Dropdown 2"));
+		uploadOptions(2,1).sendKeys(dropdownPath("Dropdown 3"));
+		saveRecord();
+
+		return this;
+	}
+	private void dropdownValidations(WebElement element)
+	{
+
+		Select select=new Select(element);
+		for(WebElement option:select.getOptions())
+		{
+
+
+		}
+
+	}
+
+	public MeasurableSetPage validateInStages(String sectionCName,String DropdownToSelect)
+	{
+		stagesTab.click();
+		editButtons.get(0).click();
+		js.executeScript("window.scrollTo(0, 700);");
+		jsClick(driver,addSection);
+		sectionName.sendKeys(sectionCName);
+		unWait(1);
+		jsClick(driver,add);
+
+		jsClick(driver,sectionCTabs(sectionCName));;
+		jsClick(driver,measurableRadioButton(sectionCName));
+		selectByVisibleText(measurableDropdownQuestionDropdown(sectionCName),DropdownToSelect);
+		//Should Add Validations
+
+
+		return this;
+	}
+
+	private MeasurableSetPage fetchFromDataset(int dataset,int section,
+												  int question,WebElement datasetElement,
+												  String datasetName,
+												  WebElement columnNameElement,String columnName)
+	{
+		if(dataset==1)
+		{
+			fetchFromDataset(section,question).click();
+			selectByVisibleText(datasetElement,datasetName);
+			selectByVisibleText(columnNameElement,columnName);
+		}
+
+		return this;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@FindBy(xpath ="//button[text()='Save']")
+	WebElement save;
+
+	public MeasurableSetPage saveRecord2()
+	{
+		jsClick(driver,save);
+		unWait(1);
+		continueButton.click();
+		return this;
+	}
+
+
+
+
+
+
+
+
 
 
 
@@ -1176,267 +1495,9 @@ public class MeasurableSetPage extends TestBase {
 
 
 	//----------------------------------------------------------------------------------------------------------
-	public void nonMeasurableSetCreatePage(int count) throws Throwable {
-
-		for (int b = 1; b <= count; b++) {
-
-			String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-					.getText();
-
-			Thread.sleep(2000);
-			System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
-
-			int beforeCreateRecord = extractNumber(beforeCreatedRecords);
-			int beforeNumber = extractNumber(beforeCreatedRecords) + 1;
-			//		System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-			System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + beforeNumber);
-
-			click(driver, addNonMeasurableSetButton);
-
-			assertTrue(questionSetNameField.isDisplayed(), "questionSetNameField is not displayed.");
-			questionSetNameField.sendKeys(fake.lastName2() + " TestAudit");
-
-			click(driver, settingButton);
-
-			// WebDriver driver, WebElement element, int timeout, int pollingInterval
-			wait.until(ExpectedConditions.visibilityOf(tableView));
-			assertTrue(tableView.isDisplayed(), "tabularView is not displayed.");
-			click(driver, tableView);
-
-			for (int j = 1; j <= 7; j++) {
-
-				String xpathForColumn1 = "//label[normalize-space()='COLUMN NAME " + j + "']";
-
-				String xpathForColumn = "(//input[@placeholder='Enter your column Name'])[" + j + "]";
-
-				String xpathForTextBox = "question_1_" + j;
-
-				WebElement ClickColumn = driver.findElement(By.xpath(xpathForColumn1));
-				WebElement sendDataColumn = driver.findElement(By.xpath(xpathForColumn));
-
-				WebElement textBoxUnderColumn = driver.findElement(By.name(xpathForTextBox));
-
-				if (j == 1) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Customer Name");
-					textBoxUnderColumn.sendKeys("Enter Customer Name?");
-
-					textBoxUnderColumn.click();
-					textBox.click();
-
-				}
-
-				if (j == 2) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Person Who Pick the Call");
-					textBoxUnderColumn.sendKeys("Enter the Employee Name?");
-
-					//				Thread.sleep(6000);
-					wait.until(ExpectedConditions.elementToBeClickable(textBoxUnderColumn));
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", textBox);
-					//				Thread.sleep(6000);
-				}
-
-				// Date Picker
-				if (j == 3) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Call Date");
-					click(driver, textBoxUnderColumn);
-					textBoxUnderColumn.sendKeys("Enter the Date?");
-					js.executeScript("arguments[0].click();", dateType);
-					dateField.click();
-					actions.moveToElement(driverIninteractable).perform();
-					dateField.click();
-					dateField.sendKeys("06/04/2024");
-					dateField.sendKeys(Keys.ENTER);
-
-				}
-
-				// Text Box
-				if (j == 4) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Feedback");
-					textBoxUnderColumn.sendKeys("Enter Your Feedback?");
-					js.executeScript("arguments[0].click();", textBox);
-
-					click(driver, settingButton);
-					click(driver, plusColumnButton);
-				}
-
-				// Drop Down
-				if (j == 5) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Select Customer Feedback");
-					textBoxUnderColumn.sendKeys("Select Feedback Satisfied / Not Satisfied");
-					textBoxUnderColumn.click();
-
-					js.executeScript("arguments[0].click();", dropDownOption);
-
-					for (int i = 1; i <= 2; i++) {
-
-						String xpathOfDropDownOption = "ans_option_1_1_" + i;
-						WebElement dropDownOptionField = driver.findElement(By.name(xpathOfDropDownOption));
-
-						if (i == 1) {
-
-							js.executeScript("arguments[0].click();", dropDownOptionField);
-							dropDownOptionField.sendKeys("Satisfied");
-							actions.moveToElement(driverIninteractable).perform();
-							// Thread.sleep(2000);
-							js.executeScript("arguments[0].click();", addDropDownOptionField);
-							// click(driver, plusColumnButton);
-						}
-
-						if (i == 2) {
-
-							js.executeScript("arguments[0].click();", dropDownOptionField);
-							dropDownOptionField.sendKeys("Not Satisfied");
-
-							settingButton.click();
-							click(driver, plusColumnButton);
-						}
-
-					}
-
-				}
-
-				// Radio Button
-				if (j == 6) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("Is customer picked your call ?");
-					textBoxUnderColumn.sendKeys("Select Radio button in yes or no.");
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", radioButtonOption);
-
-					for (int i = 1; i <= 2; i++) {
-
-						String xpathForRadioButtonOptions = "ans_option_1_1_" + i;
-
-						if (i == 1) {
-							WebElement option1 = driver.findElement(By.name(xpathForRadioButtonOptions));
-							option1.sendKeys("Yes");
-						}
-
-						if (i == 2) {
-							WebElement option2 = driver.findElement(By.name(xpathForRadioButtonOptions));
-							option2.sendKeys("No");
-
-							settingButton.click();
-							click(driver, plusColumnButton);
-						}
-
-					}
-
-				}
-
-				// Time Picker
-				if (j == 7) {
-
-					click(driver, ClickColumn);
-					sendDataColumn.sendKeys("On which time call picked ?");
-					textBoxUnderColumn.sendKeys("Select the time of the call.");
-					textBoxUnderColumn.click();
-					js.executeScript("arguments[0].click();", timeOption);
-
-					js.executeScript("arguments[0].scrollIntoView(true);", timePicker);
-					timePicker.click();
-					timePicker.click();
-					timePicker.sendKeys("10:10");
-					timePicker.sendKeys(Keys.ENTER);
-
-				}
-
-			}
-
-			click(driver, addSectionButton);
-
-			click(driver, settingButton2);
-
-			click(driver, tabularView2);
-
-			for (int a = 1; a <= 4; a++) {
-
-				String xpath = "(//label[text()='COLUMN NAME " + a + "'])[2]";
-				String columnNameXpath = "//input[contains(@placeholder, 'Enter your column Name')]/..//input[@name='col_name_2_"
-						+ a + "']";
-				String xpathName = "//input[@name='question_2_" + a + "']";
-
-				System.out.println("name : " + xpathName);
-
-				WebElement xpathForColumn2 = driver.findElement(By.xpath(xpath));
-				WebElement xpathForColumn2Name = driver.findElement(By.xpath(columnNameXpath));
-				WebElement xpathForField2 = driver.findElement(By.xpath(xpathName));
-
-				if (a == 1) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter Customer Name?");
-					xpathForField2.sendKeys("Customer Name");
-
-				}
-
-				if (a == 2) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter Customer Phone No.?");
-					xpathForField2.sendKeys("Customer Phone No.");
-
-				}
-
-				if (a == 3) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter the time ?");
-					xpathForField2.sendKeys("Enter Time");
-
-				}
-
-				if (a == 4) {
-
-					click(driver, xpathForColumn2);
-					xpathForColumn2Name.sendKeys("Enter the Customer Address ?");
-					xpathForField2.sendKeys("Enter Customer Address");
-
-				}
-
-			}
-
-			click(driver, saveButtonOfCreateQuestionSet);
-			Thread.sleep(2000);
-			assertTrue(successPopUpWithContinueButtonAfterCreate.isDisplayed(),
-					"successPopUpWithContinueButtonAfterCreate is not displayed.");
-			click(driver, successPopUpWithContinueButtonAfterCreate);
-
-			click(driver, leftArrowToGoBackTablePage);
-
-			Thread.sleep(2000);
-
-			String afterCreateRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-					.getText();
-
-			assertNotNull(afterCreateRecords, "afterCreateRecords is null.");
-			System.out.println("afterCreateRecords : " + afterCreateRecords);
-
-			int afterNumber = extractNumber(afterCreateRecords);
-			System.out.println("afterNumber : " + afterNumber);
-
-			assertEquals(afterNumber, beforeNumber);
-
-		}
-
-	}
-
-
 	//#############################################################################################################################
 
-	public void nonMeasurableSetTablePage() throws Throwable {
+	public void MeasurableSetTablePage() throws Throwable {
 
 		String firstRecord = fetchCreatedRecord.getText();
 
@@ -1450,12 +1511,12 @@ public class MeasurableSetPage extends TestBase {
 
 		WebElement searchRecord = driver.findElement(By.xpath("//td[text()='" + firstRecord + "']"));
 		assertTrue(searchRecord.isDisplayed(), "searchRecord is not displayed.");
-		//		
+		//
 		//		assertTrue(createdDatePicker.isDisplayed(), "createdDatePicker is not displayed.");
 		//		createdDatePicker.click();
 		//		createdDatePicker.sendKeys("25-04-2024");
 		//		createdDatePicker.sendKeys(Keys.ENTER);
-		//		
+		//
 		//		click(driver, searchButton);
 
 		click(driver, clearFilterButton);
@@ -1467,20 +1528,20 @@ public class MeasurableSetPage extends TestBase {
 
 	}
 
-	public void nonMeasurableSetEditPage() {
+	public void MeasurableSetEditPage() {
 
-		click(driver, editNonMeasurableSetButton);
+		click(driver, editMeasurableSetButton);
 
 		assertTrue(remarkFieldInEditPage.isDisplayed(), "remarkFieldInEditPage is not displayed.");
 		remarkFieldInEditPage.clear();
-		remarkFieldInEditPage.sendKeys("Test Edit NonMeasurableSet");
+		remarkFieldInEditPage.sendKeys("Test Edit MeasurableSet");
 		click(driver, saveButtonInEditPage);
 
-		wait.until(ExpectedConditions.visibilityOf(successfullyNonMeasurableUpdatedMassage));
-		assertTrue(successfullyNonMeasurableUpdatedMassage.isDisplayed(),
+		wait.until(ExpectedConditions.visibilityOf(successfullymeasurableUpdatedMassage));
+		assertTrue(successfullymeasurableUpdatedMassage.isDisplayed(),
 				"successfullyMeasurableUpdatedMassage is not displayed.");
 
-		click(driver, afterNonMeasurableUpdatedContinueButton);
+		click(driver, aftermeasurableUpdatedContinueButton);
 
 		click(driver, leftArrowToGoBackTablePage);
 
@@ -1498,20 +1559,21 @@ public class MeasurableSetPage extends TestBase {
 	}
 
 
-	public void groups()
+	//	##########################################################################################################
+
+	@FindBy(linkText = "SMS Template")
+	WebElement smsTemplate;
+	public void smsTemp()
 	{
-		driver.navigate().to("https://test.capture.autosherpas.com/en/user_management/role_management_create/?csrfmiddlewaretoken=BL2A2wkhHPFK9VJNsLOoXqHv5JimnTLdGbzPfEfVXBHfgZh4D0bWTuAINhEwdlDT&edit_group_id=37");
-
-		Select options= new Select(driver.findElement(By.xpath("//select[@id='multiselect_to']")));
-
-		for (WebElement option:options.getOptions())
-		{
-			System.out.println(option.getText());
-
-		}
-
-
+		jsClick(driver, smsTemplate);
 	}
 
 
+
+
+
 }
+
+
+
+

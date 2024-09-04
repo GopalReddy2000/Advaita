@@ -1,4 +1,4 @@
-package com.advaita.TestCase;
+package com.advaita.TestClass;
 
 import java.awt.AWTException;
 

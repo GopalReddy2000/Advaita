@@ -460,11 +460,11 @@ public class StagesActions extends TestBase{
 
 		return this;
 	}
-	private void selectByVisibleText(WebElement element,String toSelect)
-	{
-		Select select= new Select(element);
-		select.selectByVisibleText(toSelect);
-	}
+//	private void selectByVisibleText(WebElement element,String toSelect)
+//	{
+//		Select select= new Select(element);
+//		select.selectByVisibleText(toSelect);
+//	}
 
 	private void selectProcess()
 	{
