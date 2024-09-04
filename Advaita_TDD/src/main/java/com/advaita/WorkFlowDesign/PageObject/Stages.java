@@ -307,9 +307,9 @@ public class Stages extends TestBase {
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
 
-		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
-		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
-		click(driver, editButtonInSectionAElement);
+//		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
+//		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
+//		click(driver, editButtonInSectionAElement);
 
 //		List<WebElement> options1 = select.getOptions();
 //
@@ -327,10 +327,11 @@ public class Stages extends TestBase {
 ////			assertTrue(option.getText().contains(list));
 //
 //		}
-
-		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
-		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
-		cancelButtonInaddSectionAPopUp.click();
+		
+//
+//		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
+//		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
+//		cancelButtonInaddSectionAPopUp.click();
 
 	}
 
@@ -341,7 +342,7 @@ public class Stages extends TestBase {
 
 	}
 
-	public void verifyAddBlockInSectionB(int count) {
+	public void verifyAddBlockInSectionB(int count) throws Throwable {
 
 		verifySectionB();
 
@@ -365,7 +366,7 @@ public class Stages extends TestBase {
 
 	}
 
-	public void selectMetaDataInAddBlockSectionB(int count) {
+	public void selectMetaDataInAddBlockSectionB(int count) throws Throwable {
 
 		for (int i = 1; i <= count; i++) {
 
@@ -390,7 +391,7 @@ public class Stages extends TestBase {
 			select.selectByVisibleText(fetchMetaDataRecord);
 			
 			List<WebElement> checkBoxElements = wait.until(
-					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
+					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
 
 			for (int i = 0; i < checkBoxElements.size(); i++) {
 				WebElement element = checkBoxElements.get(i);

@@ -22,7 +22,6 @@ public class FetchDataFromInputTagWithJS extends TestBase{
 			
 			return elementValue;
 			
-			
 		}
 
 }

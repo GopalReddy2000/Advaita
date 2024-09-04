@@ -54,6 +54,13 @@ public class ClickUtilities extends TestBase {
 	}
 
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static void normalClick(WebElement element) throws Throwable {
+		
+		assertTrue(element.isDisplayed(), "element is not displayed.");
+		element.click();
+
+	}
+//	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public static void multiJSClick(WebDriver driver, WebElement element, int count) throws Throwable {
 
@@ -96,16 +103,16 @@ public class ClickUtilities extends TestBase {
 
 		}
 	}
-	
+
 	public static void multiClickWithRetry(WebDriver driver, WebElement element, int count) throws Throwable {
-		
+
 		for (int i = 1; i < count; i++) {
 			wait.until(ExpectedConditions.visibilityOf(element));
 			try {
 				if (!element.isDisplayed()) {
 					throw new NoSuchElementException("Element not visible so could not click: " + element);
 				}
-				
+
 				js.executeScript("arguments[0].scrollIntoView(true);", element);
 				clickWithRetry(element, count);
 				Thread.sleep(700);
@@ -114,7 +121,7 @@ public class ClickUtilities extends TestBase {
 				Thread.sleep(200);
 				clickWithRetry(element, count);
 			}
-			
+
 		}
 	}
 
@@ -126,7 +133,7 @@ public class ClickUtilities extends TestBase {
 	}
 
 //	ElementUtils.clickWithRetry(submitButton, 3);
-	public static void clickWithRetry(WebElement element, int maxAttempts) {
+	public static void clickWithRetry(WebElement element, int maxAttempts) throws Throwable {
 		assertTrue(element.isDisplayed());
 		int attempts = 0;
 		while (attempts < maxAttempts) {
@@ -136,6 +143,7 @@ public class ClickUtilities extends TestBase {
 			} catch (Exception e) {
 				// Handle StaleElementReferenceException or other exceptions
 				attempts++;
+				Thread.sleep(200);
 			}
 		}
 	}
@@ -193,7 +201,7 @@ public class ClickUtilities extends TestBase {
 	}
 
 //	ElementUtils.clickAndHighlightElement(elementToHighlight, driver);
-	public static void clickAndHighlightElement(WebElement element, WebDriver driver) {
+	public static void clickAndHighlightElement(WebElement element, WebDriver driver) throws Throwable {
 		js.executeScript("arguments[0].style.backgroundColor = 'yellow';", element);
 		try {
 

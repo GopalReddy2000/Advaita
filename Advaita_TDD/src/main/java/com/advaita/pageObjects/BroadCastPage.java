@@ -218,7 +218,7 @@ public class BroadCastPage extends TestBase{
 		}
 	}
 
-	public static void selectByVisibleText(WebElement dropdownElement, String optionText) {
+	public void selectByVisibleText(WebElement dropdownElement, String optionText) {
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
 

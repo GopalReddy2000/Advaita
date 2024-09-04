@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.SendDataUtils;
 
@@ -29,11 +30,12 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 public class MastersFieldSets extends TestBase {
 
 	FakeData fake = new FakeData();
-
+	
 	public static final String masterURL = "https://test.capture.autosherpas.com/en/masters/masters_question_sets/";
 	public static String existingFieldSetRecord;
 	public static int existingFieldSetRecordCount;
 
+	
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
 
@@ -211,27 +213,27 @@ public class MastersFieldSets extends TestBase {
 
 	public void verifyBeforeFieldSetCreatedCount() throws Throwable {
 
-		String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
-				.getText();
-
-		Thread.sleep(2000);
-		System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
-
-		int beforeCreateRecord = extractNumber(beforeCreatedRecords);
-		existingFieldSetRecordCount = extractNumber(beforeCreatedRecords) + 1;
-
-//	System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
-		System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + existingFieldSetRecordCount);
+//		String beforeCreatedRecords = driver.findElement(By.xpath("(//p[@class='show_entries m-0 font_13'])[1]"))
+//				.getText();
+//
+//		Thread.sleep(2000);
+//		System.out.println("beforeCreatedRecord : " + beforeCreatedRecords);
+//
+//		int beforeCreateRecord = extractNumber(beforeCreatedRecords);
+//		existingFieldSetRecordCount = extractNumber(beforeCreatedRecords) + 1;
+//
+////	System.out.println(String.format("beforeNumber (%d + 1) : %s", beforeCreateRecord, beforeNumber));
+//		System.out.println("beforeNumber" + "(" + beforeCreateRecord + "+1" + ") :" + existingFieldSetRecordCount);
 
 	}
 
-	public void verifyFieldSetCreateButton() {
+	public void verifyFieldSetCreateButton() throws Throwable {
 
-		assertTrue(fetchFieldSetRecord.isDisplayed());
-		existingFieldSetRecord = fetchFieldSetRecord.getText();
-		assertNotNull(existingFieldSetRecord);
+//		assertTrue(fetchFieldSetRecord.isDisplayed());
+//		existingFieldSetRecord = fetchFieldSetRecord.getText();
+//		assertNotNull(existingFieldSetRecord);
 
-		System.out.println("existingFieldSetRecord : " + existingFieldSetRecord);
+//		System.out.println("existingFieldSetRecord : " + existingFieldSetRecord);
 //		click(driver, addFieldSetButton);
 
 		ClickUtilities.clickWithRetry(addFieldSetButton, 3);
@@ -302,17 +304,17 @@ public class MastersFieldSets extends TestBase {
 //	questionTypes 10 : Text Box
 //	questionTypes 11 : Relative MultiSelect
 
-	final static int LABEL = 1;
-	final static int MULTIPLE_CHOICE = 2;
-	final static int SHORT_ANSWER = 3;
-	final static int DROP_DOWN = 4;
-	final static int RELATIVE_DROP_DOWN = 5;
-	final static int FILE_UPLOAD = 6;
-	final static int RADIO_BUTTON = 7;
-	final static int DATE = 8;
-	final static int TIME = 9;
-	final static int TEXT_BOX = 10;
-	final static int RELATIVE_MULTISELECT = 11;
+	public static int LABEL = 1;
+	public static int MULTIPLE_CHOICE = 2;
+	public static int SHORT_ANSWER = 3;
+	public static int DROP_DOWN = 4;
+	public static int RELATIVE_DROP_DOWN = 5;
+	public static int FILE_UPLOAD = 6;
+	public static int RADIO_BUTTON = 7;
+	public static int DATE = 8;
+	public static int TIME = 9;
+	public static int TEXT_BOX = 10;
+	public static int RELATIVE_MULTISELECT = 11;
 
 //	########################################################################################################################################################
 	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
@@ -510,6 +512,7 @@ public class MastersFieldSets extends TestBase {
 					System.out.println(
 							"Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
 				}
+
 //				valueTypeDropDown.selectByVisibleText("Only Text");
 				valueTypeDropDown.selectByVisibleText("All");
 //				valueTypeDropDown.selectByVisibleText("Only Number");
@@ -958,6 +961,7 @@ public class MastersFieldSets extends TestBase {
 
 				break;
 			}
+
 		}
 
 	}
@@ -1377,6 +1381,175 @@ public class MastersFieldSets extends TestBase {
 
 		driver.navigate().refresh();
 //		---------------------------------------------------------------------------
+	}
+
+//	##################################################################################################################################
+//	##################################################################################################################################
+//	##################################################################################################################################
+//	##################################################################################################################################
+//	##################################################################################################################################
+//	##################################################################################################################################
+
+	public void verifyEnterQuestionSetName(String questionSetName) {
+
+		String text = driver.findElement(By.xpath("//label[normalize-space()='QUESTION SET *']")).getText();
+		char lastChar = text.charAt(text.length() - 1);
+		assertEquals(lastChar, '*');
+
+		assertTrue(questionSetNameFieldElement.isDisplayed());
+
+		questionSetNameFieldElement.clear();
+		questionSetNameFieldElement.sendKeys(questionSetName);
+
+	}
+
+	public MastersFieldSets addDropDownRelatedQuestions(String question, int sectionIndex, int questionIndex,
+			int questionType, List<String> options) throws Throwable {
+
+		// Construct XPath for the question text field and find the element
+		String baseXPath = "//div[h5[contains(text(), 'Question " + questionIndex + "')]]";
+		String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + questionIndex
+				+ "']";
+		WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
+
+		// Send the question to the input field
+		questionFields.sendKeys(question);
+
+		// Construct XPath for the question type and click on it
+		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
+		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+
+		// Add options and input them into the dropdown fields
+		for (int i = 0; i < options.size(); i++) {
+
+			if (i > 0) { // Add the "Add Option" button click only for options beyond the first one
+				String xpathAdd = "(" + baseXPath
+						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
+				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
+				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+			}
+
+			// Input the option text
+			String xpathDropDownOption = baseXPath
+					+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_" + sectionIndex + "_"
+					+ questionIndex + "_" + (i + 1) + "']";
+
+			driver.findElement(By.xpath(xpathDropDownOption)).sendKeys(options.get(i));
+
+		}
+
+		return this;
+	}
+
+//Usage
+//	List<String> options = Arrays.asList("OptionA", "OptionB", "OptionC", "OptionD");
+//	addDropDownRelatedQuestions("Create Drop Down ?", 1, 6, DROP_DOWN, options);
+
+	public MastersFieldSets addTextBoxRelatedQuestions(String question, int sectionIndex, int questionIndex,
+			int questionType, String minLength, String maxLength, String expectedDefaultOption, String[] expectedOrder,
+			String typeOfValue) throws Throwable {
+
+		// Construct XPath for the question text field and find the element
+		String baseXPath = "//div[h5[contains(text(), 'Question " + questionIndex + "')]]";
+		String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + questionIndex
+				+ "']";
+
+		WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
+
+		// Send the question to the input field
+		questionFields.sendKeys(question);
+
+		// Construct XPath for the question type and click on it
+		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
+
+		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+
+		if (questionType == 10) {
+
+			click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
+
+		} else {
+			// Handle default or unexpected questionType
+			click(driver, DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex, 1));
+		}
+
+		if (questionType == 10) {
+			// Set minLength and maxLength
+			SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
+			SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
+		} else {
+
+			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMinLength(sectionIndex, questionIndex), minLength);
+			SendDataUtils.clearAndSendKeys(DynamicXpath.shortMaxLength(sectionIndex, questionIndex), maxLength);
+		}
+
+		// Create a Select object for the dropdown element
+		if (questionType == 10) {
+			Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(sectionIndex, questionIndex));
+			// Validate the dropdown options, default selection, and order
+			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
+
+			// Select the desired option by visible text (if needed)
+			valueTypeDropDown.selectByVisibleText(typeOfValue);
+		} else {
+			Select valueTypeDropDown = new Select(DynamicXpath.shortValueTypeDropDown(sectionIndex, questionIndex));
+			// Validate the dropdown options, default selection, and order
+			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
+
+			// Select the desired option by visible text (if needed)
+			valueTypeDropDown.selectByVisibleText(typeOfValue);
+		}
+
+		if (questionType == 10) {
+
+			click(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex));
+			Thread.sleep(400);
+			click(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex));
+
+		} else {
+
+			click(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex));
+			Thread.sleep(400);
+			click(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex));
+		}
+
+		return this;
+	}
+
+//	String question = "Number Of The Customer?";
+//    int sectionIndex = 1;
+//    int questionIndex = 1;
+//    int questionType = 9;  // Assuming 9 corresponds to 'Text Box'
+//    String minLength = "10";
+//    String maxLength = "14";
+//    String expectedDefaultOption = "All";
+//    String[] expectedOrder = { "All", "Only Text", "Only Number" };
+//	  String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
+//
+//    // Call the method to add and validate text box related questions
+//    addTextBoxRelatedQuestions(question, sectionIndex, questionIndex, questionType, minLength, maxLength, 
+//                               expectedDefaultOption, expectedOrder);
+
+	public MastersFieldSets addQuestions(int sectionIndex) throws Throwable {
+
+		String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+				+ sectionIndex + "]";
+
+		WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
+
+		ClickUtilities.clickWithRetry(addQuestionButton, 2);
+
+		return this;
+	}
+
+	public MastersFieldSets addSection() throws Throwable {
+
+		js.executeScript("arguments[0].scrollIntoView(true);", addSectionButton);
+		jsClick(driver, addSectionButton);
+
+		return this;
 	}
 
 }

@@ -35,7 +35,7 @@ public class MasterFormPage extends TestBase {
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
 
-	public String createPageUrl = "mainURl" + "en/masters/create_master_forms/";
+	public String createPageUrl = mainURl + "en/masters/create_master_forms/";
 	public String processName = "P " + FakeData.lastName2();
 	public String processDesc = "P Desc";
 	public String subProcessName = "SP" + FakeData.lastName2();
@@ -428,7 +428,7 @@ public class MasterFormPage extends TestBase {
 			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
 //				ClickUtilities.click(driver, DynamicXpath.questionField(i, 1, i));
-			ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, section, i), 2);
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, section, i), 2);
 
 			String selectedType = null;
 			for (WebElement type : checkQuestionTypes) {
@@ -474,7 +474,7 @@ public class MasterFormPage extends TestBase {
 
 				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-				ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, section, i), 2);
+				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, section, i), 2);
 
 				String selectedType = null;
 				for (WebElement type : checkQuestionTypes) {
@@ -506,7 +506,7 @@ public class MasterFormPage extends TestBase {
 
 				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-				ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, section, i), 2);
+				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, section, i), 2);
 
 				String selectedType = null;
 				for (WebElement type : checkQuestionTypes) {
@@ -538,7 +538,7 @@ public class MasterFormPage extends TestBase {
 
 				List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-				ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, section, i), 2);
+				ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, section, i), 2);
 
 				String selectedType = null;
 
@@ -771,7 +771,7 @@ public class MasterFormPage extends TestBase {
 
 			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-			ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, 1, i), 2);
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
 
 			String selectedType = null;
 			for (WebElement type : checkQuestionTypes) {
@@ -1110,6 +1110,8 @@ public class MasterFormPage extends TestBase {
 			MasterFormQuesAddSect2.add(element.getText());
 			System.out.println("Values stored in 'values' InMasterForm section1QuesElementsAddSec2InMasterForm : "
 					+ element.getText());
+			
+			
 		}
 	}
 
@@ -1831,8 +1833,8 @@ public class MasterFormPage extends TestBase {
 
 			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-			ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, 1, i), 2);
-			WebElement element = DynamicXpath.questionType(i, 1, i);
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 1, i), 2);
+			WebElement element = DynamicXpath.questionField(i, 1, i);
 
 			String elementQuestion = element.getAttribute("value");
 			System.out.println("elementQuestion : " + elementQuestion);
@@ -1874,8 +1876,8 @@ public class MasterFormPage extends TestBase {
 
 			List<WebElement> checkQuestionTypes = driver.findElements(By.xpath(xpath));
 
-			ClickUtilities.clickWithRetry(DynamicXpath.questionType(i, 2, i), 2);
-			WebElement element = DynamicXpath.questionType(i, 2, i);
+			ClickUtilities.clickWithRetry(DynamicXpath.questionField(i, 2, i), 2);
+			WebElement element = DynamicXpath.questionField(i, 2, i);
 
 			String elementQuestion = element.getAttribute("value");
 			System.out.println("elementQuestion : " + elementQuestion);
@@ -2011,7 +2013,13 @@ public class MasterFormPage extends TestBase {
 			// Assert equality of the two arrays
 			assertEquals(firstOptionsText, dropdownOptionsText, "The dropdown options are not equal.");
 		}
+		
+		ClickUtilities.clickWithRetry(leftArrowButton, 2);
+		
+		Thread.sleep(1000);
 
 	}
+	
+	
 
 }
