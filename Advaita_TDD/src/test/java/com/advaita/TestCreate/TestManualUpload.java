@@ -21,6 +21,7 @@ import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
+import Advaita_TDD.Advaita_TDD.App;
 import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualUpload extends TestBase {
@@ -33,6 +34,8 @@ public class TestManualUpload extends TestBase {
 	HomePage homePage;
 
 	ManualUpload manualUpload;
+	
+	App app;
 
 	public TestManualUpload() {
 
@@ -43,7 +46,7 @@ public class TestManualUpload extends TestBase {
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Capture_admin", "Qwerty@123");
+		homePage = loginPage.login("Capture_admin", "8433@Taas");
 
 		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/ManualUpload Test.html");
 		reports = new ExtentReports();
@@ -63,6 +66,8 @@ public class TestManualUpload extends TestBase {
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		manualUpload = new ManualUpload();
+		
+		app = new App();
 
 	}
 
@@ -76,6 +81,14 @@ public class TestManualUpload extends TestBase {
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
 				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
 				.fillOtherFildsForUploadedFile("Test Manual Upload");
+
+	}
+
+	@Test(priority = 2)
+	public void setLtfs() {
+
+		app.navToRecordToAuditForm("TW -Customer Visit Feedback form").auditForm("Lan", "James", "24", "Employed", "2",
+				"1111");
 
 	}
 

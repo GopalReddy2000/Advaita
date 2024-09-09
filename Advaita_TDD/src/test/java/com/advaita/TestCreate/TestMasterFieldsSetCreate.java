@@ -209,67 +209,53 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		String questionSetNameString = "DropDown Ques";
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 
-
 		String minLength = "10";
 		String maxLength = "14";
 		String expectedDefaultOption = "All";
 		String[] expectedOrder = { "All", "Only Text", "Only Number" };
-		
-		String typeOfValue = "Only Number"; //"All", "Only Text", "Only Number";
-		
-		// Usage
-//		List<String> options = Arrays.asList("OptionA", "OptionB");
 
-//		masterFieldSet
-//		             .addDropDownRelatedQuestions("Create Drop Down ?", 
-//						1, //Section
-//						1, //Question
-//						MastersFieldSets.DROP_DOWN, options)
-//						.addQuestions(1)//index based on which section
-//						.addTextBoxRelatedQuestions("Number Of The Customer?",
-//						1, //Section
-//						2, //Question
-//						MastersFieldSets.TEXT_BOX, 
-//						minLength,
-//						maxLength, 
-//						expectedDefaultOption, 
-//						expectedOrder,
-//						typeOfValue);
-		
-		
-		//Text Box
-		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?",
-				1, //Section
-				1, //Question
-				MastersFieldSets.TEXT_BOX, 
-				minLength,
-				maxLength, 
-				expectedDefaultOption, 
-				expectedOrder,
-				typeOfValue);
-		
-		
-		//Drop Down
-		List<String> sector = Arrays.asList("core", "it","electronics");
-		masterFieldSet.addQuestions(1)
-		.addDropDownRelatedQuestions("Create Drop Down ?", 
-			1, //Section
-			2, //Question
-			MastersFieldSets.RELATIVE_DROP_DOWN, sector);
-		
-		//Short Answer
-		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?",
-				2, //Section
-				1, //Question
-				MastersFieldSets.SHORT_ANSWER, 
-				minLength,
-				maxLength, 
-				expectedDefaultOption, 
-				expectedOrder,
-				typeOfValue);
+		String typeOfValue = "Only Number"; // "All", "Only Text", "Only Number";
+
+		// Text Box
+		masterFieldSet.addTextBoxRelatedQuestions("Number Of The Customer?", 1, // Section
+				1, // Question
+				MastersFieldSets.TEXT_BOX, minLength, maxLength, expectedDefaultOption, expectedOrder, typeOfValue);
+
+		// Drop Down
+		List<String> sector = Arrays.asList("core", "it", "electronics");
+		masterFieldSet.addQuestions(1).addDropDownRelatedQuestions("Create Drop Down ?", 1, // Section
+				2, // Question
+				MastersFieldSets.RELATIVE_DROP_DOWN, sector);
+
+		// Short Answer
+		masterFieldSet.addSection().addTextBoxRelatedQuestions("Details Of The Customer?", 2, // Section
+				1, // Question
+				MastersFieldSets.SHORT_ANSWER, minLength, maxLength, expectedDefaultOption, expectedOrder, typeOfValue);
 
 	}
 
+	@Test(priority = 17)
+	public void verifyAddMultipleFieldSetQuestions() throws Throwable {
+
+		test = reports.createTest("verifyAddMultipleFieldSetQuestions");
+
+		masterFieldSet.verifyTabsForFieldSetCreate();
+		masterFieldSet.verifyFieldSetCreateButton();
+
+		String questionSetNameString = "DropDownTextBox Ques";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+
+		// Define question types (e.g., DropDown = 1, TextBox = 2)
+		List<Integer> questionTypes = Arrays.asList(MastersFieldSets.DROP_DOWN, MastersFieldSets.TEXT_BOX,
+				MastersFieldSets.SHORT_ANSWER);
+
+		// Add 2 questions to section 1
+		masterFieldSet.addMultipleQuestions(1, questionTypes, 7);
+
+	}
+
+	
+	
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
 		if (result.getStatus() == ITestResult.FAILURE) {
@@ -291,10 +277,10 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-		
+
 //		driver.manage().window().minimize();
 //		driver.quit();
-		
+
 		reports.flush();
 	}
 }

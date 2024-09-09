@@ -5,8 +5,11 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -26,16 +29,16 @@ import com.advaita.Utilities.SendDataUtils;
 
 import Advaita_TDD.Advaita_TDD.DynamicXpath;
 import Advaita_TDD.Advaita_TDD.FakeData;
+import Advaita_TDD.Advaita_TDD.Questions;
 
 public class MastersFieldSets extends TestBase {
 
 	FakeData fake = new FakeData();
-	
+
 	public static final String masterURL = "https://test.capture.autosherpas.com/en/masters/masters_question_sets/";
 	public static String existingFieldSetRecord;
 	public static int existingFieldSetRecordCount;
 
-	
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
 
@@ -200,6 +203,8 @@ public class MastersFieldSets extends TestBase {
 
 	public void verifyTabsForFieldSetCreate() {
 
+		click(driver, HomePage.workflowDesign);
+
 		assertTrue(masterTabElement.isDisplayed(), "masterTabElement is not displayed.");
 		click(driver, masterTabElement);
 
@@ -304,17 +309,17 @@ public class MastersFieldSets extends TestBase {
 //	questionTypes 10 : Text Box
 //	questionTypes 11 : Relative MultiSelect
 
-	public static int LABEL = 1;
-	public static int MULTIPLE_CHOICE = 2;
-	public static int SHORT_ANSWER = 3;
-	public static int DROP_DOWN = 4;
-	public static int RELATIVE_DROP_DOWN = 5;
-	public static int FILE_UPLOAD = 6;
-	public static int RADIO_BUTTON = 7;
-	public static int DATE = 8;
-	public static int TIME = 9;
-	public static int TEXT_BOX = 10;
-	public static int RELATIVE_MULTISELECT = 11;
+	public static final int LABEL = 1;
+	public static final int MULTIPLE_CHOICE = 2;
+	public static final int SHORT_ANSWER = 3;
+	public static final int DROP_DOWN = 4;
+	public static final int RELATIVE_DROP_DOWN = 5;
+	public static final int FILE_UPLOAD = 6;
+	public static final int RADIO_BUTTON = 7;
+	public static final int DATE = 8;
+	public static final int TIME = 9;
+	public static final int TEXT_BOX = 10;
+	public static final int RELATIVE_MULTISELECT = 11;
 
 //	########################################################################################################################################################
 	public void verifyByAddingQuestionsTypeInSection1() throws Throwable {
@@ -1550,6 +1555,212 @@ public class MastersFieldSets extends TestBase {
 		jsClick(driver, addSectionButton);
 
 		return this;
+	}
+
+//	#############################################################
+
+//	public MastersFieldSets addMultipleQuestions(int sectionIndex, List<Integer> questionTypes, int numberOfQuestions) throws Throwable {
+//
+//	    // Loop through each question up to the specified number of questions
+//	    for (int questionIndex = 0; questionIndex < numberOfQuestions; questionIndex++) {
+//
+//	        // For subsequent questions (after the first), click the "Add Question" button
+//	        if (questionIndex > 0) {
+//	            String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+//	                    + sectionIndex + "]";
+//	            WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
+//	            ClickUtilities.clickWithRetry(addQuestionButton, 2);
+//	            Thread.sleep(1000); // Adding a small delay to ensure the UI is updated
+//	        }
+//
+//	        // Retrieve the question type for the current question
+//	        int questionType = questionTypes.get(questionIndex);
+//
+//	        // Generate question and options dynamically for the current question
+//	        Map.Entry<String, List<String>> questionAndOptions = Questions.generateGenuineQuestionAndOptions(questionIndex);
+//	        String question = questionAndOptions.getKey();
+//	        List<String> options = questionAndOptions.getValue();
+//
+//	        // Construct XPath for the question text field and locate the element
+//	        String baseXPath = "//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]";
+//	        String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_"
+//	                + (questionIndex + 1) + "']";
+//	        WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
+//
+//	        // Send the generated question to the input field
+//	        questionFields.sendKeys(question);
+//
+//	        // Construct XPath for the question type and click on it
+//	        String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+//	                + sectionIndex + "_" + (questionIndex + 1) + "']/following-sibling::div[" + questionType + "]//h6";
+//	        ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+//
+//	        // Only add options if the question type is NOT a Text Box
+//	        if (questionType != TEXT_BOX) {
+//	            // Add options to the dropdown
+//	            for (int i = 0; i < options.size(); i++) {
+//	                if (i > 0) { // Click the "Add Option" button only for options beyond the first one
+//	                    String xpathAdd = "(" + baseXPath
+//	                            + "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
+//	                    js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
+//	                    jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+//	                }
+//
+//	                // Input the option text
+//	                String xpathDropDownOption = baseXPath
+//	                        + "/following::input[contains(@class, 'answer_option') and @name='ans_option_"
+//	                        + sectionIndex + "_" + (questionIndex + 1) + "_" + (i + 1) + "']";
+//	                driver.findElement(By.xpath(xpathDropDownOption)).sendKeys(options.get(i));
+//	            }
+//	        }
+//	    }
+//
+//	    return this;
+//	}
+
+//	###########################################################################################################
+
+	public MastersFieldSets addMultipleQuestions(int sectionIndex, List<Integer> questionTypes, int numberOfQuestions)
+			throws Throwable {
+
+		// Loop through each question up to the specified number of questions
+		for (int questionIndex = 0; questionIndex < numberOfQuestions; questionIndex++) {
+
+			// For subsequent questions (after the first), click the "Add Question" button
+			if (questionIndex > 0) {
+				String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+						+ sectionIndex + "]";
+				WebElement addQuestionButton = wait
+						.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
+				jsClick(driver, addQuestionButton);
+				Thread.sleep(500); // Adding a small delay to ensure the UI is updated
+			}
+
+			// Determine the question type for the current question based on cyclic pattern
+			int questionType = questionTypes.get(questionIndex % questionTypes.size());
+
+			// Generate question and inputs dynamically based on the question type
+			Map.Entry<String, String[]> questionAndInputs;
+			if (questionType == TEXT_BOX) {
+				questionAndInputs = Questions.generateGenuineTextBoxQuestionAndInputs(questionIndex);
+			} else if (questionType == SHORT_ANSWER) {
+				questionAndInputs = Questions.generateGenuineShortAnswerQuestionAndInputs(questionIndex);
+			} else if (questionType == DROP_DOWN) {
+				// Generate genuine drop-down question and options
+				Map.Entry<String, List<String>> questionAndOptions = Questions
+						.generateGenuineQuestionAndOptions(questionIndex);
+				questionAndInputs = new AbstractMap.SimpleEntry<>(questionAndOptions.getKey(),
+						questionAndOptions.getValue().toArray(new String[0]));
+			} else {
+				throw new IllegalArgumentException("Unexpected question type: " + questionType);
+			}
+
+			String question = questionAndInputs.getKey();
+			String[] inputs = questionAndInputs.getValue();
+
+			// Construct XPath for the question text field and locate the element
+			String baseXPath = "//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]";
+			String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_"
+					+ (questionIndex + 1) + "']";
+			WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
+
+			// Send the generated question to the input field
+			questionFields.sendKeys(question);
+
+			// Construct XPath for the question type and click on it
+			String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+					+ sectionIndex + "_" + (questionIndex + 1) + "']/following-sibling::div[" + questionType + "]//h6";
+			ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+
+			// Handle specific question types
+			switch (questionType) {
+			case TEXT_BOX:
+				handleTextBoxQuestion(sectionIndex, questionIndex, questionType, inputs[0], inputs[1], inputs[2],
+						new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
+				break;
+			case SHORT_ANSWER:
+				handleShortAnswerQuestion(sectionIndex, questionIndex, questionType, inputs[0], inputs[1], inputs[2],
+						new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
+				break;
+			case DROP_DOWN:
+				List<String> options = Arrays.asList(inputs); // Use genuine options
+				addOptionsToDropdown(sectionIndex, questionIndex, options);
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected question type: " + questionType);
+			}
+		}
+		return this;
+	}
+
+	// Method to handle Text Box questions
+	public void handleTextBoxQuestion(int sectionIndex, int questionIndex, int questionType, String minLength,
+			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
+			throws Throwable {
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		wait.until(ExpectedConditions
+				.elementToBeClickable(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1)));
+		click1(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1));
+
+		// Set minLength and maxLength for Text Box
+		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex + 1), minLength);
+		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		// Select Value Type from dropdown for Text Box
+		Select valueTypeDropDown = new Select(DynamicXpath.valueTypeDropDown(sectionIndex, questionIndex + 1));
+		DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
+		valueTypeDropDown.selectByVisibleText(typeOfValue);
+
+		// Toggle special characters option for Text Box
+		click1(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex + 1));
+		Thread.sleep(400);
+		click1(driver, DynamicXpath.allowSpCharToggle(sectionIndex, questionIndex + 1));
+	}
+
+	// Method to handle Short Answer questions
+	public void handleShortAnswerQuestion(int sectionIndex, int questionIndex, int questionType, String minLength,
+			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
+			throws Throwable {
+
+		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		wait.until(ExpectedConditions
+				.elementToBeClickable(DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex + 1, 1)));
+		click1(driver, DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex + 1, 1));
+
+		// Set minLength and maxLength for Short Answer
+		SendDataUtils.clearAndSendKeys(DynamicXpath.shortMinLength(sectionIndex, questionIndex + 1), minLength);
+		SendDataUtils.clearAndSendKeys(DynamicXpath.shortMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		// Select Value Type from dropdown for Short Answer
+		Select valueTypeDropDown = new Select(DynamicXpath.shortValueTypeDropDown(sectionIndex, questionIndex + 1));
+		DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
+		valueTypeDropDown.selectByVisibleText(typeOfValue);
+
+		// Toggle special characters option for Short Answer
+		click1(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex + 1));
+		Thread.sleep(400);
+		click1(driver, DynamicXpath.shortAllowSpCharToggle(sectionIndex, questionIndex + 1));
+	}
+
+	// Method to add options for Dropdown type questions
+	public void addOptionsToDropdown(int sectionIndex, int questionIndex, List<String> options) throws Throwable {
+		for (int i = 0; i < options.size(); i++) {
+			if (i > 0) { // Click the "Add Option" button only for options beyond the first one
+				String xpathAdd = "(" + "//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]"
+						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
+				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
+				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+			}
+
+			// Input the option text
+			String xpathDropDownOption = "//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]"
+					+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_" + sectionIndex + "_"
+					+ (questionIndex + 1) + "_" + (i + 1) + "']";
+			driver.findElement(By.xpath(xpathDropDownOption)).sendKeys(options.get(i));
+		}
 	}
 
 }
