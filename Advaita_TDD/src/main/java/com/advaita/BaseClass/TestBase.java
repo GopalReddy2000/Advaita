@@ -1,8 +1,16 @@
 package com.advaita.BaseClass;
 
-import com.advaita.Login.Home.LoginPage;
-import com.google.common.util.concurrent.Uninterruptibles;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -17,12 +25,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
-import java.awt.*;
-import java.time.Duration;
-import java.util.List;
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
+import com.advaita.Login.Home.LoginPage;
+import com.google.common.util.concurrent.Uninterruptibles;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestBase {
 
@@ -46,6 +52,7 @@ public class TestBase {
 		// Incognito Mode Execution
 //		options = new ChromeOptions();
 //		options.addArguments("--disable-notifications");
+//		options.addArguments("use-fake-ui-for-media-stream");
 //		options.addArguments("--incognito");
 //
 //		DesiredCapabilities cap = new DesiredCapabilities();
@@ -57,6 +64,7 @@ public class TestBase {
 //		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
 //		options.setExperimentalOption("prefs", prefs);
 //		driver = new ChromeDriver(options);
+
 
 		// Normal Execution
 		driver = new ChromeDriver();

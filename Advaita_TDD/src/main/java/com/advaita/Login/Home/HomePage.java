@@ -36,6 +36,9 @@ public class HomePage extends TestBase {
 
 	@FindBy(id = "pills-Disposition-tab")
 	public static WebElement dispositionTab;
+	
+	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
+	public static WebElement mastersTabElement;
 
 	public HomePage() {
 
@@ -52,6 +55,13 @@ public class HomePage extends TestBase {
 
 		click(driver, workflowDesign);
 		assertTrue(masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
+	}
+	public void clickOnMaster() {
+		
+		click(driver, workflowDesign);
+		assertTrue(masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
+		click(driver, mastersTabElement);
+		
 	}
 
 	public void clickOnEditMeasurableSet() {

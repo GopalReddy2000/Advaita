@@ -1,9 +1,12 @@
 package com.advaita.DataSetUp.PageObject;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,8 +21,13 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.Pagination;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
 public class Process extends TestBase {
+
+	// ProcessSetup
+	List<String> beforeProcessListText;
+	List<String> statulistTextListsList;
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
@@ -222,6 +230,51 @@ public class Process extends TestBase {
 //    @FindBy(xpath ="(//table[@class='process_table w-100']//tbody//tr)[4]")
 //	public static WebElement fetchSubProcssNamElement;
 
+	// ProcessSetup
+
+	@FindBy(xpath = "//h1[text()=' Process Management '][1]")
+	public static WebElement verifyprocessManagement;
+
+	@FindBy(xpath = "//table//tbody//tr//div//input/..//span") // table//tbody//tr//td[1]
+	List<WebElement> processLists;
+
+	@FindBy(xpath = "//table//tbody//tr//td[@class='process_status']//span") // table//tbody//tr//td[4]
+	List<WebElement> statusLists;
+
+	@FindBy(xpath = "//a[text()='Process Setup']")
+	public static WebElement processSetupOption;
+
+	@FindBy(xpath = "//h5[text()='Process Setup']")
+	public static WebElement processSetupPopup;
+
+	@FindBy(xpath = "//button[@id='saveButton']")
+	public static WebElement processSetup_SaveButton;
+
+	@FindBy(xpath = "//input[@id='is_single_only']/..//span[@class='slider round']")
+	public static WebElement singleProcessToggleButton;
+
+	@FindBy(xpath = "//select[@id='search_process']") // select[@id='search_process']/option[not(text()='Search
+	public static WebElement searchProcess;
+
+	@FindBy(xpath = "//select[@id='search_sub_process']")
+	public static WebElement searchSubProcess;
+
+	@FindBy(xpath = "//select[@id='search_s_sub_process']")
+	public static WebElement searchSubSubProcess;
+
+	@FindBy(xpath = "//button[@id='saveButton']")
+	public static WebElement saveButton_processSetup;
+
+	@FindBy(xpath = "//div/img[@alt='success_tick']/..//span[text()='Process Setup has been updated']")
+	public static WebElement conformationMesgofProcessSetupUpdated;
+	
+	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
+	public static WebElement continuButtonProcessSetup;
+	
+	@FindBy(xpath = "//h5/..//span[text()='×']")
+	public static WebElement cancelButtonProcessSetup;
+	
+	
 	FakeData fake = new FakeData();
 
 	public Process() {
@@ -841,4 +894,175 @@ public class Process extends TestBase {
 
 	}
 
+	// ProcessSetup
+	// Verify the user is able to do "active" single process only
+	
+	public void allActiveProcesss() 
+	{
+		assertTrue(processSetupOption.isDisplayed(), "processSetupOption is not dispalyed");
+		processSetupOption.click();
+		
+		if (!singleProcessToggleButton.isEnabled()) 
+		{
+			System.out.println("singleProcessToggleButton is DISABLE");
+		}
+		
+//		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not dispplayed");
+//		saveButton_processSetup.click();
+//		
+//		wait.until(ExpectedConditions.visibilityOf(conformationMesgofProcessSetupUpdated));
+//		assertTrue(conformationMesgofProcessSetupUpdated.isDisplayed(), "conformationMesgofProcessSetupUpdatedis not displayed");
+//		
+//		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
+//		continuButtonProcessSetup.click();
+//		
+		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcessSetup));
+		assertTrue(cancelButtonProcessSetup.isDisplayed(), "cancelButtonProcessSetupis not displayed");
+		cancelButtonProcessSetup.click();
+		allActiveValidateStaus() ;
+		
+	}
+
+	public void fetchProcessAndStatus() {
+		assertTrue(verifyprocessManagement.isDisplayed(), "verifyprocessManagement");
+
+		// Process Text
+		beforeProcessListText = new ArrayList<>();
+		for (WebElement processOptions : processLists) {
+			beforeProcessListText.add(processOptions.getText());
+			System.out.println("processListText :" + processOptions.getText());
+		}
+
+		assertTrue(processSetupOption.isDisplayed(), "processSetupOption");
+		processSetupOption.click();
+
+		// Status List
+
+		statulistTextListsList = new ArrayList<String>();
+		for (WebElement StatusOptions : statusLists) {
+			statulistTextListsList.add(StatusOptions.getText());
+			System.out.println("StatusOptionsText :" + StatusOptions.getText());
+		}
+
+	}
+
+	public void SingleProcessOnly() throws Throwable {
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
+
+		if (singleProcessToggleButton.isEnabled()) {
+			System.out.println(" singleProcessToggleButton is ENABLED");
+		} else if (!singleProcessToggleButton.isEnabled()) {
+			System.out.println("singleProcessToggleButton is DISABLED");
+
+		}
+
+		singleProcessToggleButton.click();
+
+		// SelectProcess
+		List<String> ProcessListsTexts = new ArrayList<String>();
+		Select processDropdownLists = new Select(searchProcess);
+
+		// Get all options from the dropdown
+		List<WebElement> options = processDropdownLists.getOptions();
+
+		// Start the loop from the second option (index 1) to exclude the first option
+
+		for (int i = 1; i < options.size(); i++) {
+			WebElement processDropdowOptions = options.get(i);
+			System.out.println("processDropdowOptionsTexts : " + processDropdowOptions.getText());
+			ProcessListsTexts.add(processDropdowOptions.getText());
+		}
+
+		String beforeSelectedProcessOption = processDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("beforeSelectedProcessOption :" + beforeSelectedProcessOption);
+
+		processDropdownLists.selectByIndex(1);
+		// processDropdownLists.selectByVisibleText(" ");
+		// processDropdownLists.selectByValue(" ");
+
+		String afterSelectedProcessOption = processDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("afterSelectedProcessOption :" + afterSelectedProcessOption);
+
+		assertNotEquals(beforeSelectedProcessOption, afterSelectedProcessOption);
+
+		assertEquals(ProcessListsTexts, beforeProcessListText);
+
+		// SearchSubProcess
+		List<String> subProcessListsTexts = new ArrayList<String>();
+		Select subProcessDropdownLists = new Select(searchSubProcess);
+		for (WebElement subProcessDropdowOptions : subProcessDropdownLists.getOptions()) {
+			System.out.println("SubprocessDropdowOptionsTexts : " + subProcessDropdowOptions.getText());
+			subProcessListsTexts.add(subProcessDropdowOptions.getText());
+		}
+
+		String beforeSelectedSubProcessOption = subProcessDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("beforeSelectedSubProcessOption :" + beforeSelectedSubProcessOption);
+
+		Thread.sleep(1000);
+		subProcessDropdownLists.selectByIndex(1);
+		// subProcessDropdownLists.selectByVisibleText(" ");
+		// subProcessDropdownLists.selectByValue("");
+
+		String afterSelectedSubProcessOption = subProcessDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("afterSelectedSubProcessOption :" + afterSelectedSubProcessOption);
+
+		assertNotEquals(beforeSelectedSubProcessOption, afterSelectedSubProcessOption);
+
+		// SearchSubSubProcess
+		List<String> subSubProcessListsTexts = new ArrayList<String>();
+		Select subSubProcessDropdownLists = new Select(searchSubSubProcess);
+		for (WebElement subSubProcessDropdowOptions : subSubProcessDropdownLists.getOptions()) {
+			System.out.println("SubSubprocessDropdowOptionsTexts : " + subSubProcessDropdowOptions.getText());
+			subSubProcessListsTexts.add(subSubProcessDropdowOptions.getText());
+
+		}
+
+		String beforeSelectedSubSubProcessOption = subSubProcessDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("beforeSelectedSubSubProcessOption :" + beforeSelectedSubSubProcessOption);
+
+		Thread.sleep(1000);
+		subSubProcessDropdownLists.selectByIndex(1);
+//		subSubProcessDropdownLists.selectByVisibleText("");
+//		subSubProcessDropdownLists.selectByValue("");
+
+		String afterSelectedSubSubProcessOption = subSubProcessDropdownLists.getFirstSelectedOption().getText();
+		System.out.println("afterSelectedSubSubProcessOption :" + afterSelectedSubSubProcessOption);
+
+		assertNotEquals(beforeSelectedSubSubProcessOption, afterSelectedSubSubProcessOption);
+
+		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not dispplayed");
+		saveButton_processSetup.click();
+		
+		wait.until(ExpectedConditions.visibilityOf(conformationMesgofProcessSetupUpdated));
+		assertTrue(conformationMesgofProcessSetupUpdated.isDisplayed(), "conformationMesgofProcessSetupUpdatedis not displayed");
+		
+		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
+		continuButtonProcessSetup.click();
+		
+		singleActiveValidateStaus();
+
+	}
+
+	public void singleActiveValidateStaus() 
+	{
+		// Count the number of "Active" statuses
+		long activeCount = statusLists.stream().filter(element -> element.getText().equals("Active")).count();
+		System.out.println("activeCount:"+activeCount);
+		
+		// Assert that only one "Active" status is present
+		Assert.assertEquals(activeCount, 1, "Only one 'Active' status should be displayed.");
+	}
+	
+	
+	public void allActiveValidateStaus() 
+	{
+		// Count the number of "Active" statuses
+		long activeCount = statusLists.stream().filter(element -> element.getText().equals("Inactive")).count();
+		System.out.println("activeCount:"+activeCount);
+		
+		// Assert that only one "Active" status is present
+		Assert.assertEquals(activeCount , 0, "Only one 'Active' status should be displayed.");
+	}
 }

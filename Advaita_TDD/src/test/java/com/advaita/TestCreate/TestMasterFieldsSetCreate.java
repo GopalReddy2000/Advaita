@@ -23,6 +23,7 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import com.github.dockerjava.core.command.CreateContainerCmdImpl.NetworkingConfig;
 import com.github.javafaker.Faker;
 
 public class TestMasterFieldsSetCreate extends TestBase {
@@ -30,9 +31,6 @@ public class TestMasterFieldsSetCreate extends TestBase {
 	Faker faker = new Faker();
 
 	public String metaDataName = "Test " + faker.name().firstName();
-
-//	public String num = "7";
-//	public String metaDataName = "Test Single MetaData" + num;
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -248,12 +246,12 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
-		
-		int sectionCount = 1;
-		int numberOfQuestion = 1;
+
+		int sectionCount = 2;
+		int numberOfQuestion = 4;
 		boolean fieldSetQuestionRandom = false;
 		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-				numberOfQuestion, MastersFieldSets.FILE_UPLOAD);
+				numberOfQuestion, MastersFieldSets.TEXT_BOX, MastersFieldSets.RADIO_BUTTON);
 		// Now, add multiple questions to section 1 based on the selected types
 		boolean defineQuestionRandom = true;
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
