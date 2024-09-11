@@ -35,7 +35,7 @@ public class TestAutomation {
 	}
 
 	@Test
-	public void testLoginAndLogoutOnDifferentDevices() {
+	public void testLoginAndLogoutOnDifferentDevices() throws Throwable {
 		String[][] devices = { { "iPhone X", "375", "812" }, { "iPad", "768", "1024" }, { "Nexus 10", "800", "1280" },
 				{ "Desktop", "1920", "1080" } };
 
@@ -66,6 +66,8 @@ public class TestAutomation {
 			usernameField.sendKeys(username);
 			passwordField.sendKeys(password);
 			loginButton.click();
+			
+			Thread.sleep(2000);
 
 			// Wait for login to complete and verify successful login
 			WebElement profileButton = driver.findElement(By.xpath("//a[normalize-space()='My Profile']"));

@@ -44,22 +44,22 @@ public class TestBase {
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
 		// Incognito Mode Execution
-		options = new ChromeOptions();
-		options.addArguments("--disable-notifications");
-		options.addArguments("--incognito");
-
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(ChromeOptions.CAPABILITY, options);
-		cap.setCapability("applicationCacheEnabled", false);
-		options.merge(cap);
-
-		Map<String, Object> prefs = new HashMap<>();
-		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-		options.setExperimentalOption("prefs", prefs);
-		driver = new ChromeDriver(options);
+//		options = new ChromeOptions();
+//		options.addArguments("--disable-notifications");
+//		options.addArguments("--incognito");
+//
+//		DesiredCapabilities cap = new DesiredCapabilities();
+//		cap.setCapability(ChromeOptions.CAPABILITY, options);
+//		cap.setCapability("applicationCacheEnabled", false);
+//		options.merge(cap);
+//
+//		Map<String, Object> prefs = new HashMap<>();
+//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
+//		options.setExperimentalOption("prefs", prefs);
+//		driver = new ChromeDriver(options);
 
 		// Normal Execution
-		// driver = new ChromeDriver();
+		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));

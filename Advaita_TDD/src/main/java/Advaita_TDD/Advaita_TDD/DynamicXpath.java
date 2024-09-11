@@ -172,12 +172,38 @@ public class DynamicXpath extends TestBase {
 		return driver.findElement(By.xpath(xpath));
 	}
 
+	public static WebElement fileTypeSetting2(int sectionNumber, int questionNumber) {
+		String xpath = String.format("//img[@alt='settingicon'][@name='ans_option_%d_%d_1']", sectionNumber,
+				questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 	public static WebElement fileUploadFormatDropDown(int sectionNumber) {
 		String xpath = String.format(
 				"(//div[@class='upload-cloud']/ancestor::div//img[@class='trashimg answer_option fileupload'])[%d]",
 				sectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public static WebElement fileUploadFormatDropDown2(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//input)[1]",
+				sectionNumber, questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public static WebElement afterClickFileUploadFormatDropDown2(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//li)[1]",
+				sectionNumber, questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+	public static WebElement multipleFileUploadFormatToggle(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//li)[1]",
+				sectionNumber, questionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
 

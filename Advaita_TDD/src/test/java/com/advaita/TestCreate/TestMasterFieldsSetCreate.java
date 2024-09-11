@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.aventstack.extentreports.ExtentReports;
@@ -237,25 +238,28 @@ public class TestMasterFieldsSetCreate extends TestBase {
 	@Test(priority = 17)
 	public void verifyAddMultipleFieldSetQuestions() throws Throwable {
 
+		// Create the test in ExtentReports
 		test = reports.createTest("verifyAddMultipleFieldSetQuestions");
-
+		// Perform necessary UI steps for creating the field set
 		masterFieldSet.verifyTabsForFieldSetCreate();
 		masterFieldSet.verifyFieldSetCreateButton();
-
+		// Set the question set name
 		String questionSetNameString = "DropDownTextBox Ques";
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
-
-		// Define question types (e.g., DropDown = 1, TextBox = 2)
-		List<Integer> questionTypes = Arrays.asList(MastersFieldSets.DROP_DOWN, MastersFieldSets.TEXT_BOX,
-				MastersFieldSets.SHORT_ANSWER);
-
-		// Add 2 questions to section 1
-		masterFieldSet.addMultipleQuestions(1, questionTypes, 7);
-
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
+		// 3)
+		
+		int sectionCount = 1;
+		int numberOfQuestion = 1;
+		boolean fieldSetQuestionRandom = false;
+		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
+				numberOfQuestion, MastersFieldSets.FILE_UPLOAD);
+		// Now, add multiple questions to section 1 based on the selected types
+		boolean defineQuestionRandom = true;
+		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
+				defineQuestionRandom);
 	}
 
-	
-	
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
 		if (result.getStatus() == ITestResult.FAILURE) {

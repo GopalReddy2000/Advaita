@@ -1,6 +1,7 @@
 package com.advaita.Utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +113,29 @@ public class QuestionSelector {
 //
 //	    return selectedQuestions;
 //	}
+	
+	
+	
+	public static List<Integer> selectQuestionTypes(boolean randomizeOrder, int totalQuestions, Integer... questionTypes) {
+	    // Convert the variable arguments into a List
+	    List<Integer> selectedTypes = new ArrayList<>(Arrays.asList(questionTypes));
+
+	    // Create a list for the final sequence of question types
+	    List<Integer> finalQuestionTypes = new ArrayList<>();
+
+	    // Ensure we generate the correct number of questions
+	    for (int i = 0; i < totalQuestions; i++) {
+	        // Cycle through the provided question types using modulo
+	        int questionType = selectedTypes.get(i % selectedTypes.size());
+	        finalQuestionTypes.add(questionType);
+	    }
+
+	    // Shuffle the list if randomizeOrder is true
+	    if (randomizeOrder) {
+	        Collections.shuffle(finalQuestionTypes);
+	    }
+
+	    return finalQuestionTypes;
+	}
 
 }
