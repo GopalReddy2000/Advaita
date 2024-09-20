@@ -115,7 +115,6 @@ public class QuestionSelector {
 //	}
 	
 	
-	
 	public static List<Integer> selectQuestionTypes(boolean randomizeOrder, int totalQuestions, Integer... questionTypes) {
 	    // Convert the variable arguments into a List
 	    List<Integer> selectedTypes = new ArrayList<>(Arrays.asList(questionTypes));

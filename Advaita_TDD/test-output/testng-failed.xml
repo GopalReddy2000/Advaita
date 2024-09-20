@@ -3,34 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-<<<<<<< HEAD
-      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
-=======
-<<<<<<< HEAD
-      <class name="com.advaita.TestCreate.TestUserStatusCreate">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
           <include name="setUp"/>
-          <include name="createHideStatus"/>
-          <include name="UserStatusEdit"/>
-        </methods>
-      </class> <!-- com.advaita.TestCreate.TestUserStatusCreate -->
-=======
-<<<<<<< HEAD
-      <class name="com.advaita.TestClass.EscalationMatrixTest">
->>>>>>> e8ca16ad7e3448cb9feda7d73444df759de22d39
-        <methods>
-          <include name="verifyAddMultipleFieldSetQuestions"/>
           <include name="tearDown"/>
           <include name="getResult"/>
-          <include name="setUp"/>
+          <include name="verifyAddSection"/>
         </methods>
-<<<<<<< HEAD
-      </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
-=======
-      </class> <!-- com.advaita.TestCreate.TestMasterMenusCreate -->
->>>>>>> a4f565925a2e10e89de894cc7ce41bbe513466f4
->>>>>>> a6f71f433967b6d18a175cb9365b05a9a817f1bf
->>>>>>> e8ca16ad7e3448cb9feda7d73444df759de22d39
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

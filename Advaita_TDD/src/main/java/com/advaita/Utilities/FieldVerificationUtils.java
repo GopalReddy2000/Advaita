@@ -19,14 +19,18 @@ public class FieldVerificationUtils extends TestBase {
 	public static void verifyTextField(WebElement field, String labelText, String fieldValue, boolean isRequired,
 			boolean isEnabled, int timeoutInSeconds) {
 
-		WebElement label = driver.findElement(By.xpath("//label[normalize-space()='" + labelText + "*" + "']"));
-
 		// Check if the popup or field container is displayed (if applicable)
 		assertTrue(field.isDisplayed(), labelText + " is not displayed.");
 
-		// Verify label
-		String text = label.getText();
 		if (isRequired) {
+
+			WebElement label = driver.findElement(By.xpath("//label[normalize-space()='" + labelText + "*" + "']"));
+
+			// Check if the popup or field container is displayed (if applicable)
+			assertTrue(field.isDisplayed(), labelText + " is not displayed.");
+
+			// Verify label
+			String text = label.getText();
 			char lastChar = text.charAt(text.length() - 1);
 			assertEquals(lastChar, '*', labelText + " label does not end with '*'.");
 		}

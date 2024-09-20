@@ -3,22 +3,27 @@ package com.advaita.pageObjects;
 import Advaita_TDD.Advaita_TDD.FakeData;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 public class UserSetupPage extends TestBase {
@@ -497,9 +502,9 @@ public class UserSetupPage extends TestBase {
 		}
 
 
-		userCreated.add(UserName);
-
-		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userCreated), permissionsfilePath, userManagementSheetName);
+//		userCreated.add(UserName);
+//
+//		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userCreated), permissionsfilePath, userManagementSheetName);
 
 
 		return this;
@@ -533,7 +538,7 @@ public class UserSetupPage extends TestBase {
 	public UserSetupPage clickOnGroupCreateButton()
 	{
 		jsClick(driver,userAccountCreateButton);
-		unWait(2);
+		unWait(1);
 		roleContinueButton.click();
 		return this;
 	}
@@ -553,8 +558,10 @@ public class UserSetupPage extends TestBase {
 	public UserSetupPage navToRoleAndPerCreate()
 	{
 		userSetup.click();
-		roleAndPermissions.click();
-		roleAndPermissionsCreate.click();
+		userManagement.click();
+		userManagementCreateButton.click();
+//		roleAndPermissions.click();
+//		roleAndPermissionsCreate.click();
 		return this;
 	}
 
@@ -829,15 +836,24 @@ public class UserSetupPage extends TestBase {
 		return this;
 	}
 
-	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName,String SubSubProcess,String Stages)
+	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName,String SubSubProcess,String Stages) throws Throwable
 	{
 		// Adjust timeout as needed
-		try {
-			if (!deleteButton.isDisplayed()) {
-				System.out.println("Rows are already added.");
-			}
-		} catch (Exception e) {
+//		try {
+//			if (!deleteButton.isDisplayed()) {
+//				System.out.println("Rows are already added.");
+//			}
+//		} catch (Exception e) {
+//
+//			AddRow.click();// Handle other exceptions if necessary
+//			e.printStackTrace();
+//		}
+		
+		driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
+		try {
+			assertTrue(wait.until(ExpectedConditions.visibilityOf(deleteButton)) != null);
+		} catch (TimeoutException e) {
 			AddRow.click();// Handle other exceptions if necessary
 			e.printStackTrace();
 		}
@@ -853,8 +869,10 @@ public class UserSetupPage extends TestBase {
 //			}
 //				uMProcessTab.click();
 
-		dropdownValidation(UMProcessNameDropdown);
-		selectByVisibleText(UMProcessNameDropdown, ProcessName);
+		wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown));
+//		dropdownValidation(UMProcessNameDropdown);
+		DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select", ProcessName);
+//		selectByVisibleText(UMProcessNameDropdown, ProcessName);
 
 		dropdownValidation(UMSubProcessNameDropdown);
 		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);

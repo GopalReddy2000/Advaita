@@ -242,16 +242,16 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyTabsForFieldSetCreate();
 		masterFieldSet.verifyFieldSetCreateButton();
 		// Set the question set name
-		String questionSetNameString = "DropDownTextBox Ques";
+		String questionSetNameString = "Test Question";
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
 
 		int sectionCount = 2;
-		int numberOfQuestion = 4;
-		boolean fieldSetQuestionRandom = false;
+		int numberOfQuestion = 2;
+		boolean fieldSetQuestionRandom = true;
 		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-				numberOfQuestion, MastersFieldSets.TEXT_BOX, MastersFieldSets.RADIO_BUTTON);
+				numberOfQuestion, MastersFieldSets.DROP_DOWN,MastersFieldSets.TEXT_BOX);
 		// Now, add multiple questions to section 1 based on the selected types
 		boolean defineQuestionRandom = true;
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,

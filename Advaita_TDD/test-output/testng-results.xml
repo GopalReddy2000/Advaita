@@ -1,36 +1,186 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="11" passed="11" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-09-11T12:22:06 IST" name="Default suite" finished-at="2024-09-11T12:22:52 IST" duration-ms="46430">
+  <suite started-at="2024-09-19T18:21:54 IST" name="Default suite" finished-at="2024-09-19T18:22:36 IST" duration-ms="42189">
     <groups>
     </groups>
-    <test started-at="2024-09-11T12:22:06 IST" name="Default test" finished-at="2024-09-11T12:22:52 IST" duration-ms="46430">
-      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:06 IST" name="setUp" finished-at="2024-09-11T12:22:15 IST" duration-ms="9421" status="PASS">
+    <test started-at="2024-09-19T18:21:54 IST" name="Default test" finished-at="2024-09-19T18:22:36 IST" duration-ms="42189">
+      <class name="com.advaita.TestCreate.TestStagesCreate">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:21:54 IST" name="setUp" finished-at="2024-09-19T18:22:02 IST" duration-ms="8502" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyAddMultipleFieldSetQuestions()[pri:17, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:15 IST" name="verifyAddMultipleFieldSetQuestions" finished-at="2024-09-11T12:22:51 IST" duration-ms="36029" status="PASS">
+        <test-method signature="VerifyStagesTabIsDisplayed()[pri:5, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:03 IST" name="VerifyStagesTabIsDisplayed" finished-at="2024-09-19T18:22:04 IST" duration-ms="1157" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyAddMultipleFieldSetQuestions -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:51 IST" name="getResult" finished-at="2024-09-11T12:22:52 IST" duration-ms="866" status="PASS">
+        </test-method> <!-- VerifyStagesTabIsDisplayed -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:04 IST" name="getResult" finished-at="2024-09-19T18:22:05 IST" duration-ms="871" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyAddMultipleFieldSetQuestions status=SUCCESS method=TestMasterFieldsSetCreate.verifyAddMultipleFieldSetQuestions()[pri:17, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581] output={null}]]]>
+                <![CDATA[[TestResult name=VerifyStagesTabIsDisplayed status=SUCCESS method=TestStagesCreate.VerifyStagesTabIsDisplayed()[pri:5, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:52 IST" name="tearDown" finished-at="2024-09-11T12:22:52 IST" duration-ms="21" status="PASS">
+        <test-method signature="verifyCreateStagesButton()[pri:6, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:05 IST" name="verifyCreateStagesButton" finished-at="2024-09-19T18:22:06 IST" duration-ms="977" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateStagesButton -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:06 IST" name="getResult" finished-at="2024-09-19T18:22:06 IST" duration-ms="39" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyCreateStagesButton status=SUCCESS method=TestStagesCreate.verifyCreateStagesButton()[pri:6, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageNameTextBox()[pri:7, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:06 IST" name="verifyStageNameTextBox" finished-at="2024-09-19T18:22:06 IST" duration-ms="257" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageNameTextBox -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:06 IST" name="getResult" finished-at="2024-09-19T18:22:06 IST" duration-ms="20" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageNameTextBox status=SUCCESS method=TestStagesCreate.verifyStageNameTextBox()[pri:7, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectProcessDropDown()[pri:8, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:06 IST" name="verifyStageSelectProcessDropDown" finished-at="2024-09-19T18:22:07 IST" duration-ms="1487" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:07 IST" name="getResult" finished-at="2024-09-19T18:22:07 IST" duration-ms="42" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectProcessDropDown()[pri:8, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectSubProcessDropDown()[pri:10, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:07 IST" name="verifyStageSelectSubProcessDropDown" finished-at="2024-09-19T18:22:09 IST" duration-ms="1426" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectSubProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:09 IST" name="getResult" finished-at="2024-09-19T18:22:09 IST" duration-ms="24" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectSubProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectSubProcessDropDown()[pri:10, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageSelectSubSubProcessDropDown()[pri:11, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:09 IST" name="verifyStageSelectSubSubProcessDropDown" finished-at="2024-09-19T18:22:10 IST" duration-ms="1346" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageSelectSubSubProcessDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:10 IST" name="getResult" finished-at="2024-09-19T18:22:10 IST" duration-ms="81" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageSelectSubSubProcessDropDown status=SUCCESS method=TestStagesCreate.verifyStageSelectSubSubProcessDropDown()[pri:11, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageCalculationTypeDropDown()[pri:12, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:10 IST" name="verifyStageCalculationTypeDropDown" finished-at="2024-09-19T18:22:11 IST" duration-ms="258" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageCalculationTypeDropDown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:11 IST" name="getResult" finished-at="2024-09-19T18:22:11 IST" duration-ms="20" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageCalculationTypeDropDown status=SUCCESS method=TestStagesCreate.verifyStageCalculationTypeDropDown()[pri:12, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyAddSectionA()[pri:13, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:11 IST" name="verifyAddSectionA" finished-at="2024-09-19T18:22:16 IST" duration-ms="5402" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAddSectionA -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:16 IST" name="getResult" finished-at="2024-09-19T18:22:16 IST" duration-ms="107" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAddSectionA status=SUCCESS method=TestStagesCreate.verifyAddSectionA()[pri:13, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifySectionB_addBlock()[pri:14, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:16 IST" name="verifySectionB_addBlock" finished-at="2024-09-19T18:22:18 IST" duration-ms="1847" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySectionB_addBlock -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:18 IST" name="getResult" finished-at="2024-09-19T18:22:18 IST" duration-ms="21" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifySectionB_addBlock status=SUCCESS method=TestStagesCreate.verifySectionB_addBlock()[pri:14, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifySelectMetaDataInAddBlockSectionB()[pri:15, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:18 IST" name="verifySelectMetaDataInAddBlockSectionB" finished-at="2024-09-19T18:22:29 IST" duration-ms="11239" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySelectMetaDataInAddBlockSectionB -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:29 IST" name="getResult" finished-at="2024-09-19T18:22:29 IST" duration-ms="72" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifySelectMetaDataInAddBlockSectionB status=SUCCESS method=TestStagesCreate.verifySelectMetaDataInAddBlockSectionB()[pri:15, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyAddSection()[pri:16, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:29 IST" name="verifyAddSection" finished-at="2024-09-19T18:22:36 IST" duration-ms="6675" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAddSection -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:36 IST" name="getResult" finished-at="2024-09-19T18:22:36 IST" duration-ms="110" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAddSection status=SUCCESS method=TestStagesCreate.verifyAddSection()[pri:16, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestStagesCreate@21ce3b22]" started-at="2024-09-19T18:22:36 IST" name="tearDown" finished-at="2024-09-19T18:22:36 IST" duration-ms="19" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

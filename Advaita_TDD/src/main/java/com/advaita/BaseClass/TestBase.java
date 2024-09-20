@@ -21,6 +21,7 @@ import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -165,6 +166,8 @@ public class TestBase {
 	}
 
 	protected void selectByVisibleText(WebElement dropdownElement, String optionText) {
+		
+		wait.until(ExpectedConditions.visibilityOf(dropdownElement));
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
 
