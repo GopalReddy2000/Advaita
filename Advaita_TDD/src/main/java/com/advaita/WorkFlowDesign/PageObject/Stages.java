@@ -16,6 +16,9 @@ import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 
 public class Stages extends TestBase {
 
@@ -27,106 +30,127 @@ public class Stages extends TestBase {
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
 	public static String fetchSubSubProcessRecord;
-	public static String fetchMetaDataRecord;
+	public static String fetchMetaTextDataRecord;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td//div[contains(@class, 'content')]//span[contains(@class, 'first_tree')]")
-	public static WebElement dropDown1;
+	public WebElement dropDown1;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[2]/td//div[contains(@class, 'content')]//span[contains(@class, 'second_tree')]")
-	public static WebElement dropDown2;
+	public WebElement dropDown2;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td//div[contains(@class, 'content')]//span[contains(@class, 'first_tree')]")
-	public static WebElement fetchProcess;
+	public WebElement fetchProcess;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[2]/td//div[contains(@class, 'content')]//span[contains(@class, 'second_tree')]")
-	public static WebElement fetchsubProcess;
+	public WebElement fetchsubProcess;
 
 	@FindBy(xpath = "(//table[@class='process_table w-100']/tbody/tr[2]/td[1]//span)[3]")
-	public static WebElement fetchsubSubProcess;
+	public WebElement fetchsubSubProcess;
 
 	@FindBy(id = "pills-workflowstages-tab")
-	public static WebElement workFlowStagesTab;
+	public WebElement workFlowStagesTab;
 
 	@FindBy(xpath = "//img[@alt='justify_icon']/..//h1[text()=' Stages ']")
-	public static WebElement stageListingPage;
+	public WebElement stageListingPage;
 
 	@FindBy(linkText = "+ Create")
-	public static WebElement stagesCreateButton;
+	public WebElement stagesCreateButton;
 
 	@FindBy(xpath = "//div[@class='stage1-workflow page_body']/..//form[@id='submit_stages']")
-	public static WebElement stagesCreateFormElement;
+	public WebElement stagesCreateFormElement;
 
 	@FindBy(xpath = "//h3[text()='Stage Name*']/..//input[@id='stage_name']")
-	public static WebElement stageNameTextBoxElement;
+	public WebElement stageNameTextBoxElement;
 
 	@FindBy(xpath = "//h3[text()='Process*']/..//select[@id='process']")
-	public static WebElement selectProcessDropDownElement;
+	public WebElement selectProcessDropDownElement;
 
 	@FindBy(xpath = "//h3[text()='Sub Process*']/..//select[@id='sub_process']")
-	public static WebElement selectSubProcessDropDownElement;
+	public WebElement selectSubProcessDropDownElement;
 
 	@FindBy(xpath = "//h3[text()='Sub Sub Process*']/..//select[@id='s_sub_process']")
-	public static WebElement selectSubSubProcessDropDownElement;
+	public WebElement selectSubSubProcessDropDownElement;
 
 	@FindBy(xpath = "//h3[text()='Calculation Type']/..//select[@id='calculation_type']")
-	public static WebElement calculationTypeDropDownElement;
+	public WebElement calculationTypeDropDownElement;
 
 	@FindBy(xpath = "(//h2[@id='headingOne']/..//h6[text()='SECTION A'])[1]")
-	public static WebElement sectionA_ExpantionPanel;
+	public WebElement sectionA_ExpantionPanel;
 
 	@FindBy(xpath = "//img[@alt='addmeta-file']/..//h6[text()='Please Add Some Meta Data']")
-	public static WebElement addMetaDataMassageInSectionAElement;
+	public WebElement addMetaDataMassageInSectionAElement;
 
 	@FindBy(xpath = "//a[text()='Add']/..//a[@data-section='Section A']")
-	public static WebElement addButtonInSectionAElement;
+	public WebElement addButtonInSectionAElement;
 
 	@FindBy(id = "pills-metadata-tab")
-	public static WebElement metaDataTab;
+	public WebElement metaDataTab;
 
 	@FindBy(xpath = "//div[@class='dataset_table']//table/tbody/tr[1]/td[1]")
-	public static WebElement fetchMetaData;
+	public WebElement fetchMetaData;
 
 	@FindBy(xpath = "//div[@class='modal-content p-0 ']/div/h1[text()='Select Section A']")
-	public static WebElement addSectionAPopUp;
+	public WebElement addSectionAPopUp;
 
 	@FindBy(name = "metadata_names")
-	public static WebElement selectMetaDatDropDownElement;
+	public WebElement selectMetaDatDropDownElement;
 
 	@FindBy(xpath = "//input[@name='sectionA_fieldname']")
-	public static WebElement metaDataFieldCheckBoxesElement;
+	public WebElement metaDataFieldCheckBoxesElement;
 
 	@FindBy(xpath = "(//div[@class='modal-content p-0 ']/..//a[normalize-space()='Add'])[1]")
-	public static WebElement addButtonInaddSectionAPopUp;
+	public WebElement addButtonInaddSectionAPopUp;
 
 	@FindBy(xpath = "//a[text()='edit']/..//a[@data-section='Section A']")
-	public static WebElement editButtonInSectionAElement;
+	public WebElement editButtonInSectionAElement;
 
 	@FindBy(xpath = "(//div[@class='modal-content p-0 ']/..//a[normalize-space()='Cancel'])[1]")
-	public static WebElement cancelButtonInaddSectionAPopUp;
+	public WebElement cancelButtonInaddSectionAPopUp;
 
 	@FindBy(xpath = "(//h2[@id='headingTwo']/..//h6[text()='SECTION B'])[1]")
-	public static WebElement sectionB_ExpantionPanel;
+	public WebElement sectionB_ExpantionPanel;
 
 	@FindBy(xpath = "//label[normalize-space()='Add Blocks']/..//div[@class='input-group']")
-	public static WebElement addBlocksElement;
+	public WebElement addBlocksElement;
 
 	@FindBy(xpath = "//label[normalize-space()='Add Blocks']/..//button[@data-type='minus']")
-	public static WebElement removeBlocksButtonElement;
+	public WebElement removeBlocksButtonElement;
 
 	@FindBy(xpath = "//label[normalize-space()='Add Blocks']/..//button[@data-type='plus']")
-	public static WebElement addBlocksButtonElement;
+	public WebElement addBlocksButtonElement;
 
 	@FindBy(xpath = "//select[@id='sectionB_metadata_id']")
-	public static WebElement blockNameMetaDataDropDown;
+	public WebElement blockNameMetaDataDropDown;
 
 	@FindBy(xpath = "//label[contains(normalize-space(),'BLOCK NAME')]")
-	public static List<WebElement> addedBlocksElement;
+	public List<WebElement> addedBlocksElement;
+
+	@FindBy(xpath = "//h1[normalize-space()='Select Section B']/../..//a[normalize-space()='Add']")
+	public WebElement sectionBAddButton;
+
+	@FindBy(xpath = "(//a[contains(@class,'section_c_add_popup')][normalize-space()='Add'])[1]")
+	public WebElement addSomeSectionButton;
+
+	@FindBy(xpath = "//h1[normalize-space()='Add Section']")
+	public WebElement addSomeSectionPopUp;
+
+	@FindBy(xpath = "//input[@name='section_name']")
+	public WebElement sectionNameField;
+
+	@FindBy(xpath = "//input[@name='section_weightage']")
+	public WebElement sectionWeightageField;
+
+	@FindBy(xpath = "//h1[normalize-space()='Add Section']/../..//a[normalize-space()='Add']")
+	public WebElement addSomeSectionPopUpAddButton;
+
+	@FindBy(xpath = "//ul[@id='pills-tab']/..//button")
+	public List<WebElement> addedSections;
 
 	public Stages() {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void navigateFetchProcessRecord() throws Throwable {
+	public Stages navigateFetchProcessRecord(boolean wantToFetchRecord) throws Throwable {
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
 
@@ -143,34 +167,39 @@ public class Stages extends TestBase {
 		fetchProcessRecord = fetchProcess.getText();
 		assertNotNull(fetchProcessRecord, "fetchProcessRecord is null.");
 
-	}
-
-	public void navigateFetchSubProcessRecord() throws Throwable {
-
 		fetchSubProcessRecord = fetchsubProcess.getText();
 		assertNotNull(fetchSubProcessRecord, "fetchSubProcessRecord is null.");
-	}
-
-	public void navigateFetchSubSubProcessRecord() throws Throwable {
 
 		fetchSubSubProcessRecord = fetchsubSubProcess.getText();
 		assertNotNull(fetchSubSubProcessRecord, "fetchSubSubProcessRecord is null.");
 
-	}
-
-	public void navigateFetchMetaDataRecord() throws Throwable {
 		click(driver, metaDataTab);
 
 		Thread.sleep(1000);
-		fetchMetaDataRecord = fetchMetaData.getText();
-		assertNotNull(fetchMetaDataRecord, "fetchMetaDataRecord is null.");
+		fetchMetaTextDataRecord = fetchMetaData.getText();
+		assertNotNull(fetchMetaTextDataRecord, "fetchMetaDataRecord is null.");
 
-		System.out.println(fetchMetaDataRecord);
+		System.out.println(fetchMetaTextDataRecord);
 
+		if (wantToFetchRecord) {
+			PropertieFileUtil.storeTextInPropertiesFile(fetchProcessRecord, fetchSubProcessRecord,
+					fetchSubSubProcessRecord, fetchMetaTextDataRecord, true);
+		}
+
+		navigateToStages();
+
+		return this;
+	}
+
+	public void navigateToStages() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 	}
 
-	public void VerifyStagesTabIsDisplayed() {
+	public Stages VerifyStagesTabIsDisplayed(boolean navigateToStages) {
+
+		if (navigateToStages) {
+			navigateToStages();
+		}
 
 //		String stageListingPageUrl = "https://test.capture.autosherpas.com//en/stages/stages_list/";
 
@@ -179,9 +208,10 @@ public class Stages extends TestBase {
 		assertTrue(stageListingPage.isDisplayed(), "stageListingPage is not displayed");
 		assertEquals(driver.getCurrentUrl(), stageListingPageUrl);
 
+		return this;
 	}
 
-	public void verifyCreateStagesButton() {
+	public Stages verifyCreateStagesButton() {
 
 //		String stagesCraeteFormURL = "https://test.capture.autosherpas.com/en/stages/create_stages/"; 
 
@@ -191,9 +221,11 @@ public class Stages extends TestBase {
 
 		assertTrue(stagesCreateFormElement.isDisplayed(), "stagesCreateFormElement is not displayed.");
 		assertEquals(driver.getCurrentUrl(), stagesCraeteFormURL);
+
+		return this;
 	}
 
-	public void verifyStageNameTextBox(String StageName) {
+	public Stages verifyStageNameTextBox(String StageName) {
 
 		// Check if the Stage Name field is mandatory or not.
 		String text = driver.findElement(By.xpath("//h3[text()='Stage Name*']")).getText();
@@ -205,9 +237,10 @@ public class Stages extends TestBase {
 		stageNameTextBoxElement.clear();
 		stageNameTextBoxElement.sendKeys(StageName);
 
+		return this;
 	}
 
-	public void verifyStageSelectProcessDropDown() throws Throwable {
+	public Stages verifyStageSelectProcessDropDown() throws Throwable {
 
 		String text = driver.findElement(By.xpath("//h3[text()='Process*']")).getText();
 		char lastChar = text.charAt(text.length() - 1);
@@ -217,11 +250,13 @@ public class Stages extends TestBase {
 
 		Select select = new Select(selectProcessDropDownElement);
 		Thread.sleep(1000);
-		select.selectByVisibleText(fetchProcessRecord);
+		System.out.println("process : " + PropertieFileUtil.getTextFromPropertiesFile("process"));
+		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("process"));
 
+		return this;
 	}
 
-	public void verifyStageSelectSubProcessDropDown() throws Throwable {
+	public Stages verifyStageSelectSubProcessDropDown() throws Throwable {
 
 		String text = driver.findElement(By.xpath("//h3[text()='Sub Process*']")).getText();
 		char lastChar = text.charAt(text.length() - 1);
@@ -232,11 +267,14 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(selectSubProcessDropDownElement));
 		Select select = new Select(selectSubProcessDropDownElement);
 		Thread.sleep(1000);
-		select.selectByVisibleText(fetchSubProcessRecord);
 
+		System.out.println("subProcess : " + PropertieFileUtil.getTextFromPropertiesFile("subProcess"));
+		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("subProcess"));
+
+		return this;
 	}
 
-	public void verifyStageSelectSubSubProcessDropDown() throws Throwable {
+	public Stages verifyStageSelectSubSubProcessDropDown() throws Throwable {
 
 		String text = driver.findElement(By.xpath("//h3[text()='Sub Sub Process*']")).getText();
 		char lastChar = text.charAt(text.length() - 1);
@@ -247,11 +285,14 @@ public class Stages extends TestBase {
 
 		Select select = new Select(selectSubSubProcessDropDownElement);
 		Thread.sleep(1000);
-		select.selectByVisibleText(fetchSubSubProcessRecord);
 
+		System.out.println("subSubProcess : " + PropertieFileUtil.getTextFromPropertiesFile("subSubProcess"));
+		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("subSubProcess"));
+
+		return this;
 	}
 
-	public void verifyStageCalculationTypeDropDown() throws Throwable {
+	public Stages verifyStageCalculationTypeDropDown() throws Throwable {
 
 		assertTrue(calculationTypeDropDownElement.isDisplayed(), "calculationTypeDropDownElement is not displayed.");
 
@@ -273,9 +314,10 @@ public class Stages extends TestBase {
 //		select.selectByVisibleText("Domain Wise");
 //		select.selectByVisibleText("Parameter Wise");
 
+		return this;
 	}
 
-	public void verifyAddSectionA() throws Throwable {
+	public Stages verifyAddSectionA() throws Throwable {
 
 		assertTrue(sectionA_ExpantionPanel.isDisplayed(), "WebsectionA_ExpantionPanel is not displayed.");
 		assertTrue(addMetaDataMassageInSectionAElement.isDisplayed(),
@@ -288,13 +330,14 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(addSectionAPopUp));
 		assertTrue(addSectionAPopUp.isDisplayed(), "addSectionAPopUp is not displayed.");
 
+		assertTrue(
+				DropDown.isTextPresentInDropDown(selectMetaDatDropDownElement,
+						PropertieFileUtil.getTextFromPropertiesFile("metaDataText")),
+				"fetched meta data is not present in meta data drop down.");
+
 		Select select = new Select(selectMetaDatDropDownElement);
 
-//		WebElement options = select.getOptions().get(1);
-
-//		assertEquals(options.getText(), fetchMetaDataRecord);
-
-		select.selectByVisibleText(fetchMetaDataRecord);
+		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("metaDataText"));
 
 		List<WebElement> checkBoxElements = wait.until(
 				ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
@@ -307,42 +350,33 @@ public class Stages extends TestBase {
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
 
-//		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
-//		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
-//		click(driver, editButtonInSectionAElement);
+		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
+		js.executeScript("arguments[0].scrollIntoView(true);", editButtonInSectionAElement);
+		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
 
-//		List<WebElement> options1 = select.getOptions();
-//
-//		String list = fetchMetaDataRecord;
-//
-//		// Iterate through the options and print the text of each option
-//		for (WebElement option : options1) {
-//
-//			System.out.println("fetchMetaDataRecord after add Metadata popup : " + option.getText());
-//
-//			assertNotNull(option, "fetchMetaDataRecord after add Metadata popup is null.");
-//
-//			assertTrue(list.contains(option.getText()));
-//
-////			assertTrue(option.getText().contains(list));
-//
-//		}
-		
-//
-//		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
-//		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
-//		cancelButtonInaddSectionAPopUp.click();
+		click(driver, editButtonInSectionAElement);
 
+		assertTrue(
+				DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
+						PropertieFileUtil.getTextFromPropertiesFile("metaDataText")),
+				"fetched meta data is not present in meta data drop down.");
+
+		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
+		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
+		cancelButtonInaddSectionAPopUp.click();
+
+		return this;
 	}
 
 	public void verifySectionB() {
 
+		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
 		assertTrue(sectionB_ExpantionPanel.isDisplayed(), "sectionB_ExpantionPanel is not displayed.");
 		assertTrue(addBlocksElement.isDisplayed(), "addBlocksElement is not displayed.");
 
 	}
 
-	public void verifyAddBlockInSectionB(int count) throws Throwable {
+	public Stages verifyAddBlockInSectionB(int count) throws Throwable {
 
 		verifySectionB();
 
@@ -364,9 +398,19 @@ public class Stages extends TestBase {
 			ClickUtilities.clickWithRetry(removeBlocksButtonElement, 2);
 		}
 
-	}
+		return this;
 
-	public void selectMetaDataInAddBlockSectionB(int count) throws Throwable {
+	}
+	
+	
+	public static void clickMultipleTimes(WebElement element, int times, int retry) throws Throwable {
+        for (int i = 0; i < times; i++) {
+        	ClickUtilities.clickWithRetry(element, retry);
+        }
+    }
+	
+
+	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
 
 		for (int i = 1; i <= count; i++) {
 
@@ -378,29 +422,75 @@ public class Stages extends TestBase {
 
 		for (WebElement addButton : addButtonInSectionB) {
 
+			js.executeScript("arguments[0].scrollIntoView(true);", addButton);
 			ClickUtilities.clickWithRetry(addButton, 2);
 
 			Select select = new Select(blockNameMetaDataDropDown);
-			
+
 			List<WebElement> options = select.getOptions();
 			for (WebElement option : options) {
 				String optionText = option.getText();
 				System.out.println(optionText);
 			}
-			
-			select.selectByVisibleText(fetchMetaDataRecord);
-			
-			List<WebElement> checkBoxElements = wait.until(
-					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
+
+			select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("metaDataText"));
+
+			List<WebElement> checkBoxElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+					By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
 
 			for (int i = 0; i < checkBoxElements.size(); i++) {
 				WebElement element = checkBoxElements.get(i);
 				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
 			}
 
+			sectionBAddButton.click();
+
 		}
 
+		return this;
+
 	}
+
+	public Stages addSection(int count) throws Throwable {
+		for (int i = 1; i <= count; i++) {
+			// Use the appropriate index for the section's "Add" button (1 for the first, 2
+			// for the rest)
+			String xPath = "(//a[contains(@class,'section_c_add_popup')][normalize-space()='Add'])[" + (i == 1 ? 1 : 2)
+					+ "]";
+			WebElement addSomeSectionButton = driver.findElement(By.xpath(xPath));
+			click(driver, addSomeSectionButton);
+
+			wait.until(ExpectedConditions.visibilityOf(addSomeSectionPopUp));
+			assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
+
+			// Verify and fill the section name and weightage fields
+			String sectionName = "TestSec" + i;
+			String sectionWeightage = "TestWeightage" + i;
+
+			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName, true, false, 1);
+
+			FieldVerificationUtils.verifyTextField(sectionWeightageField, "Weightage", sectionWeightage, false, true,
+					1);
+
+			// Click the 'Add' button to confirm section addition
+			click(driver, addSomeSectionPopUpAddButton);
+		}
+
+		int elementsToClick = Math.min(addedSections.size(), count);
+
+		// Iterate through the first 'elementsToClick' elements
+		addedSections.subList(0, elementsToClick).forEach(section -> {
+			if (section.isDisplayed() && section.isEnabled()) {
+				section.click();
+				
+			} else {
+				System.out.println("Element not clickable or displayed: " + section.toString());
+			}
+		});
+
+		return this;
+	}
+
 
 //	#################################################################################################
 

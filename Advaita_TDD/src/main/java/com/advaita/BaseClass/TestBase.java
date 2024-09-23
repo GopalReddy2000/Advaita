@@ -17,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -41,6 +42,7 @@ public class TestBase {
 
 	protected static SoftAssert softAssert;
 	public static String mainURl = "https://test.capture.autosherpas.com/";
+//	public static String mainURl = "https://ltfs-test.transmonqa.in/";
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
@@ -49,6 +51,8 @@ public class TestBase {
 //		options.addArguments("--disable-notifications");
 //		options.addArguments("--incognito");
 //		options.addArguments("use-fake-ui-for-media-stream");
+//		options.addArguments("use-fake-ui-for-media-stream");
+//		options.addArguments("--incognito");
 //
 //		DesiredCapabilities cap = new DesiredCapabilities();
 //		cap.setCapability(ChromeOptions.CAPABILITY, options);
@@ -63,6 +67,10 @@ public class TestBase {
 
 		// Normal Execution
 		driver = new ChromeDriver();		
+
+
+		// Normal Execution
+		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -103,21 +111,11 @@ public class TestBase {
 		// }
 		// });
 
-		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
+		driver.get(mainURl);
 
-	}
-
-	private static void setWindowSizeToPercentage(double d) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	// SendKeys
-
-	private static void setScreenResolution(int i, int j) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
@@ -170,6 +168,8 @@ public class TestBase {
 	}
 
 	protected void selectByVisibleText(WebElement dropdownElement, String optionText) {
+		
+		wait.until(ExpectedConditions.visibilityOf(dropdownElement));
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
 
@@ -273,4 +273,17 @@ public class TestBase {
 	}
 	
 
+	public static void click1(WebDriver driver, WebElement element) {
+		try {
+			if (!element.isDisplayed()) {
+				throw new NoSuchElementException("Element not visible so could not click: " + element);
+			}
+
+			element.click();
+		} catch (Exception e1) {
+
+			element.click();
+
+		}
+	}
 }

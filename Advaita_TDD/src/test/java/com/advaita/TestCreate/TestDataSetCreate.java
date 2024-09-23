@@ -97,7 +97,6 @@ public class TestDataSetCreate extends TestBase {
 		List<Map<String, String>> fieldData = List.of(
 				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
 				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
-				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
 				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"));
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();

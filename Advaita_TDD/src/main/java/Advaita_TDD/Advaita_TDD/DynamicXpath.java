@@ -101,6 +101,12 @@ public class DynamicXpath extends TestBase {
 
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
+	public static WebElement QuestionMaxLength(int sectionNumber, int subSectionNumber) {
+		String xpath = String.format("(//input[@name='dataset_field_section_max_length_%d_%d'])[1]", sectionNumber,
+				subSectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
 	public static WebElement maxLength(int sectionNumber, int subSectionNumber) {
 		String xpath = String.format("(//input[@name='textbox_settings_max_length_%d_%d'])[1]", sectionNumber,
 				subSectionNumber);
@@ -135,21 +141,21 @@ public class DynamicXpath extends TestBase {
 				sectionNumber, subSectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
-	
+
 	public static WebElement shortValueTypeDropDown(int sectionNumber, int subSectionNumber) {
 		String xpath = String.format(
 				"//h6[normalize-space()='Value-Type']/following::select[@name='shortans_settings_value_type_%d_%d']",
 				sectionNumber, subSectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
-	
+
 	public static WebElement allowSpCharToggle(int sectionNumber, int subSectionNumber) {
 		String xpath = String.format(
 				"//h6[normalize-space()='Allow-Sp-Char']/following::label/input[@name='textbox_settings_allow_sp_char_%d_%d']/../span",
 				sectionNumber, subSectionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
-	
+
 	public static WebElement shortAllowSpCharToggle(int sectionNumber, int subSectionNumber) {
 		String xpath = String.format(
 				"//h6[normalize-space()='Allow-Sp-Char']/following::label/input[@name='shortans_settings_allow_sp_char_%d_%d']/../span",
@@ -166,12 +172,38 @@ public class DynamicXpath extends TestBase {
 		return driver.findElement(By.xpath(xpath));
 	}
 
+	public static WebElement fileTypeSetting2(int sectionNumber, int questionNumber) {
+		String xpath = String.format("//img[@alt='settingicon'][@name='ans_option_%d_%d_1']", sectionNumber,
+				questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
 	// Method to generate the dynamic XPath and return the WebElement %d-section or
 	// sub section number
 	public static WebElement fileUploadFormatDropDown(int sectionNumber) {
 		String xpath = String.format(
 				"(//div[@class='upload-cloud']/ancestor::div//img[@class='trashimg answer_option fileupload'])[%d]",
 				sectionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public static WebElement fileUploadFormatDropDown2(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//input)[1]",
+				sectionNumber, questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public static WebElement afterClickFileUploadFormatDropDown2(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//li)[1]",
+				sectionNumber, questionNumber);
+		return driver.findElement(By.xpath(xpath));
+	}
+	public static WebElement multipleFileUploadFormatToggle(int sectionNumber, int questionNumber) {
+		String xpath = String.format(
+				"(//label[text()='Allowed Formats']/../select[@name='file_upload_format_%d_%d']/..//li)[1]",
+				sectionNumber, questionNumber);
 		return driver.findElement(By.xpath(xpath));
 	}
 

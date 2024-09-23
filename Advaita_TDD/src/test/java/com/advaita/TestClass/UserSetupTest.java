@@ -276,16 +276,16 @@ public class UserSetupTest extends TestBase {
 		//		;
 	}
 
-	@Test()
-	public void userMapping(String RecordName,String SystemName, String Value)
-	{
-		userSetupPage
-				.userMappingRecord(RecordName)
-				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Insurance Stage")
-				.userMappingUserSuperior("Insurance Stage", "SuperAdmin", "Capture_admin")
-				.systemMapping(SystemName,Value)
-		;
-	}
+//	@Test()
+//	public void userMapping(String RecordName,String SystemName, String Value)
+//	{
+//		userSetupPage
+//				.userMappingRecord(RecordName)
+//				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Insurance Stage")
+//				.userMappingUserSuperior("Insurance Stage", "SuperAdmin", "Capture_admin")
+//				.systemMapping(SystemName,Value)
+//		;
+//	}
 
 	@Test
 	public void userDel()

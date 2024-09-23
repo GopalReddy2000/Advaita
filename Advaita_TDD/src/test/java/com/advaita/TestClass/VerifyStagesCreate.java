@@ -111,22 +111,13 @@ public class VerifyStagesCreate extends TestBase {
 		homePage.clickOnworkflowDesign();
 
 		test = reports.createTest("navigateFetchProcessRecord");
-		stages.navigateFetchProcessRecord();
-
-		test = reports.createTest("navigateFetchSubProcessRecord");
-		stages.navigateFetchSubProcessRecord();
-
-		test = reports.createTest("navigateFetchSubSubProcessRecord");
-		stages.navigateFetchSubSubProcessRecord();
-
-		test = reports.createTest("navigateFetchMetaDataRecord");
-		stages.navigateFetchMetaDataRecord();
+		stages.navigateFetchProcessRecord(true);
 	}
 
 	@Test(priority = 5)
 	public void VerifyStagesTabIsDisplayed() throws Throwable {
 		test = reports.createTest("VerifyStagesTabIsDisplayed");
-		stages.VerifyStagesTabIsDisplayed();
+		stages.VerifyStagesTabIsDisplayed(false);
 	}
 
 	@Test(priority = 6)

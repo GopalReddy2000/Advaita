@@ -3,12 +3,23 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
+<<<<<<< HEAD
       <class name="com.advaita.TestCreate.TestSmstemplateCreate">
         <methods>
           <include name="endToEndSMSThroughSystemName"/>
           <include name="setUp"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestSmstemplateCreate -->
+=======
+      <class name="com.advaita.TestCreate.TestStagesCreate">
+        <methods>
+          <include name="verifyAddSectionA"/>
+          <include name="setUp"/>
+          <include name="tearDown"/>
+          <include name="getResult"/>
+        </methods>
+      </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
+>>>>>>> 687a69d7ff80c98d2de02db845d9b8d8de698fd4
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

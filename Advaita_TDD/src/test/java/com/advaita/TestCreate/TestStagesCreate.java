@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
+import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.DataSetUp.PageObject.Process;
 import com.advaita.Login.Home.HomePage;
@@ -37,8 +38,6 @@ public class TestStagesCreate extends TestBase {
 	public String subSubProcessName = "SSP " + FakeData.lastName1();
 	public String subSubProcessDesc = "SSP Desc";
 
-	public String metaDataName = "Test " + FakeData.lastName1();
-
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
 	public ExtentTest test;
@@ -49,6 +48,7 @@ public class TestStagesCreate extends TestBase {
 	Process process;
 	DataSet dataset;
 	MetaData metaData;
+	ManualUpload manualUpload;
 
 	Stages stages;
 
@@ -82,54 +82,75 @@ public class TestStagesCreate extends TestBase {
 		process = new Process();
 		dataset = new DataSet();
 		metaData = new MetaData();
+		manualUpload = new ManualUpload();
 
 		stages = new Stages();
 	}
 
-    @Test(priority = 1)
-    public void verifyProcessCreate() throws Throwable {
-        test = reports.createTest("verifyProcessCreate");
-        homePage.clickOnProcessManagementCreate();
-        process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
-                subSubProcessName, subSubProcessDesc);
-    }
+	String employeeName = "EmployeeB";
 
-    @Test(priority = 2)
-    public void verifyCreateDataset() throws Throwable {
-        test = reports.createTest("verifyCreateDataset");
-        homePage.clickOnProcessManagementCreate();
-        dataset.createDataSet ("Text Area");
-    }
+	final String metaDataName = employeeName + " Details MetaData";
+	final String manualUploadName = employeeName + " Details Upload";
+	final String dataSetName = employeeName + " Details";
+	final String remark = "Test Manual Upload";
 
-    @Test(priority = 3)
-    public void verifyCreateMetaData() throws Throwable {
-        test = reports.createTest("verifyCreateMetaData");
-        homePage.clickOnProcessManagementCreate();
-        metaData.createMetaData(metaDataName);
-    }
+//	@Test(priority = 1)
+//	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+//		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+//		HomePage.clickOnProcessManagementCreate();
+//
+//		// Get all questions
+//		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+//		// Define the types and order of questions you want to select
+//		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+//		List<String> types = Arrays.asList("Character", "Text Area", "Number");
+//		// Select questions based on types and order
+//		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
+//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+//				.createDataSetButtonAndConfirmation();
+//
+//	}
+//
+//	@Test(priority = 2)
+//	public void verifynewCreateMetaData() throws Throwable {
+//
+//		test = reports.createTest("verifynewCreateMetaData");
+//		HomePage.clickOnProcessManagementCreate();
+//
+//		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
+//				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
+//				.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
+//
+//	}
+//
+//	@Test(priority = 3)
+//	public void verifyCreateManualUpload() throws Throwable {
+//
+//		test = reports.createTest("verifyCreateManualUpload");
+//		HomePage.clickOnProcessManagementCreate();
+//
+//		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
+//				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+//				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
+//				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+//
+//	}
 
-	@Test(priority = 4)
-	public void navigateFetchRecord() throws Throwable {
-		test = reports.createTest("clickOnworkflowDesign");
-		homePage.clickOnworkflowDesign();
 
-		test = reports.createTest("navigateFetchProcessRecord");
-		stages.navigateFetchProcessRecord();
-
-		test = reports.createTest("navigateFetchSubProcessRecord");
-		stages.navigateFetchSubProcessRecord();
-
-		test = reports.createTest("navigateFetchSubSubProcessRecord");
-		stages.navigateFetchSubSubProcessRecord();
-
-		test = reports.createTest("navigateFetchMetaDataRecord");
-		stages.navigateFetchMetaDataRecord();
-	}
+//	@Test(priority = 4)
+//	public void navigateFetchRecord() throws Throwable {
+//		test = reports.createTest("clickOnworkflowDesign");
+//		homePage.clickOnworkflowDesign();
+//
+//		test = reports.createTest("navigateFetchProcessRecord");
+//		stages.navigateFetchProcessRecord(false);
+//
+//	}
 
 	@Test(priority = 5)
 	public void VerifyStagesTabIsDisplayed() throws Throwable {
 		test = reports.createTest("VerifyStagesTabIsDisplayed");
-		stages.VerifyStagesTabIsDisplayed();
+		stages.VerifyStagesTabIsDisplayed(true);
 	}
 
 	@Test(priority = 6)
@@ -184,6 +205,12 @@ public class TestStagesCreate extends TestBase {
 	public void verifySelectMetaDataInAddBlockSectionB() throws Throwable {
 		test = reports.createTest("selectMetaDataInAddBlockSectionB");
 		stages.selectMetaDataInAddBlockSectionB(3);
+	}
+	
+	@Test(priority = 16)
+	public void verifyAddSection() throws Throwable {
+		test = reports.createTest("verifyAddSection");
+		stages.addSection(2);
 	}
 
 	@AfterMethod

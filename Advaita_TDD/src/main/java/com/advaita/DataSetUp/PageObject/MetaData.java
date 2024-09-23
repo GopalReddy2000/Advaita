@@ -792,7 +792,7 @@ public class MetaData extends TestBase {
 		return this;
 	}
 
-	public MetaData createNewMetaData(String metaData) {
+	public MetaData createNewMetaData(String metaData) throws Throwable {
 
 		click(driver, createMetaDataButton);
 

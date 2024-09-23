@@ -134,6 +134,8 @@ public class ClickUtilities extends TestBase {
 
 //	ElementUtils.clickWithRetry(submitButton, 3);
 	public static void clickWithRetry(WebElement element, int maxAttempts) throws Throwable {
+		
+		wait.until(ExpectedConditions.elementToBeClickable(element));
 		assertTrue(element.isDisplayed());
 		int attempts = 0;
 		while (attempts < maxAttempts) {
