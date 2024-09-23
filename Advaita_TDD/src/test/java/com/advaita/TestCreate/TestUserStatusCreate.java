@@ -115,7 +115,7 @@ public class TestUserStatusCreate extends TestBase {
 		
 		userStatus.searchStatus();
 		userStatus.clearallFiltes();
-		userStatus.DeleteStatus();
+		//userStatus.DeleteStatus();
 	}
 	  //Edit
 	//@Test
@@ -137,9 +137,20 @@ public class TestUserStatusCreate extends TestBase {
 		userStatus.callLogatTabViewClick();
 		userStatus.NavigateToUserStatus();
 		
-		userStatus.createUserStatus();
-		userStatus.statusNameInputField("Admin");
-		userStatus.descriptionField();
+	//	userStatus.navigateToaAdmin();
+		
+		userStatus.searchmenusInSearchtextfield();
+		
+	}
+	
+	//@Test(invocationCount = 3)
+	public void searchmenusInSearchtextfield() throws Throwable 
+	{
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.NavigateToUserStatus();
+		
+		userStatus.searchmenusInSearchtextfield();
 	}
 
 }

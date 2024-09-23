@@ -3,11 +3,8 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +16,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -31,7 +27,6 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class TestBase {
-
 
 	// Global Variable(Need to be Initialize)
 	// It should be only within class scopes
@@ -49,27 +44,25 @@ public class TestBase {
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
-		//		 Incognito Mode Execution
-		options = new ChromeOptions();
-		options.addArguments("--disable-notifications");
-		options.addArguments("--incognito");
-		options.addArguments("use-fake-ui-for-media-stream");
-
-		DesiredCapabilities cap = new DesiredCapabilities();
-		cap.setCapability(ChromeOptions.CAPABILITY, options);
-		cap.setCapability("applicationCacheEnabled", false);
-		// Setting the default behavior to block the microphone
-		options.merge(cap);
-
-		Map<String, Object> prefs = new HashMap<>();
-		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-		options.setExperimentalOption("prefs", prefs);
-		driver = new ChromeDriver(options);
-		
-		
+		// Incognito Mode Execution
+//		options = new ChromeOptions();
+//		options.addArguments("--disable-notifications");
+//		options.addArguments("--incognito");
+//		options.addArguments("use-fake-ui-for-media-stream");
+//
+//		DesiredCapabilities cap = new DesiredCapabilities();
+//		cap.setCapability(ChromeOptions.CAPABILITY, options);
+//		cap.setCapability("applicationCacheEnabled", false);
+//		// Setting the default behavior to block the microphone
+//		options.merge(cap);
+//
+//		Map<String, Object> prefs = new HashMap<>();
+//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
+//		options.setExperimentalOption("prefs", prefs);
+//		driver = new ChromeDriver(options);
 
 		// Normal Execution
-		//		driver = new ChromeDriver();
+		driver = new ChromeDriver();		
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -114,41 +107,49 @@ public class TestBase {
 
 	}
 
-	//	SendKeys
+	private static void setWindowSizeToPercentage(double d) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	// SendKeys
+
+	private static void setScreenResolution(int i, int j) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public static void sendKeys(WebElement webelement, String str) {
 		jsClick(driver, webelement);
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
-	@FindBy(xpath  ="(//button[text()='Continue'])[1]")
+
+	@FindBy(xpath = "(//button[text()='Continue'])[1]")
 	WebElement continueButton;
 
-	@FindBy(xpath ="//button[text()='Save']")
+	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
-	@FindBy(css ="img.arrow-left")
+	@FindBy(css = "img.arrow-left")
 	protected WebElement backButton;
 
-
-	protected void saveRecord()
-	{
-		jsClick(driver,save);
+	protected void saveRecord() {
+		jsClick(driver, save);
 		unWait(1);
 		continueButton.click();
 	}
+
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(driver, element);
 		}
 	}
 
-	public void jsWindowsScroll(int toScroll)
-	{
-		js.executeScript("window.scrollTo(0, "+toScroll+");");
+	public void jsWindowsScroll(int toScroll) {
+		js.executeScript("window.scrollTo(0, " + toScroll + ");");
 	}
 
-	public void jsWindowsScrollIntoView(WebElement element)
-	{
+	public void jsWindowsScrollIntoView(WebElement element) {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 
@@ -156,7 +157,6 @@ public class TestBase {
 
 		js.executeScript("arguments[0].click();", element);
 	}
-
 
 	public static int extractNumber(String input) {
 		StringBuilder numberAsString = new StringBuilder();
@@ -179,21 +179,20 @@ public class TestBase {
 	protected static void selectByVisibleText(WebElement dropdownElement, List<String> optionText) {
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
-		for(int a=0;a<optionText.size();a++) {
+		for (int a = 0; a < optionText.size(); a++) {
 			dropdown.selectByVisibleText(optionText.get(a));
 		}
 	}
 
-	public static void unWait(int seconds)
-	{
+	public static void unWait(int seconds) {
 		Uninterruptibles.sleepUninterruptibly(seconds, TimeUnit.SECONDS);
 	}
-public static void unWaitInMilli(int milliSeconds)
-	{
+
+	public static void unWaitInMilli(int milliSeconds) {
 		Uninterruptibles.sleepUninterruptibly(milliSeconds, TimeUnit.MILLISECONDS);
 	}
 
-	//	Random Index
+	// Random Index
 
 	public static WebElement getRandomElement(List<WebElement> elements) {
 		int randomIndex = 0;
@@ -206,35 +205,33 @@ public static void unWaitInMilli(int milliSeconds)
 		return elements.get(randomIndex);
 	}
 
-	@FindBy(id="menulist2")
+	@FindBy(id = "menulist2")
 	WebElement alchemy;
-	public void navigateWithinAlchemy(WebElement element)
-	{
-		try{
+
+	public void navigateWithinAlchemy(WebElement element) {
+		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-			jsClick(driver,element);
-		}catch (org.openqa.selenium.NoSuchElementException e)
-		{
-			jsClick(driver,alchemy);
-			jsClick(driver,element);
+			jsClick(driver, element);
+		} catch (org.openqa.selenium.NoSuchElementException e) {
+			jsClick(driver, alchemy);
+			jsClick(driver, element);
 		}
 
 	}
-	@FindBy(id="menulist1")
+
+	@FindBy(id = "menulist1")
 	WebElement userSetup;
-	public void navigateWithinUserSetup(WebElement element)
-	{
-		try{
+
+	public void navigateWithinUserSetup(WebElement element) {
+		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-			jsClick(driver,element);
-		}catch (org.openqa.selenium.NoSuchElementException e)
-		{
-			jsClick(driver,userSetup);
-			jsClick(driver,element);
+			jsClick(driver, element);
+		} catch (org.openqa.selenium.NoSuchElementException e) {
+			jsClick(driver, userSetup);
+			jsClick(driver, element);
 		}
 
 	}
-
 
 	public void loginToUser(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
@@ -245,10 +242,8 @@ public static void unWaitInMilli(int milliSeconds)
 		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
 	}
 
-
-	public String jsInnerText(WebElement element)
-	{
-		Object monthObject=js.executeScript("return arguments[0].innerText;",element);
+	public String jsInnerText(WebElement element) {
+		Object monthObject = js.executeScript("return arguments[0].innerText;", element);
 		return (String) monthObject;
 	}
 
@@ -276,5 +271,6 @@ public static void unWaitInMilli(int milliSeconds)
 		}
 
 	}
+	
 
 }

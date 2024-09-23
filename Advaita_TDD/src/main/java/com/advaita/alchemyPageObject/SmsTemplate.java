@@ -1,31 +1,27 @@
 package com.advaita.alchemyPageObject;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.awt.Window;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.checkerframework.common.value.qual.StaticallyExecutable;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.ClickUtilities;
+import com.advaita.pageObjects.UserSetupPage;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import net.bytebuddy.utility.JavaConstant.Dynamic;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
 public class SmsTemplate extends TestBase // Create_Class and extend base class
 {
@@ -38,6 +34,20 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public static String FirstCreatedUserName;
 	public static String lastcreatedsmsTemplate_messageTextfield;
 	public static String selectedNumberDropdown_toNumber_SMSPopup;
+
+	public static String stagesCreatedProcess1;
+	public static String stagesCreatedSubProcess2;
+	public static String stagesCreatedSubsubProcess3;
+	public static String verifyCreatedStages;
+
+	String superAmdin = "Capture_Admin";
+	String superAdminPass = "Qwerty@123";
+
+	String userID = "Abhijit@trasccon";
+	String userPassword = "Qwerty@123";
+
+	String userId1 = "Abhijit_idamta";
+	String password1 = "Qwerty@123";
 
 	// Entirebody Click
 	@FindBy(tagName = "body")
@@ -77,20 +87,45 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "(//h1[text()=' Stages '])[1]")
 	public static WebElement verifyStage;
 
+	@FindBy(id = "text_search")
+	public static WebElement searchTextfieldStages;
+
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
 
-	@FindBy(xpath = "//h2[text()='CutomerdetailsZZZ Stage']")
+	@FindBy(xpath = "(//h2)[1]") // h2[text()='CutomerdetailsZZZ Stage']
 	public static WebElement verifyCreatedSatgeName;
 
-	@FindBy(xpath = "//tr[td/a[contains(@href, '/en/stages/view_stages/60/')]]//img[contains(@class, 'stages_edit') and contains(@src, 'table-edit.svg')]")
-	public static WebElement editButtio_stages; // Its static Edit button only for "customerdetailsZZZ"
+	@FindBy(xpath = "(//h2)[1]")
+	public static WebElement verifyEditForm;
+
+	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]") // 5 ,//8
+																												// (//img[contains(@src,'/static/images/table-edit.svg')])[8]
+	public static WebElement editStagesOption; // New Xpath for stages Edit option
 
 	@FindBy(xpath = "//div[@class='Action ']//div[@id='collapseThree']//div")
-	List<WebElement> stages_actions;
+	List<WebElement> stages_actionss;
 
 	@FindBy(xpath = "//a//img[@class='arrow-left']")
 	public static WebElement leftArrowButton_stages;
+
+	@FindBy(xpath = "//h6[text()='Action']") // 5 //(//h2)[8]
+	public static WebElement actionsOptionsStages;
+
+	@FindBy(xpath = "//div[@class='Action ']//div[@id='collapseThree']//div//input[@name='ActionCheckbox_4']")
+	public static WebElement smsCheckBox;
+
+	@FindBy(xpath = "(//tbody//tr[1]//td[1]/a)[1]")
+	public static WebElement StagesCreatedName;
+
+	@FindBy(xpath = "(//tbody//tr[1]//td[2])[1]") // (//tbody//tr[5]//td[2])[1] -old one
+	public static WebElement stagesCreatedProcess; // Stages Createdwith Which Proceess
+
+	@FindBy(xpath = "(//tbody//tr[1]//td[3])[1]") // (tbody//tr[5]//td[3])[1]
+	public static WebElement stagesCreatedSubProcess; // Stages Createdwith Which SubProceess
+
+	@FindBy(xpath = "(//tbody//tr[1]//td[4])[1]") // (//tbody//tr[5]//td[4])[1]
+	public static WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
 
 	// sms template
 	@FindBy(xpath = "//a[@id='menulist2']")
@@ -358,7 +393,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public static WebElement subSubProcessDropdown_Table;
 
 	@FindBy(xpath = "//select[@name='stage_search']")
-	public static WebElement smsStages_table;
+	public static WebElement smsStagesDropdown_table;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
 	public static WebElement searchbutton_Table;
@@ -378,6 +413,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> afterSearchData_Table;
 
+	private String String;
+
+	public static List<WebElement> satgeNameList;
+
+	// private String String;
+
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='delete-icon ']")
 	public static WebElement LastDelete_smsTempalte;
 
@@ -392,6 +433,13 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
 	public static WebElement continueButton_DeleteSuccessullyPopup;
+
+	// DispositionStages
+	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[4]")
+	public static WebElement stagesDispositionOption;
+	
+	@FindBy(id = "disposition_stagewise")
+	public static WebElement selectDispostionQuestionSet;
 
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
@@ -408,46 +456,221 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
+	public void clickDynamicStage(int index) {
+		if (satgeNameList.size() > index) { // Ensure the index is within bounds
+			try {
+				WebElement stageElement = stagesName.get(index);
+				if (stageElement.isDisplayed() && stageElement.isEnabled()) { // Ensure the element is clickable
+					// stageElement.click(); // Click the element at the specified index
+					jsClick(driver, stageElement);
+					System.out.println("Successfully clicked the element at index: " + index);
+				} else {
+					System.out.println("Element at index " + index + " is either not displayed or not enabled.");
+				}
+			} catch (Exception e) {
+				System.out.println("Exception occurred while trying to click the element at index " + index + ": "
+						+ e.getMessage());
+			}
+
+			System.out.println("Total count: " + satgeNameList.size());
+		} else {
+			System.out.println(
+					"The number of matching elements is less than " + (index + 1) + ". Found: " + satgeNameList.size());
+		}
+	}
+
 	public void navigatetoStage_verifySMS() throws Throwable {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
+
+		String searchedStagesName = "Booking Information Stage";
+
+		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfieldStages.sendKeys(searchedStagesName);
+		searchbutton_Table.click();
+		Thread.sleep(2000);
+
+		stagesCreatedProcess1 = stagesCreatedProcess.getText();
+		System.out.println("stagesCreatedProcess1 :" + stagesCreatedProcess1);
+
+		assertTrue(stagesCreatedSubProcess.isDisplayed(), "stagesCreatedSubProcess2 is not displayed");
+		stagesCreatedSubProcess2 = stagesCreatedSubProcess.getText();
+		System.out.println("stagesCreatedSubProcess2 :" + stagesCreatedSubProcess2);
+
+		assertTrue(stagesCreatedSubsubProcess.isDisplayed(), "stagesCreatedSubsubProcess3 is not displayed");
+		stagesCreatedSubsubProcess3 = stagesCreatedSubsubProcess.getText();
+		System.out.println("stagesCreatedSubsubProcess3 :" + stagesCreatedSubsubProcess3);
+
 		List<String> satgeNameList = new ArrayList<String>();
 		for (WebElement stageName : stagesName) {
 			satgeNameList.add(stageName.getText());
 			System.out.println("Stages name Lists : " + stageName.getText());
 		}
-		// satgeNameList.contains("CutomerdetailsZZZ Stage");
+//
+//		 assertTrue(satgeNameList.contains("Escalation Stage"));
+		assertTrue(satgeNameList.contains(searchedStagesName), "stages is notcontains");
+		// wait.until(ExpectedConditions.visibilityOf(StagesCreatedName));
+		// StagesCreatedName.click();
+//		Thread.sleep(1000);
 
-		assertTrue(satgeNameList.contains("CutomerdetailsZZZ Stage"));
+		boolean StagesCreatedNameIsEnable = StagesCreatedName.isEnabled();
+		System.out.println(StagesCreatedNameIsEnable);
+		jsClick(driver, StagesCreatedName);
 
-		if (satgeNameList.size() >= 1) {
-			stagesName.get(2).click();
-			System.out.println("total count : " + satgeNameList.size());
+//		################
 
-		} else {
-			System.out.println("The number of matching elements is less than 1. Found: " + satgeNameList.size());
+//		if (satgeNameList.size() >= 1) {
+//			stagesName.get(0).click();  //through here we can change stage click
+//
+//			System.out.println("total count : " + satgeNameList.size());
+//		} 
+//		else {
+//			System.out.println("The number of matching elements is less than 1. Found: " + satgeNameList.size());
+//
+//		}
 
-		}
+		// js.executeScript("arguments[0].scrollIntoView(true);", stagesName);
+
+		// Your existing code to populate the list
+//		List<String> satgeNameList = new ArrayList<>();
+//		String stageToSearch = "";  // Variable to store the found stage name
+//
+//		for (WebElement stageName : stagesName) {
+//		    String stageText = stageName.getText();
+//		    satgeNameList.add(stageText);
+//		    System.out.println("Stages name Lists : " + stageText);
+//		    
+//		    // Check if the stage name contains "Escalation Stage"
+//		    if (stageText.contains("Escalation Stage")) {
+//		        stageToSearch = stageText;  // Store the stage name in the variable
+//		        break;  // Exit the loop once found
+//		    }
+//		}
+//
+//		// Assert that the list contains "Escalation Stage"
+//		assertTrue(satgeNameList.contains("Escalation Stage"), "Escalation Stage not found in the list!");
+//
+//		// If "Escalation Stage" is found, pass it to the search field
+//		if (!stageToSearch.isEmpty()) {
+//		    searchTextfieldStages.sendKeys(stageToSearch);  // Pass the stored stage name into the search text field
+//		    System.out.println("Searching for stage: " + stageToSearch);
+//		    
+//		    // Click on the "Escalation Stage" element
+//		    stageToClick.click();  // Click the WebElement associated with "Escalation Stage"
+//		    System.out.println("Clicked on the stage: " + stageToSearch);
+//		    
+//		} else {
+//		   // Assert.fail("Escalation Stage not found.");  // Fail the test if the stage was not found
+//		    assertFalse(false, "Escalation Stage not found.");
+//		}
+//
+
+//		//		clickDynamicStage(1);
 		assertTrue(verifyCreatedSatgeName.isDisplayed(), "verifyCreatedSatgeName is not dispalyed");
-		System.out.println("verifyCreatedSatgeName : " + verifyCreatedSatgeName.getText());
+//		// System.out.println("verifyCreatedSatgeName : " +
+//		// verifyCreatedSatgeName.getText());
+		verifyCreatedStages = verifyCreatedSatgeName.getText();
+		System.out.println("verifyCreatedStages :" + verifyCreatedStages);
 
-		// js.executeScript("arguments[0].scrollIntoView(true);", stages_actions);
+		// js.executeScript("arguments[0].scrollIntoView(true);", stages_actionss);
+		WebElement actions = driver.findElement(By.xpath("//div[@class='Action-border']//h6[text()='Action']"));
+		js.executeScript("arguments[0].scrollIntoView(true);", actions);
 
+		// Verify sms Action is enable or not
 		List<String> stagesActionList = new ArrayList<String>();
-		for (WebElement stagesAction : stages_actions) {
+		for (WebElement stagesAction : stages_actionss) {
 			stagesActionList.add(stagesAction.getText());
 			System.out.println("StagesActions " + stagesAction.getText());
 		}
 
-		assertTrue(stagesActionList.contains("SMS"), "Sms action not yet displayed in action table");
+		if (stagesActionList.contains("SMS")) {
+			// Assert and print SMS action message
+			assertTrue(true, "SMS action is enabled for this stage");
+			System.out.println("SMS action is enabled for this stage");
 
-		assertTrue(leftArrowButton_stages.isDisplayed(), "left arrow button is not displayed");
-		leftArrowButton_stages.click();
+			// Scroll to and click left arrow button
+			js.executeScript("arguments[0].scrollIntoView(true);", leftArrowButton_stages);
+			Thread.sleep(1000); // Adding a sleep to wait for scrolling
+			assertTrue(leftArrowButton_stages.isDisplayed(), "Left arrow button is not displayed");
+			leftArrowButton_stages.click();
 
-		assertTrue(verifyStage.isDisplayed(), "stagesPage not displayed");
-		// ############## if required need to impliment##########################
+		} else {
+			// Scroll to and click left arrow button if "SMS" is not contained
+			js.executeScript("arguments[0].scrollIntoView(true);", leftArrowButton_stages);
+			assertTrue(leftArrowButton_stages.isDisplayed(), "Left arrow button is not displayed");
+			// leftArrowButton_stages.click();
+			jsClick(driver, leftArrowButton_stages);
+
+			searchTextfieldStages.sendKeys(searchedStagesName);
+			searchbutton_Table.click();
+
+			// Scroll and click the edit stage option
+			js.executeScript("arguments[0].scrollIntoView(true);", editStagesOption);
+			assertTrue(editStagesOption.isDisplayed(), "Edit stage option is not displayed");
+			// editStagesOption.click();
+			jsClick(driver, editStagesOption);
+
+			// Verify the edit form is displayed
+			assertTrue(verifyEditForm.isDisplayed(), "Verify Edit Form is not displayed");
+
+			// Scroll to and check the status of actionsOptionsStages
+			js.executeScript("arguments[0].scrollIntoView(true);", actionsOptionsStages);
+			assertTrue(actionsOptionsStages.isDisplayed(), "Actions Options Stages is not displayed");
+
+			// Check if SMS checkbox is selected and take appropriate actions
+			if (smsCheckBox.isSelected()) {
+				System.out.println("SMS checkbox is already selected");
+				assertTrue(true, "SMS checkbox is already selected");
+
+				// Click on the save button
+				assertTrue(SaveButton_stagesProfileView.isDisplayed(), "Save button is not displayed");
+				SaveButton_stagesProfileView.click();
+
+			} else {
+				System.out.println("SMS checkbox is not selected, selecting now");
+				assertTrue(true, "SMS checkbox is not selected, selecting now");
+
+				// Click the SMS checkbox to select it
+				// smsCheckBox.click();
+				Thread.sleep(2000);
+				js.executeScript("arguments[0].scrollIntoView(true);", smsCheckBox);
+				jsClick(driver, smsCheckBox);
+
+				WebElement assignedTo = driver
+						.findElement(By.xpath("//h7[text()='Assigned To']/../..//label//input/..//span"));
+				// assignedTo.click();
+
+				if (assignedTo.isEnabled()) {
+					System.out.println("'Assigned To' is already enabled, no need to click");
+					assertTrue(true, "'Assigned To' is already enabled, no need to click");
+				} else {
+					System.out.println("'Assigned To' is not enabled, clicking now");
+					assertTrue(false, "'Assigned To' is not enabled, clicking now");
+					assignedTo.click();
+				}
+
+				// Click on the save button after selecting SMS checkbox
+				assertTrue(SaveButton_stagesProfileView.isDisplayed(), "Save button is not displayed");
+				// SaveButton_stagesProfileView.click();
+				jsClick(driver, SaveButton_stagesProfileView);
+			}
+		}
+
+//		assertTrue(stagesCreatedProcess.isDisplayed(), "stagesCreatedProcess is not displayed");
+//		stagesCreatedProcess1 = stagesCreatedProcess.getText();
+//		System.out.println("stagesCreatedProcess1 :" + stagesCreatedProcess1);
+//
+//		assertTrue(stagesCreatedSubProcess.isDisplayed(), "stagesCreatedSubProcess2 is not displayed");
+//		stagesCreatedSubProcess2 = stagesCreatedSubProcess.getText();
+//		System.out.println("stagesCreatedSubProcess2 :" + stagesCreatedSubProcess2);
+//
+//		assertTrue(stagesCreatedSubsubProcess.isDisplayed(), "stagesCreatedSubsubProcess3 is not displayed");
+//		stagesCreatedSubsubProcess3 = stagesCreatedSubsubProcess.getText();
+//		System.out.println("stagesCreatedSubsubProcess3 :" + stagesCreatedSubsubProcess3);
 
 	}
+
+	// ############## if required need to impliment##########################
 
 	public void navigateTo_AlchemyModule() {
 
@@ -475,38 +698,140 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public void selectProcessDropdown() {
-		List<String> processDropdownList = new ArrayList<String>();
-//		for (WebElement smsprocessDropdownLists : ProcessDropdown)
-//		{		
-//			processDropdownList.add(smsprocessDropdownLists.getText());
-//			System.out.println("smsprocessDropdownList : "+smsprocessDropdownLists.getText());
-
+//	public void dropdownUtils(WebElement dropdownElement, String expectedOptionText) {
+//
+//		// Step 2: Initialize Select object with the provided dropdown element
+//		Select dropdown = new Select(dropdownElement);
+//
+//		// Step 3: Retrieve all options in the dropdown
+//		List<WebElement> allDropdownOptions = dropdown.getOptions();
+//
+//		// Step 4: Loop through each dropdown option and compare with expectedOptionText
+//		boolean isOptionClicked = false;
+//		for (WebElement option : allDropdownOptions) {
+//			String dropdownValue = option.getText();
+//
+//			// Step 5: Compare expectedOptionText with the dropdown option value
+//			if (dropdownValue.equals(expectedOptionText)) {
+//				// Assert that the correct dropdown value has been found
+//				assertEquals(dropdownValue, expectedOptionText, "Dropdown value did not match!");
+//
+//				// Step 6: Click the dropdown option that matches
+//				option.click();
+//
+//				// Break the loop once the match is found and clicked
+//				isOptionClicked = true;
+//				break;
+//			}
 //		}
+//
+//		// Step 7: Assert that the option has been clicked
+//		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
+//	}
+//	====================================================================
 
-		Select ProcessDropdown1 = new Select(ProcessDropdown);
-		for (WebElement Options : ProcessDropdown1.getOptions()) {
-			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
-			System.out.println(Options.getText());
-			processDropdownList.add(Options.getText());
+	public void dropdownUtils(WebElement dropdownElement, String expectedOptionText) throws Throwable {
+		// Step 1: Initialize WebDriverWait to handle dynamic waits
+		// Step 2: Ensure the dropdown element is visible and clickable
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
+
+		// Step 3: Initialize Select object with the provided dropdown element
+		Select dropdown = new Select(dropdownElement);
+
+		// Step 4: Retrieve all options in the dropdown
+		List<WebElement> allDropdownOptions = dropdown.getOptions();
+
+		// Step 5: Loop through each dropdown option and compare with expectedOptionText
+		boolean isOptionClicked = false;
+		for (WebElement option : allDropdownOptions) {
+			try {
+				String dropdownValue = option.getText();
+
+				// Compare expectedOptionText with the dropdown option value
+				if (dropdownValue.equals(expectedOptionText)) {
+					// Assert that the correct dropdown value has been found
+					assertEquals(dropdownValue, expectedOptionText, "Dropdown value did not match!");
+
+					// Wait until the option is clickable and click it
+					wait.until(ExpectedConditions.elementToBeClickable(option));
+					option.click();
+
+					// Step 8: Break the loop once the match is found and clicked
+					isOptionClicked = true;
+					break;
+				}
+			} catch (StaleElementReferenceException e) {
+				// Re-fetch the options in case of a StaleElementReferenceException
+				allDropdownOptions = dropdown.getOptions();
+			}
 		}
-		assertTrue(processDropdownList.contains("AJP"));
-		ProcessDropdown1.selectByVisibleText("AJP");
+
+		Thread.sleep(2000);
+		// Assert that the option has been clicked
+		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
+	}
+
+	public void selectProcessDropdown() throws Throwable {
+//		List<String> processDropdownList = new ArrayList<String>();
+//
+//		Select ProcessDropdown1 = new Select(ProcessDropdown);
+//		for (WebElement Options : ProcessDropdown1.getOptions()) {
+//			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
+//			System.out.println(Options.getText());
+//			processDropdownList.add(Options.getText());
+//		}
+//		assertTrue(processDropdownList.contains("AJP"));
+//		ProcessDropdown1.selectByVisibleText("AJP");          //Old Code
+
+//		Select ProcessDropdown1 = new Select(ProcessDropdown);     //New Code
+//
+//		// Step 3: Retrieve all options in the dropdown
+//		List<WebElement> allDropdownOptions = ProcessDropdown1.getOptions();
+//
+//		// Step 4: Loop through each dropdown option and compare with capturedText
+//		boolean isOptionClicked = false;
+//		for (WebElement option : allDropdownOptions) {
+//			String dropdownValue = option.getText();
+//
+//			// Step 5: Compare capturedText with the dropdown option value
+//			if (dropdownValue.equals(stagesCreatedProcess1)) {
+//				// Assert that the correct dropdown value has been found
+//				assertEquals(dropdownValue, stagesCreatedProcess1, "Dropdown value did not match!");
+//
+//				// Step 6: Click the dropdown option that matches
+//				option.click();
+//
+//				// Break the loop once the match is found and clicked
+//				isOptionClicked = true;
+//				break;
+//			}
+//		}
+//
+//		// Assert that the option has been clicked
+//		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+
 	}
 
 	public void SelectSubProcessDropdown() throws Throwable {
-		List<String> subProcessDropdownList = new ArrayList<String>();
+//		List<String> subProcessDropdownList = new ArrayList<String>(); //old code
+//
+//		actions.moveToElement(driverIninteractable).perform();
+//		Select subProcessDropdown2 = new Select(SubProcessDropdown);
+//		for (WebElement options2 : subProcessDropdown2.getOptions()) {
+//			Thread.sleep(1000);
+//			System.out.println(subProcessDropdown2.getOptions());
+//			subProcessDropdownList.add(options2.getText());
+//		}
+//
+//		assertTrue(subProcessDropdownList.contains("Sub AJP"));
+//		subProcessDropdown2.selectByVisibleText("Sub AJP");
 
-		actions.moveToElement(driverIninteractable).perform();
-		Select subProcessDropdown2 = new Select(SubProcessDropdown);
-		for (WebElement options2 : subProcessDropdown2.getOptions()) {
-			Thread.sleep(1000);
-			System.out.println(subProcessDropdown2.getOptions());
-			subProcessDropdownList.add(options2.getText());
-		}
+		// js.executeScript("arguments[0].scrollIntoView(true);", SubProcessDropdown);
+		// // New Code
 
-		assertTrue(subProcessDropdownList.contains("Sub AJP"));
-		subProcessDropdown2.selectByVisibleText("Sub AJP");
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
 	}
 
 	public void selectSubSubProcess() throws Throwable {
@@ -520,54 +845,59 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 //		}
 //		assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
 //		SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-//		actions.moveToElement(driverIninteractable).perform();
+//		actions.moveToElement(driverIninteractable).perform();s
 
-		List<String> subsubprocessDropdownList = new ArrayList<String>();
-		boolean elementStale = true;
-		int attempts = 0;
+//		List<String> subsubprocessDropdownList = new ArrayList<String>();
+//		boolean elementStale = true;
+//		int attempts = 0;
+//
+//		while (elementStale && attempts < 3) {
+//			try {
+//				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
+//				subsubprocessDropdownList.clear(); // Clear the list before each retry
+//
+//				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
+//					Thread.sleep(2000);
+//					System.out.println(options3.getText()); // Print each option's text
+//					subsubprocessDropdownList.add(options3.getText());
+//				}
+//
+//				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
+//				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
+//				actions.moveToElement(driverIninteractable).perform();
+//
+//				elementStale = false; // If we reach here, no exception was thrown
+//			} catch (StaleElementReferenceException e) {
+//				attempts++;
+//				System.out.println("Stale element reference exception. Retrying... " + attempts);
+//				Thread.sleep(2000); // Optional: add a wait before retrying
+//			}
+//		}
+//
+//		if (elementStale) {
+//			throw new RuntimeException(
+//					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
+//		}
 
-		while (elementStale && attempts < 3) {
-			try {
-				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
-				subsubprocessDropdownList.clear(); // Clear the list before each retry
-
-				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
-					Thread.sleep(2000);
-					System.out.println(options3.getText()); // Print each option's text
-					subsubprocessDropdownList.add(options3.getText());
-				}
-
-				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
-				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-				actions.moveToElement(driverIninteractable).perform();
-
-				elementStale = false; // If we reach here, no exception was thrown
-			} catch (StaleElementReferenceException e) {
-				attempts++;
-				System.out.println("Stale element reference exception. Retrying... " + attempts);
-				Thread.sleep(2000); // Optional: add a wait before retrying
-			}
-		}
-
-		if (elementStale) {
-			throw new RuntimeException(
-					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
-		}
+		// Thread.sleep(1000);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
 	}
 
-	public void selectStages() {
-		List<String> smsStagesLists = new ArrayList<String>();
-		Select smsStagesdropdown = new Select(smsStages);
-		for (WebElement smsStagesOptions : smsStagesdropdown.getOptions()) {
-			System.out.println("satges Dropdown : " + smsStagesdropdown.getOptions());
-			smsStagesLists.add(smsStagesOptions.getText());
-		}
-		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
-		smsStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
+	public void selectStages() throws Throwable {
+//		List<String> smsStagesLists = new ArrayList<String>();
+//		Select smsStagesdropdown = new Select(smsStages);
+//		for (WebElement smsStagesOptions : smsStagesdropdown.getOptions()) {
+//			System.out.println("satges Dropdown : " + smsStagesdropdown.getOptions());
+//			smsStagesLists.add(smsStagesOptions.getText());
+//		}
+//		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
+//		smsStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
 
+		Thread.sleep(1000);
+		dropdownUtils(smsStages, verifyCreatedStages);
 	}
 
-	public void CreateSmsTemplateContinue() {
+	public void SmsTemplateName() {
 
 		// SMS - Template name
 		// Array of predefined SMS template names
@@ -587,9 +917,16 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		assertTrue(smsTemplateName.isDisplayed(), " smsTemplateName is not dispalyed ");
 		smsTemplateName.sendKeys(randomTemplateName);
+	}
+
+	public void disposition() {
 
 		// Sms - disposition
 		assertTrue(smsDisposition.isDisplayed(), "smsDisposition is not dispalyed");
+
+	}
+
+	public void fromNumber() {
 
 		// Sms From number
 		// Define the mobile number range
@@ -608,27 +945,86 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		fromNumber.sendKeys(String.valueOf(randomNumber)); // String.valueOf = any thing is there convert to string
 															// value
 
-		// SMS- to Number Source
-		List<String> toNumberSourceListsList = new ArrayList<String>();
-		Select toNumberSourceDrodown = new Select(toNumberSource);
-		for (WebElement toNumberSourceOptions : toNumberSourceDrodown.getOptions()) {
-			System.out.println(" to number source dropdownsoptions : " + toNumberSourceDrodown.getOptions());
-			toNumberSourceListsList.add(toNumberSourceOptions.getText());
-		}
-		assertTrue(toNumberSourceListsList.contains("From Stage Fields"));
-		toNumberSourceDrodown.selectByVisibleText("From Stage Fields");
+	}
+//=========================================================================================================================
 
-		// SMS - to number
-		List<String> toNumberListsList = new ArrayList<String>();
-		Select toNumberDrodown = new Select(toNumber);
-		for (WebElement toNumberOptions : toNumberDrodown.getOptions()) {
-			System.out.println(" to number dropdowns options : " + toNumberDrodown.getOptions());
-			toNumberListsList.add(toNumberOptions.getText());
-		}
-		assertTrue(toNumberListsList.contains("Mobile number"));
-		toNumberDrodown.selectByVisibleText("Mobile number");
+	public void validateAndSelectFromDropdownUTILS(WebElement dropdownElement, String visibleTextToSelect) {
 
-		// SMS - message
+		// Create a list to store all dropdown options
+		List<String> dropdownOptionsList = new ArrayList<>();
+
+		// Initialize the Select class with the provided dropdown WebElement
+		Select dropdown = new Select(dropdownElement);
+
+		// Iterate over each option in the dropdown and add it to the list
+		for (WebElement option : dropdown.getOptions()) {
+			String optionText = option.getText();
+			dropdownOptionsList.add(optionText);
+			System.out.println("Dropdown Option: " + optionText);
+		}
+
+		// Validation 1: Assert that the dropdown contains the specified visible text
+		assertTrue(dropdownOptionsList.contains(visibleTextToSelect),
+				"Dropdown does not contain the option: " + visibleTextToSelect);
+
+		// Validation 2: Assert that the dropdown is not empty
+		assertFalse(dropdownOptionsList.isEmpty(), "Dropdown is empty");
+
+		// Validation 3: Assert that the specified visible text is not null or empty
+		assertNotNull(visibleTextToSelect, "Visible text to select is null");
+
+		assertFalse(visibleTextToSelect.isEmpty(), "Visible text to select is empty");
+
+		// Select the dropdown option by visible text
+		dropdown.selectByVisibleText(visibleTextToSelect);
+
+		// Validation 4: Verify that the correct option is selected
+		String selectedOption = dropdown.getFirstSelectedOption().getText();
+		System.out.println("selectedOption : " + selectedOption);
+		// assertEquals( visibleTextToSelect, selectedOption.getText(),"Selected option
+		// does not match the expected value");
+		assertEquals(visibleTextToSelect, selectedOption, "Selected option does not match the expected value");
+
+		System.out.println("Successfully selected option: " + visibleTextToSelect);
+
+	}
+
+	public void selectToNumberSource() {
+
+//		// SMS- to Number Source
+//		List<String> toNumberSourceListsList = new ArrayList<String>();
+//		Select toNumberSourceDrodown = new Select(toNumberSource);
+//		for (WebElement toNumberSourceOptions : toNumberSourceDrodown.getOptions()) {
+//			toNumberSourceListsList.add(toNumberSourceOptions.getText());
+//			System.out.println("toNumberSourceListsList :" + toNumberSourceOptions.getText());
+//		}
+//
+//		assertTrue(toNumberSourceListsList.contains("From Stage Fields"));
+//		toNumberSourceDrodown.selectByVisibleText("From Stage Fields");
+//
+//		// SMS - to number
+//		List<String> toNumberListsList = new ArrayList<String>();
+//		Select toNumberDrodown = new Select(toNumber);
+//		for (WebElement toNumberOptions : toNumberDrodown.getOptions()) {
+//			// System.out.println(" to number dropdowns options : " +
+//			// toNumberDrodown.getOptions());
+//			toNumberListsList.add(toNumberOptions.getText());
+//		}
+//		assertTrue(toNumberListsList.contains("Phone Number"));
+//		toNumberDrodown.selectByVisibleText("Phone Number");
+
+		// validateAndSelectFromDropdownUTILS(toNumberSource, "From System Names");
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+
+	}
+
+	public void toNumber() {
+		validateAndSelectFromDropdownUTILS(toNumber, "Phone Number");
+
+	}
+
+	// SMS - message
+	public void enterMessage() {
 
 		// Array of predefined messages
 		String[] messages = { "Dear Customer, thank you for your purchase! We hope you enjoy your new product.",
@@ -653,19 +1049,33 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		message.getText();
 		System.out.println("lastcreatedsmsTemplate_messageTextfield : " + lastcreatedsmsTemplate_messageTextfield);
 
-//Remarks
-		assertTrue(remarks.isDisplayed(), "remarks is not displayed");
+	}
 
-//template variable name
+	// Remarks
+	public void remarksField() {
+
+		assertTrue(remarks.isDisplayed(), "remarks is not displayed");
+	}
+
+	public void variables() {
+
+//		WebElement addRowOptions = driver.findElement(By.xpath("//a[text()='+ Add Row']"));
+//		for (int i = 0; i < 1; i++) {
+//			addRowOptions.click();
+//		}
+		// template variable name
 		assertTrue(templateVariableName.isDisplayed(), "templateVariableName is not displayed");
 
-//Satge Field name
+		// Satge Field name
 		assertTrue(stageFieldName.isDisplayed(), "stageFieldName is not displayed");
 
-//Default value
+		// Default value
 		assertTrue(defaultValue.isDisplayed(), "defaultValue is not dispalyed");
+	}
 
-//Create Button        
+	public void createButton() {
+
+		// Create Button
 		assertTrue(createButton_SmsTemplatePopup.isDisplayed(), "createButton_SmsTemplatePopup is not displayed");
 		createButton_SmsTemplatePopup.click();
 
@@ -675,6 +1085,9 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		assertTrue(continueButton_create.isDisplayed(), "continueButton_create is not displayed");
 		continueButton_create.click();
+	}
+
+	public void verifyCreatedMessage() {
 
 //        js.executeScript("arguments[0].scrollIntoView(true);", lastIndexArrowButton); // Scroll the webpage
 //        wait.until(ExpectedConditions.visibilityOf(lastIndexArrowButton));
@@ -682,6 +1095,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 //        lastIndexArrowButton.click();
 
 		wait.until(ExpectedConditions.visibilityOf(last_CreatedSms));
+
 		assertTrue(last_CreatedSms.isDisplayed(), "last_CreatedSms is not displayed");
 		last_CreatedSms.getText();
 		System.out.println("Last Created Smstemplate : " + last_CreatedSms.getText());
@@ -697,12 +1111,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	}
 
 	// Verify the user is able to create
-	public void userManagement_create(String wyzmindz_solutions, String wyzmindz, String solutions) {
+	public void userManagement_create() {
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/user_management/users/");
-
-		assertTrue(verifyUserMangagemen_page.isDisplayed(), "verifyUserMangagemen_page is not displayed");
-
+//
+//		assertTrue(verifyUserMangagemen_page.isDisplayed(), "verifyUserMangagemen_page is not displayed");
+//
 //		assertTrue(usm_createButton.isDisplayed(), "usm_createButton is not displayed");
 //		usm_createButton.click();
 //		
@@ -726,7 +1140,41 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 //		
 //		assertTrue(conformPassword.isDisplayed(), "conformPassword is not displayed");
 //		conformPassword.sendKeys("Qwerty@123");
-//		
+
+//		userManagement_createUTILS("Abhijit@idamta.com", "Abhijit", "idamta", "Abhijitdas@idamta.com", "Qwerty@123",
+//				"Qwerty@123");
+	}
+
+	public void userManagement_createUTILS(String username, String FirstName, String LastName, String emailID,
+			String Password, String confirmPasswordInput) {
+
+		driver.navigate().to("https://test.capture.autosherpas.com/en/user_management/users/");
+
+		assertTrue(verifyUserMangagemen_page.isDisplayed(), "verifyUserMangagemen_page is not displayed");
+
+		assertTrue(usm_createButton.isDisplayed(), "usm_createButton is not displayed");
+		usm_createButton.click();
+
+		assertTrue(verify_User.isDisplayed(), "verify_User is not displayed");
+
+		assertTrue(userName.isDisplayed(), "userName is not displayed");
+		userName.sendKeys(username);
+
+		assertTrue(firstName.isDisplayed(), "firstName is not displayed");
+		firstName.sendKeys(FirstName);
+
+		assertTrue(lastname.isDisplayed(), "lastname is not displayed");
+		lastname.sendKeys(LastName);
+
+		assertTrue(email.isDisplayed(), "email is not displayed");
+		email.sendKeys(emailID);
+
+		assertTrue(password.isDisplayed(), "password is not displayed");
+		password.sendKeys(Password);
+
+		assertTrue(conformPassword.isDisplayed(), "conformPassword is not displayed");
+		conformPassword.sendKeys(confirmPasswordInput);
+
 ////Groups		
 //		List<String>groupsListsList=new ArrayList<String>();
 //		Select groupListsdropdown=new Select(groupsLists);
@@ -752,16 +1200,21 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 //		
 
 		// FirstCreatedUserName=firstCreated_UserManagement.getText(); global variable
-		FirstCreatedUserName = firstCreated_UserManagement.getText();
-		System.out.println("First Create User mangement :" + firstCreated_UserManagement.getText());
+//		FirstCreatedUserName = firstCreated_UserManagement.getText();
+//		System.out.println("First Create User mangement :" + firstCreated_UserManagement.getText());
+
+		UserSetupPage userSetupPage = new UserSetupPage();
+
+		userSetupPage.singleGroupSelect("admin1");
+		userSetupPage.clickOnGroupCreateButton();
 
 	}
 
 	// user Mapping
 	public void userMapping() throws Throwable {
 
-		assertTrue(userMapping_USM.isDisplayed(), "userMapping_USM is not displayed");
-		userMapping_USM.click();
+//		assertTrue(userMapping_USM.isDisplayed(), "userMapping_USM is not displayed");
+//		userMapping_USM.click();
 
 //		assertTrue(firstCreatedUserMapping_page_USM.isDisplayed(), "firstCreatedUserMapping_page_USM is not displayed");
 //		firstCreatedUserMapping_page_USM.click();
@@ -828,35 +1281,52 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 //			assertTrue(userMapping_continueButton.isDisplayed(), "userMapping_continueButton is not displayed");
 //			userMapping_continueButton.click();
 
+		UserSetupPage userSetupPage = new UserSetupPage();
+		userSetupPage.userMappingRecord("Abhijit@idamta.com").userMappingProcess(stagesCreatedProcess1,
+				stagesCreatedSubProcess2, stagesCreatedSubsubProcess3, verifyCreatedStages);
+
+//		userSetupPage.userMappingRecord("Abhijit@idamta.com").userMappingProcess(stagesCreatedProcess1,
+//				stagesCreatedSubProcess2, stagesCreatedSubsubProcess3, verifyCreatedStages);
+
 	}
 
 	public void SystemName_create() {
-		assertTrue(systemNamesTab.isDisplayed(), "systemNamesTab is not displayed");
-		systemNamesTab.click();
+//		assertTrue(systemNamesTab.isDisplayed(), "systemNamesTab is not displayed");
+//		systemNamesTab.click();
+//
+//		assertTrue(verify_SystemName.isDisplayed(), "verify_SystemName is not displayed");
+//
+//		assertTrue(createButton_systemName.isDisplayed(), "createButton_systemName is not displayed");
+//		createButton_systemName.click();
+//
+//		assertTrue(systemNameInputField.isDisplayed(), "systemNameInputField is not displayed");
+//		systemNameInputField.sendKeys("Cloud Device Category"); // 1st way
+//		// systemNameInputField.sendKeys(fake.lastName1()); 2nd way
+//
+//		assertTrue(CreateButton1_systemName.isDisplayed(), "CreateButton1_systemName is not displayed");
+//		CreateButton1_systemName.click();
+//
+//		wait.until(ExpectedConditions.visibilityOf(continueButton_SystemNames));
+//		assertTrue(continueButton_SystemNames.isDisplayed(), "continueButton_SystemNames is not displayed");
+//		continueButton_SystemNames.click();
+//
+//		assertTrue(verifySystemname_lastCreated.isDisplayed(), "verifySystemname_lastCreated is not displayed");
+//		verifySystemname_lastCreated.getText();
+//		System.out.println("LastCreated System Name : " + verifySystemname_lastCreated.getText());
+//
+//		assertEquals(verifySystemname_lastCreated.getText(), "Cloud Device Category"); // 1st way
+//																						// 2nd way
 
-		assertTrue(verify_SystemName.isDisplayed(), "verify_SystemName is not displayed");
+		UserSetupPage userSetupPage = new UserSetupPage();
+		userSetupPage.navToSysNames();
+		userSetupPage.systemNames("Cloud Device Category");
+		userSetupPage.navToUserManagement();
+		userSetupPage.userMappingRecord("Abhijit@idamta.com");
+		userSetupPage.systemMapping("Cloud Device Category", "7684859730");
+		saveRecord();
+	}
 
-		assertTrue(createButton_systemName.isDisplayed(), "createButton_systemName is not displayed");
-		createButton_systemName.click();
-
-		assertTrue(systemNameInputField.isDisplayed(), "systemNameInputField is not displayed");
-		systemNameInputField.sendKeys("Cloud Device Category"); // 1st way
-		// systemNameInputField.sendKeys(fake.lastName1()); 2nd way
-
-		assertTrue(CreateButton1_systemName.isDisplayed(), "CreateButton1_systemName is not displayed");
-		CreateButton1_systemName.click();
-
-		wait.until(ExpectedConditions.visibilityOf(continueButton_SystemNames));
-		assertTrue(continueButton_SystemNames.isDisplayed(), "continueButton_SystemNames is not displayed");
-		continueButton_SystemNames.click();
-
-		assertTrue(verifySystemname_lastCreated.isDisplayed(), "verifySystemname_lastCreated is not displayed");
-		verifySystemname_lastCreated.getText();
-		System.out.println("LastCreated System Name : " + verifySystemname_lastCreated.getText());
-
-		assertEquals(verifySystemname_lastCreated.getText(), "Cloud Device Category"); // 1st way
-																						// 2nd way
-
+	public void logoutAmdin() {
 		// Logout
 		assertTrue(profileDropdown.isDisplayed(), "profileDropdown is not displayed");
 		profileDropdown.click();
@@ -869,10 +1339,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void loginas_UserCredentials() throws Throwable {
 		assertTrue(Verify_signIn.isDisplayed(), "Verify_signIn is not displayed");
 		assertTrue(usernameField.isDisplayed(), "usernameField is not displayed");
-		usernameField.sendKeys("wyzmindz_solutions");
+		// usernameField.sendKeys("wyzmindz_solutions");
+		usernameField.sendKeys(userId1);
 
 		assertTrue(passwordField.isDisplayed(), "passwordField is not displayed");
-		passwordField.sendKeys("Qwerty@123");
+		// passwordField.sendKeys("Qwerty@123");
+		passwordField.sendKeys(password1);
 
 		assertTrue(signInButton.isDisplayed(), "signInButton is not displayed");
 		signInButton.click();
@@ -931,7 +1403,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		System.out.println("fromNumber text in sms Popup  : " + fromNumber_SmsPopup.getText());
 
 		// to Number Dropdwon In SmsPopuo
-		List<String> toNumberList_smsPopup = new ArrayList<String>();
+//		List<String> toNumberList_smsPopup = new ArrayList<String>();
 		Select toNumberDropdownList_smsPopup = new Select(toNumberDropdown_smsPopup);
 		for (WebElement toNumberSourceOptions : toNumberDropdownList_smsPopup.getOptions()) {
 			System.out.println(" toNumbeDorpdown From SmsPopup : " + toNumberDropdownList_smsPopup.getOptions());
@@ -1065,7 +1537,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		}
 
 		List<String> smsStagesLists = new ArrayList<String>();
-		Select smsStagesdropdown = new Select(smsStages_table);
+		Select smsStagesdropdown = new Select(smsStagesDropdown_table);
 		for (WebElement smsStagesOptions : smsStagesdropdown.getOptions()) {
 			System.out.println("satges Dropdown : " + smsStagesdropdown.getOptions());
 			smsStagesLists.add(smsStagesOptions.getText());
@@ -1215,8 +1687,75 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public void SendSmsTroughSystemName() {
+	public void SendSmsTroughSystemName() throws Throwable {
+		SystemName_create(); // create Ststen Name and System Mapping
 
+		NavigateToFetchprocess();
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+		selectProcessDropdown();
+		SelectSubProcessDropdown();
+		selectSubSubProcess();
+		selectStages();
+		SmsTemplateName();
+		disposition();
+		fromNumber();
+		toNumberSourceSystemNames();
+		toNumberSystemNames();
+		enterMessage();
+		remarksField();
+		createButton();
+		// navigateTo_MasterParameterDisposition();
+		stagesDisposition();
+
+	}
+
+	public void toNumberSourceSystemNames() {
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From System Names");
+	}
+
+	public void toNumberSystemNames() {
+		validateAndSelectFromDropdownUTILS(toNumber, "Cloud Phone Category");
+
+	}
+
+	public void navigateTo_MasterParameterDisposition() throws Throwable {
+//
+//		String navigatToDisposition ="https://test.capture.autosherpas.com/en/master_parameters/disposition/";
+//		driver.navigate().to(navigatToDisposition);
+
+	}
+
+	public void stagesDisposition() {
+		String searchedStagesName = "Booking Information Stage";
+
+		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfieldStages.sendKeys(searchedStagesName);
+		searchbutton_Table.click();
+
+		stagesDispositionOption.click(); // Click on StagesDisposition
+
+	}
+
+	public void selectSearchProcesses() throws Throwable {
+		dropdownUtils(processDropdown_Table, stagesCreatedProcess1);
+		dropdownUtils(SubprocessDropdown_Table, stagesCreatedSubProcess2);
+		dropdownUtils(subSubProcessDropdown_Table, stagesCreatedSubsubProcess3);
+
+	}
+
+	public void selectStagesDisposition() throws Throwable {
+
+		dropdownUtils(smsStagesDropdown_table, verifyCreatedStages);
+
+	}
+	
+	public void selectDispositionQuestionSet() throws Throwable {
+		
+		//dropdownUtils(selectDispostionQuestionSet, stagesCreatedSubsubProcess3);
+		
+		
 	}
 
 }

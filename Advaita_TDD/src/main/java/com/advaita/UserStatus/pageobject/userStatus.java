@@ -6,8 +6,10 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.lang.reflect.Method;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +20,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 
@@ -39,7 +42,6 @@ public class userStatus extends TestBase {
 	public static String firstStatusNameText;
 	public static String inputFieldAttributeValue;
 	public static String editStatusNameValue;
-	
 
 	@FindBy(xpath = "//ul[@class='sidemenu_ul']//li//a//span[@class='text menu-text']")
 	public static List<WebElement> sideMenusListsElement;
@@ -48,6 +50,7 @@ public class userStatus extends TestBase {
 	public static List<WebElement> subSideMenusListsElements;
 	//// ul[@class='sidemenu_ul']//li//a[@class='dropdown-item menu-text']
 	// Prfile options
+
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']//span[text()='Admin Super Admin']")
 	public static WebElement profileDropdown;
 
@@ -114,14 +117,28 @@ public class userStatus extends TestBase {
 	@FindBy(id = "multiselect_leftAll")
 	public static WebElement multiSelecd_LeftAll;
 
+	@FindBy(xpath = "//h3[text()='Active Status']/..//label")
+	public static WebElement activeStatusToggleButton;
+
+	@FindBy(xpath = "//label[text()='Is Default']/..//input[@class='is_condtional_checkbx']")
+	public static WebElement isDefaultCheckBox;
+
+	@FindBy(xpath = "//input[@placeholder='Search...']")
+	public static WebElement searchTextfieldMenusToHide;
+
 	@FindBy(xpath = "//button[@id='submt_single']")
 	public static WebElement createButton;
+	
+	@FindBy(xpath = "//button[text()='Cancel']")
+	public static WebElement CancelButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
 	public static WebElement successFullyCreated_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
 	public static WebElement continueButton_create;
+	
+	
 
 	// Table
 	@FindBy(xpath = "//tbody//td[1]")
@@ -245,7 +262,7 @@ public class userStatus extends TestBase {
 	// isDisplayed
 	public void inputFieldIsDisplayed(WebElement element) {
 		// Element is displayed
-		assertTrue(element.isDisplayed(), "statusNameInputfield is not displayed");
+		assertTrue(element.isDisplayed(), "Inputfield is not displayed");
 	}
 
 	// Element IsEnabled
@@ -309,7 +326,7 @@ public class userStatus extends TestBase {
 //
 //		statusNameInputfield.sendKeys(randomStatus);
 
-		//String chosenStatus = "Trainee Employee";
+		// String chosenStatus = "Trainee Employee";
 		System.out.println("Chosen statusName: " + chosenStatus);
 		statusNameInputfield.sendKeys(chosenStatus);
 
@@ -430,7 +447,6 @@ public class userStatus extends TestBase {
 	public void selectStatus(WebDriver driver, String desiredStatus) // as per hide menus select " status"
 	{
 		subMenuDropdwonProfile.click();
-		
 
 		List<String> createdStatusList = new ArrayList<>();
 
@@ -442,7 +458,8 @@ public class userStatus extends TestBase {
 
 			// Check for exact or partial match based on desiredStatus format
 			if (desiredStatus.equalsIgnoreCase(status) || desiredStatus.contains(status)) {
-				statusText.click();
+				// statusText.click();
+				jsClick(driver, statusText);
 				System.out.println("Clicked on '" + status + "'");
 				break; // Exit the loop after clicking on the matching status
 			}
@@ -462,7 +479,7 @@ public class userStatus extends TestBase {
 	// "Hide" Single Menus" for "SideModules"
 
 	public void verifyMenusAreHideSideMenusModule(String menuName) throws Throwable {
-		
+
 		List<String> sideMenuList = new ArrayList<String>();
 
 		for (WebElement menusLists : sideMenusListsElement) {
@@ -484,6 +501,7 @@ public class userStatus extends TestBase {
 
 	// Method to verify that "Hide" Multiple Menus for "Side SubMenus Modules"
 	public void selectStatusHideMultipleMenus() throws Throwable {
+
 		selectStatus(driver, "Meeting"); // change 'desired status" parametr
 		driver.findElement(By.xpath("//a[@id='menulist2']//span//span[text()='Alchemy']")).click();
 		Thread.sleep(2000);
@@ -622,7 +640,7 @@ public class userStatus extends TestBase {
 
 		statusNameInputfield.sendKeys(chosenEditStatus);
 
-		 editStatusNameValue = statusNameInputfield.getAttribute("value");
+		editStatusNameValue = statusNameInputfield.getAttribute("value");
 		// assertEquals(editStatusNameValue,firstStatusNameText );
 
 	}
@@ -657,27 +675,99 @@ public class userStatus extends TestBase {
 
 		multiSelect.selectByValue("Email Template");
 		multiselect_RightSelected.click();
-		
+
 		assertTrue(updateButton.isEnabled(), "updateButton is not enabled");
 		assertTrue(updateButton.isDisplayed(), "updateButtonis not displayed");
-		
+
 		jsClick(driver, updateButton);
-		
+
 		wait.until(ExpectedConditions.visibilityOf(userStatusUpdatedSuccessfullyPopup));
-		assertTrue(userStatusUpdatedSuccessfullyPopup.isDisplayed(), "userStatusUpdatedSuccessfullyPopup is not displayed");
-		
+		assertTrue(userStatusUpdatedSuccessfullyPopup.isDisplayed(),
+				"userStatusUpdatedSuccessfullyPopup is not displayed");
+
 		assertTrue(ContineButton_update.isDisplayed(), "ContineButton_update is not displayed");
 		ContineButton_update.click();
-		
-		assertEquals(editStatusNameValue,firstStatusName.getText());
-		
+
+		assertEquals(editStatusNameValue, firstStatusName.getText());
+
 	}
-	
-	public void navigateToaAdmin() 
+
+	public void navigateToaAdmin() throws Throwable {
+		createUserStatus();
+		statusNameInputField("Admin");
+		// descriptionField();
+		String[] descriptionfield = { "Admin status grants full access to all menus." };
+
+		// String chosenStatus = "Trainee Employee";
+		System.out.println("descriptionfield: " + descriptionfield);
+		descriptionField.sendKeys(descriptionfield);
+
+		multiselect_RightAll.click();
+		Thread.sleep(1000);
+		multiSelecd_LeftAll.click();
+
+		assertTrue(createButton.isDisplayed(), "createButton is not displayed");
+		jsClick(driver, createButton);
+
+		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
+		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuop is not displayed");
+
+		assertTrue(continueButton_create.isDisplayed(), "continueButton_create is not disaplyed");
+		continueButton_create.click();
+
+		profileDropdown.click();
+		subMenuDropdwonProfile.click();
+
+		Thread.sleep(2000);
+		selectStatus(driver, "Admin");
+
+	}
+
+	public void activeStatusTogglebutton() {
+
+		checkthroughAsterisk(activeStatusToggleButton, false);
+		assertTrue(activeStatusToggleButton.isDisplayed(), "activeStatusToggleButton is not displayed");
+		assertTrue(activeStatusToggleButton.isEnabled(), "activeStatusToggleButtonis not enabled");
+
+	}
+
+	public void searchmenusInSearchtextfield() 
 	{
+		Create.click();
+		assertTrue(verifyCreateUserStatus.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(searchTextfieldMenusToHide.isDisplayed(), "searchTextfieldMenusToHideis not displayed");
+		assertTrue(searchTextfieldMenusToHide.isEnabled(), "searchTextfieldMenusToHide is not enabled");
 		
+		List<String> menuItems = Arrays.asList(
+		        "Data Setup", "Workflow Design", "User Setup", "User Management", "Role & Permissions",
+		        "Alchemy", "User Mapping", "Bias", "Manual Allocation", "Auto Allocation",
+		        "Re Allocation", "Sampling Plan & Generation", "Escalation Metrics", "Add Evaluation",
+		        "View/Modify Evaluation", "Evaluation Tab View", "Open Escalated Form", "Edit Escalated Form",
+		        "Audit the Auditor", "Skip Reason", "Email Template", "SMS Template", "Whatsapp Template",
+		        "Sample Status", "Transmon Report", "Normal Report", "Rejected Audit Form", "User Status",
+		        "API Key Setup", "Menu Setup", "Masters", "Notification", "Transaction Report",
+		        "System Names", "Site Settings"
+		    );
+		
+	  
+	  // Choose a random name from the list
+        Random random = new Random();
+        String randomName = menuItems.get(random.nextInt(menuItems.size()));
+        
+        // Enter the random name into the search field
+        searchTextfieldMenusToHide.clear(); // Clear the field before entering new text
+        searchTextfieldMenusToHide.sendKeys(randomName);
+        
+        assertTrue(CancelButton.isDisplayed(), "CancelButton is  not displayed");
+        assertTrue(CancelButton.isEnabled(), "CancelButton is not enabled");
+       jsClick(driver, CancelButton);
+       // CancelButton.click();
+		
+		 
+		
+		
+	
 	}
-	
-	
+
 
 }

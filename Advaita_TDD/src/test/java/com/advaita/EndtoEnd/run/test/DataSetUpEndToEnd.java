@@ -75,26 +75,44 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	}
 
-	String employeeName = "EmployeeFour";
+	String employeeName = "EmployeeSeven";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
 	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
 
+//	@Test(priority = 1)
+//	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+//		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+////		HomePage.clickOnProcessManagementCreate();
+//
+//		// Get all questions
+//		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+//		// Define the types and order of questions you want to select
+//		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+//		List<String> types = Arrays.asList("Character", "Text Area", "Number", "HyperLink");
+//		// Select questions based on types and order
+//		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
+//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+//				.createDataSetButtonAndConfirmation();
+//
+//	}
+	
+//	####################################################
+	
 	@Test(priority = 1)
-	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
-		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
-//		HomePage.clickOnProcessManagementCreate();
+	public void verifyManualCreateNewDataset() throws Throwable {
+		test = reports.createTest("verifyCreateNewDataset");
+		HomePage.clickOnProcessManagementCreate();
 
-		// Get all questions
-		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
-		// Define the types and order of questions you want to select
-		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Character", "Text Area", "Number", "HyperLink");
-		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
-		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+		//final String dataSetName = "Emplyee Details";
+		// Data for multiple rows
+		List<Map<String, String>> fieldData = List.of(
+				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+				Map.of("FieldName", " Emp Phone Number ?", "Type", "Number", "MaxLength", "14", "IsMandatory", "No"));
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();
 
 	}

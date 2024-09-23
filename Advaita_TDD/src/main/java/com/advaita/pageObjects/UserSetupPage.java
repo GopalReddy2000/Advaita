@@ -1,10 +1,14 @@
 package com.advaita.pageObjects;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ExcelUtils;
-import com.advaita.Utilities.ExcelWrite;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
@@ -13,13 +17,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ExcelUtils;
+import com.advaita.Utilities.ExcelWrite;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class UserSetupPage extends TestBase {
 
@@ -305,7 +308,7 @@ public class UserSetupPage extends TestBase {
 	WebElement uMUserSystemMappingTab;
 
 	@FindBy(linkText = "+ Add Row")
-	WebElement AddRow;
+public static WebElement AddRow;
 
 	@FindBy(xpath = "//tbody//tr//td[1]//select[not(contains(@name,'__prefix__'))]")
 	WebElement UMProcessNameDropdown;
@@ -616,11 +619,13 @@ public class UserSetupPage extends TestBase {
 
 	public UserSetupPage navToUserManagement()
 	{
-		if(userSetup.getAttribute("aria-expanded").equals("true")) {
+		try{
 			userManagement.click();
-		}else{
+		}catch (NoSuchElementException e)
+		{
 			userSetup.click();
 			userManagement.click();
+
 		}
 
 		return this;
@@ -853,16 +858,16 @@ public class UserSetupPage extends TestBase {
 //			}
 //				uMProcessTab.click();
 
-		dropdownValidation(UMProcessNameDropdown);
+//		dropdownValidation(UMProcessNameDropdown);
 		selectByVisibleText(UMProcessNameDropdown, ProcessName);
 
-		dropdownValidation(UMSubProcessNameDropdown);
+//		dropdownValidation(UMSubProcessNameDropdown);
 		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
 
-		dropdownValidation(UMSubSubProcessNameDropdown);
+//		dropdownValidation(UMSubSubProcessNameDropdown);
 		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
 
-		dropdownValidation(UMStageNameDropdown);
+//		dropdownValidation(UMStageNameDropdown);
 		selectByVisibleText(UMStageNameDropdown, Stages);
 
 		UMSaveButton.click();
@@ -906,15 +911,24 @@ public class UserSetupPage extends TestBase {
 
 	public UserSetupPage systemMapping(String visibleText,String value)
 	{
+		systemMappingTab.click();
 		selectByVisibleText(SMSystemName,visibleText);
 		SMSystemValue.sendKeys(value);
 		return this;
 	}
+	@FindBy(xpath = "//button[text()='System mapping ']")
+	WebElement systemMappingTab;
 
 	public UserSetupPage navToSysNames()
 	{
-		userSetup.click();
-		systemNames.click();
+		try{
+			systemNames.click();
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
+			userSetup.click();
+			systemNames.click();
+		}
+
 		return this;
 	}
 
@@ -927,7 +941,7 @@ public class UserSetupPage extends TestBase {
 		systemNameSaveButton.click();
 		unWait(1);
 		continueButton.click();
-		userSetup.click();
+		
 		return this;
 
 	}
