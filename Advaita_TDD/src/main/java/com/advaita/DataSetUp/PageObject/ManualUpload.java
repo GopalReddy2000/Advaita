@@ -129,7 +129,7 @@ public class ManualUpload extends TestBase {
 		return this;
 	}
 
-	public ManualUpload createNewManualUpload(String name) {
+	public ManualUpload createNewManualUpload(String name) throws Throwable {
 
 		click(driver, createManualUploadButton);
 

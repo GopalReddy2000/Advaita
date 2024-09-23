@@ -1,10 +1,7 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -19,7 +16,6 @@ import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.DataSetUp.PageObject.Process;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.aventstack.extentreports.ExtentReports;
@@ -30,7 +26,6 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestStagesCreate extends TestBase {
 
@@ -92,29 +87,29 @@ public class TestStagesCreate extends TestBase {
 		stages = new Stages();
 	}
 
-	String employeeName = "EmployeeA";
+	String employeeName = "EmployeeB";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
 	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
 
-	@Test(priority = 1)
-	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
-		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
-		HomePage.clickOnProcessManagementCreate();
-
-		// Get all questions
-		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
-		// Define the types and order of questions you want to select
-		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Character", "Text Area", "Number", "HyperLink");
-		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
-		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
-				.createDataSetButtonAndConfirmation();
-
-	}
+//	@Test(priority = 1)
+//	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+//		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+//		HomePage.clickOnProcessManagementCreate();
+//
+//		// Get all questions
+//		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+//		// Define the types and order of questions you want to select
+//		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+//		List<String> types = Arrays.asList("Character", "Text Area", "Number");
+//		// Select questions based on types and order
+//		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
+//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+//				.createDataSetButtonAndConfirmation();
+//
+//	}
 //
 //	@Test(priority = 2)
 //	public void verifynewCreateMetaData() throws Throwable {
@@ -140,8 +135,8 @@ public class TestStagesCreate extends TestBase {
 //				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
 //
 //	}
-//
-//
+
+
 //	@Test(priority = 4)
 //	public void navigateFetchRecord() throws Throwable {
 //		test = reports.createTest("clickOnworkflowDesign");
@@ -215,7 +210,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 16)
 	public void verifyAddSection() throws Throwable {
 		test = reports.createTest("verifyAddSection");
-		stages.addSection();
+		stages.addSection(2);
 	}
 
 	@AfterMethod

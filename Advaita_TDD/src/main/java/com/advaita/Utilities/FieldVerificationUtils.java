@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.time.Duration;
 
@@ -19,53 +20,47 @@ public class FieldVerificationUtils extends TestBase {
 	public static void verifyTextField(WebElement field, String labelText, String fieldValue, boolean isRequired,
 			boolean isEnabled, int timeoutInSeconds) {
 
-		// Check if the popup or field container is displayed (if applicable)
+// Verify field visibility
 		assertTrue(field.isDisplayed(), labelText + " is not displayed.");
 
 		if (isRequired) {
+			WebElement label = driver.findElement(By.xpath("//label[normalize-space()='" + labelText + "*']"));
+			assertTrue(label.isDisplayed(), labelText + " label is not displayed.");
 
-			WebElement label = driver.findElement(By.xpath("//label[normalize-space()='" + labelText + "*" + "']"));
-
-			// Check if the popup or field container is displayed (if applicable)
-			assertTrue(field.isDisplayed(), labelText + " is not displayed.");
-
-			// Verify label
-			String text = label.getText();
-			char lastChar = text.charAt(text.length() - 1);
-			assertEquals(lastChar, '*', labelText + " label does not end with '*'.");
+// Verify that label ends with '*'
+			assertTrue(label.getText().endsWith("*"), labelText + " label does not end with '*'.");
 		}
 
-		// Verify field properties
+// Verify field enabled status if applicable
 		if (isEnabled) {
 			assertTrue(field.isEnabled(), labelText + " is not enabled.");
 		}
 
-		// Verify field is empty before entering text
-		String existingText = field.getAttribute("value");
-		assertTrue(existingText.isEmpty(), labelText + " is not empty before entering text.");
+// Verify that the field is empty before entering text
+		assertTrue(field.getAttribute("value").isEmpty(), labelText + " is not empty before entering text.");
 
-		// Validate input
+// Validate fieldValue
 		assertNotNull(fieldValue, labelText + " is null.");
 		assertFalse(fieldValue.trim().isEmpty(), labelText + " is empty.");
 		assertTrue(fieldValue.matches("^[a-zA-Z0-9 ]+$"), labelText + " contains invalid characters.");
 
+// Clear and send text
 		SendDataUtils.clearAndSendKeys(field, fieldValue);
 
-		// Wait for any validation error to disappear
-
+// Wait for validation error message to disappear
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeoutInSeconds));
 
 		try {
-			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//label[normalize-space()='"
-					+ labelText + "*" + "']/..//label[normalize-space()='This field is required.']"))));
+			boolean isErrorGone = wait
+					.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//label[normalize-space()='"
+							+ labelText + "*']/..//label[normalize-space()='This field is required.']")));
+			assertTrue(isErrorGone, labelText + " required error message is still displayed.");
 		} catch (TimeoutException e) {
-			System.out.println("Exception : " + e + "\n" + labelText + " is displayed.");
-			assertFalse(true, labelText + " is displayed");
+			fail(labelText + " required error message is displayed.");
 		}
 
-		// Verify entered text
-		String enteredText = field.getAttribute("value");
-		assertEquals(enteredText, fieldValue, labelText + " is not correctly entered in the field.");
+// Verify entered text matches fieldValue
+		assertEquals(field.getAttribute("value"), fieldValue, labelText + " is not correctly entered in the field.");
 	}
 
 	public static void verifyTextArea(WebElement field, String fieldValue, boolean isEnabled) {

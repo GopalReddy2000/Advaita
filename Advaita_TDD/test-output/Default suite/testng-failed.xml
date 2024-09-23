@@ -5,10 +5,10 @@
     <classes>
       <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
+          <include name="verifyAddSectionA"/>
           <include name="setUp"/>
           <include name="tearDown"/>
           <include name="getResult"/>
-          <include name="verifyAddSection"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestStagesCreate -->
     </classes>

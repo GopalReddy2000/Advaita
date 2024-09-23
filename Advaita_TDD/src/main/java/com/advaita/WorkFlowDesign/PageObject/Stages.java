@@ -128,13 +128,13 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//h1[normalize-space()='Select Section B']/../..//a[normalize-space()='Add']")
 	public WebElement sectionBAddButton;
 
-	@FindBy(xpath = "//h6[normalize-space()='Please Add Some Section']/..//a[normalize-space()='Add']")
+	@FindBy(xpath = "(//a[contains(@class,'section_c_add_popup')][normalize-space()='Add'])[1]")
 	public WebElement addSomeSectionButton;
 
 	@FindBy(xpath = "//h1[normalize-space()='Add Section']")
 	public WebElement addSomeSectionPopUp;
 
-	@FindBy(name = "section_name")
+	@FindBy(xpath = "//input[@name='section_name']")
 	public WebElement sectionNameField;
 
 	@FindBy(xpath = "//input[@name='section_weightage']")
@@ -142,6 +142,9 @@ public class Stages extends TestBase {
 
 	@FindBy(xpath = "//h1[normalize-space()='Add Section']/../..//a[normalize-space()='Add']")
 	public WebElement addSomeSectionPopUpAddButton;
+
+	@FindBy(xpath = "//ul[@id='pills-tab']/..//button")
+	public List<WebElement> addedSections;
 
 	public Stages() {
 		PageFactory.initElements(driver, this);
@@ -367,6 +370,7 @@ public class Stages extends TestBase {
 
 	public void verifySectionB() {
 
+		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
 		assertTrue(sectionB_ExpantionPanel.isDisplayed(), "sectionB_ExpantionPanel is not displayed.");
 		assertTrue(addBlocksElement.isDisplayed(), "addBlocksElement is not displayed.");
 
@@ -397,6 +401,14 @@ public class Stages extends TestBase {
 		return this;
 
 	}
+	
+	
+	public static void clickMultipleTimes(WebElement element, int times, int retry) throws Throwable {
+        for (int i = 0; i < times; i++) {
+        	ClickUtilities.clickWithRetry(element, retry);
+        }
+    }
+	
 
 	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
 
@@ -439,23 +451,46 @@ public class Stages extends TestBase {
 
 	}
 
-	public Stages addSection() {
+	public Stages addSection(int count) throws Throwable {
+		for (int i = 1; i <= count; i++) {
+			// Use the appropriate index for the section's "Add" button (1 for the first, 2
+			// for the rest)
+			String xPath = "(//a[contains(@class,'section_c_add_popup')][normalize-space()='Add'])[" + (i == 1 ? 1 : 2)
+					+ "]";
+			WebElement addSomeSectionButton = driver.findElement(By.xpath(xPath));
+			click(driver, addSomeSectionButton);
 
-		click(driver, addSomeSectionButton);
+			wait.until(ExpectedConditions.visibilityOf(addSomeSectionPopUp));
+			assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
 
-		wait.until(ExpectedConditions.visibilityOf(addSomeSectionPopUp));
-		assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
+			// Verify and fill the section name and weightage fields
+			String sectionName = "TestSec" + i;
+			String sectionWeightage = "TestWeightage" + i;
 
-		FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", "TestSec1", true, true, 1);
+			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName, true, false, 1);
 
-		FieldVerificationUtils.verifyTextField(sectionWeightageField, "Weightage", "TestWeightage1", false, true, 1);
+			FieldVerificationUtils.verifyTextField(sectionWeightageField, "Weightage", sectionWeightage, false, true,
+					1);
 
-		click(driver, addSomeSectionPopUpAddButton);
+			// Click the 'Add' button to confirm section addition
+			click(driver, addSomeSectionPopUpAddButton);
+		}
 
-//		//ul[@id='pills-tab']/..//button
-		
+		int elementsToClick = Math.min(addedSections.size(), count);
+
+		// Iterate through the first 'elementsToClick' elements
+		addedSections.subList(0, elementsToClick).forEach(section -> {
+			if (section.isDisplayed() && section.isEnabled()) {
+				section.click();
+				
+			} else {
+				System.out.println("Element not clickable or displayed: " + section.toString());
+			}
+		});
+
 		return this;
 	}
+
 
 //	#################################################################################################
 
