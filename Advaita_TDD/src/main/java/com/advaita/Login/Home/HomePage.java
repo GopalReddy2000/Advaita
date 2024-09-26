@@ -11,41 +11,41 @@ public class HomePage extends TestBase {
 
 
 	@FindBy(xpath = "//span[normalize-space()='Data Setup']")
-	public static WebElement DataSetUpButton;
+	public WebElement DataSetUpButton;
 
 	@FindBy(xpath = "//h1[normalize-space()='Process Management']")
-	public static WebElement processManagementPage;
+	public WebElement processManagementPage;
 
 	@FindBy(id = "pills-Process-tab")
-	public static WebElement processTab;
+	public WebElement processTab;
 
 	@FindBy(id = "pills-dataset-tab")
-	public static WebElement dataSetTab;
+	public WebElement dataSetTab;
 
 	@FindBy(xpath = "//span[normalize-space()='Workflow Design']")
-	public static WebElement workflowDesign;
+	public WebElement workflowDesign;
 
 	@FindBy(xpath = "//h1[normalize-space()='Master Parameter']")
-	public static WebElement masterParameterPage;
+	public WebElement masterParameterPage;
 
 	@FindBy(xpath = "(//img[@alt='table-edit'])[1]")
-	public static WebElement editMeasurableSetButton;
+	public WebElement editMeasurableSetButton;
 
 	@FindBy(id = "pills-NonMeasurableSet-tab")
-	public static WebElement nonMeasurableSetTab;
+	public WebElement nonMeasurableSetTab;
 
 	@FindBy(id = "pills-Disposition-tab")
-	public static WebElement dispositionTab;
+	public WebElement dispositionTab;
 	
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
-	public static WebElement mastersTabElement;
+	public WebElement mastersTabElement;
 
 	public HomePage() {
 
 		PageFactory.initElements(driver, this);
 	}
 
-	public static void clickOnProcessManagementCreate() {
+	public void clickOnProcessManagementCreate() {
 
 		click(driver, DataSetUpButton);
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");

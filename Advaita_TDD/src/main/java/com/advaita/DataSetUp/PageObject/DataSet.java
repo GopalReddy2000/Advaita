@@ -217,11 +217,13 @@ public class DataSet extends TestBase {
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
+	
+	HomePage hp = new HomePage();
 
 	public void createDataSet(String type) throws Throwable {
 
 		// Faker faker = new Faker();
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
@@ -608,7 +610,7 @@ public class DataSet extends TestBase {
 	}
 
 	public DataSet fecthProcess_SubProces_SubSubProcess(String[] processValues) throws Throwable {
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);

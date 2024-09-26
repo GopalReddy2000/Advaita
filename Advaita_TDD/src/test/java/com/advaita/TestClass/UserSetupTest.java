@@ -147,10 +147,10 @@ public class UserSetupTest extends TestBase {
 		userSetupPage.navToUserManagement().userAccountTableActions("Kilback Ratke UA");
 	}
 
-
+	HomePage hp = new HomePage();
 	public void verifyProcessCreate() throws Throwable {
 
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
 

@@ -5,7 +5,7 @@
     <classes>
       <class name="com.advaita.TestCreate.TestStagesCreate">
         <methods>
-          <include name="verifyAddSectionA"/>
+          <include name="verifyActionSection"/>
           <include name="setUp"/>
           <include name="tearDown"/>
           <include name="getResult"/>

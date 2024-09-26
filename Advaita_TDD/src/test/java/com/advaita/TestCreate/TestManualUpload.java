@@ -70,12 +70,14 @@ public class TestManualUpload extends TestBase {
 		app = new App();
 
 	}
+	
+	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		final String manualUploadName = "EmployeeOne Details Upload";
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)

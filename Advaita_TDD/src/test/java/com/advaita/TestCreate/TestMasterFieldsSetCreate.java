@@ -72,6 +72,8 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet = new MastersFieldSets();
 
 	}
+	
+	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
 	public void verifyTabsForFieldSetCreate() throws Throwable {
@@ -201,7 +203,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 		test = reports.createTest("verifyAddFormFieldSetInCreateFieldSet");
 
-		MastersFieldSets.commonNavigation();
+		masterFieldSet.commonNavigation();
 		masterFieldSet.verifyTabsForFieldSetCreate();
 		masterFieldSet.verifyFieldSetCreateButton();
 
@@ -247,7 +249,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
 
-		int sectionCount = 2;
+		int sectionCount = 1;
 		int numberOfQuestion = 2;
 		boolean fieldSetQuestionRandom = true;
 		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,

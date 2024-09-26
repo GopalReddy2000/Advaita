@@ -70,12 +70,14 @@ public class TestMetaDataCreate extends TestBase {
 		metaData = new MetaData();
 
 	}
+	
+	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
 	public void verifyCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifyCreateMetaData");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 		metaData.createMetaData(metaDataName);
 
 	}
@@ -84,7 +86,7 @@ public class TestMetaDataCreate extends TestBase {
 	public void verifynewCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifynewCreateMetaData");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		final String metaDataName = "Customer Details MetaData";
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation();

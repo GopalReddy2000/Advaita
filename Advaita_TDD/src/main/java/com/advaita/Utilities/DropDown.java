@@ -155,7 +155,7 @@ public class DropDown extends TestBase {
 		for (WebElement option : options) {
 			String optionText = option.getText();
 			System.out.println(optionText);
-			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+			softAssert.assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
 		}
 
 		// Select each option by index and verify the selection

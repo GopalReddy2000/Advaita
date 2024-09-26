@@ -4,9 +4,13 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -15,6 +19,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.FieldVerificationUtils;
@@ -31,6 +36,12 @@ public class Stages extends TestBase {
 	public static String fetchSubProcessRecord;
 	public static String fetchSubSubProcessRecord;
 	public static String fetchMetaTextDataRecord;
+
+	@FindBy(linkText = "+ Add Non Measurable Set")
+	public WebElement addNonMeasurableSetButton;
+
+	@FindBy(xpath = "//table[contains(@class,'non-measurable-table')]/tbody/tr[1]/td[1]")
+	public WebElement nonMeasurableText;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td//div[contains(@class, 'content')]//span[contains(@class, 'first_tree')]")
 	public WebElement dropDown1;
@@ -49,6 +60,9 @@ public class Stages extends TestBase {
 
 	@FindBy(id = "pills-workflowstages-tab")
 	public WebElement workFlowStagesTab;
+
+	@FindBy(xpath = "//button[normalize-space()='Stages']")
+	public WebElement stagesTab;
 
 	@FindBy(xpath = "//img[@alt='justify_icon']/..//h1[text()=' Stages ']")
 	public WebElement stageListingPage;
@@ -146,9 +160,35 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//ul[@id='pills-tab']/..//button")
 	public List<WebElement> addedSections;
 
+	@FindBy(xpath = "(//label[normalize-space()='Measurable Set']/input[@type='radio'])[1]")
+	public WebElement measurableRadioButton;
+
+	@FindBy(xpath = "(//label[normalize-space()='Non Measurable Set']/input[@type='radio'])[1]")
+	public WebElement nonMeasurableRadioButton;
+
+	@FindBy(xpath = "//select[contains(@data-type,'Mesaurable')]")
+	public WebElement selectQuestionSetDropDown;
+
+	@FindBy(xpath = "//label[normalize-space()='Manual']/input[@type='radio']")
+	public WebElement manualRadioButton;
+
+	@FindBy(xpath = "//button[@class='btn-primary'][normalize-space()='Save']")
+	public WebElement saveButton;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Stage has been created successfully']")
+	public WebElement confirmationMSG;
+
+	@FindBy(xpath = "//span[normalize-space()='Stage has been created successfully']/..//button[normalize-space()='Continue']")
+	public WebElement continueButton;
+
+	@FindBy(xpath = "//img[@class='arrow-left']")
+	public WebElement leftArrowOrBackButton;
+
 	public Stages() {
 		PageFactory.initElements(driver, this);
 	}
+
+	HomePage hp = new HomePage();
 
 	public Stages navigateFetchProcessRecord(boolean wantToFetchRecord) throws Throwable {
 
@@ -192,13 +232,37 @@ public class Stages extends TestBase {
 	}
 
 	public void navigateToStages() {
+
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 	}
 
-	public Stages VerifyStagesTabIsDisplayed(boolean navigateToStages) {
+	public void navigateNonMeasurableCreate() throws Throwable {
+
+		click(driver, hp.workflowDesign);
+		assertTrue(hp.masterParameterPage.isDisplayed());
+		click(driver, hp.nonMeasurableSetTab);
+		click(driver, addNonMeasurableSetButton);
+	}
+
+	public void navigateToStagesFromMeasurable() throws Throwable {
+
+		click(driver, hp.workflowDesign);
+		assertTrue(hp.masterParameterPage.isDisplayed());
+		click(driver, hp.nonMeasurableSetTab);
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("nonMeasurable", nonMeasurableText.getText());
+
+		click(driver, stagesTab);
+	}
+
+	public Stages VerifyStagesTabIsDisplayed(boolean navigateToStages, boolean navigateToStagesFromMeasurable)
+			throws Throwable {
 
 		if (navigateToStages) {
 			navigateToStages();
+		}
+		if (navigateToStagesFromMeasurable) {
+			navigateToStagesFromMeasurable();
 		}
 
 //		String stageListingPageUrl = "https://test.capture.autosherpas.com//en/stages/stages_list/";
@@ -401,14 +465,12 @@ public class Stages extends TestBase {
 		return this;
 
 	}
-	
-	
+
 	public static void clickMultipleTimes(WebElement element, int times, int retry) throws Throwable {
-        for (int i = 0; i < times; i++) {
-        	ClickUtilities.clickWithRetry(element, retry);
-        }
-    }
-	
+		for (int i = 0; i < times; i++) {
+			ClickUtilities.clickWithRetry(element, retry);
+		}
+	}
 
 	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
 
@@ -451,7 +513,18 @@ public class Stages extends TestBase {
 
 	}
 
-	public Stages addSection(int count) throws Throwable {
+	public final static String callLogStageView = "Call Log Stage View";
+	public final static String agencyValidation = "Agency Validation";
+	public final static String rejectedAuditForm = "Rejected Audit Form";
+	public final static String auditTheAuditor = "Audit the Auditor";
+	public final static String validationStatusReport = "Validation Status Report";
+
+	String[] allOptionsMeasurable = { callLogStageView, agencyValidation, rejectedAuditForm, auditTheAuditor,
+			validationStatusReport };
+
+	public Stages addSection(int count, boolean measurableRadio, boolean nonMeasurableRadio, String... optionNames)
+			throws Throwable {
+
 		for (int i = 1; i <= count; i++) {
 			// Use the appropriate index for the section's "Add" button (1 for the first, 2
 			// for the rest)
@@ -478,20 +551,182 @@ public class Stages extends TestBase {
 
 		int elementsToClick = Math.min(addedSections.size(), count);
 
-		// Iterate through the first 'elementsToClick' elements
-		addedSections.subList(0, elementsToClick).forEach(section -> {
+		// Iterate through the first 'elementsToClick' elements using a normal for loop
+		for (int i = 0; i < elementsToClick; i++) {
+			// Access each section from addedSections
+			WebElement section = addedSections.get(i);
+
+			wait.until(ExpectedConditions.visibilityOf(section));
+
 			if (section.isDisplayed() && section.isEnabled()) {
+
+				ClickUtilities.scrollToViewElement(section);
+
 				section.click();
-				
+
+				if (measurableRadio) {
+
+					measurableRadioButton.click();
+				}
+				if (nonMeasurableRadio) {
+
+					nonMeasurableRadioButton.click();
+
+					System.out.println(
+							"Non Measurable : " + PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
+
+				}
+
+				clickOnCheckBoxes(allOptionsMeasurable, "all");
+				clickOnCheckBoxes(allOptionsMeasurable, optionNames);
+
+				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select",
+						PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
+
 			} else {
 				System.out.println("Element not clickable or displayed: " + section.toString());
 			}
-		});
+		}
 
 		return this;
 	}
 
+	public void clickOnCheckBoxes(String[] allOptions, String... optionNames) {
+		// If 'all' is specified, click all checkboxes
+		if (optionNames.length == 1 && "all".equalsIgnoreCase(optionNames[0])) {
+			for (String option : allOptions) {
+				clickCheckBoxByLabel(option);
+			}
+		} else {
+			// Loop through the provided options and click the corresponding checkboxes
+			for (String optionName : optionNames) {
+				clickCheckBoxByLabel(optionName);
+			}
+		}
+	}
 
-//	#################################################################################################
+	private void clickCheckBoxByLabel(String labelText) {
+		try {
+			// Construct the dynamic XPath using the label text
+//			String dynamicXPath = "//label[text()='Show in " + labelText
+//					+ "']/preceding-sibling::input[@type='checkbox']";
+
+			String dynamicXPath = "//label[contains(text(),'" + labelText
+					+ "')]/preceding-sibling::input[@type='checkbox']";
+			WebElement checkBox = driver.findElement(By.xpath(dynamicXPath));
+
+			// Click the checkbox using the custom click method
+//			click(driver, checkBox);
+			checkBox.sendKeys(Keys.SPACE);
+		} catch (NoSuchElementException e) {
+			System.out.println("Checkbox for '" + labelText + "' not found.");
+		}
+	}
+
+	private void clickCheckToggleByLabel(String labelText) {
+		try {
+
+//			String dynamicXPath = "//label[contains(text(),'" + labelText
+//					+ "')]/preceding-sibling::input[@type='checkbox']";
+
+			String dynamicXPath = "//h7[contains(text(),'" + labelText + "')]/../..//input[@type='checkbox']";
+
+			WebElement toggleButton = driver.findElement(By.xpath(dynamicXPath));
+
+			// Click the toggleButton using the custom click method
+			click(driver, toggleButton);
+
+		} catch (NoSuchElementException e) {
+			System.out.println("Checkbox for '" + labelText + "' not found.");
+		}
+	}
+
+	public void clickOnToggleButton(String[] allOptions, String... optionNames) {
+		// If 'all' is specified, click all checkboxes
+		if (optionNames.length == 1 && "all".equalsIgnoreCase(optionNames[0])) {
+			for (String option : allOptions) {
+				clickCheckToggleByLabel(option);
+			}
+		} else {
+			// Loop through the provided options and click the corresponding checkboxes
+			for (String optionName : optionNames) {
+				clickCheckToggleByLabel(optionName);
+			}
+		}
+	}
+
+	// Actions
+	public final static String voiceCall = "Voice Call";
+	public final static String whatsAppCall = "WhatsApp Call";
+	public final static String recording = "Recording";
+	public final static String sms = "SMS";
+	public final static String email = "Email";
+	public final static String clickToCall = "Click to Call";
+	public final static String gsmGateway = "GSM Gateway";
+	public final static String audioPlayer = "Audio Player";
+	public final static String cloudPhone = "Cloud Phone";
+
+	// String array to store all variables
+	public final static String[] communicationOptions = { voiceCall, whatsAppCall, recording, sms, email, clickToCall,
+			gsmGateway, audioPlayer, cloudPhone };
+
+	public Stages actionSection(String... optionNames) {
+
+		clickOnCheckBoxes(communicationOptions, optionNames);
+
+		return this;
+	}
+
+	public final static String recordingRequired = "Recording Required";
+	public final static String evaluationRequired = "Evaluation Required";
+	public final static String openSample = "Open Sample";
+	public final static String showAuditScore = "Show Audit Score";
+	public final static String assignedTo = "Assigned To";
+	public final static String allowAutoFetch = "Allow Auto Fetch";
+	public final static String allowAutoFetchWithAllocation = "Allow Auto Fetch With Allocation";
+	public final static String allowQuestionMovement = "Allow Question Movement";
+	public final static String scheduler = "Scheduler";
+	public final static String enableTicketModule = "Enable Ticket Module";
+	public final static String captureLocation = "Capture Location";
+	public final static String showSkipAudit = "Show Skip Audit";
+	public final static String showDisposition = "Show Disposition";
+	public final static String showSmsHistory = "Show SMS History";
+	public final static String showWhatsappHistory = "Show Whatsapp History";
+	public final static String showEmailHistory = "Show Email History";
+	public final static String showInteractionHistory = "Show Interaction History";
+	public final static String showStageHistory = "Show Stage History";
+	public final static String previewPreviousStageHistory = "Preview Previous Stage History";
+	public final static String showUserDocuments = "Show User Documents";
+
+	// String array to store all variables
+	public final static String[] auditOptions = { recordingRequired, evaluationRequired, openSample, showAuditScore,
+			assignedTo, allowAutoFetch, allowAutoFetchWithAllocation, allowQuestionMovement, scheduler,
+			enableTicketModule, captureLocation, showSkipAudit, showDisposition, showSmsHistory, showWhatsappHistory,
+			showEmailHistory, showInteractionHistory, showStageHistory, previewPreviousStageHistory,
+			showUserDocuments };
+
+	public Stages actionSectionToggle() {
+
+		return this;
+	}
+
+	public Stages dispositionSection() {
+
+		ClickUtilities.scrollToViewElement(manualRadioButton);
+
+		click(driver, manualRadioButton);
+
+		return this;
+	}
+
+	public Stages saveAndConfirmation() {
+
+		click(driver, saveButton);
+		wait.until(ExpectedConditions.visibilityOf(confirmationMSG));
+		assertTrue(confirmationMSG.isDisplayed(), "confirmation masg is not displayed.");
+		click(driver, continueButton);
+		click(driver, leftArrowOrBackButton);
+		return this;
+	}
 
 }
