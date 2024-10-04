@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -766,18 +767,6 @@ public class MetaData extends TestBase {
 
 	public MetaData navigateToMetaData() throws Throwable {
 
-		String[] processValues = new String[3];
-		dataSet.fecthProcess_SubProces_SubSubProcess(processValues);
-
-		processValue = processValues[0];
-		subProcessValue = processValues[1];
-		subSubProcessValue = processValues[2];
-
-		// Assert whether dataSetTab Button is Displayed on the left Navigation Menu
-		assertTrue(dataSetTab.isDisplayed(), "dataSetTab is not Displayed");
-		dataSetTab.click();
-
-		dataSetValue = fetchDataSet.getText();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(metaDataTab.isDisplayed(), "metaDataTab is not Displayed");
@@ -793,6 +782,12 @@ public class MetaData extends TestBase {
 	}
 
 	public MetaData createNewMetaData(String metaData) throws Throwable {
+		
+		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		String dataSetText = PropertieFileUtil.getSingleTextFromPropertiesFile("dataSetName");
+		
 
 		click(driver, createMetaDataButton);
 
@@ -801,11 +796,11 @@ public class MetaData extends TestBase {
 
 		FieldVerificationUtils.verifyTextField(metaDataNameField, "Metadata Name", metaData, true, true, 1);
 
-		dataSet.processDropDownSelect(selectProcessDropDown, processValue)
-				.subProcessDropDownSelect(selectSubProcessDropDown, subProcessValue)
-				.subSubProcessDropDownSelect(selectSubSubProcessDropDown, subSubProcessValue);
+		dataSet.processDropDownSelect(selectProcessDropDown, process)
+				.subProcessDropDownSelect(selectSubProcessDropDown, subProcess)
+				.subSubProcessDropDownSelect(selectSubSubProcessDropDown, subSubProcess);
 
-		selectDataSet(selectDataSetDropDown, dataSetValue);
+		selectDataSet(selectDataSetDropDown, dataSetText);
 
 		return this;
 	}

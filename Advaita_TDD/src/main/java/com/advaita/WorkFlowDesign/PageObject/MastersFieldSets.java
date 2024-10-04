@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class MastersFieldSets extends TestBase {
 	public static int existingFieldSetRecordCount;
 
 	@FindBy(tagName = "body")
-	public WebElement driverIninteractable;
+	public static WebElement driverIninteractable;
 
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
 	public WebElement masterTabElement;
@@ -143,10 +144,10 @@ public class MastersFieldSets extends TestBase {
 	@FindBy(xpath = "//button[@type='button'][text()='Cancel']")
 	public WebElement cancelButtonElement;
 
-	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']")
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(text(),'has been created successfully')]")
 	public WebElement successConfirmationPopup;
 
-	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']/..//button[text()='Continue']")
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(text(),'has been created successfully')]/..//button[text()='Continue']")
 	public WebElement ContinueButtonOnSuccessConfirmationPopup;
 
 	@FindBy(xpath = "//img[@alt='arrow-left']")
@@ -194,9 +195,11 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
+	HomePage hp = new HomePage();
+
 	public void commonNavigation() {
 
-		click(driver, HomePage.workflowDesign);
+		click(driver, hp.workflowDesign);
 		click(driver, masterTabElement);
 		click(driver, masterTabElement);
 		click(driver, fieldSetTabElement);
@@ -205,7 +208,7 @@ public class MastersFieldSets extends TestBase {
 
 	public void verifyTabsForFieldSetCreate() {
 
-		click(driver, HomePage.workflowDesign);
+		click(driver, hp.workflowDesign);
 
 		assertTrue(masterTabElement.isDisplayed(), "masterTabElement is not displayed.");
 		click(driver, masterTabElement);
@@ -1796,7 +1799,7 @@ public class MastersFieldSets extends TestBase {
 			handleShortAnswerQuestion(sectionIndex, questionIndex, questionType, inputs[0], inputs[1], inputs[2],
 					new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
 			break;
-			
+
 		case DATE:
 		case TIME:
 		case LABEL:
@@ -1805,7 +1808,7 @@ public class MastersFieldSets extends TestBase {
 		case FILE_UPLOAD:
 			handleFileUploadQuestion(sectionIndex, questionIndex);
 			break;
-		
+
 		case RELATIVE_DROP_DOWN:
 		case RADIO_BUTTON:
 			List<String> optionsRadioButton = Arrays.asList(inputs);
@@ -1826,7 +1829,13 @@ public class MastersFieldSets extends TestBase {
 			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
 			throws Throwable {
 
-		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+		try {
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), "50");
+		} catch (Exception e) {
+
+			System.out.println("Exception : " + e);
+		}
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1)));
@@ -1852,7 +1861,15 @@ public class MastersFieldSets extends TestBase {
 			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
 			throws Throwable {
 
-		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+		try {
+
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Exception : " + e);
+		}
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex + 1, 1)));

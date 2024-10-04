@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.DynamicXpath;
 import com.advaita.Utilities.Pagination;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.Utilities.SendDataUtils;
 
@@ -218,11 +220,13 @@ public class DataSet extends TestBase {
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
+	
+	HomePage hp = new HomePage();
 
 	public void createDataSet(String type) throws Throwable {
 
 		// Faker faker = new Faker();
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
@@ -609,7 +613,7 @@ public class DataSet extends TestBase {
 	}
 
 	public DataSet fecthProcess_SubProces_SubSubProcess(String[] processValues) throws Throwable {
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
@@ -624,7 +628,7 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
-	public DataSet createNewDataSet(String dataSetName) {
+	public DataSet createNewDataSet(String dataSetName) throws Throwable {
 
 		click(driver, createDataSetButton);
 
@@ -632,6 +636,10 @@ public class DataSet extends TestBase {
 		assertTrue(createDataSetPupup.isDisplayed());
 
 		verifyDataSetNameField(dataSetName);
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("process", processValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subProcessValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", subSubProcessValue);
 
 		processDropDownSelect(processDropDown, processValue)
 				.subProcessDropDownSelect(subProcessDropDown, subProcessValue)
@@ -679,6 +687,8 @@ public class DataSet extends TestBase {
 		assertTrue(processDropDown.isDisplayed());
 		Select select = new Select(processDropDown);
 		select.selectByVisibleText(processValue);
+		
+		
 
 		return this;
 	}

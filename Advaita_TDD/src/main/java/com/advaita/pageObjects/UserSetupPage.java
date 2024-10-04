@@ -832,7 +832,8 @@ public static WebElement AddRow;
 			if (usernameToDoAction.equals(usernameColumn.getText()) ) {
 				System.out.println( usernameColumn.getText());
 				WebElement UserMappingBtn= row.findElement(By.cssSelector("img[title='User Mapping']"));
-				UserMappingBtn.click();
+//				UserMappingBtn.click();
+				jsClick(driver, UserMappingBtn);
 				break;
 			}
 

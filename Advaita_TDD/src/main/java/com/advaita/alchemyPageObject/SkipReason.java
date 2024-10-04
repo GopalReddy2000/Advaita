@@ -1303,7 +1303,7 @@ public class SkipReason extends TestBase {
 	public void searchThroughEmojisInSearchTextfieldUTILITY(WebElement seachtextfieldElement, String emoji,
 			WebElement searchButtonTableElement) {
 
-		SendDataUtils.sendKeysWithJSExecutor(seachtextfieldElement, emoji, driver); //use for send "emojis"
+		SendDataUtils.sendKeysWithJSExecutor(seachtextfieldElement, emoji); //use for send "emojis"
 
 		assertTrue(searchButtonTableElement.isDisplayed(), "searchButton_table is not displayed");
 		searchButtonTableElement.click();

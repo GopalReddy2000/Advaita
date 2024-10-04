@@ -160,7 +160,7 @@ public class TestSmstemplateCreate extends TestBase {
 
 	public void verifyAddFormFieldSetInCreateFieldSet() throws Throwable {
 
-		HomePage.clickOnDisposition();
+		homePage.clickOnDisposition();
 
 		String questionSetNameString = "Employee Status";
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
