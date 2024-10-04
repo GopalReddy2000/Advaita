@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 public class PropertieFileUtil {
@@ -55,49 +57,57 @@ public class PropertieFileUtil {
 	}
 
 	public static String getTextFromPropertiesFile(String tagKey) throws IOException {
-		Properties properties = new Properties();
+	    Properties properties = new Properties();
 
-		// Load the properties file
-		try (InputStream input = PropertieFileUtil.class.getClassLoader()
-				.getResourceAsStream("ProcessText.properties")) {
-			if (input == null) {
-				System.out.println("Sorry, unable to find properties file.");
-				return null; // Return null if the file is not found
-			}
-			properties.load(input);
-		}
+	    // Load the properties file
+	    try (InputStream input = PropertieFileUtil.class.getClassLoader()
+	            .getResourceAsStream("ProcessText.properties")) {
+	        if (input == null) {
+	            System.out.println("Sorry, unable to find properties file.");
+	            return null; // Return null if the file is not found
+	        }
+	        properties.load(input);
+	    }
 
-		// Retrieve the specific tag value based on the provided key
-		String tagText = properties.getProperty(tagKey);
-		if (tagText != null) {
-			return tagText; // Return the value if found
-		} else {
-			System.out.println("Process with key '" + tagKey + "' not found in properties file.");
-			return null; // Return null if the key is not found
-		}
+	    // Retrieve the specific tag value based on the provided key (case-insensitive)
+	    for (String key : properties.stringPropertyNames()) {
+	        if (key.equalsIgnoreCase(tagKey)) {
+	            return properties.getProperty(key); // Return the value if found
+	        }
+	    }
+
+	    System.out.println("Process with key '" + tagKey + "' not found in properties file.");
+	    return null; // Return null if the key is not found
 	}
 
-	public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
-		Properties properties = new Properties();
 
-		// Load the properties file
-		try (InputStream input = PropertieFileUtil.class.getClassLoader()
-				.getResourceAsStream("SingleTextExtract.properties")) {
-			if (input == null) {
-				System.out.println("Sorry, unable to find properties file.");
-				return null; // Return null if the file is not found
-			}
-			properties.load(input);
-		}
+	 public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
+	        Properties properties = new Properties();
+	        Map<String, String> lowerCaseProperties = new HashMap<>();
 
-		// Retrieve the specific tag value based on the provided key
-		String tagText = properties.getProperty(tagKey);
-		if (tagText != null) {
-			return tagText; // Return the value if found
-		} else {
-			System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
-			return null; // Return null if the key is not found
-		}
-	}
+	        // Load the properties file
+	        try (InputStream input = PropertieFileUtil.class.getClassLoader()
+	                .getResourceAsStream("SingleTextExtract.properties")) {
+	            if (input == null) {
+	                System.out.println("Sorry, unable to find properties file.");
+	                return null; // Return null if the file is not found
+	            }
+	            properties.load(input);
+
+	            // Store properties in a Map with lowercase keys
+	            for (String key : properties.stringPropertyNames()) {
+	                lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
+	            }
+	        }
+
+	        // Retrieve the specific tag value based on the provided key (case insensitive)
+	        String tagText = lowerCaseProperties.get(tagKey.toLowerCase());
+	        if (tagText != null) {
+	            return tagText; // Return the value if found
+	        } else {
+	            System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
+	            return null; // Return null if the key is not found
+	        }
+	    }
 
 }

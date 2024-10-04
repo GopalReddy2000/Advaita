@@ -828,7 +828,8 @@ public class UserSetupPage extends TestBase {
 			if (usernameToDoAction.equals(usernameColumn.getText()) ) {
 				System.out.println( usernameColumn.getText());
 				WebElement UserMappingBtn= row.findElement(By.cssSelector("img[title='User Mapping']"));
-				UserMappingBtn.click();
+//				UserMappingBtn.click();
+				jsClick(driver, UserMappingBtn);
 				break;
 			}
 
@@ -874,14 +875,20 @@ public class UserSetupPage extends TestBase {
 		DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select", ProcessName);
 //		selectByVisibleText(UMProcessNameDropdown, ProcessName);
 
-		dropdownValidation(UMSubProcessNameDropdown);
-		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
+//		dropdownValidation(UMSubProcessNameDropdown);
+		wait.until(ExpectedConditions.visibilityOf(UMSubProcessNameDropdown));
+		DropDown.dropdownWithAllPosibleValidation(UMSubProcessNameDropdown, "Select", SubProcessName);
+//		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
 
-		dropdownValidation(UMSubSubProcessNameDropdown);
-		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+//		dropdownValidation(UMSubSubProcessNameDropdown);
+//		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+		wait.until(ExpectedConditions.visibilityOf(UMSubSubProcessNameDropdown));
+		DropDown.dropdownWithAllPosibleValidation(UMSubSubProcessNameDropdown, "Select", SubSubProcess);
 
-		dropdownValidation(UMStageNameDropdown);
-		selectByVisibleText(UMStageNameDropdown, Stages);
+//		dropdownValidation(UMStageNameDropdown);
+//		selectByVisibleText(UMStageNameDropdown, Stages);
+		wait.until(ExpectedConditions.visibilityOf(UMStageNameDropdown));
+		DropDown.dropdownWithAllPosibleValidation(UMStageNameDropdown, "Select", Stages);
 
 		UMSaveButton.click();
 		unWait(1);

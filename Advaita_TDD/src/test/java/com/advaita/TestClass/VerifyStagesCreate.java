@@ -117,7 +117,7 @@ public class VerifyStagesCreate extends TestBase {
 	@Test(priority = 5)
 	public void VerifyStagesTabIsDisplayed() throws Throwable {
 		test = reports.createTest("VerifyStagesTabIsDisplayed");
-		stages.VerifyStagesTabIsDisplayed(false,true);
+		stages.verifyStagesTabIsDisplayed(false,true);
 	}
 
 	@Test(priority = 6)

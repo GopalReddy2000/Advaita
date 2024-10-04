@@ -36,5 +36,13 @@ public class DynamicXpath extends TestBase {
 		String xpath = String.format("//select[@name='form-%d-ds_is_mandatory']", dataSetMandatoryDropDownIndex);
 		return driver.findElement(By.xpath(xpath));
 	}
+	
+	
+//Example for String
+	
+	
+	String someString = "gdsusdy";
+	String xpath = String.format("//select[@name='form-%s-ds_field_type']", someString);
+	
 
 }

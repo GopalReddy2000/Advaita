@@ -1230,6 +1230,8 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
+		
+		click(driver, backButton);
 	}
 
 	public void verifyNumberFieldInCreateFieldSet() throws Throwable {

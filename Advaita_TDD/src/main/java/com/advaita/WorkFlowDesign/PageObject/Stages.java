@@ -4,13 +4,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -24,6 +22,7 @@ import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
+import com.advaita.Utilities.SendDataUtils;
 
 public class Stages extends TestBase {
 
@@ -178,11 +177,20 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Stage has been created successfully']")
 	public WebElement confirmationMSG;
 
-	@FindBy(xpath = "//span[normalize-space()='Stage has been created successfully']/..//button[normalize-space()='Continue']")
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Stage has been Deleted successfully']")
+	public WebElement deleteConfirmationMSG;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//button[normalize-space()='Continue']")
 	public WebElement continueButton;
 
 	@FindBy(xpath = "//img[@class='arrow-left']")
 	public WebElement leftArrowOrBackButton;
+
+	@FindBy(id = "text_search")
+	public WebElement searchBar;
+
+	@FindBy(xpath = "//button[contains(@class,'filter_search')]/img")
+	public WebElement searchButton;
 
 	public Stages() {
 		PageFactory.initElements(driver, this);
@@ -255,7 +263,7 @@ public class Stages extends TestBase {
 		click(driver, stagesTab);
 	}
 
-	public Stages VerifyStagesTabIsDisplayed(boolean navigateToStages, boolean navigateToStagesFromMeasurable)
+	public Stages verifyStagesTabIsDisplayed(boolean navigateToStages, boolean navigateToStagesFromMeasurable)
 			throws Throwable {
 
 		if (navigateToStages) {
@@ -301,6 +309,13 @@ public class Stages extends TestBase {
 		stageNameTextBoxElement.clear();
 		stageNameTextBoxElement.sendKeys(StageName);
 
+		return this;
+	}
+
+	public Stages verifyStageSelectAllProcessDropDown() throws Throwable {
+
+		verifyStageSelectProcessDropDown().verifyStageSelectSubProcessDropDown()
+				.verifyStageSelectSubSubProcessDropDown();
 		return this;
 	}
 
@@ -396,12 +411,12 @@ public class Stages extends TestBase {
 
 		assertTrue(
 				DropDown.isTextPresentInDropDown(selectMetaDatDropDownElement,
-						PropertieFileUtil.getTextFromPropertiesFile("metaDataText")),
+						PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
 				"fetched meta data is not present in meta data drop down.");
 
 		Select select = new Select(selectMetaDatDropDownElement);
 
-		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("metaDataText"));
+		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
 
 		List<WebElement> checkBoxElements = wait.until(
 				ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
@@ -422,7 +437,7 @@ public class Stages extends TestBase {
 
 		assertTrue(
 				DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
-						PropertieFileUtil.getTextFromPropertiesFile("metaDataText")),
+						PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
 				"fetched meta data is not present in meta data drop down.");
 
 		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
@@ -433,84 +448,94 @@ public class Stages extends TestBase {
 	}
 
 	public void verifySectionB() {
-
 		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
-		assertTrue(sectionB_ExpantionPanel.isDisplayed(), "sectionB_ExpantionPanel is not displayed.");
-		assertTrue(addBlocksElement.isDisplayed(), "addBlocksElement is not displayed.");
-
+		assertTrue(sectionB_ExpantionPanel.isDisplayed(), "Section B panel is not displayed.");
+		assertTrue(addBlocksElement.isDisplayed(), "Add blocks element is not displayed.");
 	}
 
-	public Stages verifyAddBlockInSectionB(int count) throws Throwable {
-
+	public Stages verifyAddAndRemoveBlockInSectionB(int count) throws Throwable {
 		verifySectionB();
-
-		for (int i = 1; i <= count; i++) {
-
-			ClickUtilities.clickWithRetry(addBlocksButtonElement, 2);
-		}
-
-		int n = 0;
-		for (WebElement a : addedBlocksElement) {
-
-			System.out.println(a.getText());
-			n++;
-		}
-		assertEquals(n, count + 1);
-
-		for (int i = 1; i <= count; i++) {
-
-			ClickUtilities.clickWithRetry(removeBlocksButtonElement, 2);
-		}
-
+		clickMultipleTimes(addBlocksButtonElement, count);
+		assertEquals(addedBlocksElement.size(), count + 1, "Block count mismatch.");
+		clickMultipleTimes(removeBlocksButtonElement, count);
 		return this;
-
 	}
 
-	public static void clickMultipleTimes(WebElement element, int times, int retry) throws Throwable {
+	private void clickMultipleTimes(WebElement element, int times) throws Throwable {
 		for (int i = 0; i < times; i++) {
-			ClickUtilities.clickWithRetry(element, retry);
+			ClickUtilities.clickWithRetry(element, 2);
 		}
 	}
+
+//	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
+//
+//		for (int i = 1; i < count; i++) {
+//
+//			ClickUtilities.clickWithRetry(addBlocksButtonElement, 2);
+//		}
+//
+//		List<WebElement> addButtonInSectionB = driver.findElements(By.xpath(
+//				"//div[contains((@class),('sectionA-addfile block-name section_Bblock'))]//h6[normalize-space()='Please Add Some Meta Data']/..//a[normalize-space()='Add']"));
+//
+//		for (WebElement addButton : addButtonInSectionB) {
+//
+//			js.executeScript("arguments[0].scrollIntoView(true);", addButton);
+//			ClickUtilities.clickWithRetry(addButton, 2);
+//
+//			Select select = new Select(blockNameMetaDataDropDown);
+//
+//			List<WebElement> options = select.getOptions();
+//			for (WebElement option : options) {
+//				String optionText = option.getText();
+//				System.out.println(optionText);
+//			}
+//
+//			select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("metaDataText"));
+//
+//			List<WebElement> checkBoxElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+//					By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
+//
+//			for (int i = 0; i < checkBoxElements.size(); i++) {
+//				WebElement element = checkBoxElements.get(i);
+//				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+//			}
+//
+//			sectionBAddButton.click();
+//
+//		}
+//
+//		return this;
+//
+//	}
 
 	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
+		clickMultipleTimes(addBlocksButtonElement, count - 1);
 
-		for (int i = 1; i <= count; i++) {
+		List<WebElement> addButtons = driver.findElements(By.xpath(
+				"//div[contains(@class, 'sectionA-addfile block-name section_Bblock')]//h6[normalize-space()='Please Add Some Meta Data']"
+						+ "/..//a[normalize-space()='Add']"));
 
-			ClickUtilities.clickWithRetry(addBlocksButtonElement, 2);
-		}
+		for (WebElement addButton : addButtons) {
 
-		List<WebElement> addButtonInSectionB = driver.findElements(By.xpath(
-				"//div[contains((@class),('sectionA-addfile block-name section_Bblock'))]//h6[normalize-space()='Please Add Some Meta Data']/..//a[normalize-space()='Add']"));
-
-		for (WebElement addButton : addButtonInSectionB) {
-
-			js.executeScript("arguments[0].scrollIntoView(true);", addButton);
+			ClickUtilities.scrollToViewElement(addButton);
+//			wait.until(ExpectedConditions.visibilityOf(addButton));
 			ClickUtilities.clickWithRetry(addButton, 2);
 
 			Select select = new Select(blockNameMetaDataDropDown);
 
-			List<WebElement> options = select.getOptions();
-			for (WebElement option : options) {
-				String optionText = option.getText();
-				System.out.println(optionText);
-			}
+//	        List<WebElement> options = select.getOptions();
+			wait.until(ExpectedConditions.visibilityOfAllElements(select.getOptions()));
 
-			select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("metaDataText"));
+			select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
 
-			List<WebElement> checkBoxElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+			List<WebElement> checkBoxes = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 					By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
 
-			for (int i = 0; i < checkBoxElements.size(); i++) {
-				WebElement element = checkBoxElements.get(i);
-				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
-			}
+			checkBoxes.forEach(box -> wait.until(ExpectedConditions.elementToBeClickable(box)).click());
 
 			sectionBAddButton.click();
-
 		}
-
 		return this;
-
 	}
 
 	public final static String callLogStageView = "Call Log Stage View";
@@ -562,7 +587,8 @@ public class Stages extends TestBase {
 
 				ClickUtilities.scrollToViewElement(section);
 
-				section.click();
+				jsClick(driver, section);
+//				section.click();
 
 				if (measurableRadio) {
 
@@ -570,7 +596,9 @@ public class Stages extends TestBase {
 				}
 				if (nonMeasurableRadio) {
 
-					nonMeasurableRadioButton.click();
+					wait.until(ExpectedConditions.visibilityOf(nonMeasurableRadioButton));
+//					ClickUtilities.clickWithRetry(nonMeasurableRadioButton, 3);
+					jsClick(driver, nonMeasurableRadioButton);
 
 					System.out.println(
 							"Non Measurable : " + PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
@@ -623,34 +651,46 @@ public class Stages extends TestBase {
 		}
 	}
 
-	private void clickCheckToggleByLabel(String labelText) {
+	private void clickCheckToggleByLabel(String labelText, boolean clickOnlyIfSelected) {
 		try {
-
-//			String dynamicXPath = "//label[contains(text(),'" + labelText
-//					+ "')]/preceding-sibling::input[@type='checkbox']";
-
+			// Construct dynamic XPath to locate the checkbox toggle button based on label
+			// text
 			String dynamicXPath = "//h7[contains(text(),'" + labelText + "')]/../..//input[@type='checkbox']";
 
+			// Locate the toggle button element
 			WebElement toggleButton = driver.findElement(By.xpath(dynamicXPath));
 
-			// Click the toggleButton using the custom click method
-			click(driver, toggleButton);
+			if (clickOnlyIfSelected) {
+				// Dynamic execution: Only click if the toggle button is selected
+				if (toggleButton.isSelected()) {
+					System.out.println("Toggle button is currently ON. Clicking to turn it OFF.");
+					jsClick(driver, toggleButton);
+				} else {
+					System.out.println("Toggle button is already OFF. No need to click.");
+				}
+			} else {
+				// Normal execution: Click regardless of the current state
+				System.out.println("Clicking toggle button regardless of its current state.");
+				jsClick(driver, toggleButton);
+			}
 
 		} catch (NoSuchElementException e) {
+			// Handle the case when the checkbox is not found
 			System.out.println("Checkbox for '" + labelText + "' not found.");
 		}
 	}
 
-	public void clickOnToggleButton(String[] allOptions, String... optionNames) {
+	public void clickOnToggleButton(boolean clickOnlyIfSelected, String[] allOptions, String... optionNames) {
 		// If 'all' is specified, click all checkboxes
 		if (optionNames.length == 1 && "all".equalsIgnoreCase(optionNames[0])) {
+
 			for (String option : allOptions) {
-				clickCheckToggleByLabel(option);
+				clickCheckToggleByLabel(option, clickOnlyIfSelected);
 			}
 		} else {
 			// Loop through the provided options and click the corresponding checkboxes
 			for (String optionName : optionNames) {
-				clickCheckToggleByLabel(optionName);
+				clickCheckToggleByLabel(optionName, clickOnlyIfSelected);
 			}
 		}
 	}
@@ -705,7 +745,10 @@ public class Stages extends TestBase {
 			showEmailHistory, showInteractionHistory, showStageHistory, previewPreviousStageHistory,
 			showUserDocuments };
 
-	public Stages actionSectionToggle() {
+	public Stages actionSectionToggle(String... optionNames) {
+
+		clickOnToggleButton(true, auditOptions, "all");
+		clickOnToggleButton(false, auditOptions, optionNames);
 
 		return this;
 	}
@@ -726,6 +769,31 @@ public class Stages extends TestBase {
 		assertTrue(confirmationMSG.isDisplayed(), "confirmation masg is not displayed.");
 		click(driver, continueButton);
 		click(driver, leftArrowOrBackButton);
+		return this;
+	}
+
+	public Stages deleteAndConfirmation(String stageName) {
+		String createdStageDeleteXPath = "//tr[@class='Question-set']/td/a[normalize-space()='" + stageName
+				+ "']/../../td[6]//img[contains(@alt,'delete-icon')]";
+		WebElement createdStageDeleteButton = driver.findElement(By.xpath(createdStageDeleteXPath));
+
+		assertTrue(createdStageDeleteButton.isDisplayed(), "createdStageDeleteButton is not displayed.");
+		click(driver, createdStageDeleteButton);
+		click(driver, driver.findElement(By.xpath("//button[@type='submit'][text()='Delete']")));
+
+		wait.until(ExpectedConditions.visibilityOf(deleteConfirmationMSG));
+		assertTrue(deleteConfirmationMSG.isDisplayed(), "delete Confirmation masg is not displayed.");
+		click(driver, continueButton);
+		return this;
+	}
+
+	public Stages searchAndDeleteCreatedStage(String stageName) {
+
+		SendDataUtils.clearAndSendKeys(searchBar, stageName);
+		searchButton.click();
+
+		deleteAndConfirmation(stageName);
+
 		return this;
 	}
 

@@ -41,7 +41,7 @@ public class SendDataUtils extends TestBase {
 	}
 	
 //	ElementUtils.sendKeysWithJSExecutor(passwordInput, "password123", driver);
-	public static void sendKeysWithJSExecutor(WebElement element, String text, WebDriver driver) {
+	public static void sendKeysWithJSExecutor(WebElement element, String text) {
 	    js.executeScript("arguments[0].value='" + text + "';", element);
 	}
 
