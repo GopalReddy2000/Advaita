@@ -81,6 +81,8 @@ public class DataSetUpEndToEnd extends TestBase {
 	final String manualUploadName = employeeName + " Details Upload";
 	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
+	
+	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
 	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
@@ -103,7 +105,7 @@ public class DataSetUpEndToEnd extends TestBase {
 	public void verifynewCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifynewCreateMetaData");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
 				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
@@ -115,7 +117,7 @@ public class DataSetUpEndToEnd extends TestBase {
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
 				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)

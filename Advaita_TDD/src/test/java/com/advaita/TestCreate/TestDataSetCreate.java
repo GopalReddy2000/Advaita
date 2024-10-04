@@ -76,6 +76,8 @@ public class TestDataSetCreate extends TestBase {
 		dataset = new DataSet();
 
 	}
+	
+	HomePage hp = new HomePage();
 
 //	@Test(priority = 1)
 //	public void verifyCreateDataset() throws Throwable {
@@ -90,14 +92,13 @@ public class TestDataSetCreate extends TestBase {
 	@Test(priority = 2)
 	public void verifyManualCreateNewDataset() throws Throwable {
 		test = reports.createTest("verifyCreateNewDataset");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		final String dataSetName = "Emplyee Details";
 		// Data for multiple rows
 		List<Map<String, String>> fieldData = List.of(
 				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
 				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
-				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"),
 				Map.of("FieldName", "Employee Status ?", "Type", "Boolean", "MaxLength", "20", "IsMandatory", "No"));
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();
@@ -107,7 +108,7 @@ public class TestDataSetCreate extends TestBase {
 	@Test(priority = 3)
 	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		final String dataSetName = "Employee Details";
 		// Get all questions
@@ -125,7 +126,7 @@ public class TestDataSetCreate extends TestBase {
 	@Test(priority = 4)
 	public void verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType() throws Throwable {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithOutSpecifyingType");
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		final String dataSetName = "Customer Details";
 		// Get all questions

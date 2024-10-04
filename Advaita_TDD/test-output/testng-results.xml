@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-09-11T12:22:06 IST" name="Default suite" finished-at="2024-09-11T12:22:52 IST" duration-ms="46430">
+  <suite started-at="2024-10-04T11:40:49 IST" name="Default suite" finished-at="2024-10-04T11:41:15 IST" duration-ms="26640">
     <groups>
     </groups>
-    <test started-at="2024-09-11T12:22:06 IST" name="Default test" finished-at="2024-09-11T12:22:52 IST" duration-ms="46430">
-      <class name="com.advaita.TestCreate.TestMasterFieldsSetCreate">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:06 IST" name="setUp" finished-at="2024-09-11T12:22:15 IST" duration-ms="9421" status="PASS">
+    <test started-at="2024-10-04T11:40:49 IST" name="Default test" finished-at="2024-10-04T11:41:15 IST" duration-ms="26640">
+      <class name="com.advaita.TestCreate.TestManualAllocation">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:40:49 IST" name="setUp" finished-at="2024-10-04T11:40:59 IST" duration-ms="10040" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyAddMultipleFieldSetQuestions()[pri:17, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:15 IST" name="verifyAddMultipleFieldSetQuestions" finished-at="2024-09-11T12:22:51 IST" duration-ms="36029" status="PASS">
+        <test-method signature="verifyManualAllocationNavigation()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:40:59 IST" name="verifyManualAllocationNavigation" finished-at="2024-10-04T11:41:00 IST" duration-ms="1352" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyAddMultipleFieldSetQuestions -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:51 IST" name="getResult" finished-at="2024-09-11T12:22:52 IST" duration-ms="866" status="PASS">
+        </test-method> <!-- verifyManualAllocationNavigation -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:00 IST" name="getResult" finished-at="2024-10-04T11:41:01 IST" duration-ms="633" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyAddMultipleFieldSetQuestions status=SUCCESS method=TestMasterFieldsSetCreate.verifyAddMultipleFieldSetQuestions()[pri:17, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581] output={null}]]]>
+                <![CDATA[[TestResult name=verifyManualAllocationNavigation status=SUCCESS method=TestManualAllocation.verifyManualAllocationNavigation()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestMasterFieldsSetCreate@3d64c581]" started-at="2024-09-11T12:22:52 IST" name="tearDown" finished-at="2024-09-11T12:22:52 IST" duration-ms="21" status="PASS">
+        <test-method signature="verifyAllocationMethodToogleButton()[pri:7, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:01 IST" name="verifyAllocationMethodToogleButton" finished-at="2024-10-04T11:41:01 IST" duration-ms="227" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAllocationMethodToogleButton -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:01 IST" name="getResult" finished-at="2024-10-04T11:41:01 IST" duration-ms="17" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAllocationMethodToogleButton status=SUCCESS method=TestManualAllocation.verifyAllocationMethodToogleButton()[pri:7, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifySelectProcess_subProcess_SubSubProcessDropdown()[pri:8, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:01 IST" name="verifySelectProcess_subProcess_SubSubProcessDropdown" finished-at="2024-10-04T11:41:15 IST" duration-ms="14214" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifySelectProcess_subProcess_SubSubProcessDropdown -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:15 IST" name="getResult" finished-at="2024-10-04T11:41:15 IST" duration-ms="38" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifySelectProcess_subProcess_SubSubProcessDropdown status=SUCCESS method=TestManualAllocation.verifySelectProcess_subProcess_SubSubProcessDropdown()[pri:8, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@640f11a1]" started-at="2024-10-04T11:41:15 IST" name="tearDown" finished-at="2024-10-04T11:41:15 IST" duration-ms="32" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->
+      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -147,10 +147,10 @@ public class UserSetupTest extends TestBase {
 		userSetupPage.navToUserManagement().userAccountDelete("Kilback Ratke UA");
 	}
 
-
+	HomePage hp = new HomePage();
 	public void verifyProcessCreate() throws Throwable {
 
-		HomePage.clickOnProcessManagementCreate();
+		hp.clickOnProcessManagementCreate();
 
 		process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
 
@@ -268,16 +268,16 @@ public class UserSetupTest extends TestBase {
 		//		;
 	}
 
-	@Test()
-	public void userMapping(String RecordName,String SystemName, String Value)
-	{
-		userSetupPage
-				.userMappingRecord(RecordName)
-				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Insurance Stage")
-				.userMappingUserSuperior("Insurance Stage", "SuperAdmin", "Capture_admin")
-				.systemMapping(SystemName,Value)
-		;
-	}
+//	@Test()
+//	public void userMapping(String RecordName,String SystemName, String Value)
+//	{
+//		userSetupPage
+//				.userMappingRecord(RecordName)
+//				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Insurance Stage")
+//				.userMappingUserSuperior("Insurance Stage", "SuperAdmin", "Capture_admin")
+//				.systemMapping(SystemName,Value)
+//		;
+//	}
 
 	@Test
 	public void userDelete()

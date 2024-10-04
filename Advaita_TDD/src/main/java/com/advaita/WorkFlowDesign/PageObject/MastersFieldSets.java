@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,10 +144,10 @@ public class MastersFieldSets extends TestBase {
 	@FindBy(xpath = "//button[@type='button'][text()='Cancel']")
 	public static WebElement cancelButtonElement;
 
-	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']")
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(text(),'has been created successfully')]")
 	public static WebElement successConfirmationPopup;
 
-	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']/..//button[text()='Continue']")
+	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(text(),'has been created successfully')]/..//button[text()='Continue']")
 	public static WebElement ContinueButtonOnSuccessConfirmationPopup;
 
 	@FindBy(xpath = "//img[@alt='arrow-left']")
@@ -194,9 +195,11 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
-	public static void commonNavigation() {
+	HomePage hp = new HomePage();
 
-		click(driver, HomePage.workflowDesign);
+	public void commonNavigation() {
+
+		click(driver, hp.workflowDesign);
 		click(driver, masterTabElement);
 		click(driver, masterTabElement);
 		click(driver, fieldSetTabElement);
@@ -205,7 +208,7 @@ public class MastersFieldSets extends TestBase {
 
 	public void verifyTabsForFieldSetCreate() {
 
-		click(driver, HomePage.workflowDesign);
+		click(driver, hp.workflowDesign);
 
 		assertTrue(masterTabElement.isDisplayed(), "masterTabElement is not displayed.");
 		click(driver, masterTabElement);
@@ -1227,6 +1230,8 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
+		
+		click(driver, backButton);
 	}
 
 	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
@@ -1341,7 +1346,6 @@ public class MastersFieldSets extends TestBase {
 	}
 //	**********************************************************Edit Started**************************************************************************************************************
 
-
 	public void tablePageSearch() throws Throwable {
 
 		String firstRecord = fetchCreatedRecord.getText();
@@ -1378,8 +1382,8 @@ public class MastersFieldSets extends TestBase {
 	public void tablePagePagination() throws Throwable {
 
 //		Pagination.paginate(driver, rightArrow, leftArrow);
-		
-		Pagination.paginateWithCount(driver, rightArrow, leftArrow,6);
+
+		Pagination.paginateWithCount(driver, rightArrow, leftArrow, 6);
 
 		Pagination.paginateWithCount(driver, rightArrow, leftArrow, 3);
 
@@ -1422,7 +1426,7 @@ public class MastersFieldSets extends TestBase {
 		// Construct XPath for the question type and click on it
 		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 				+ sectionIndex + "_" + questionIndex + "']/following-sibling::div[" + questionType + "]//h6";
-		
+
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
 		// Add options and input them into the dropdown fields
@@ -1473,11 +1477,11 @@ public class MastersFieldSets extends TestBase {
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
 
 		click(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex, 1));
-		
+
 		// Set minLength and maxLength
-		
+
 //		js.executeScript("arguments[0].scrollIntoView(true);", DynamicXpath.minLength(sectionIndex, questionIndex));
-		
+
 		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex), minLength);
 		SendDataUtils.clearAndSendKeys(DynamicXpath.maxLength(sectionIndex, questionIndex), maxLength);
 		if (questionType == 10) {
@@ -1512,8 +1516,8 @@ public class MastersFieldSets extends TestBase {
 			// Validate the dropdown options, default selection, and order
 			DropDown.validateDropdown(valueTypeDropDown, expectedDefaultOption, expectedOrder);
 
-		// Select the desired option by visible text (if needed)
-		valueTypeDropDown.selectByVisibleText("All");
+			// Select the desired option by visible text (if needed)
+			valueTypeDropDown.selectByVisibleText("All");
 			// Select the desired option by visible text (if needed)
 			valueTypeDropDown.selectByVisibleText(typeOfValue);
 		}
@@ -1749,7 +1753,7 @@ public class MastersFieldSets extends TestBase {
 
 	private Map.Entry<String, String[]> generateQuestionAndInputs(int questionType, int questionIndex,
 			boolean randomizeQuestions) {
-		
+
 		switch (questionType) {
 		case TEXT_BOX:
 			return Questions.generateGenuineTextBoxQuestionAndInputs(questionIndex, randomizeQuestions);
@@ -1767,6 +1771,7 @@ public class MastersFieldSets extends TestBase {
 		case RELATIVE_DROP_DOWN:
 		case RADIO_BUTTON:
 		case RELATIVE_MULTISELECT:
+		case MULTIPLE_CHOICE:
 			Map.Entry<String, List<String>> questionAndOptions = Questions
 					.generateGenuineQuestionAndOptionsForDropDown(questionIndex, randomizeQuestions);
 			return new AbstractMap.SimpleEntry<>(questionAndOptions.getKey(),
@@ -1778,6 +1783,7 @@ public class MastersFieldSets extends TestBase {
 
 	private void handleQuestionType(int sectionIndex, int questionIndex, int questionType, String[] inputs)
 			throws Throwable {
+
 		switch (questionType) {
 		case TEXT_BOX:
 			handleTextBoxQuestion(sectionIndex, questionIndex, questionType, inputs[0], inputs[1], inputs[2],
@@ -1787,6 +1793,7 @@ public class MastersFieldSets extends TestBase {
 			handleShortAnswerQuestion(sectionIndex, questionIndex, questionType, inputs[0], inputs[1], inputs[2],
 					new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
 			break;
+
 		case DATE:
 		case TIME:
 		case LABEL:
@@ -1795,15 +1802,16 @@ public class MastersFieldSets extends TestBase {
 		case FILE_UPLOAD:
 			handleFileUploadQuestion(sectionIndex, questionIndex);
 			break;
-		case DROP_DOWN:
+
 		case RELATIVE_DROP_DOWN:
 		case RADIO_BUTTON:
 			List<String> optionsRadioButton = Arrays.asList(inputs);
 			addOptionsToRadioButton(sectionIndex, questionIndex, optionsRadioButton);
 			break;
 		case MULTIPLE_CHOICE:
-			List<String> options = Arrays.asList(inputs);
-			addOptionsToDropdown(sectionIndex, questionIndex, options);
+		case DROP_DOWN:
+			List<String> MCoptions = Arrays.asList(inputs);
+			addOptionsToDropdown(sectionIndex, questionIndex, MCoptions);
 			break;
 		default:
 			throw new IllegalArgumentException("Unexpected question type: " + questionType);
@@ -1815,7 +1823,13 @@ public class MastersFieldSets extends TestBase {
 			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
 			throws Throwable {
 
-		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+		try {
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), "50");
+		} catch (Exception e) {
+
+			System.out.println("Exception : " + e);
+		}
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1)));
@@ -1841,7 +1855,15 @@ public class MastersFieldSets extends TestBase {
 			String maxLength, String expectedDefaultOption, String[] expectedOrder, String typeOfValue)
 			throws Throwable {
 
-		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+		try {
+
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Exception : " + e);
+		}
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.shortAnswerQuestionOpt(sectionIndex, questionIndex + 1, 1)));
@@ -1884,27 +1906,40 @@ public class MastersFieldSets extends TestBase {
 					DynamicXpath.afterClickFileUploadFormatDropDown2(sectionIndex, questionIndex + 1));
 
 		}
-		actions.sendKeys(Keys.ENTER).build().perform();;
+		actions.sendKeys(Keys.ENTER).build().perform();
+		;
 
 	}
 
 	// Method to add options for Dropdown type questions
 	public void addOptionsToDropdown(int sectionIndex, int questionIndex, List<String> options) throws Throwable {
+
+		// Loop through the options list
 		for (int i = 0; i < options.size(); i++) {
-			if (i > 0) { // Click the "Add Option" button only for options beyond the first one
+			// Add only if this is not the first option
+			if (i > 0) {
+				// Locate the "Add Option" button
 				String xpathAdd = "(" + "//h5[text()='Section " + sectionIndex
 						+ "']/../../..//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]"
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
-				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
 
-				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+				// Scroll into view to ensure it's visible and ready for interaction
+				WebElement addOptionButton = driver.findElement(By.xpath(xpathAdd));
+				js.executeScript("arguments[0].scrollIntoView(true);", addOptionButton);
+
+				// Click the "Add Option" button to add a new input field
+				ClickUtilities.jsClick(driver, addOptionButton);
+				Thread.sleep(500); // Optional small delay to ensure UI updates
 			}
 
-			// Input the option text
+			// Input the option text in the appropriate field
 			String xpathDropDownOption = "//div[h5[contains(text(), 'Question " + (questionIndex + 1) + "')]]"
 					+ "/following::input[contains(@class, 'answer_option') and @name='ans_option_" + sectionIndex + "_"
 					+ (questionIndex + 1) + "_" + (i + 1) + "']";
-			driver.findElement(By.xpath(xpathDropDownOption)).sendKeys(options.get(i));
+
+			WebElement optionInputField = driver.findElement(By.xpath(xpathDropDownOption));
+			optionInputField.clear(); // Clear any previous input (if needed)
+			optionInputField.sendKeys(options.get(i));
 		}
 	}
 

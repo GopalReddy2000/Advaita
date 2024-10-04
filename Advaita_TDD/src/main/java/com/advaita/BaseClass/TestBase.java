@@ -17,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
@@ -67,7 +68,7 @@ public class TestBase {
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		actions = new Actions(driver);
 		robot = new Robot();
@@ -164,6 +165,8 @@ public class TestBase {
 	}
 
 	protected void selectByVisibleText(WebElement dropdownElement, String optionText) {
+		
+		wait.until(ExpectedConditions.visibilityOf(dropdownElement));
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
 

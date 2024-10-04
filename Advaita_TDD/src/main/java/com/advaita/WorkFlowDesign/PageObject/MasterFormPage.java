@@ -287,9 +287,11 @@ public class MasterFormPage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public static void commonNaviagationToMasterForm() throws Throwable {
+	HomePage hp = new HomePage();
 
-		click(driver, HomePage.workflowDesign);
+	public void commonNaviagationToMasterForm() throws Throwable {
+
+		click(driver, hp.workflowDesign);
 		click(driver, masterTabElement);
 		click(driver, masterFormsTab);
 	}
@@ -348,8 +350,8 @@ public class MasterFormPage extends TestBase {
 
 	public void navigationToFieldSet2() throws Throwable {
 
-		click(driver, HomePage.workflowDesign);
-		assertTrue(HomePage.masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
+		click(driver, hp.workflowDesign);
+		assertTrue(hp.masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
 
 		assertTrue(masterTabElement.isDisplayed(), "masterTabElement is not displayed.");
 
@@ -1110,8 +1112,7 @@ public class MasterFormPage extends TestBase {
 			MasterFormQuesAddSect2.add(element.getText());
 			System.out.println("Values stored in 'values' InMasterForm section1QuesElementsAddSec2InMasterForm : "
 					+ element.getText());
-			
-			
+
 		}
 	}
 
@@ -1813,7 +1814,7 @@ public class MasterFormPage extends TestBase {
 
 	public List<Map<String, String>> fieldSetMasterQuestionsAndQuestionTypes() throws Throwable {
 
-		click(driver, HomePage.workflowDesign);
+		click(driver, hp.workflowDesign);
 		click(driver, masterTabElement);
 		click(driver, fieldSetTabElement);
 		click(driver, fieldSetEditButton2);
@@ -1966,7 +1967,6 @@ public class MasterFormPage extends TestBase {
 		}
 	}
 
-
 	public void validationsAfterMasterFilterAndMasterFields() throws Throwable {
 
 //		Validations after Master Filter
@@ -2013,13 +2013,11 @@ public class MasterFormPage extends TestBase {
 			// Assert equality of the two arrays
 			assertEquals(firstOptionsText, dropdownOptionsText, "The dropdown options are not equal.");
 		}
-		
+
 		ClickUtilities.clickWithRetry(leftArrowButton, 2);
-		
+
 		Thread.sleep(1000);
 
 	}
-	
-	
 
 }

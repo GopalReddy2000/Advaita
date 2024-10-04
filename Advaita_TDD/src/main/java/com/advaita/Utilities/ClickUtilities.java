@@ -229,5 +229,11 @@ public class ClickUtilities extends TestBase {
 		}
 		js.executeScript("arguments[0].style.backgroundColor = '';", element); // Remove highlight
 	}
+	
+	public static void scrollToViewElement(WebElement element) {
+//		
+		js.executeScript("arguments[0].scrollIntoView(true);", element);
+		
+	}
 
 }
