@@ -42,151 +42,151 @@ public class MastersFieldSets extends TestBase {
 	public static int existingFieldSetRecordCount;
 
 	@FindBy(tagName = "body")
-	public static WebElement driverIninteractable;
+	public WebElement driverIninteractable;
 
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
-	public static WebElement masterTabElement;
+	public WebElement masterTabElement;
 
 	@FindBy(id = "pills-MasterQuestionSet-tab")
-	public static WebElement fieldSetTabElement;
+	public WebElement fieldSetTabElement;
 
 	@FindBy(linkText = "+ Add Field Set")
-	public static WebElement addFieldSetButton;
+	public WebElement addFieldSetButton;
 
 	@FindBy(xpath = "//h2[normalize-space()='Create Master Field Set']")
-	public static WebElement createMasterFieldSetPage;
+	public WebElement createMasterFieldSetPage;
 
 	@FindBy(id = "questionSet_name")
-	public static WebElement questionSetNameFieldElement;
+	public WebElement questionSetNameFieldElement;
 
 	@FindBy(id = "exampleFormControlTextarea1")
-	public static WebElement remarkFieldElement;
+	public WebElement remarkFieldElement;
 
 	@FindBy(xpath = "//h5[normalize-space()='Section 1']")
-	public static WebElement section1Element;
+	public WebElement section1Element;
 
 	@FindBy(xpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])[1]")
-	public static WebElement addQuestionsButttonElement;
+	public WebElement addQuestionsButttonElement;
 
 	@FindBy(xpath = "(//table/tbody/tr[1]/td[1])[1]")
-	public static WebElement fetchFieldSetRecord;
+	public WebElement fetchFieldSetRecord;
 
 	@FindBy(xpath = "//img[@class='documentimg']/..//h5")
-	public static List<WebElement> previousQuestionSetElements;
+	public List<WebElement> previousQuestionSetElements;
 
 	@FindBy(xpath = "//h5[@class='font_13 question_number']/..//input[@class='question_text']")
-	public static List<WebElement> addedQuestionElements;
+	public List<WebElement> addedQuestionElements;
 
 	@FindBy(xpath = "(//img[@alt='delete-icon'])[position() < last()]")
-	public static List<WebElement> deleteQuestionButton;
+	public List<WebElement> deleteQuestionButton;
 
 	@FindBy(xpath = "//div[@class='col-md-3 table-viewright-side right_section right_section_1_1 actv_rt_sec_1']//label[normalize-space()='SELECT QUESTION TYPE']/../div/div/a//h6")
-	public static List<WebElement> questionTypes;
+	public List<WebElement> questionTypes;
 
 	@FindBy(xpath = "//h5[normalize-space()='REQUIRED']/following::label/input[@name='question_required_1_1']")
-	public static WebElement requiredToggleButton;
+	public WebElement requiredToggleButton;
 
 	@FindBy(xpath = "//h5[normalize-space()='ESCALATED FIELD']/following::label/input[@name='question_escalated_1_1']")
-	public static WebElement escalatedFieldToggleButton;
+	public WebElement escalatedFieldToggleButton;
 
 	@FindBy(name = "measurable_parameter_1_1")
-	public static WebElement measurableParameterDropDown;
+	public WebElement measurableParameterDropDown;
 
 	@FindBy(xpath = "//h6[normalize-space()='Max Length']/following::input[@name='dataset_field_section_max_length_1_1']")
-	public static WebElement maxLengthFieldForQuestion;
+	public WebElement maxLengthFieldForQuestion;
 
 	@FindBy(xpath = "(//input[@name='textbox_settings_min_length_1_1'])[1]")
-	public static WebElement minLengthField;
+	public WebElement minLengthField;
 
 	@FindBy(xpath = "(//input[@name='textbox_settings_max_length_1_1'])[1]")
-	public static WebElement maxLengthField;
+	public WebElement maxLengthField;
 
 	@FindBy(xpath = "//h6[normalize-space()='Value-Type']/following::select[@name='textbox_settings_value_type_1_1']")
-	public static WebElement textFieldValueTypeDropDown;
+	public WebElement textFieldValueTypeDropDown;
 
 	@FindBy(xpath = "//h6[text()='Allow-Sp-Char']/..//input[@name='textbox_settings_allow_sp_char_1_1']/..//span[@class='slider round']")
-	public static WebElement allowSpCharToggleButton;
+	public WebElement allowSpCharToggleButton;
 
 	@FindBy(xpath = "(//textarea[@class='answer_option short_answer_input'])[1]")
-	public static WebElement shortAnswerTextBox;
+	public WebElement shortAnswerTextBox;
 
 	@FindBy(xpath = "//div[contains(@class, 'increament-input')]//input[@name='shortans_settings_min_length_1_2' and @value='1']")
-	public static WebElement shortAnswerMinLengthField;
+	public WebElement shortAnswerMinLengthField;
 
 	@FindBy(xpath = "(//input[@name='shortans_settings_max_length_1_2'])[1]")
-	public static WebElement shortAnswerMaxLengthField;
+	public WebElement shortAnswerMaxLengthField;
 
 	@FindBy(xpath = "//h6[normalize-space()='Value-Type']/following::select[@name='shortans_settings_value_type_1_2']")
-	public static WebElement shortAnswerValueTypeDropDown;
+	public WebElement shortAnswerValueTypeDropDown;
 
 	@FindBy(xpath = "//h6[text()='Allow-Sp-Char']/..//input[@name='shortans_settings_allow_sp_char_1_1']/..//span[@class='slider round']")
-	public static WebElement shortAnswerAllowSpCharToggleButton;
+	public WebElement shortAnswerAllowSpCharToggleButton;
 
 	@FindBy(xpath = "//a[normalize-space()='Add Section']")
-	public static WebElement addSectionButton;
+	public WebElement addSectionButton;
 
 	@FindBy(xpath = "(//h5[@class='section-text section_header'][normalize-space()='Section 2'])[1]")
-	public static WebElement section2Element;
+	public WebElement section2Element;
 
 	@FindBy(xpath = "//div[@class='upload-cloud']/ancestor::div//img[@class='trashimg answer_option fileupload']")
-	public static WebElement fileUploadSettingButton;
+	public WebElement fileUploadSettingButton;
 
 	@FindBy(xpath = "//label[@for='allowed_format']/following-sibling::span//input[@placeholder='select']")
-	public static WebElement fileUploadOptionField;
+	public WebElement fileUploadOptionField;
 
 	@FindBy(xpath = "//li[@role='treeitem']")
-	public static List<WebElement> checkOptions;
+	public List<WebElement> checkOptions;
 
 	@FindBy(id = "create_btn")
-	public static WebElement saveButtonElement;
+	public WebElement saveButtonElement;
 
 	@FindBy(xpath = "//button[@type='button'][text()='Cancel']")
-	public static WebElement cancelButtonElement;
+	public WebElement cancelButtonElement;
 
 	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']")
-	public static WebElement successConfirmationPopup;
+	public WebElement successConfirmationPopup;
 
 	@FindBy(xpath = "//h3[text()='Success']/..//span[text()='Master Field Set has been created successfully']/..//button[text()='Continue']")
-	public static WebElement ContinueButtonOnSuccessConfirmationPopup;
+	public WebElement ContinueButtonOnSuccessConfirmationPopup;
 
 	@FindBy(xpath = "//img[@alt='arrow-left']")
-	public static WebElement leftArrowToGoBackTablePage;
+	public WebElement leftArrowToGoBackTablePage;
 
 	@FindBy(xpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])[2]")
-	public static WebElement section2AddQuestionsButton;
+	public WebElement section2AddQuestionsButton;
 
 	@FindBy(xpath = "(//div[h5[text()='Section 2']]/..//img[@class='settingimg'])[1]")
-	public static WebElement section2SettingButton;
+	public WebElement section2SettingButton;
 
 	@FindBy(xpath = "//div[h5[text()='IS CONDITIONAL']]/..//label[@class='switch']//input[@name='is_conditional_2']")
-	public static WebElement isConditionalToggleButton;
+	public WebElement isConditionalToggleButton;
 
 	@FindBy(xpath = "(//div[h5[text()='IS CONDITIONAL']]/..//label[@class='switch']//input[@name='is_conditional_2']/..//span[@class='slider round required_slider'])")
-	public static WebElement isConditionalToggle;
+	public WebElement isConditionalToggle;
 
 	@FindBy(xpath = "(//div[h5[text()='Section 3']]/..//img[@class='settingimg'])[1]")
-	public static WebElement section3SettingButton;
+	public WebElement section3SettingButton;
 
 	@FindBy(xpath = "(//table/tbody/tr[1]/td[1])[1]")
-	public static WebElement fetchCreatedRecord;
+	public WebElement fetchCreatedRecord;
 
 	@FindBy(id = "text_search")
-	public static WebElement searchBox;
+	public WebElement searchBox;
 
 	@FindBy(xpath = "(//img[@alt='filter_search'])[1]")
-	public static WebElement searchButton;
+	public WebElement searchButton;
 
 	@FindBy(id = "filter_date")
-	public static WebElement createdDatePicker;
+	public WebElement createdDatePicker;
 
 	@FindBy(xpath = "//h6[normalize-space()='Clear All Filters']")
-	public static WebElement clearFilterButton;
+	public WebElement clearFilterButton;
 
 	@FindBy(xpath = "//li//a//img[@alt='left_arrow']")
-	public static WebElement leftArrow;
+	public WebElement leftArrow;
 
 	@FindBy(xpath = "//li//a//img[@alt='rgt_arrow']")
-	public static WebElement rightArrow;
+	public WebElement rightArrow;
 
 	public MastersFieldSets() {
 
@@ -194,7 +194,7 @@ public class MastersFieldSets extends TestBase {
 
 	}
 
-	public static void commonNavigation() {
+	public void commonNavigation() {
 
 		click(driver, HomePage.workflowDesign);
 		click(driver, masterTabElement);
@@ -1219,7 +1219,7 @@ public class MastersFieldSets extends TestBase {
 		}
 	}
 
-	public void verifySaveInCreateFieldSet() throws Throwable {
+	public MastersFieldSets verifySaveInCreateFieldSet() throws Throwable {
 
 		click(driver, saveButtonElement);
 
@@ -1227,6 +1227,8 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
+		
+		return this;
 	}
 
 	public void verifyNumberFieldInCreateFieldSet() throws Throwable {
@@ -1549,15 +1551,21 @@ public class MastersFieldSets extends TestBase {
 
 	public MastersFieldSets addQuestions(int sectionIndex) throws Throwable {
 
-		String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
-				+ sectionIndex + "]";
+	    // If sectionIndex is 0, return without adding the question
+	    if (sectionIndex == 0) {
+	        return this;
+	    }
 
-		WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
+	    String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])[" 
+	                               + sectionIndex + "]";
 
-		ClickUtilities.clickWithRetry(addQuestionButton, 2);
+	    WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
 
-		return this;
+	    ClickUtilities.clickWithRetry(addQuestionButton, 2);
+
+	    return this;
 	}
+
 
 	public MastersFieldSets addSection() throws Throwable {
 

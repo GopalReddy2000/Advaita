@@ -36,163 +36,160 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	String userId = "Wyzmindz_solutions";
+	String userId = "Abhijit@trasccon.com";
 	String userPassword = "Qwerty@123";
 
 	// EntireBodyClick
 	@FindBy(tagName = "body")
-	public static WebElement driverIninteractable;
+	public WebElement driverIninteractable;
 
 	List<String> metaDataLists;
-	public static String templateTextStringValue;
-	public static String MessageTextStringValue;
+	public String templateTextStringValue;
+	public String MessageTextStringValue;
 	List<String> beforeSearchDataLists_Table;
 	List<String> afterSearchDataLists_Table;
 
-	public static String last_CreatedNotificationTemplate;
+	public String last_CreatedNotificationTemplate;
 
-	public static String beforeSelectProcessdropdown1Options;
-	public static String afterSelectProcessdropdown1Options;
+	public String beforeSelectProcessdropdown1Options;
+	public String afterSelectProcessdropdown1Options;
 
-	public static String beforeSelectSubProcessdropdown2Options;
-	public static String afterSelectSubProcessdropdown2Options;
+	public String beforeSelectSubProcessdropdown2Options;
+	public String afterSelectSubProcessdropdown2Options;
 
-	public static String beforeSelectSubSubProcessdropdown3Options;
-	public static String afterSelectSubSubProcessdropdown3Options;
+	public String beforeSelectSubSubProcessdropdown3Options;
+	public String afterSelectSubSubProcessdropdown3Options;
 
 	// user account
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()='  Call Log Tab View ']")
-	public static WebElement user_callLogTabViewpage;
+	public WebElement user_callLogTabViewpage;
 
 	@FindBy(xpath = "//ul[@id='pills-tab']//li//span")
-	public static WebElement userAccount_StagesCount;
+	public WebElement userAccount_StagesCount;
 
 	@FindBy(xpath = "//tbody/tr[1]/td[1]/div/img[@class='img-fluid cursor-pointer view_evalution eye-icon']")
-	public static WebElement stagesProfileView_userAccount;
+	public WebElement stagesProfileView_userAccount;
 
 	@FindBy(xpath = "//tbody//td/../..//tr[1]//td[9]")
-	public static WebElement transuniquID_userAccount;
+	public WebElement transuniquID_userAccount;
 
 	@FindBy(xpath = "//input[@placeholder='HH:MM']")
-	public static WebElement TimeInputPicker;
+	public WebElement TimeInputPicker;
 
 	@FindBy(xpath = "//input[@id='startDate']")
-	public static WebElement DateInputPicker;
+	public WebElement DateInputPicker;
 
 	@FindBy(xpath = "//div[contains(@class, 'datepicker')]")
-	public static WebElement DatePicker;
+	public WebElement DatePicker;
 
 	@FindBy(xpath = "//h6[text()='Disposition']")
-	public static WebElement disositionTab;
+	public WebElement disositionTab;
 
 	@FindBy(xpath = "(//label[@class='radio w-40'])[]")
-	public static WebElement autoRadioButton;
+	public WebElement autoRadioButton;
 
 	@FindBy(xpath = "(//label[@class='radio w-40'])[2]")
-	public static WebElement manualRadioButton;
+	public WebElement manualRadioButton;
 
 	@FindBy(xpath = "(//label[@class='radio processss'])[1]")
-	public static WebElement withinProcessRadioButton;
+	public WebElement withinProcessRadioButton;
 
 	@FindBy(xpath = "(//label[@class='radio processss'])[2]")
-	public static WebElement outsideProcessRadioButton;
+	public WebElement outsideProcessRadioButton;
 
 	@FindBy(xpath = "//span[@class='select2-results']//ul//li")
-	public static List<WebElement> selectStage_disposition;
+	public List<WebElement> selectStage_disposition;
 
-	
-	//SuperAdmin Admin
+	// SuperAdmin Admin
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']//span[text()='Admin Super Admin']")
-	public static WebElement profileDropdown;
-	
+	public WebElement profileDropdown;
+
 	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown']/..//li//a)[3]")
-	public static WebElement logout;
-	
-	
+	public WebElement logout;
 
 	// user Login
 	@FindBy(xpath = "//h2[text()='Sign In']")
-	public static WebElement Verify_signIn;
+	public WebElement Verify_signIn;
 
 	@FindBy(name = "username")
-	public static WebElement usernameField;
+	public WebElement usernameField;
 
 	@FindBy(name = "password")
-	public static WebElement passwordField;
+	public WebElement passwordField;
 
 	@FindBy(xpath = "//button[text()='Sign In']")
-	public static WebElement signInButton;
+	public WebElement signInButton;
 
 //	@FindBy(xpath = "//div[contains(@class,'section-A-scroll')]//div//div//label/..//input/..//label[text()='Trans Unique Id']/..//h6")
-//	public static WebElement transUniqueId_stageProfileView;
+//	public WebElement transUniqueId_stageProfileView;
 
 	@FindBy(xpath = "//input/..//label[text()='Trans Unique Id']/..//h6")
-	public static WebElement transUniqueId_stageProfileView;
+	public WebElement transUniqueId_stageProfileView;
 
 	// Fetch_ process , subprocess , Subsubprocess
 
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
-	public static WebElement fetchProcess;
+	public WebElement fetchProcess;
 
 	@FindBy(xpath = "//input[@data-type='sub_process']/..//span")
-	public static WebElement FethSubProcess;
+	public WebElement FethSubProcess;
 
 	@FindBy(xpath = "(//div[@class='content']//span)[1]")
-	public static WebElement SubSubProcess;
+	public WebElement SubSubProcess;
 
 	// DataSetup_metadat
 	@FindBy(xpath = "//button[@id='pills-metadata-tab']")
-	public static WebElement metaDataTab;
+	public WebElement metaDataTab;
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> MetaDataName;
 
-	@FindBy(xpath = "(//table[@class='w-100']//tbody//td[1])[last()-1]")
-	public static WebElement SlastCretedMetadata;
+	@FindBy(xpath = "(//table[@class='w-100']//tbody//td[1])[last()]")
+	public WebElement SlastCretedMetadata;
 
 	@FindBy(xpath = "(//h1[text()=' Metadata Management '])[1]")
-	public static WebElement verifyMetaDataManagement;
+	public WebElement verifyMetaDataManagement;
 
 	@FindBy(xpath = "//tbody[@class='view_all_colmns']//tr//td[2]")
 	List<WebElement> MetaDataList;
 
 	@FindBy(xpath = "//div[@class='last-section-button']//button[text()='Cancel']")
-	public static WebElement cancelButtonMetaData;
+	public WebElement cancelButtonMetaData;
 
 	// Fetch"Stages"
 	@FindBy(xpath = "(//h1[text()=' Stages '])[1]")
-	public static WebElement verifyStage;
+	public WebElement verifyStage;
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
 
 	// measurableSet
 	@FindBy(xpath = "//button[@id='pills-MasterParameter-tab']")
-	public static WebElement measurableParameterTab;
+	public WebElement measurableParameterTab;
 
 	@FindBy(xpath = "//h1[text()=' Master Parameter '][1]")
-	public static WebElement verifyMasterParameter;
+	public WebElement verifyMasterParameter;
 
 	@FindBy(xpath = "//button[@id='pills-MeasurableSet-tab']")
-	public static WebElement measurableTab;
+	public WebElement measurableTab;
 
 	@FindBy(linkText = "+ Add Measurable Set")
-	public static WebElement addMeasurableSet;
+	public WebElement addMeasurableSet;
 
 	@FindBy(xpath = "//h2[text()='Create Question Set']")
-	public static WebElement verifyCreateQuestionSet;
+	public WebElement verifyCreateQuestionSet;
 
 	@FindBy(xpath = "(//a[text()='Add Question'])[1]")
-	public static WebElement addQuestion;
+	public WebElement addQuestion;
 
 	@FindBy(xpath = "//input[@id='questionSet_name']")
-	public static WebElement questionSetName;
+	public WebElement questionSetName;
 
 	@FindBy(xpath = "//div[@class='questionset_form left_section_1']")
-	public static WebElement Section1;
+	public WebElement Section1;
 
 	@FindBy(xpath = "//div[@class='questionset_form left_section_1']//input[@name='question_1_1']")
-	public static WebElement Question1;
+	public WebElement Question1;
 
 	@FindBy(xpath = "(//div[@class='row firstquestion-function'])[1]//a")
 	List<WebElement> selectQuestionTypElements;
@@ -200,67 +197,67 @@ public class NotificationTemplate extends TestBase {
 	// Notification Template
 
 	@FindBy(xpath = "//a[@id='menulist2']")
-	public static WebElement alchemySidemenubar;
+	public WebElement alchemySidemenubar;
 
 	@FindBy(linkText = "Notification Template")
-	public static WebElement notificationTemplate_Tab;
+	public WebElement notificationTemplate_Tab;
 
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()=' Notifications']")
-	public static WebElement notificationTemplateText;
+	public WebElement notificationTemplateText;
 
 	@FindBy(linkText = "+ Create")
-	public static WebElement createButtonNotificationTemplate;
+	public WebElement createButtonNotificationTemplate;
 
 	@FindBy(xpath = "//h2[text()='Create Notification Template']")
-	public static WebElement CreateNotificationTepmlateTpopUp;
+	public WebElement CreateNotificationTepmlateTpopUp;
 
 	@FindBy(xpath = "//select[@id='process']")
-	public static WebElement ProcessDropdown;
+	public WebElement ProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='sub_process']")
-	public static WebElement SubProcessDropdown;
+	public WebElement SubProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='s_sub_process']")
-	public static WebElement SubsubProcessDropdown;
+	public WebElement SubsubProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='stage_name_id']")
-	public static WebElement notificationStagesDropdown;
+	public WebElement notificationStagesDropdown;
 
 	@FindBy(xpath = "//input[@name='template_name']")
-	public static WebElement notificationTemplateName;
+	public WebElement notificationTemplateName;
 
 	@FindBy(xpath = "//select[@name='notification_date']")
-	public static WebElement notificationDate;
+	public WebElement notificationDate;
 
 	@FindBy(xpath = "//select[@name='notification_time']")
-	public static WebElement notificationTime;
+	public WebElement notificationTime;
 
 	@FindBy(xpath = "//textarea[@name='message']")
-	public static WebElement message;
+	public WebElement message;
 
 	@FindBy(xpath = "//textarea[@name='remarks']")
-	public static WebElement remarks;
+	public WebElement remarks;
 
 	@FindBy(xpath = "//input[@name='temp_variable_name_1']")
-	public static WebElement templateVariableName;
+	public WebElement templateVariableName;
 
 	@FindBy(xpath = "//select[@class='form-control stages_fields_dropsown']")
-	public static WebElement stageFieldName;
+	public WebElement stageFieldName;
 
 	@FindBy(name = "default_val_1")
-	public static WebElement defaultValue;
+	public WebElement defaultValue;
 
 	@FindBy(id = "manual_id")
-	public static WebElement createButton_NotificatioTemplatePopup;
+	public WebElement createButton_NotificatioTemplatePopup;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement notificationTemplateCreatedSuccessfully_popuop;
+	public WebElement notificationTemplateCreatedSuccessfully_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement continueButton_create;
+	public WebElement continueButton_create;
 
 	@FindBy(xpath = "//tbody/tr[last()]//td[1]") // Last created sms " entire line"
-	public static WebElement last_CreatedNotifications;
+	public WebElement last_CreatedNotifications;
 
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> beforeSearchData_Table;
@@ -268,63 +265,63 @@ public class NotificationTemplate extends TestBase {
 	// notificationTemplate Table
 
 	@FindBy(name = "text_search")
-	public static WebElement seachTextfield_NotificationTemplate;
+	public WebElement seachTextfield_NotificationTemplate;
 
 	@FindBy(xpath = "//select[@id='process_search']")
-	public static WebElement ProcessDropdown_table;
+	public WebElement ProcessDropdown_table;
 
 	@FindBy(xpath = "//select[@id='sub_process_search']")
-	public static WebElement SubProcessDropdown_table;
+	public WebElement SubProcessDropdown_table;
 
 	@FindBy(xpath = "//select[@id='s_sub_process_search']")
-	public static WebElement subSubProcessDropdown_table;
+	public WebElement subSubProcessDropdown_table;
 
 	@FindBy(xpath = "//select[@id='stage_search']")
-	public static WebElement notificationStages_table;
+	public WebElement notificationStages_table;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
-	public static WebElement searchbutton_Table;
+	public WebElement searchbutton_Table;
 
 	@FindBy(xpath = "//div//img/..//h6")
-	public static WebElement clearAllFiltersButton_Table;
+	public WebElement clearAllFiltersButton_Table;
 
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='delete-icon']")
-	public static WebElement LastDelete_NotificationTempalte;
+	public WebElement LastDelete_NotificationTempalte;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
-	public static WebElement deletePopup_NotificationTemplate;
+	public WebElement deletePopup_NotificationTemplate;
 
 	@FindBy(xpath = "//button[text()='Delete']")
-	public static WebElement deleteButton_delete;
+	public WebElement deleteButton_delete;
 
 	@FindBy(xpath = "//h3/..//span[@id='change_msg']")
-	public static WebElement deleted_SuceessfullyPopup;
+	public WebElement deleted_SuceessfullyPopup;
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
-	public static WebElement continueButton_DeleteSuccessullyPopup;
+	public WebElement continueButton_DeleteSuccessullyPopup;
 
 	// EDIT
 
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='table-edit']")
-	public static WebElement LastEdit_NotificationTempalte;
+	public WebElement LastEdit_NotificationTempalte;
 
 	@FindBy(xpath = "//h2[text()='Edit Notification Template']")
-	public static WebElement verify_EditNotificationTemplate;
+	public WebElement verify_EditNotificationTemplate;
 
 	@FindBy(xpath = "//input[@name='template_name']")
-	public static WebElement EditTemplateName;
+	public WebElement EditTemplateName;
 
 	@FindBy(xpath = "//textarea[@name='message']")
-	public static WebElement editMessageTextfield;
+	public WebElement editMessageTextfield;
 
 	@FindBy(xpath = "//button[text()=' Update ']")
-	public static WebElement updateButton;
+	public WebElement updateButton;
 
 	@FindBy(xpath = "//h3/..//span[@id='change_msg']")
-	public static WebElement UpdateNotification_SuceessfullyPopup;
+	public WebElement UpdateNotification_SuceessfullyPopup;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement continueButton_Edit;
+	public WebElement continueButton_Edit;
 
 	public void NavigateToProcess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
@@ -340,12 +337,23 @@ public class NotificationTemplate extends TestBase {
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 	}
 
+	@FindBy(xpath = "//input[@id='text_search']")
+	public WebElement searchTextfield_table;
+	
+	@FindBy(xpath = "//button[@class='filter_search_blk cursor-pointer d-flex align-items-center justify-content-center white_bg']")
+	public WebElement searchButton_table;
+	
+	public String CreatedMetadata = "Booking Information Metadata";
+
 	public void FetchMetaData() throws Throwable {
 		assertTrue(metaDataTab.isDisplayed(), "metaDataTab is not displayed");
 		metaDataTab.click();
 
 		assertTrue(verifyMetaDataManagement.isDisplayed(), "verifyMetaDataManagement is not displayed");
 		System.out.println("verifyMetaDataManagement : " + verifyMetaDataManagement.getText());
+
+		searchTextfield_table.sendKeys(CreatedMetadata);
+		searchbutton_Table.click();
 
 		List<String> metaDataNameList = new ArrayList<String>();
 		for (WebElement metadataName : MetaDataName) {
@@ -358,8 +366,7 @@ public class NotificationTemplate extends TestBase {
 		System.out.println(metaDataNameList.containsAll(metaDataNameList));
 		metaDataNameList.size();
 
-		assertTrue(metaDataNameList.contains("CsutomerdetailsZZZMF_metadata"),
-				"CsutomerdetailsZZZMF_metadata not displayed");
+		assertTrue(metaDataNameList.contains(CreatedMetadata), "CreatedMetadata is not displayed");
 
 		if (metaDataNameList.size() == 3) {
 			for (WebElement metadataName : MetaDataName) {
@@ -392,23 +399,69 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	public void FetchStages() {
-		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
+	public String stagesCreatedProcess1;
+	public String stagesCreatedSubProcess2;
+	public String stagesCreatedSubsubProcess3;
+	public String verifyCreatedStages;
+	
+	String searchedStagesName = "Booking Information Stage";
+	
+	@FindBy(id = "text_search")
+	public WebElement searchTextfieldStages;
+	
+	@FindBy(xpath = "(//tbody//tr[1]//td[2])[1]")
+	public WebElement stagesCreatedProcess; // Stages Createdwith Which Proceess
 
-		assertTrue(verifyStage.isDisplayed(), "verifyStageis not displayed");
-		System.out.println("verifyStage text : " + verifyStage.getText());
+	@FindBy(xpath = "(//tbody//tr[1]//td[3])[1]") 
+	public WebElement stagesCreatedSubProcess; // Stages Createdwith Which SubProceess
+
+	@FindBy(xpath = "(//tbody//tr[1]//td[4])[1]")
+	public WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
+	
+	public void FetchStages() throws Throwable {
+//		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
+//
+//		assertTrue(verifyStage.isDisplayed(), "verifyStageis not displayed");
+//		System.out.println("verifyStage text : " + verifyStage.getText());
+//
+//		List<String> satgeNameList = new ArrayList<String>();
+//		for (WebElement stageName : stagesName) {
+//			satgeNameList.add(stageName.getText());
+//			System.out.println("Stages name Lists : " + stageName.getText());
+//
+//		}
+//		assertTrue(satgeNameList.containsAll(satgeNameList));
+//		assertTrue(satgeNameList.contains("CutomerdetailsZZZ Stage"));
+		
+		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
+		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
+
+		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfieldStages.sendKeys(searchedStagesName);
+		searchbutton_Table.click();
+		Thread.sleep(2000);
+
+		stagesCreatedProcess1 = stagesCreatedProcess.getText();
+		System.out.println("stagesCreatedProcess1 :" + stagesCreatedProcess1);
+
+		assertTrue(stagesCreatedSubProcess.isDisplayed(), "stagesCreatedSubProcess2 is not displayed");
+		stagesCreatedSubProcess2 = stagesCreatedSubProcess.getText();
+		System.out.println("stagesCreatedSubProcess2 :" + stagesCreatedSubProcess2);
+
+		assertTrue(stagesCreatedSubsubProcess.isDisplayed(), "stagesCreatedSubsubProcess3 is not displayed");
+		stagesCreatedSubsubProcess3 = stagesCreatedSubsubProcess.getText();
+		System.out.println("stagesCreatedSubsubProcess3 :" + stagesCreatedSubsubProcess3);
 
 		List<String> satgeNameList = new ArrayList<String>();
 		for (WebElement stageName : stagesName) {
 			satgeNameList.add(stageName.getText());
 			System.out.println("Stages name Lists : " + stageName.getText());
-
 		}
-		assertTrue(satgeNameList.containsAll(satgeNameList));
-		assertTrue(satgeNameList.contains("CutomerdetailsZZZ Stage"));
+
+		assertTrue(satgeNameList.contains(searchedStagesName), "stages is notcontains");
 	}
 
-	////// MeasurableSet////
+	////// MeasurableSet///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void navigateTo_AlchemyModule() {
 
@@ -424,9 +477,8 @@ public class NotificationTemplate extends TestBase {
 	public void NavigateToNotificationtemplate() throws Throwable {
 
 		assertTrue(notificationTemplate_Tab.isDisplayed(), "notificationTemplate_Tab is not displayed");
-		// notificationTemplate_Tab.click();
+
 		jsClick(driver, notificationTemplate_Tab);
-		// driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/cre_notification/");
 
 		String notificationURL = driver.getCurrentUrl();
 		System.out.println("notificationURL :" + notificationURL);
@@ -914,13 +966,13 @@ public class NotificationTemplate extends TestBase {
 		Select selectSubProcessSelect = new Select(SubProcessDropdown_table);
 		selectSubProcessSelect.selectByVisibleText("Sub AJP ");
 		// selectSubProcessSelect.selectByIndex();
-		//selectSubProcessSelect.selectByValue(" ");
+		// selectSubProcessSelect.selectByValue(" ");
 		assertNotEquals(beforeSelectSubProcessdropdown2Options, afterSelectSubProcessdropdown2Options);
 
 		Select selectSubsubProcessSelect = new Select(subSubProcessDropdown_table);
 		selectSubsubProcessSelect.selectByVisibleText("Sub Sub AJP ");
-		//selectSubsubProcessSelect.selectByIndex();
-		//selectSubsubProcessSelect.selectByValue("");
+		// selectSubsubProcessSelect.selectByIndex();
+		// selectSubsubProcessSelect.selectByValue("");
 		assertNotEquals(beforeSelectSubSubProcessdropdown3Options, afterSelectSubSubProcessdropdown3Options);
 
 		// String beforeSearchByProcessUrl=driver.getCurrentUrl();
@@ -929,9 +981,8 @@ public class NotificationTemplate extends TestBase {
 		String beforeSelectStagesOptions = searchStageSelect.getFirstSelectedOption().getText();
 		searchStageSelect.selectByVisibleText("CutomerdetailsZZZ Stage");
 		// searchStageSelect.selectByIndex();
-		//searchStageSelect.selectByValue("");
-		
-		
+		// searchStageSelect.selectByValue("");
+
 		String afterSelectStagesOptions = searchStageSelect.getFirstSelectedOption().getText();
 
 		// String afterSearchByProcessUrl=driver.getCurrentUrl();
@@ -955,12 +1006,12 @@ public class NotificationTemplate extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(verify_EditNotificationTemplate));
 		assertTrue(verify_EditNotificationTemplate.isDisplayed(), "verify_EditNotificationTemplate is not displayed");
 
-		//Template Name
+		// Template Name
 		String EditNotificationTemplateValue = EditTemplateName.getAttribute("Value");
 		System.out.println("EditNotificationTemplateValue : " + EditNotificationTemplateValue);
 
 		assertEquals(last_CreatedNotificationTemplate, EditNotificationTemplateValue);
- 
+
 		System.out.println("last_CreatedNotificationTemplate:" + last_CreatedNotificationTemplate);
 		System.out.println("EditNotificationTemplateValue:" + EditNotificationTemplateValue);
 		EditTemplateName.clear();
@@ -1023,8 +1074,8 @@ public class NotificationTemplate extends TestBase {
 			System.out.println("After search based on process :" + afterSearchData_Table.getText());
 		}
 
-		assertNotEquals(beforeSearchDataLists_Table, afterSearchDataLists_Table); // not equal with before text and  after text
+		assertNotEquals(beforeSearchDataLists_Table, afterSearchDataLists_Table); // not equal with before text and
+																					// after text
 	}
-																					
 
 }

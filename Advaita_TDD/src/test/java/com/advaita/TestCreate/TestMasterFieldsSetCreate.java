@@ -201,7 +201,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 		test = reports.createTest("verifyAddFormFieldSetInCreateFieldSet");
 
-		MastersFieldSets.commonNavigation();
+		masterFieldSet.commonNavigation();
 		masterFieldSet.verifyTabsForFieldSetCreate();
 		masterFieldSet.verifyFieldSetCreateButton();
 

@@ -33,6 +33,8 @@ public class Disposition extends TestBase {
 
 	@FindBy(xpath = "//span[normalize-space()='Workflow Design']")
 	public static WebElement workFlowDesign;
+	
+
 
 	@FindBy(id = "pills-MasterParameter-tab")
 	public static WebElement masterParameterTab;
@@ -350,7 +352,7 @@ public class Disposition extends TestBase {
 	public Disposition() {
 		PageFactory.initElements(driver, this);
 	}
-
+	
 	public void commonNavigation(String questionSetName)
 	{
 		click(driver, workFlowDesign);
@@ -560,10 +562,13 @@ public class Disposition extends TestBase {
 	{
 //		Saving the record
 		click(driver, saveButtonOfCreateQuestionSet);
-		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
+//		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
+		wait.until(ExpectedConditions.visibilityOf(successfullyNonMeasurableUpdatedMassage));
 		System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
 		Assert.assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Disposition has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Disposition has been updated successfully") );
 		click(driver, questionSaveContinueButton);
+		click(driver, dispositionBackButton);
+		
 	}
 
 	public void questionTypeRelativeDropdown()

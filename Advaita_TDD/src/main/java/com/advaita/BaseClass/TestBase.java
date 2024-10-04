@@ -63,10 +63,7 @@ public class TestBase {
 //		Map<String, Object> prefs = new HashMap<>();
 //		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
 //		options.setExperimentalOption("prefs", prefs);
-//		driver = new ChromeDriver(options);
-
-		// Normal Execution
-		driver = new ChromeDriver();		
+//		driver = new ChromeDriver(options);	
 
 
 		// Normal Execution

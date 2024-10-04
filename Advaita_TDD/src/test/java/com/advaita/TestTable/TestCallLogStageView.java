@@ -9,6 +9,7 @@ import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.alchemyPageObject.CallLogSatgeView;
 import com.advaita.alchemyPageObject.WhatsAppTemplate;
+import com.advaita.pageObjects.CallLogTabView;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -17,10 +18,9 @@ import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class TestCallLogStageView extends TestBase
-{
+public class TestCallLogStageView extends TestBase {
 	Faker faker = new Faker();
-	FakeData fake=new FakeData();
+	FakeData fake = new FakeData();
 	public String metaDataName = "Test " + faker.name().firstName();
 
 	public ExtentReports reports;
@@ -30,17 +30,15 @@ public class TestCallLogStageView extends TestBase
 	LoginPage loginPage;
 	HomePage homePage;
 
-	 WhatsAppTemplate callLogSatgeView;
-	private CallLogSatgeView CallLogStageView;
+	public CallLogSatgeView CallLogStageView;
 
-	public TestCallLogStageView() //constructor 
+	public TestCallLogStageView() // constructor
 	{
 		super();
 	}
-	
+
 	@BeforeTest
-	public void setUp( ) throws Throwable 
-	{
+	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
@@ -61,37 +59,75 @@ public class TestCallLogStageView extends TestBase
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
-		
-		CallLogStageView=new CallLogSatgeView();
-		
+
+		CallLogStageView = new CallLogSatgeView();
+
 	}
+
 	@Test(priority = 1)
-	public void SearchStages_table() 
-	{
-		//search
-		
+	public void SearchStages_table() {
+		// search
+
 		CallLogStageView.navigatetoStage();
 		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.naivateToCallLogStageView();
-		CallLogStageView.ClearAllFilter(); //Clear all filter
-		CallLogStageView.SelectStagesCallLogStagesView();
-		CallLogStageView.logout();
-		CallLogStageView.userLogin();
+		CallLogStageView.naivigateToCallLogStageView();
 		
+		CallLogStageView.verifyTheUserAbleselectAllOptionFromDropdown();
+		
+		CallLogStageView.ClearAllFilter(); //Clear all filter
+		
+		CallLogStageView.SelectStagesFromCallLogStagesViewDropdown();
+
+//		CallLogStageView.logout();
+//		CallLogStageView.userLogin();		
 		CallLogStageView.itemperpage();
 	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	@Test
+	public void selectInvalidOptionFromDropdownByVisibleText() {
+
+		CallLogStageView.naivigateToCallLogStageView();
+		CallLogStageView.selectInvalidValueFromDropdown();
+
+	}
+
+	@Test
+	public void selectInvalidValueFromDropdownInCLSV() {
+		CallLogStageView.naivigateToCallLogStageView();
+		CallLogStageView.selectInvalidValueFromDropdown();
+
+	}
 	
+	@Test
+	public void verifysearchStageisSingleSingleSelectOrMultiselect() throws Throwable {
+		
+		
+		CallLogStageView.naivigateToCallLogStageView();
+		CallLogStageView.singleSlectOrMultiSelect();
+		
+	}
+	@Test
+	public void VerifytheuserDeselectinsearchStagesDropdowninCSLV() {
+		CallLogStageView.naivigateToCallLogStageView();
+		CallLogStageView.VerifytheuserDeselectinsearchStagesDropdowninCSLV();
+	}
+	
+	
+	@Test
+	public void VerifyWithoutSelectProcessClickOnSearch() {
+		
+		CallLogStageView.VerifyWithoutSelectingStageClickOnSearch();
+		
+	}
+	
+
 	@AfterTest
-	public void tearDown() 
-	{		
+	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();
 		reports.flush();
 	}
 
-	
-	
-		
 }
-
-

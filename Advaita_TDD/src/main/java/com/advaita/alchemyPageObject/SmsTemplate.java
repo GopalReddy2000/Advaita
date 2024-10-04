@@ -7,9 +7,11 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.poi.xwpf.usermodel.ISDTContent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -17,9 +19,13 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.QuestionSelector;
+import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.pageObjects.UserSetupPage;
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -31,14 +37,16 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	FakeData fake = new FakeData();
 
-	public static String FirstCreatedUserName;
-	public static String lastcreatedsmsTemplate_messageTextfield;
-	public static String selectedNumberDropdown_toNumber_SMSPopup;
+	public String FirstCreatedUserName;
+	public String lastcreatedsmsTemplate_messageTextfield;
+	public String selectedNumberDropdown_toNumber_SMSPopup;
 
-	public static String stagesCreatedProcess1;
-	public static String stagesCreatedSubProcess2;
-	public static String stagesCreatedSubsubProcess3;
-	public static String verifyCreatedStages;
+	public String stagesCreatedProcess1;
+	public String stagesCreatedSubProcess2;
+	public String stagesCreatedSubsubProcess3;
+	public String verifyCreatedStages;
+
+	public String createddispositionQuestionSetText;
 
 	String superAmdin = "Capture_Admin";
 	String superAdminPass = "Qwerty@123";
@@ -51,361 +59,361 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	// Entirebody Click
 	@FindBy(tagName = "body")
-	public static WebElement driverIninteractable;
+	public WebElement driverIninteractable;
 
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']")
-	public static WebElement profileDropdown;
+	public WebElement profileDropdown;
 
 	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown']/..//li//a)[3]")
-	public static WebElement logout;
+	public WebElement logout;
 
 //user Login 	
 	@FindBy(xpath = "//h2[text()='Sign In']")
-	public static WebElement Verify_signIn;
+	public WebElement Verify_signIn;
 
 	@FindBy(name = "username")
-	public static WebElement usernameField;
+	public WebElement usernameField;
 
 	@FindBy(name = "password")
-	public static WebElement passwordField;
+	public WebElement passwordField;
 
 	@FindBy(xpath = "//button[text()='Sign In']")
-	public static WebElement signInButton;
+	public WebElement signInButton;
 
 	// Fetch_ process , subprocess , Subsubprocess
 
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
-	public static WebElement fetchProcess;
+	public WebElement fetchProcess;
 
 	@FindBy(xpath = "//input[@data-type='sub_process']/..//span")
-	public static WebElement FethSubProcess;
+	public WebElement FethSubProcess;
 
 	@FindBy(xpath = "(//div[@class='content']//span)[1]")
-	public static WebElement SubSubProcess;
+	public WebElement SubSubProcess;
 
 	// Fetch SMS ation Enable in "Stages"
 	@FindBy(xpath = "(//h1[text()=' Stages '])[1]")
-	public static WebElement verifyStage;
+	public WebElement verifyStage;
 
 	@FindBy(id = "text_search")
-	public static WebElement searchTextfieldStages;
+	public WebElement searchTextfieldStages;
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
 
 	@FindBy(xpath = "(//h2)[1]") // h2[text()='CutomerdetailsZZZ Stage']
-	public static WebElement verifyCreatedSatgeName;
+	public WebElement verifyCreatedSatgeName;
 
 	@FindBy(xpath = "(//h2)[1]")
-	public static WebElement verifyEditForm;
+	public WebElement verifyEditForm;
 
 	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]") // 5 ,//8
-																												// (//img[contains(@src,'/static/images/table-edit.svg')])[8]
-	public static WebElement editStagesOption; // New Xpath for stages Edit option
+	public WebElement editStagesOption; // New Xpath for stages Edit option
+	// (//img[contains(@src,'/static/images/table-edit.svg')])[8]
 
 	@FindBy(xpath = "//div[@class='Action ']//div[@id='collapseThree']//div")
 	List<WebElement> stages_actionss;
 
 	@FindBy(xpath = "//a//img[@class='arrow-left']")
-	public static WebElement leftArrowButton_stages;
+	public WebElement leftArrowButton_stages;
 
 	@FindBy(xpath = "//h6[text()='Action']") // 5 //(//h2)[8]
-	public static WebElement actionsOptionsStages;
+	public WebElement actionsOptionsStages;
 
 	@FindBy(xpath = "//div[@class='Action ']//div[@id='collapseThree']//div//input[@name='ActionCheckbox_4']")
-	public static WebElement smsCheckBox;
+	public WebElement smsCheckBox;
 
 	@FindBy(xpath = "(//tbody//tr[1]//td[1]/a)[1]")
-	public static WebElement StagesCreatedName;
+	public WebElement StagesCreatedName;
 
 	@FindBy(xpath = "(//tbody//tr[1]//td[2])[1]") // (//tbody//tr[5]//td[2])[1] -old one
-	public static WebElement stagesCreatedProcess; // Stages Createdwith Which Proceess
+	public WebElement stagesCreatedProcess; // Stages Createdwith Which Proceess
 
 	@FindBy(xpath = "(//tbody//tr[1]//td[3])[1]") // (tbody//tr[5]//td[3])[1]
-	public static WebElement stagesCreatedSubProcess; // Stages Createdwith Which SubProceess
+	public WebElement stagesCreatedSubProcess; // Stages Createdwith Which SubProceess
 
 	@FindBy(xpath = "(//tbody//tr[1]//td[4])[1]") // (//tbody//tr[5]//td[4])[1]
-	public static WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
+	public WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
 
 	// sms template
 	@FindBy(xpath = "//a[@id='menulist2']")
-	public static WebElement alchemySidemenubar;
+	public WebElement alchemySidemenubar;
 
 	@FindBy(linkText = "SMS Template")
-	public static WebElement smsTemplateTab;
+	public WebElement smsTemplateTab;
 
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()=' SMS Template ']")
-	public static WebElement smsTemplateText;
+	public WebElement smsTemplateText;
 
 	@FindBy(linkText = "+ Create")
-	public static WebElement createButtonSmsTemplate;
+	public WebElement createButtonSmsTemplate;
 
 	@FindBy(xpath = "//h2[text()='Create SMS Template']")
-	public static WebElement CreatesmstepmlateText;
+	public WebElement CreatesmstepmlateText;
 
 	@FindBy(xpath = "//select[@id='process']")
-	public static WebElement ProcessDropdown;
+	public WebElement ProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='sub_process']")
-	public static WebElement SubProcessDropdown;
+	public WebElement SubProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='s_sub_process']")
-	public static WebElement SubsubProcessDropdown;
+	public WebElement SubsubProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='stage_name_id']")
-	public static WebElement smsStages;
+	public WebElement smsStages;
 
 	@FindBy(xpath = "//input[@name='template_name']")
-	public static WebElement smsTemplateName;
+	public WebElement smsTemplateName;
 
 	@FindBy(name = "disposition")
-	public static WebElement smsDisposition;
+	public WebElement smsDisposition;
 
 	@FindBy(name = "from_no")
-	public static WebElement fromNumber;
+	public WebElement fromNumber;
 
 	@FindBy(id = "toNumber")
-	public static WebElement toNumber;
+	public WebElement toNumber;
 
 	@FindBy(xpath = "//label[text()='To Number Source']/..//select")
-	public static WebElement toNumberSource;
+	public WebElement toNumberSource;
 
 	@FindBy(xpath = "//textarea[@name='message']")
-	public static WebElement message;
+	public WebElement message;
 
 	@FindBy(xpath = "//textarea[@name='remarks']")
-	public static WebElement remarks;
+	public WebElement remarks;
 
 	@FindBy(xpath = "//input[@name='temp_variable_name_1']")
-	public static WebElement templateVariableName;
+	public WebElement templateVariableName;
 
 	@FindBy(xpath = "//select[@class='form-control stages_fields_dropsown']")
-	public static WebElement stageFieldName;
+	public WebElement stageFieldName;
 
 	@FindBy(name = "default_val_1")
-	public static WebElement defaultValue;
+	public WebElement defaultValue;
 
 	@FindBy(id = "manual_id")
-	public static WebElement createButton_SmsTemplatePopup;
+	public WebElement createButton_SmsTemplatePopup;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement smsTemplateCreatedSuccessfully_popuop;
+	public WebElement smsTemplateCreatedSuccessfully_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement continueButton_create;
+	public WebElement continueButton_create;
 
 	@FindBy(xpath = "(//a[@class='page-link']//img[@alt='right_arrow'])[2]")
-	public static WebElement lastIndexArrowButton;
+	public WebElement lastIndexArrowButton;
 
 	@FindBy(xpath = "//tbody/tr[last()]//td") // Last created notification " entire line"
-	public static WebElement last_CreatedSms; // tbody/tr[last()]//td last created notifications template
+	public WebElement last_CreatedSms; // tbody/tr[last()]//td last created notifications template
 
 	@FindBy(xpath = "(//tbody/tr[last()]//td)[1]")
-	public static WebElement lastCreatedSms_templatename;
+	public WebElement lastCreatedSms_templatename;
 
 	// user Management
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1")
-	public static WebElement verifyUserMangagemen_page;
+	public WebElement verifyUserMangagemen_page;
 
 	@FindBy(linkText = "+ Create User")
-	public static WebElement usm_createButton;
+	public WebElement usm_createButton;
 
 	@FindBy(xpath = "//h2[text()='User']")
-	public static WebElement verify_User;
+	public WebElement verify_User;
 
 	@FindBy(xpath = "//label/..//input[@id='user_name']")
-	public static WebElement userName;
+	public WebElement userName;
 
 	@FindBy(name = "first_name")
-	public static WebElement firstName;
+	public WebElement firstName;
 
 	@FindBy(name = "last_name")
-	public static WebElement lastname;
+	public WebElement lastname;
 
 	@FindBy(name = "email")
-	public static WebElement email;
+	public WebElement email;
 
 	@FindBy(name = "password")
-	public static WebElement password;
+	public WebElement password;
 
 	@FindBy(xpath = "//input[@id='confirm_password']")
-	public static WebElement conformPassword;
+	public WebElement conformPassword;
 
 	@FindBy(xpath = "//select[@id='multiselect_group']")
-	public static WebElement groupsLists;
+	public WebElement groupsLists;
 
 	@FindBy(id = "multiselect_group_rightSelected")
-	public static WebElement multiSelect_rightSelected;
+	public WebElement multiSelect_rightSelected;
 
 	@FindBy(xpath = "//button[@class='btn-primary password_validation']")
-	public static WebElement createButton_user;
+	public WebElement createButton_user;
 
 	@FindBy(xpath = "//span[text()='User has been created']")
-	public static WebElement userSuccessfullyCreated_popup;
+	public WebElement userSuccessfullyCreated_popup;
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
-	public static WebElement userSuccessfullyCreated_ContinueButton;
+	public WebElement userSuccessfullyCreated_ContinueButton;
 
 	@FindBy(xpath = "//tbody/tr[1]//td ") // tbody/tr[1] last created user management user-name
-	public static WebElement firstCreated_UserManagement;
+	public WebElement firstCreated_UserManagement;
 
 	@FindBy(xpath = "//tbody/tr[1]//a")
-	public static WebElement userMapping_USM;
+	public WebElement userMapping_USM;
 
 	@FindBy(xpath = "(//h1[text()=' wyzmindz_solutions '])[1] ")
-	public static WebElement firstCreatedUserMapping_page_USM;
+	public WebElement firstCreatedUserMapping_page_USM;
 
 	@FindBy(xpath = "(//ul[@id='pills-tab']//li//button)[2]")
-	public static WebElement firstCreatedUserMapping_ProcessTAB_USM;
+	public WebElement firstCreatedUserMapping_ProcessTAB_USM;
 
 	@FindBy(xpath = "//a[@id='add_more']")
-	public static WebElement firstCreatedUserMapping_AddrowButton;
+	public WebElement firstCreatedUserMapping_AddrowButton;
 
 	// user mapping
 
 	@FindBy(xpath = "//select[@name='form-0-process_id']")
-	public static WebElement userMapping_processDropdown;
+	public WebElement userMapping_processDropdown;
 
 	@FindBy(xpath = "//select[@name='form-0-sub_process_id']")
-	public static WebElement userMapping_SubprocessDropdown;
+	public WebElement userMapping_SubprocessDropdown;
 
 	@FindBy(xpath = "//select[@name='form-0-s_sub_process_id']")
-	public static WebElement userMapping_SubsubprocessDropdown;
+	public WebElement userMapping_SubsubprocessDropdown;
 
 	@FindBy(xpath = "//select[contains(@id,'stage_id') and not (contains(@id,'form-__prefix__')) ]")
-	public static WebElement userMapping_stagesDropdown;
+	public WebElement userMapping_stagesDropdown;
 
 	@FindBy(xpath = "//input[@id='user_id']/..//button")
-	public static WebElement userMapping_saveButton;
+	public WebElement userMapping_saveButton;
 
 	@FindBy(xpath = "//span[text()='Created  Successfully']/..//button[text()='Continue']")
-	public static WebElement userMapping_continueButton;
+	public WebElement userMapping_continueButton;
 
 //System Names
 	@FindBy(xpath = "//a[text()='System Names']")
-	public static WebElement systemNamesTab;
+	public WebElement systemNamesTab;
 
 	@FindBy(xpath = "(//h1[text()=' System Names '])[1]")
-	public static WebElement verify_SystemName;
+	public WebElement verify_SystemName;
 
 	@FindBy(xpath = "//a[text()='+ Create']")
-	public static WebElement createButton_systemName;
+	public WebElement createButton_systemName;
 
 	@FindBy(id = "group_name")
-	public static WebElement systemNameInputField;
+	public WebElement systemNameInputField;
 
 	@FindBy(xpath = "//button[text()='Create']")
-	public static WebElement CreateButton1_systemName;
+	public WebElement CreateButton1_systemName;
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
-	public static WebElement continueButton_SystemNames;
+	public WebElement continueButton_SystemNames;
 
 	@FindBy(xpath = "//tbody/tr[last()]/td[1]")
-	public static WebElement verifySystemname_lastCreated;
+	public WebElement verifySystemname_lastCreated;
 //user page
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()='  Call Log Tab View ']")
-	public static WebElement user_callLogTabViewpage;
+	public WebElement user_callLogTabViewpage;
 
 	@FindBy(xpath = "//ul[@id='pills-tab']//li")
-	public static WebElement userAccount_Stages;
+	public WebElement userAccount_Stages;
 
 	@FindBy(xpath = "//ul[@id='pills-tab']//li//span")
-	public static WebElement userAccount_StagesCount;
+	public WebElement userAccount_StagesCount;
 
 	@FindBy(xpath = "//tbody/tr[1]/td[1]/div/img[@class='img-fluid cursor-pointer view_evalution eye-icon']")
-	public static WebElement stagesProfileView_userAccount;
+	public WebElement stagesProfileView_userAccount;
 
 	@FindBy(xpath = "//div[contains(@class, 'social_media_images')]/img[contains(@class, 'sms_btn_click')]")
-	public static WebElement SmsIcon_userAccountSatgeView;
+	public WebElement SmsIcon_userAccountSatgeView;
 
 	@FindBy(xpath = "//h2[text()='SMS']")
-	public static WebElement smsPopup;
+	public WebElement smsPopup;
 
 	@FindBy(xpath = "//select[@id='select_type_id']")
-	public static WebElement SelectTemplateDropdown_smsPopup;
+	public WebElement SelectTemplateDropdown_smsPopup;
 
 	@FindBy(xpath = "//select[@id='select_type_id']/option[last()]")
-	public static WebElement lastSmsTemplateDropdown_smsPopu; // Dynamic
+	public WebElement lastSmsTemplateDropdown_smsPopu; // Dynamic
 
 	@FindBy(xpath = "//label[text()='From Number']/..//input[@id='sms_from_number']")
-	public static WebElement fromNumber_SmsPopup;
+	public WebElement fromNumber_SmsPopup;
 
 	@FindBy(xpath = "//select[@id='sms_to_number']")
-	public static WebElement toNumberDropdown_smsPopup;
+	public WebElement toNumberDropdown_smsPopup;
 
 	@FindBy(xpath = "//label/..//textarea[@id='sms_msg']")
-	public static WebElement messaageTextfield_smsPopu;
+	public WebElement messaageTextfield_smsPopu;
 
 	@FindBy(xpath = "//ul//li//button[text()='SMS']")
-	public static WebElement smsTab_stgesViewPage;
+	public WebElement smsTab_stgesViewPage;
 
 	@FindBy(xpath = "(//h2/..//..//button[text()='Send'])[1]")
-	public static WebElement SendButton_smsPopup;
+	public WebElement SendButton_smsPopup;
 
 	@FindBy(xpath = "//tbody[@id='emailtableBody']/tr[last()]/td[2]")
-	public static WebElement lastSmsRecrod_toNumberStagesProfileView;
+	public WebElement lastSmsRecrod_toNumberStagesProfileView;
 
 	@FindBy(xpath = "//tbody[@id='emailtableBody']/tr[last()]/td[5]")
-	public static WebElement lastSmsRecrod_DispositionStagesProfileView;
+	public WebElement lastSmsRecrod_DispositionStagesProfileView;
 
 	@FindBy(xpath = "//div[@class='last-section-button']//button[text()='Save']")
-	public static WebElement SaveButton_stagesProfileView;
+	public WebElement SaveButton_stagesProfileView;
 
 	@FindBy(xpath = "//div[@class='last-section-button']//button[text()='Cancel']")
-	public static WebElement cancelButton_SatgesProfileView;
+	public WebElement cancelButton_SatgesProfileView;
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
-	public static WebElement continueButton_stageProfileView;
+	public WebElement continueButton_stageProfileView;
 
 	// Super admin_edit
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='table-edit']")
-	public static WebElement lastEdit_smsTemplate;
+	public WebElement lastEdit_smsTemplate;
 
 	@FindBy(xpath = "//h2[text()='Edit SMS Template']")
-	public static WebElement verify_EditsmsTemplate;
+	public WebElement verify_EditsmsTemplate;
 
 	@FindBy(xpath = "(//tbody/tr[last()]//td)[1]")
-	public static WebElement beforeEdit_SmstemplateNameLast;
+	public WebElement beforeEdit_SmstemplateNameLast;
 
 	@FindBy(xpath = "(//tbody/tr[last()]//td)[1]")
-	public static WebElement afterEdit_SmstemplateNameLast;
+	public WebElement afterEdit_SmstemplateNameLast;
 
 	@FindBy(xpath = "//button[text()=' Update ']")
-	public static WebElement UpdateButton;
+	public WebElement UpdateButton;
 
 	@FindBy(xpath = "//h3/..//span[text()='SMS Template has been updated successfully']")
-	public static WebElement update_smsTemplateSuccessfullyPopup;
+	public WebElement update_smsTemplateSuccessfullyPopup;
 
 	@FindBy(xpath = "//h3/..//span[text()='SMS Template has been updated successfully']/..//button")
-	public static WebElement continueButon_SmsTemplateSucessfullyUpdate;
+	public WebElement continueButon_SmsTemplateSucessfullyUpdate;
 
 	// Super Admin_table
 	@FindBy(name = "text_search")
-	public static WebElement seachTextfield_SmsTemplate;
+	public WebElement seachTextfield_SmsTemplate;
 
 	@FindBy(xpath = "//select[@id='process_search']")
-	public static WebElement processDropdown_Table;
+	public WebElement processDropdown_Table;
 
 	@FindBy(xpath = "//select[@id='sub_process_search']")
-	public static WebElement SubprocessDropdown_Table;
+	public WebElement SubprocessDropdown_Table;
 
 	@FindBy(id = "s_sub_process_search")
-	public static WebElement subSubProcessDropdown_Table;
+	public WebElement subSubProcessDropdown_Table;
 
 	@FindBy(xpath = "//select[@name='stage_search']")
-	public static WebElement smsStagesDropdown_table;
+	public WebElement smsStagesDropdown_table;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
-	public static WebElement searchbutton_Table;
+	public WebElement searchbutton_Table;
 
 	@FindBy(xpath = "//td[normalize-space(.)='No Entries Found']")
-	public static WebElement noEntriesFound;
+	public WebElement noEntriesFound;
 
 	@FindBy(xpath = "//div//img/..//h6")
-	public static WebElement clearAllFiltersButton_Table;
+	public WebElement clearAllFiltersButton_Table;
 
 	@FindBy(xpath = "//select[@id='page-size-select']")
-	public static WebElement itemperpageDropdown;
+	public WebElement itemperpageDropdown;
 
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> beforeSearchData_Table;
@@ -415,31 +423,52 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	private String String;
 
-	public static List<WebElement> satgeNameList;
+	public List<WebElement> satgeNameList;
 
 	// private String String;
 
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='delete-icon ']")
-	public static WebElement LastDelete_smsTempalte;
+	public WebElement LastDelete_smsTempalte;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
-	public static WebElement deletePopup_smsTemplate;
+	public WebElement deletePopup_smsTemplate;
 
 	@FindBy(xpath = "//button[text()='Delete']")
-	public static WebElement deleteButton_delete;
+	public WebElement deleteButton_delete;
 
 	@FindBy(xpath = "//h3/..//span[text()='Deleted Successfully']")
-	public static WebElement deleted_SuceessfullyPopup;
+	public WebElement deleted_SuceessfullyPopup;
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
-	public static WebElement continueButton_DeleteSuccessullyPopup;
+	public WebElement continueButton_DeleteSuccessullyPopup;
 
 	// DispositionStages
 	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[4]")
-	public static WebElement stagesDispositionOption;
-	
+	public WebElement stagesDispositionOption;
+
 	@FindBy(id = "disposition_stagewise")
-	public static WebElement selectDispostionQuestionSet;
+	public WebElement selectDispostionQuestionSetDropdown;
+
+	@FindBy(xpath = "(//tbody/tr[1]//td)[1]")
+	public WebElement dispositionQuestionSet;
+
+	@FindBy(xpath = "(//button[text()='Save'])[2]")
+	public WebElement saveButtonStagesDisposition;
+
+	@FindBy(xpath = "//tbody//tr[last()]//td[1][not(text()='No Templates Found')]")
+	public WebElement fromStages;
+
+	@FindBy(xpath = "//tbody//tr[last()]//td[2][last()]")
+	public WebElement toStages;
+
+	@FindBy(xpath = "//tbody//tr[last()]//td[4][last()]//a//img[@title='AUTO SMS Mapping']")
+	public WebElement autoSMSMappingActions;
+
+	@FindBy(id = "auto_sms_template")
+	public WebElement autoSmsTemplatDropdown;
+
+	@FindBy(xpath = "//h2[text()='Auto SMS Mapping']")
+	public WebElement verifyAutoSmsMapping;
 
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
@@ -479,11 +508,11 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		}
 	}
 
+	String searchedStagesName = "Booking Information Stage";
+
 	public void navigatetoStage_verifySMS() throws Throwable {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
-
-		String searchedStagesName = "Booking Information Stage";
 
 		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
 		searchTextfieldStages.sendKeys(searchedStagesName);
@@ -506,12 +535,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 			satgeNameList.add(stageName.getText());
 			System.out.println("Stages name Lists : " + stageName.getText());
 		}
-//
-//		 assertTrue(satgeNameList.contains("Escalation Stage"));
+
 		assertTrue(satgeNameList.contains(searchedStagesName), "stages is notcontains");
-		// wait.until(ExpectedConditions.visibilityOf(StagesCreatedName));
-		// StagesCreatedName.click();
-//		Thread.sleep(1000);
 
 		boolean StagesCreatedNameIsEnable = StagesCreatedName.isEnabled();
 		System.out.println(StagesCreatedNameIsEnable);
@@ -1707,7 +1732,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		remarksField();
 		createButton();
 		// navigateTo_MasterParameterDisposition();
-		stagesDisposition();
+		stagesDispositionClick();
 
 	}
 
@@ -1720,14 +1745,13 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public void navigateTo_MasterParameterDisposition() throws Throwable {
-//
-//		String navigatToDisposition ="https://test.capture.autosherpas.com/en/master_parameters/disposition/";
-//		driver.navigate().to(navigatToDisposition);
+	public void verifyCreatedDispositionQuestionset() throws Throwable {
+		createddispositionQuestionSetText = dispositionQuestionSet.getText();
+		System.out.println("createddispositionQuestionSetText : " + createddispositionQuestionSetText);
 
 	}
 
-	public void stagesDisposition() {
+	public void stagesDispositionClick() {
 		String searchedStagesName = "Booking Information Stage";
 
 		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
@@ -1750,12 +1774,71 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		dropdownUtils(smsStagesDropdown_table, verifyCreatedStages);
 
 	}
-	
+
 	public void selectDispositionQuestionSet() throws Throwable {
-		
-		//dropdownUtils(selectDispostionQuestionSet, stagesCreatedSubsubProcess3);
-		
-		
+
+		dropdownUtils(selectDispostionQuestionSetDropdown, createddispositionQuestionSetText);
+	}
+
+//	public void addAutoSmsMapping(WebElement autoSmsTemplateDropdown, String value) {
+//
+//		Select selectSmstemplate = new Select(autoSmsTemplateDropdown);
+//		selectSmstemplate.selectByValue(value);
+//
+//	}
+
+	public void saveStagesDisposition() {
+
+		wait.until(ExpectedConditions.visibilityOf(firstCreated_UserManagement));
+		assertTrue(saveButtonStagesDisposition.isDisplayed(), "saveButtonStagesDisposition is not displayed");
+		saveButtonStagesDisposition.click();
+	}
+
+	public void VeriftTheUserIsAbleToDoAutoSMSMapping() {
+
+		String fromStageText = fromStages.getText();
+		System.out.println("fromStagesText :" + fromStageText);
+
+		String toStageText = toStages.getText();
+		System.out.println("toStageText :" + toStageText);
+
+		if (fromStageText.equals(toStageText)) {
+			// Use TestNG assertion for equality
+			assertEquals(fromStageText, toStageText,
+					"Auto SMS mapping should have the same stages: 'FROM-STAGE' and 'TO-STAGE' should be the same.");
+		} else {
+			// Use TestNG assertion for inequality
+			assertNotEquals(fromStageText, toStageText,
+					"Auto SMS mapping should have different stages: 'FROM-STAGE' and 'TO-STAGE' should not be the same.");
+		}
+
+	}
+
+	public void addAutoSmsMapping() throws Throwable {
+
+		js.executeScript("arguments[0].scrollIntoView(true);", autoSMSMappingActions);
+		assertTrue(autoSMSMappingActions.isDisplayed(), "autoSMSMappingLink is not displayed");
+		// autoSMSMappingActions.click();
+		jsClick(driver, autoSMSMappingActions);
+
+		wait.until(ExpectedConditions.visibilityOf(verifyAutoSmsMapping));
+		assertTrue(verifyAutoSmsMapping.isDisplayed(), "verifyAutoSmsMapping is not displayed");
+
+		dropdownUtils(autoSmsTemplatDropdown, last_CreatedSms.getText());
+
+	}
+
+	public void selectSmsTemplateForAutoSMS() throws Throwable {
+		wait.until(ExpectedConditions.visibilityOf(verifyAutoSmsMapping));
+		assertTrue(verifyAutoSmsMapping.isDisplayed(), "verifyAutoSmsMapping is not displayed");
+
+		dropdownUtils(autoSmsTemplatDropdown, last_CreatedSms.getText());
+
+	}
+
+	public static void SearchByProcess() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

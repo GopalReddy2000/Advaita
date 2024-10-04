@@ -44,155 +44,158 @@ public class userStatus extends TestBase {
 	public static String editStatusNameValue;
 
 	@FindBy(xpath = "//ul[@class='sidemenu_ul']//li//a//span[@class='text menu-text']")
-	public static List<WebElement> sideMenusListsElement;
+	public List<WebElement> sideMenusListsElement;
 
 	@FindBy(xpath = "(//ul[@class='sidemenu_ul']//li//a[@class='dropdown-item  menu-text'])[position() > 4]")
-	public static List<WebElement> subSideMenusListsElements;
+	public List<WebElement> subSideMenusListsElements;
 	//// ul[@class='sidemenu_ul']//li//a[@class='dropdown-item menu-text']
 	// Prfile options
 
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']//span[text()='Admin Super Admin']")
-	public static WebElement profileDropdown;
+	public WebElement profileDropdown;
 
 	@FindBy(xpath = "(//form[@action='/en/user_status/user_status_listing/'])[2]//li//a")
 	List<WebElement> createdStatuses;
 
 	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown'])[3]//span/..//img")
-	public static WebElement subMenuDropdwonProfile;
+	public WebElement subMenuDropdwonProfile;
 
 	@FindBy(xpath = "(//a[@class='user_status_dropdown' and text()='Trainee Employee'])[3]")
-	public static WebElement traineeEmployee;
+	public WebElement traineeEmployee;
 
 	@FindBy(xpath = "//table//tbody//td[2]")
 	List<WebElement> defaultNamesMenuSetup;
 
 	@FindBy(xpath = "//a//span[text()='Menu Setup']")
-	public static WebElement menuSetup;
+	public WebElement menuSetup;
 
 	@FindBy(xpath = "//a[text()='Call Log Tab View']")
-	public static WebElement callLogTabView;
+	public WebElement callLogTabView;
 
 	@FindBy(xpath = "//a//span[text()='Alchemy']")
-	public static WebElement alchemyModul;
+	public WebElement alchemyModul;
 
 	@FindBy(xpath = "//a//span[text()='User Status']")
-	public static WebElement userStatus;
+	public WebElement userStatus;
 
 	@FindBy(xpath = "(//h1[text()=' User Status '])[1]")
-	public static WebElement verifyUserStatusPage;
+	public WebElement verifyUserStatusPage;
 
 	@FindBy(xpath = "//a[text()='+ Create']")
-	public static WebElement Create;
+	public WebElement Create;
 
 	@FindBy(xpath = "//h1[contains(@class, 'page_heading') and not(contains(@class, 'mobile_page_heading'))]")
-	public static WebElement verifyCreateUserStatus;
+	public WebElement verifyCreateUserStatus;
 
 	@FindBy(xpath = "//label[text()='Status Name*']")
-	public static WebElement statusNameLabel;
+	public WebElement statusNameLabel;
 
 	@FindBy(xpath = "//input[@id='status_name']")
-	public static WebElement statusNameInputfield;
+	public WebElement statusNameInputfield;
 
 	@FindBy(xpath = "//label[text()='Description']")
-	public static WebElement descriptionLabel;
+	public WebElement descriptionLabel;
 
 	@FindBy(xpath = "//label[text()='Description']/..//textarea")
-	public static WebElement descriptionField;
+	public WebElement descriptionField;
 
 	@FindBy(xpath = "//label[text()='Menus To Hide']")
-	public static WebElement menusToHideLevel;
+	public WebElement menusToHideLevel;
 
 	@FindBy(xpath = "//select[@id='multiselect']")
-	public static WebElement menusToHideDropdown;
+	public WebElement menusToHideDropdown;
 
 	@FindBy(id = "multiselect_rightAll")
-	public static WebElement multiselect_RightAll;
+	public WebElement multiselect_RightAll;
 
 	@FindBy(id = "multiselect_rightSelected")
-	public static WebElement multiselect_RightSelected;
+	public WebElement multiselect_RightSelected;
 
 	@FindBy(id = "multiselect_leftSelected")
-	public static WebElement multiselect_LeftSelected;
+	public WebElement multiselect_LeftSelected;
 
 	@FindBy(id = "multiselect_leftAll")
-	public static WebElement multiSelecd_LeftAll;
+	public WebElement multiSelecd_LeftAll;
 
 	@FindBy(xpath = "//h3[text()='Active Status']/..//label")
-	public static WebElement activeStatusToggleButton;
+	public WebElement activeStatusToggleButton;
 
 	@FindBy(xpath = "//label[text()='Is Default']/..//input[@class='is_condtional_checkbx']")
-	public static WebElement isDefaultCheckBox;
+	public WebElement isDefaultCheckBox;
 
 	@FindBy(xpath = "//input[@placeholder='Search...']")
-	public static WebElement searchTextfieldMenusToHide;
+	public WebElement searchTextfieldMenusToHide;
 
 	@FindBy(xpath = "//button[@id='submt_single']")
-	public static WebElement createButton;
+	public WebElement createButton;
 	
 	@FindBy(xpath = "//button[text()='Cancel']")
-	public static WebElement CancelButton;
+	public WebElement CancelButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement successFullyCreated_popuop;
+	public WebElement successFullyCreated_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement continueButton_create;
+	public WebElement continueButton_create;
 	
 	
 
 	// Table
 	@FindBy(xpath = "//tbody//td[1]")
-	public static List<WebElement> statusNames;
+	public List<WebElement> statusNames;
 
 	@FindBy(xpath = "//input[@id='text_search']")
-	public static WebElement searchTextfield;
+	public WebElement searchTextfield;
 
 	@FindBy(xpath = "//tbody//tr[1]/td[1]")
-	public static WebElement firstStatusName;
+	public WebElement firstStatusName;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
-	public static WebElement searchbutton_Table;
+	public WebElement searchbutton_Table;
 
 	@FindBy(xpath = "//div//img/..//h6")
-	public static WebElement clearAllFiltersButton_Table;
+	public WebElement clearAllFiltersButton_Table;
 
 	@FindBy(xpath = "(//img[@alt='delete-icon '])[1]")
-	public static WebElement deleteButton;
+	public WebElement deleteButton;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
-	public static WebElement deletePopup_userStatus;
+	public WebElement deletePopup_userStatus;
 
 	@FindBy(xpath = "//button[text()='Delete']")
-	public static WebElement deleteButton_delete;
+	public WebElement deleteButton_delete;
 
 	@FindBy(xpath = "//h3/..//span[text()='Deleted Successfully']")
-	public static WebElement deleted_SuceessfullyPopup;
+	public WebElement deleted_SuceessfullyPopup;
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
-	public static WebElement continueButton_DeleteSuccessullyPopup;
+	public WebElement continueButton_DeleteSuccessullyPopup;
 
 	@FindBy(xpath = "//tbody//tr//td")
-	public static WebElement noEntriedFound;
+	public WebElement noEntriedFound;
 
 	// Edit
 	@FindBy(xpath = "//tbody/tr[position()=1]//td//div//img[@alt='table-edit']")
-	public static WebElement editButton;
+	public WebElement editButton;
 
 	@FindBy(xpath = "multiselect_to")
-	public static List<WebElement> multiselectTomenuHide; // MultiseletTo menus hide
+	public List<WebElement> multiselectTomenuHide; // MultiseletTo menus hide
 
 	// usersStatusHideModules
 	@FindBy(xpath = "//a//span[text()='API Key Setup']")
-	public static WebElement apiKeySetup;
+	public WebElement apiKeySetup;
 
 	@FindBy(xpath = "//button[@id='submt_single']")
-	public static WebElement updateButton;
+	public WebElement updateButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement userStatusUpdatedSuccessfullyPopup;
+	public WebElement userStatusUpdatedSuccessfullyPopup;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement ContineButton_update;
+	public WebElement ContineButton_update;
+	
+	
+	
 
 	public void navigateToMenuSetup() throws Throwable {
 

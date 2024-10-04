@@ -1,11 +1,18 @@
 package com.advaita.TestCreate;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.QuestionSelector;
+import com.advaita.WorkFlowDesign.PageObject.Disposition;
+import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.alchemyPageObject.SmsTemplate;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -26,8 +33,9 @@ public class TestSmstemplateCreate extends TestBase {
 
 	LoginPage loginPage;
 	HomePage homePage;
-
+	MastersFieldSets masterFieldSet;
 	SmsTemplate smstemplate;
+	Disposition disposition;
 
 	public TestSmstemplateCreate() {
 		super();
@@ -58,6 +66,8 @@ public class TestSmstemplateCreate extends TestBase {
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		smstemplate = new SmsTemplate();
+		masterFieldSet = new MastersFieldSets();
+		disposition = new Disposition();
 
 	}
 
@@ -83,8 +93,7 @@ public class TestSmstemplateCreate extends TestBase {
 		smstemplate.variables();
 		smstemplate.createButton();
 		// smstemplate.verifyCreatedMessage();
-		// smstemplate.userManagement_create("wyzmindz_solutions", "wyzmindz",
-		// "solutions"); //old one
+		// smstemplate.userManagement_create("wyzmindz_solutions", "wyzmindz", "solutions"); //old one
 //		smstemplate.userManagement_create();
 //		smstemplate.userMapping();
 //		smstemplate.logoutAmdin();
@@ -133,15 +142,53 @@ public class TestSmstemplateCreate extends TestBase {
 		smstemplate.createButton();
 
 	}
-	
-	//Stages Disposition Process
+//Auto Sms 
 	@Test
 	public void Disposition() throws Throwable {
-//		smstemplate.navigateTo_MasterParameterDisposition();
+		verifyAddFormFieldSetInCreateFieldSet(); //CreateDisposition
+		smstemplate.verifyCreatedDispositionQuestionset();
 		smstemplate.navigatetoStage_verifySMS();
-		smstemplate.stagesDisposition();
+		smstemplate.stagesDispositionClick();
 		smstemplate.selectSearchProcesses();
 		smstemplate.selectStagesDisposition();
+		smstemplate.selectDispositionQuestionSet();
+		
+		smstemplate.saveStagesDisposition();
+		smstemplate.VeriftTheUserIsAbleToDoAutoSMSMapping();
+		smstemplate.addAutoSmsMapping();
 	}
+
+	public void verifyAddFormFieldSetInCreateFieldSet() throws Throwable {
+
+		HomePage.clickOnDisposition();
+
+		String questionSetNameString = "Employee Status";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+
+		// Drop Down
+		List<String> sector = Arrays.asList("Pending", "complete", "under process");
+		masterFieldSet.addQuestions(0).addDropDownRelatedQuestions("What is the current status of the employee ?", 1, // Section
+				1, // Question
+				MastersFieldSets.DROP_DOWN, sector);
+
+		disposition.saveRecord();
+			
+	}
+	
+	public void autoSMSMapping() throws Throwable {
+		smstemplate.VeriftTheUserIsAbleToDoAutoSMSMapping();
+		smstemplate.addAutoSmsMapping();
+	}
+	
+	
+	
+	@AfterTest
+	public void tearDown() {
+		driver.manage().window().minimize();
+		driver.quit();
+		reports.flush();
+	}
+	
+
 
 }
