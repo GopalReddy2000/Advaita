@@ -3,11 +3,8 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +16,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -45,7 +41,7 @@ public class TestBase {
 
 	protected static SoftAssert softAssert;
 	public static String mainURl = "https://test.capture.autosherpas.com/";
-//	public static String mainURl = "https://ltfs-test.transmonqa.in/";
+	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
@@ -121,7 +117,7 @@ public class TestBase {
 	}
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
-	WebElement continueButton;
+	public WebElement continueButton;
 
 	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
@@ -134,6 +130,9 @@ public class TestBase {
 		continueButton.click();
 	}
 
+	protected void jsDateExecutor(WebElement dateField, String date) {
+		js.executeScript("arguments[0].value = arguments[1];", dateField, date);
+	}
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(driver, element);
