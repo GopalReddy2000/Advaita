@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.openqa.selenium.By;
@@ -22,8 +23,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.DataSetUp.PageObject.DataSet;
+import com.advaita.DataSetUp.PageObject.MetaData;
+import com.advaita.Utilities.PropertieFileUtil;
+import com.advaita.Utilities.QuestionSelector;
+import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
+import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
+import com.advaita.WorkFlowDesign.PageObject.Stages;
+import com.advaita.pageObjects.StagePage;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -36,12 +46,10 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
+//Global Variables
+//--------------------------------------->
 	String userId = "Abhijit@trasccon.com";
 	String userPassword = "Qwerty@123";
-
-	// EntireBodyClick
-	@FindBy(tagName = "body")
-	public WebElement driverIninteractable;
 
 	List<String> metaDataLists;
 	public String templateTextStringValue;
@@ -59,6 +67,12 @@ public class NotificationTemplate extends TestBase {
 
 	public String beforeSelectSubSubProcessdropdown3Options;
 	public String afterSelectSubSubProcessdropdown3Options;
+
+//------------------------------------------------------------->	
+
+	// EntireBodyClick
+	@FindBy(tagName = "body")
+	public WebElement driverIninteractable;
 
 	// user account
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()='  Call Log Tab View ']")
@@ -162,6 +176,18 @@ public class NotificationTemplate extends TestBase {
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
+
+	@FindBy(xpath = "//label[text()='Add Section']/..//a")
+	public WebElement addSectionOption;
+
+	@FindBy(xpath = "//input[@name='section_name']")
+	public WebElement sectionNamElement;
+
+	@FindBy(xpath = "//label[text()='Section Name*']/../..//a[text()='Add ']")
+	public WebElement addOption;
+
+	@FindBy(xpath = "(//label[normalize-space(text())='Non Measurable Set'])[5]")
+	public WebElement nonMeasurableQuestionSetRadioOption;
 
 	// measurableSet
 	@FindBy(xpath = "//button[@id='pills-MasterParameter-tab']")
@@ -323,6 +349,10 @@ public class NotificationTemplate extends TestBase {
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
 	public WebElement continueButton_Edit;
 
+	// Addd section in stages
+	@FindBy(xpath = "//ul[@id='pills-tab' and not(contains(@class, 'w-100 nav nav-pills main_nav_ul section_c_nav '))]//li")
+	List<WebElement> addedSections;
+
 	public void NavigateToProcess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
 		fetchProcess.getText();
@@ -337,15 +367,50 @@ public class NotificationTemplate extends TestBase {
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 	}
 
+	DataSet dataSet = new DataSet();
+
+	public void cretaeDataset() throws Throwable {
+		
+		String dataset="EmployeeDetail";
+		dataSet.navigateToDataSetup();
+		dataSet.createNewDataSet(dataset);
+
+		// Data for multiple rows
+		List<Map<String, String>> fieldData = List.of(
+				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+				Map.of("FieldName", " Emp Phone Number ?", "Type", "Number", "MaxLength", "14", "IsMandatory", "No"));
+		dataSet.enterFieldNameAndValidations(fieldData);
+		dataSet.createDataSetButtonAndConfirmation();
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataset);
+
+	}
+
+	String employeeName1 = "EmployeeOne";
+	final String metaDataName = employeeName1 + " Details MetaData";
+	MetaData metaData = new MetaData();
+
+	public void createMetadata() throws Throwable {
+		metaData.navigateToMetaData();
+		metaData.createNewMetaData(metaDataName);
+		metaData.verifyCreateButtonAndConfirmation();
+		metaData.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false);
+		metaData.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
+
+	}
+
 	@FindBy(xpath = "//input[@id='text_search']")
 	public WebElement searchTextfield_table;
-	
+
 	@FindBy(xpath = "//button[@class='filter_search_blk cursor-pointer d-flex align-items-center justify-content-center white_bg']")
 	public WebElement searchButton_table;
-	
-	public String CreatedMetadata = "Booking Information Metadata";
+
+	public String CreatedMetadata = "EmployeeAB Details MetaData";
 
 	public void FetchMetaData() throws Throwable {
+		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
+		wait.until(ExpectedConditions.visibilityOf(metaDataTab));
 		assertTrue(metaDataTab.isDisplayed(), "metaDataTab is not displayed");
 		metaDataTab.click();
 
@@ -403,21 +468,21 @@ public class NotificationTemplate extends TestBase {
 	public String stagesCreatedSubProcess2;
 	public String stagesCreatedSubsubProcess3;
 	public String verifyCreatedStages;
-	
+
 	String searchedStagesName = "Booking Information Stage";
-	
+
 	@FindBy(id = "text_search")
 	public WebElement searchTextfieldStages;
-	
+
 	@FindBy(xpath = "(//tbody//tr[1]//td[2])[1]")
 	public WebElement stagesCreatedProcess; // Stages Createdwith Which Proceess
 
-	@FindBy(xpath = "(//tbody//tr[1]//td[3])[1]") 
+	@FindBy(xpath = "(//tbody//tr[1]//td[3])[1]")
 	public WebElement stagesCreatedSubProcess; // Stages Createdwith Which SubProceess
 
 	@FindBy(xpath = "(//tbody//tr[1]//td[4])[1]")
 	public WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
-	
+
 	public void FetchStages() throws Throwable {
 //		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 //
@@ -432,7 +497,7 @@ public class NotificationTemplate extends TestBase {
 //		}
 //		assertTrue(satgeNameList.containsAll(satgeNameList));
 //		assertTrue(satgeNameList.contains("CutomerdetailsZZZ Stage"));
-		
+
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
 
@@ -461,7 +526,95 @@ public class NotificationTemplate extends TestBase {
 		assertTrue(satgeNameList.contains(searchedStagesName), "stages is notcontains");
 	}
 
-	////// MeasurableSet///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//	//////////////////////////Measurable set/////////////////////////////
+
+	String employeeName = "notificationALERT";
+	Stages stages = new Stages();
+	MastersFieldSets masterFieldSet = new MastersFieldSets();
+
+	@FindBy(xpath = "//a//img[@class='arrow-left']")
+	public WebElement leftArrowNMS;
+
+	@FindBy(xpath = "//tbody//tr[1]//td[@class='question-menu']")
+	public WebElement createdNonMeasurableQuestionSET;
+
+	public void verifyCreateNonMeasurable() throws Throwable {
+
+		// Create the test in ExtentReports
+		// Perform necessary UI steps for creating the field set
+		stages.navigateNonMeasurableCreate();
+		// Set the question set name
+		String questionSetNameString = employeeName + " NM";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
+		// 3)
+
+		int sectionCount = 1;
+		int numberOfQuestion = 2;
+		boolean fieldSetQuestionRandom = true;
+		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
+				numberOfQuestion, MastersFieldSets.DATE, MastersFieldSets.TIME);
+		// Now, add multiple questions to section 1 based on the selected types
+		boolean defineQuestionTypeRandom = true;
+		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
+				defineQuestionTypeRandom);
+
+		masterFieldSet.verifySaveInCreateFieldSet();
+		leftArrowNMS.click();
+
+		assertEquals(createdNonMeasurableQuestionSET.getText(), questionSetNameString,
+				"The creted NonMeasurableQuestion st not equal with Declaare String value");
+
+	}
+
+	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]")
+	public WebElement editStagesOption;
+
+	String notification = "notificationreminder";
+	String notification1 = "Reminder message";
+
+	public void verifyForAddedNotificationSectionInStagesEdit() {
+
+		assertTrue(editStagesOption.isDisplayed(), "editStagesOption is not displayed");
+		editStagesOption.click();
+
+		List<String> addedSectionsList = new ArrayList<String>();
+
+		for (WebElement sectionsLists : addedSections) {
+
+			String sectionsListstext = sectionsLists.getText();
+
+			addedSectionsList.add(sectionsListstext);
+		}
+
+		if (!addedSectionsList.contains(notification)) {
+
+			js.executeScript("arguments[0].scrollIntoView(true);", addSectionOption);
+
+			assertTrue(addSectionOption.isDisplayed(), "addSectionOptionis not displayed");
+
+			jsClick(driver, addSectionOption);
+
+			sectionNamElement.sendKeys(notification);
+
+			jsClick(driver, addOption);
+
+			nonMeasurableQuestionSetRadioOption.click();
+
+		}
+
+		else {
+
+			assertTrue(addedSectionsList.contains(notification), "notification not cotains");
+
+			System.out.println("notification is already contains in Added section on stages");
+
+		}
+
+	}
+
+	//////////// //////
+	//////////// MeasurableSet////////////////////////////////////////////////////////////////////////////
 
 	public void navigateTo_AlchemyModule() {
 
@@ -487,117 +640,200 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	public void CreateNotificationTemplate() throws Throwable {
+	public void CreateAndVerifyNotificationTemplate() throws Throwable {
 
 		assertTrue(createButtonNotificationTemplate.isDisplayed(), "createButtonNotificationTemplate is displayed");
 		createButtonNotificationTemplate.click();
 
 		wait.until(ExpectedConditions.visibilityOf(CreateNotificationTepmlateTpopUp));
 		assertTrue(CreateNotificationTepmlateTpopUp.isDisplayed(), "CreateNotificationTepmlateText is not displayed");
+	}
 
-		// Process
-		List<String> processDropdownList = new ArrayList<String>();
-		Select ProcessDropdown1 = new Select(ProcessDropdown);
-		for (WebElement Options : ProcessDropdown1.getOptions()) {
-			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
-			System.out.println(Options.getText());
-			processDropdownList.add(Options.getText());
-		}
-		assertTrue(processDropdownList.contains("AJP"));
+	public void dropdownUtils1(WebElement dropdownElement, String expectedOptionText, WebDriverWait wait)
+			throws Throwable {
+		// Step 1: Ensure the dropdown element is visible and clickable
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
 
-		beforeSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectProcessdropdown1Options: " + beforeSelectProcessdropdown1Options);
+		// Step 2: Initialize Select object with the provided dropdown element
+		Select dropdown = new Select(dropdownElement);
 
-		ProcessDropdown1.selectByVisibleText("AJP");
+		// Step 3: Retrieve all options in the dropdown
+		List<WebElement> allDropdownOptions = dropdown.getOptions();
 
-		afterSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
-		System.out.println("afterSelectProcessdropdown1Options:" + afterSelectProcessdropdown1Options);
+		// Step 4: Loop through each dropdown option and compare with expectedOptionText
+		boolean isOptionClicked = false;
 
-		assertNotEquals(beforeSelectProcessdropdown1Options, afterSelectProcessdropdown1Options);
-
-		// Subprocess
-		List<String> subProcessDropdownList = new ArrayList<String>();
-
-		actions.moveToElement(driverIninteractable).perform();
-		Select subProcessDropdown2 = new Select(SubProcessDropdown);
-		for (WebElement options2 : subProcessDropdown2.getOptions()) {
-			// Thread.sleep(1000);
-			System.out.println(subProcessDropdown2.getOptions());
-			subProcessDropdownList.add(options2.getText());
-		}
-
-		assertTrue(subProcessDropdownList.contains("Sub AJP"));
-
-		beforeSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectSubProcessdropdown2Options: " + beforeSelectSubProcessdropdown2Options);
-
-		subProcessDropdown2.selectByVisibleText("Sub AJP");
-		// subProcessDropdown2.selectByIndex(1);
-
-		afterSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
-		System.out.println("afterSelectSubProcessdropdown2Options:" + afterSelectSubProcessdropdown2Options);
-
-		// SubSubprocess
-		List<String> subsubprocessDropdownList = new ArrayList<String>();
-		boolean elementStale = true;
-		int attempts = 0;
-
-		while (elementStale && attempts < 3) {
+		for (int i = 0; i < allDropdownOptions.size(); i++) {
 			try {
-				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
-				subsubprocessDropdownList.clear(); // Clear the list before each retry
+				// Refetch the dropdown and options to avoid stale element issues
+				dropdown = new Select(dropdownElement);
+				allDropdownOptions = dropdown.getOptions();
 
-				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
-					Thread.sleep(2000);
-					System.out.println(options3.getText()); // Print each option's text
-					subsubprocessDropdownList.add(options3.getText());
+				// Fetch the option element by index to avoid StaleElementReferenceException
+				WebElement option = allDropdownOptions.get(i);
+				String dropdownValue = option.getText();
+
+				// Compare expectedOptionText with the dropdown option value
+				if (dropdownValue.equals(expectedOptionText)) {
+					// Assert that the correct dropdown value has been found
+					assertEquals(dropdownValue, expectedOptionText, "Dropdown value did not match!");
+
+					// Step 5: Wait until the option is clickable and click it
+					wait.until(ExpectedConditions.elementToBeClickable(option));
+					option.click();
+
+					// Step 6: Mark as clicked and break the loop
+					isOptionClicked = true;
+					break;
 				}
-
-				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
-
-				beforeSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
-				System.out.println(
-						"beforeSelectSubSubProcessdropdown3Options: " + beforeSelectSubSubProcessdropdown3Options);
-
-				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-				// SubsubProcessDropdown3.selectByIndex(1);
-				actions.moveToElement(driverIninteractable).perform();
-
-				afterSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
-				System.out.println(
-						"afterSelectSubSubProcessdropdown3Options:" + afterSelectSubSubProcessdropdown3Options);
-
-				elementStale = false; // If we reach here, no exception was thrown
 			} catch (StaleElementReferenceException e) {
-				attempts++;
-				System.out.println("Stale element reference exception. Retrying... " + attempts);
-				Thread.sleep(2000); // Optional: add a wait before retrying
+				// In case of StaleElementReferenceException, re-fetch the dropdown element
+				System.out.println("StaleElementReferenceException caught, retrying...");
+				dropdown = new Select(dropdownElement);
+				allDropdownOptions = dropdown.getOptions(); // Re-fetch options
 			}
 		}
 
-		if (elementStale) {
-			throw new RuntimeException(
-					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
-		}
+		Thread.sleep(2000);
+		// Step 7: Assert that the option has been clicked
+		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
+
+	}
+
+	SmsTemplate smsTemplate = new SmsTemplate();
+
+	public void selectProcessFromNotitficationTemplate() throws Throwable {
+
+		// Process
+//		List<String> processDropdownList = new ArrayList<String>();
+//		Select ProcessDropdown1 = new Select(ProcessDropdown);
+//		for (WebElement Options : ProcessDropdown1.getOptions()) {
+//			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
+//			System.out.println(Options.getText());
+//			processDropdownList.add(Options.getText());
+//		}
+//		assertTrue(processDropdownList.contains("AJP"));
+//
+//		beforeSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
+//		System.out.println("beforeSelectProcessdropdown1Options: " + beforeSelectProcessdropdown1Options);
+//
+//		ProcessDropdown1.selectByVisibleText("AJP");
+//
+//		afterSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
+//		System.out.println("afterSelectProcessdropdown1Options:" + afterSelectProcessdropdown1Options);
+//
+//		assertNotEquals(beforeSelectProcessdropdown1Options, afterSelectProcessdropdown1Options);
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		// dropdownUtils1(ProcessDropdown, stagesCreatedProcess1, wait);
+
+	}
+
+	public void selectSubProcessFromNotitficationTemplate() throws Throwable {
+
+		// Subprocess
+//		List<String> subProcessDropdownList = new ArrayList<String>();
+//
+//		actions.moveToElement(driverIninteractable).perform();
+//		Select subProcessDropdown2 = new Select(SubProcessDropdown);
+//		for (WebElement options2 : subProcessDropdown2.getOptions()) {
+//			// Thread.sleep(1000);
+//			System.out.println(subProcessDropdown2.getOptions());
+//			subProcessDropdownList.add(options2.getText());
+//		}
+//
+//		assertTrue(subProcessDropdownList.contains("Sub AJP"));
+//
+//		beforeSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
+//		System.out.println("beforeSelectSubProcessdropdown2Options: " + beforeSelectSubProcessdropdown2Options);
+//
+//		subProcessDropdown2.selectByVisibleText("Sub AJP");
+//		// subProcessDropdown2.selectByIndex(1);
+//
+//		afterSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
+//		System.out.println("afterSelectSubProcessdropdown2Options:" + afterSelectSubProcessdropdown2Options);
+
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		// dropdownUtils1(SubProcessDropdown, stagesCreatedSubProcess2, wait);
+
+	}
+
+	public void selectSubsubProcessFromNotitficationTemplate() throws Throwable {
+
+		// SubSubprocess
+//		List<String> subsubprocessDropdownList = new ArrayList<String>();
+//		boolean elementStale = true;
+//		int attempts = 0;
+//
+//		while (elementStale && attempts < 3) {
+//			try {
+//				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
+//				subsubprocessDropdownList.clear(); // Clear the list before each retry
+//
+//				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
+//					Thread.sleep(2000);
+//					System.out.println(options3.getText()); // Print each option's text
+//					subsubprocessDropdownList.add(options3.getText());
+//				}
+//
+//				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
+//
+//				beforeSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
+//				System.out.println(
+//						"beforeSelectSubSubProcessdropdown3Options: " + beforeSelectSubSubProcessdropdown3Options);
+//
+//				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
+//				// SubsubProcessDropdown3.selectByIndex(1);
+//				actions.moveToElement(driverIninteractable).perform();
+//
+//				afterSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
+//				System.out.println(
+//						"afterSelectSubSubProcessdropdown3Options:" + afterSelectSubSubProcessdropdown3Options);
+//
+//				elementStale = false; // If we reach here, no exception was thrown
+//			} catch (StaleElementReferenceException e) {
+//				attempts++;
+//				System.out.println("Stale element reference exception. Retrying... " + attempts);
+//				Thread.sleep(2000); // Optional: add a wait before retrying
+//			}
+//		}
+//
+//		if (elementStale) {
+//			throw new RuntimeException(
+//					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
+//		}
+
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+		// dropdownUtils1(SubSubProcess, stagesCreatedSubsubProcess3, wait);
+
+	}
+
+	public void selectStagesFromNotitficationTemplate() throws Throwable {
 
 		// select Satges
-		List<String> smsStagesLists = new ArrayList<String>();
-		Select NotifationStagesdropdown = new Select(notificationStagesDropdown);
-		for (WebElement smsStagesOptions : NotifationStagesdropdown.getOptions()) {
-			System.out.println("satges Dropdown : " + NotifationStagesdropdown.getOptions());
-			smsStagesLists.add(smsStagesOptions.getText());
-		}
-		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
+//		List<String> smsStagesLists = new ArrayList<String>();
+//		Select NotifationStagesdropdown = new Select(notificationStagesDropdown);
+//		for (WebElement smsStagesOptions : NotifationStagesdropdown.getOptions()) {
+//			System.out.println("satges Dropdown : " + NotifationStagesdropdown.getOptions());
+//			smsStagesLists.add(smsStagesOptions.getText());
+//		}
+//		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
+//
+//		String beforeSelectStagesDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
+//		System.out.println("beforeSelectStagesDPOption: " + beforeSelectStagesDPOption);
+//
+//		NotifationStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
+//
+//		String afterSelectNotificationDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
+//		System.out.println("afterSelectNotificationDPOption:" + afterSelectNotificationDPOption);
+//
+//		assertNotEquals(beforeSelectStagesDPOption, afterSelectNotificationDPOption);
 
-		String beforeSelectStagesDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectStagesDPOption: " + beforeSelectStagesDPOption);
+		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);
 
-		NotifationStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
+	}
 
-		String afterSelectNotificationDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
-		System.out.println("afterSelectNotificationDPOption:" + afterSelectNotificationDPOption);
-
-		assertNotEquals(beforeSelectStagesDPOption, afterSelectNotificationDPOption);
+	public void selectTemplateName() throws Throwable {
 
 		// template Name
 		assertTrue(notificationTemplateName.isDisplayed(), "notificationTemplateName is not displyed");
@@ -632,6 +868,10 @@ public class NotificationTemplate extends TestBase {
 
 		templateTextStringValue = notificationTemplateName.getAttribute("value"); // 1st way "Global variable"
 		System.out.println("templateTextString: " + templateTextStringValue);
+
+	}
+
+	public void selectNotificationDate() throws InterruptedException {
 
 		// NotificationDate Dropdwon
 

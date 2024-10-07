@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.alchemyPageObject.NotificationTemplate;
 import com.advaita.alchemyPageObject.WhatsAppTemplate;
 import com.aventstack.extentreports.ExtentReports;
@@ -36,6 +37,8 @@ public class TestNotificationTemplateCreate extends TestBase {
 		super();
 
 	}
+	
+	Stages stages  = new Stages();
 
 	@BeforeTest
 	public void setUp() throws Throwable {
@@ -65,18 +68,21 @@ public class TestNotificationTemplateCreate extends TestBase {
 
 	@Test(priority = 1)
 	public void NotificationTemplateCreate() throws Throwable {
-		notificationTemplate.NavigateToProcess(); // fetch process
-		notificationTemplate.FetchMetaData();
-		notificationTemplate.FetchStages();
-		notificationTemplate.navigateTo_AlchemyModule();
-		notificationTemplate.NavigateToNotificationtemplate();
-		notificationTemplate.CreateNotificationTemplate();
-		notificationTemplate.logoutFromAdmin();
-		notificationTemplate.loginAsUserCrediantials();
-		notificationTemplate.sendNotifcation();
-		notificationTemplate.TimeSelection();
-		notificationTemplate.DateSelection();
-		notificationTemplate.DispostionManualOutsideProcess();
+		
+		notificationTemplate.cretaeDataset();
+		notificationTemplate.createMetadata();
+//		notificationTemplate.NavigateToProcess(); // fetch process
+//		notificationTemplate.FetchMetaData();
+//		notificationTemplate.FetchStages();
+//		notificationTemplate.navigateTo_AlchemyModule();
+//		notificationTemplate.NavigateToNotificationtemplate();
+//		notificationTemplate.CreateAndVerifyNotificationTemplate();
+//		notificationTemplate.logoutFromAdmin();
+//		notificationTemplate.loginAsUserCrediantials();
+//		notificationTemplate.sendNotifcation();
+//		notificationTemplate.TimeSelection();
+//		notificationTemplate.DateSelection();
+//		notificationTemplate.DispostionManualOutsideProcess();
 		// notificationTemplate.DispostionManualWithinProcess();
 
 //			//Table
@@ -115,11 +121,23 @@ public class TestNotificationTemplateCreate extends TestBase {
 	
 	@Test
 	public void xyz() throws Throwable {
-		notificationTemplate.NavigateToProcess(); // fetch process
+		//notificationTemplate.NavigateToProcess(); // fetch process
+		
 		notificationTemplate.FetchMetaData();
 		notificationTemplate.FetchStages();
+		
+		//notificationTemplate.verifyCreateNonMeasurable();
+		notificationTemplate.verifyForAddedNotificationSectionInStagesEdit();
+		
 		notificationTemplate.navigateTo_AlchemyModule();
 		notificationTemplate.NavigateToNotificationtemplate();
+		notificationTemplate.CreateAndVerifyNotificationTemplate();
+		notificationTemplate.selectProcessFromNotitficationTemplate();
+		notificationTemplate.selectSubProcessFromNotitficationTemplate();
+		notificationTemplate.selectSubsubProcessFromNotitficationTemplate();
+		notificationTemplate.selectStagesFromNotitficationTemplate();
+		notificationTemplate.selectTemplateName();
+		
 		
 		
 		

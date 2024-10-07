@@ -1992,7 +1992,17 @@ public class MastersFieldSets extends TestBase {
 	// Method to handle Text Box questions
 	public void handleLabel_Date_TimeQuestion(int sectionIndex, int questionIndex, String maxLength) throws Throwable {
 
-		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+//		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+		
+		try {
+
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("Exception : " + e);
+		}
 
 	}
 

@@ -1836,9 +1836,6 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public static void SearchByProcess() {
-		// TODO Auto-generated method stub
 
-	}
 
 }

@@ -95,7 +95,7 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-//	String employeeName = "EmployeeJ";
+	String employeeName = "EmployeeJ";
 //
 //	final String metaDataName = employeeName + " Details MetaData";
 //	final String manualUploadName = employeeName + " Details Upload";
@@ -149,34 +149,34 @@ public class TestManualAllocation extends TestBase {
 //
 //	}
 //
-//	@Test(priority = 4)
-//	public void verifyCreateNonMeasurable() throws Throwable {
-//
-//		test = reports.createTest("verifyCreateNonMeasurable");
-//
-//		// Create the test in ExtentReports
-//		// Perform necessary UI steps for creating the field set
-//		stages.navigateNonMeasurableCreate();
-//		// Set the question set name
-//		String questionSetNameString = employeeName + " NM";
-//		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
-//		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
-//		// 3)
-//
-//		int sectionCount = 1;
-//		int numberOfQuestion = 7;
-//		boolean fieldSetQuestionRandom = true;
-//		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-//				numberOfQuestion, MastersFieldSets.DROP_DOWN, MastersFieldSets.MULTIPLE_CHOICE,
-//				MastersFieldSets.TEXT_BOX, MastersFieldSets.SHORT_ANSWER);
-//		// Now, add multiple questions to section 1 based on the selected types
-//		boolean defineQuestionTypeRandom = true;
-//		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
-//				defineQuestionTypeRandom);
-//
-//		masterFieldSet.verifySaveInCreateFieldSet();
-//
-//	}
+	@Test(priority = 4)
+	public void verifyCreateNonMeasurable() throws Throwable {
+
+		test = reports.createTest("verifyCreateNonMeasurable");
+
+		// Create the test in ExtentReports
+		// Perform necessary UI steps for creating the field set
+		stages.navigateNonMeasurableCreate();
+		// Set the question set name
+		String questionSetNameString = employeeName + " NM";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
+		// 3)
+
+		int sectionCount = 1;
+		int numberOfQuestion = 7;
+		boolean fieldSetQuestionRandom = true;
+		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
+				numberOfQuestion, MastersFieldSets.DROP_DOWN, MastersFieldSets.MULTIPLE_CHOICE,
+				MastersFieldSets.TEXT_BOX, MastersFieldSets.SHORT_ANSWER);
+		// Now, add multiple questions to section 1 based on the selected types
+		boolean defineQuestionTypeRandom = true;
+		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
+				defineQuestionTypeRandom);
+
+		masterFieldSet.verifySaveInCreateFieldSet();
+
+	}
 //
 //	@Test(priority = 5)
 //	public void verifyStageCreate() throws Throwable {
