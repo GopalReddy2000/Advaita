@@ -877,17 +877,20 @@ public class UserSetupPage extends TestBase {
 
 //		dropdownValidation(UMSubProcessNameDropdown);
 		wait.until(ExpectedConditions.visibilityOf(UMSubProcessNameDropdown));
+		Thread.sleep(1000);
 		DropDown.dropdownWithAllPosibleValidation(UMSubProcessNameDropdown, "Select", SubProcessName);
 //		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
 
 //		dropdownValidation(UMSubSubProcessNameDropdown);
 //		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
 		wait.until(ExpectedConditions.visibilityOf(UMSubSubProcessNameDropdown));
+		Thread.sleep(1000);
 		DropDown.dropdownWithAllPosibleValidation(UMSubSubProcessNameDropdown, "Select", SubSubProcess);
 
 //		dropdownValidation(UMStageNameDropdown);
 //		selectByVisibleText(UMStageNameDropdown, Stages);
 		wait.until(ExpectedConditions.visibilityOf(UMStageNameDropdown));
+		Thread.sleep(2000);
 		DropDown.dropdownWithAllPosibleValidation(UMStageNameDropdown, "Select", Stages);
 
 		UMSaveButton.click();

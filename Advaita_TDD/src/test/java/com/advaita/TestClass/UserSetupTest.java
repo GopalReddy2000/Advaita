@@ -1,9 +1,14 @@
 package com.advaita.TestClass;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
+import static org.testng.Assert.assertEquals;
+
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ExcelUserManagement;
@@ -12,11 +17,8 @@ import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.pageObjects.NonMeasurableSetPage;
 import com.advaita.pageObjects.UserSetupPage;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class UserSetupTest extends TestBase {
 
@@ -28,7 +30,7 @@ public class UserSetupTest extends TestBase {
 	Disposition disposition;
 
 
-	com.advaita.DataSetUp.PageObject.Process process;
+	ProcessPage process;
 	FakeData fake = new FakeData();
 	public String processName = "P " + fake.lastName1();
 
@@ -82,7 +84,7 @@ public class UserSetupTest extends TestBase {
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 		userSetupPage =new UserSetupPage();
-		process=new Process();
+		process=new ProcessPage();
 		dataset=new DataSet();
 		measurableSetPage=new MeasurableSetPage();
 		nonMeasurableSetPage=new NonMeasurableSetPage();

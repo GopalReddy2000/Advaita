@@ -1,25 +1,15 @@
 package com.advaita.TestTable;
 
-import java.io.IOException;
-import java.util.Date;
-
-import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -41,7 +31,7 @@ public class TestProcessTable extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	Process process;
+	ProcessPage process;
 
 	public TestProcessTable() {
 		super();
@@ -70,7 +60,7 @@ public class TestProcessTable extends TestBase {
 //		htmlReporter.config().setTimelineEnabled(true);
 //		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		process = new Process();
+		process = new ProcessPage();
 
 	}
 

@@ -6,7 +6,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.DataSetUp.PageObject.Process;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.aventstack.extentreports.ExtentReports;
@@ -23,7 +22,7 @@ public class VerifyLoginPage extends TestBase {
     LoginPage loginPage;
     HomePage homePage;
 
-    Process process;
+//    ProcessPage process;
 
     public VerifyLoginPage() {
         super();
