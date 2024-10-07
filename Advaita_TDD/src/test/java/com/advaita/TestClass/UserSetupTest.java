@@ -2,7 +2,10 @@ package com.advaita.TestClass;
 
 import static org.testng.Assert.assertEquals;
 
-import org.testng.annotations.BeforeTest;
+import java.util.List;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -77,7 +80,7 @@ public class UserSetupTest extends TestBase {
 	{
 		super();
 	}
-	@BeforeTest
+	@BeforeMethod
 	public void setUp() throws Exception   {
 
 		initialization();
@@ -146,7 +149,7 @@ public class UserSetupTest extends TestBase {
 	public void deleteUserAccount()
 	{
 		//		userSetupPage.fetchRecordNames();
-		userSetupPage.navToUserManagement().userAccountTableActions("Kilback Ratke UA");
+		userSetupPage.navToUserManagement().userAccountDelete("Kilback Ratke UA");
 	}
 
 	HomePage hp = new HomePage();
@@ -180,7 +183,7 @@ public class UserSetupTest extends TestBase {
 		assertEquals(expectedUserName, actualUserName);
 		excelUserManagement.addUserAccount(expectedUserName);
 		if(selectedUser.equals("WorkFlow Design")) {
-//			userMapping(expectedUserName,"Manager", "John Smith");
+//			userMapping(expectedUserName, , "John Smith");
 		}
 
 		userSetupPage.userLogin(expectedUserName, Password);
@@ -212,7 +215,7 @@ public class UserSetupTest extends TestBase {
 
 		userSetupPage.userLogin("Capture_admin", Password);
 
-		userSetupPage.navToUserManagement().userAccountTableActions(expectedUserName);
+		userSetupPage.navToUserManagement().userAccountDelete(expectedUserName);
 //		excelUserManagement.removeUserAccount(expectedUserName);
 		userSetupPage.deleteRoleByName(roleName);
 //		excelUserManagement.removeUserRole(roleName);
@@ -227,7 +230,7 @@ public class UserSetupTest extends TestBase {
 	{
 		userSetupPage
 				.navToUserManagement()
-				.userAccountTableActions("OReilly Heidenreich");
+				.userAccountDelete("OReilly Heidenreich");
 	}
 
 	@Test(dataProvider = "Roles")
@@ -238,14 +241,6 @@ public class UserSetupTest extends TestBase {
 				.deleteRoleByName(roleName);
 
 	}
-
-	@Test
-	public void userCreationNegative()
-	{
-		userSetupPage.userCreationNeg();
-	}
-
-
 
 
 	public void userSetupAssertions()
@@ -262,7 +257,7 @@ public class UserSetupTest extends TestBase {
 		String actualUserName1=userSetupPage.roleTableNames.get(0).getText();
 		assertEquals(expectedUserName1, actualUserName1);
 		System.out.println(expectedUserName1+" = "+actualUserName1);
-		userSetupPage.userAccountTableActions(expectedUserName1);
+		userSetupPage.userAccountDelete(expectedUserName1);
 		userSetupPage.deleteRoleByName(roleNameForUserSetup+" UA");
 
 	}
@@ -290,7 +285,7 @@ public class UserSetupTest extends TestBase {
 //	}
 
 	@Test
-	public void userDel()
+	public void userDelete()
 	{
 		measurableSetPage.deleteRecordByName("Software Testing Ritchie");
 	}
@@ -326,14 +321,202 @@ public class UserSetupTest extends TestBase {
 
 	}
 
+	@Test
+	public void endToEnd()
+	{
+		userSetupPage
+				.navToUserManagement()
+				.userMappingRecord("James@wyzmindz.com")
+				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Stage James")
+				.userMappingUserSuperior("Stage James","QA","James@wyzmindz.com")
+				.systemMapping("James","Paul");
+	}
+
+	@Test
+	public void testNegative()
+	{
+		userSetupPage.userCreationFieldsNeg("","firstName",
+				"lastName","james","password");
+
+	}
+	@Test()
+	public void testUserWithoutPermission()
+	{
+		userSetupPage.userWithOutPermission("JamesWithoutPer","James",
+				"Paul","james@gmail.com","Qwerty@123");
+
+	}
+	@Test(dataProvider = "Invalid Files")
+	public void testUserUpload(String uploadFile)
+	{
+		userSetupPage
+				.cloudUpload("Booking Information Stage", uploadFile);
+	}
 
 
-//	@AfterTest
-//	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
-//
-//	}
+	@DataProvider(name="Invalid Files")
+	public Object[][] getinvalidFiles()
+	{
+		String invalidUserName = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Invalid User Names.xlsx";
+		String invalidFirstName = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Invalid LastName.xlsx";
+		String invalidLastName = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Invalid FirstName.xlsx";
+		String invalidEmail = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Invalid Email.xlsx";
+		String invalidPassword = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Invalid Passwords.xlsx";
+		String invalidDesignation = System.getProperty("user.dir")+"\\UserCreationExcelFiles\\Inavlid Designation.xlsx";
+
+
+		return new Object[][] {
+				{invalidUserName},
+				{invalidFirstName},
+				{invalidLastName},
+				{invalidEmail},
+				{invalidPassword},
+				{invalidDesignation}
+		};
+	}
+
+	@Test
+	public void testInactive()
+	{
+		userSetupPage.Inactivate("Qwerty@123");
+	}
+
+	@Test
+	public void noPermission()
+	{
+		userSetupPage.noPermissionEdit(commonPassword);
+	}
+	String commonPassword="Qwerty@123";
+	@Test
+	public void validateRole()
+	{
+		userSetupPage.negativeRole(commonPassword,"Agent");
+
+	}
+
+	@Test(dataProvider = "rolePermissionData")
+	public void  testRoleCreate(String roleName){
+		userSetupPage.roleCreate(roleName);
+	}
+
+	@DataProvider(name = "rolePermissionData")
+	public Object[][] getRolePermissionTestData() {
+		return new Object[][] {
+
+				// Invalid Data - Empty or Blank Input
+				{""},
+				{"   "},
+
+				// Invalid Data - Overly Long Input
+				{new String(new char[256]).replace("\0", "A")},  // 256 characters long
+
+				// Invalid Data - Special Characters
+				{"Admin@123"},
+				{"Role_Name#"},
+				{"Sales$Manager!"},
+				{"*Support_Staff"},
+
+				// Invalid Data - SQL Injection
+				{"Admin'; DROP TABLE Roles; --"},
+				{"1 OR 1=1"},
+
+				// Invalid Data - XSS Injection
+				{"<script>alert('XSS')</script>"},
+				{"\"><img src=x onerror=alert(1)>"},
+
+				// Invalid Data - Numeric Values
+				{"123"},
+				{"456789"},
+
+				// Valid Data - Alphanumeric Combinations
+				{"Admin123"},
+				{"SalesTeam2024"},
+
+				// Valid Data - Multilingual Characters
+				{"管理员"},  // Chinese
+				{"מנהל"},   // Hebrew
+				{"مدير"},   // Arabic
+				{"Ürün Yöneticisi"},  // Turkish
+
+				// Invalid Data - Leading or Trailing Whitespace
+				{"  Admin  "},
+				{"  Sales Manager"},
+
+
+		};
+	}
+	@DataProvider(name = "invalidUserData")
+	public Object[][] getInvalidUserData() {
+		return new Object[][]{
+				// User Name, First Name, Last Name, Email Id, Password, User Designation
+				{"", "John", "Doe", "user@domain.com", "Password123"},  // Invalid Username
+				{"a", "John", "Doe", "user@domain.com", "Password123"},  // Too short Username
+				{"@user!", "John", "Doe", "user@domain.com", "Password123"},  // Special characters in Username
+				{"12345", "John", "Doe", "user@domain.com", "Password123"},  // Only numbers in Username
+				{"username_that_is_way_too_long_for_the_system_to_handle", "John", "Doe", "user@domain.com", "Password123"},  // Overly long Username
+
+				{"username", "", "Doe", "user@domain.com", "Password123"},  // Empty First Name
+				{"username", "@First!", "Doe", "user@domain.com", "Password123"},  // Special characters in First Name
+				{"username", "John123", "Doe", "user@domain.com", "Password123"},  // Numbers in First Name
+				{"username", "A", "Doe", "user@domain.com", "Password123"},  // Single character First Name
+				{"username", "ThisFirstNameIsExceedinglyLongAndInvalid", "Doe", "user@domain.com", "Password123"},  // Overly long First Name
+
+				{"username", "John", "", "user@domain.com", "Password123"},  // Empty Last Name
+				{"username", "John", "!Smith@", "user@domain.com", "Password123"},  // Special characters in Last Name
+				{"username", "John", "Smith123", "user@domain.com", "Password123"},  // Numbers in Last Name
+				{"username", "John", "B", "user@domain.com", "Password123"},  // Single character Last Name
+				{"username", "John", "ThisLastNameIsAlsoWayTooLongToBeValid", "user@domain.com", "Password123"},  // Overly long Last Name
+
+				{"username", "John", "Doe", "", "Password123"},  // Empty Email
+				{"username", "John", "Doe", "user@domain", "Password123"},  // Missing domain in Email
+				{"username", "John", "Doe", "userdomain.com", "Password123"},  // No @ symbol in Email
+				{"username", "John", "Doe", "user@domain,com", "Password123"},  // Invalid format in Email
+				{"username", "John", "Doe", "user_with_an_extremely_long_email_address_that_exceeds_standard_limits@example.com", "Password123",  },  // Overly long Email
+
+				{"username", "John", "Doe", "user@domain.com", ""},  // Empty Password
+				{"username", "John", "Doe", "user@domain.com", "abc"},  // Too short Password
+				{"username", "John", "Doe", "user@domain.com", "password"},  // Only letters in Password
+				{"username", "John", "Doe", "user@domain.com", "12345678"},  // Only numbers in Password
+				{"username", "John", "Doe", "user@domain.com", "a_very_very_very_very_long_password_that_is_unnecessary"},  // Overly long Password
+
+				{"username", "John", "Doe", "user@domain.com", "Password123", ""},  // Empty User Designation
+				{"username", "John", "Doe", "user@domain.com", "Password123", "@Manager!"},  // Special characters in Designation
+				{"username", "John", "Doe", "user@domain.com", "Password123", "123Manager"},  // Numbers in Designation
+				{"username", "John", "Doe", "user@domain.com", "Password123", "SuperSuperAdminAdmin"},  // Invalid role
+		};
+	}
+
+	@Test(dataProvider = "rolePermissionData")
+	public void deleteRoles(String roleName)
+	{
+		userSetupPage
+				.deleteRoleByName(roleName);
+	}
+
+	@Test(dataProvider = "rolePermissionData")
+	public void testSystemNamesNeg(String systemNames)
+	{
+		userSetupPage
+				.createInvalidSystemNames(systemNames);
+
+
+	}
+@Test(dataProvider = "rolePermissionData")
+	public void testSystemNames(String systemNames)
+	{
+		userSetupPage
+				.editSystemNameWithInvalidInputs(systemNames,"Renamed"+systemNames);
+		
+	}
+
+
+
+	@AfterMethod
+	public void tearDown() {
+		driver.manage().window().minimize();
+		driver.quit();
+	}
+
 
 	@DataProvider(name = "userData")
 	public Object[][] userData() {
@@ -370,11 +553,12 @@ public class UserSetupTest extends TestBase {
 //		return userData;
 	}
 
+	List<String> evaluationFileds=List.of("Name","Phone","Trans");
 
 	@DataProvider(name = "System Names")
 	public Object[][] systemNamesMapping() {
 		return new Object[][] {
-				{"Manager", "John Smith"},
+				{ "Manager", "John Smith"},
 				{"Customer Type", "Enterprise"},
 				{"Lead Source", "Website Contact Form"},
 				{"Industry", "Technology"},
@@ -394,8 +578,9 @@ public class UserSetupTest extends TestBase {
 	@DataProvider(name = "fieldNames")
 	public Object[][] fieldNames() {
 		return new Object[][] {
-				{"Manager"},
-				{"Customer Type"},
+				{ },
+				{"Manager",
+						"Customer Type"},
 				{"Lead Source"},
 				{"Industry"},
 				{"Product Interest"},

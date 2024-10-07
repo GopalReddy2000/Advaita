@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import com.github.javafaker.Faker;
@@ -321,11 +322,21 @@ public class FakeData {
 	 * @param endDate   The end date of the range.
 	 * @return A random date within the specified range.
 	 */
-	private static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
+	/*private static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
 		long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
 		long randomDay = random.nextLong(daysBetween + 1);
 		return startDate.plusDays(randomDay);
+	}*/
+
+	private static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
+		long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+
+		// Generate a random number between 0 (inclusive) and daysBetween (inclusive)
+		long randomDay = ThreadLocalRandom.current().nextLong(0, daysBetween + 1);
+
+		return startDate.plusDays(randomDay);
 	}
+
 
 	/**
 	 * Formats a LocalDate object to a string in the format dd-MM-yyyy.

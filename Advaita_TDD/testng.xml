@@ -9,9 +9,9 @@
   <test thread-count="1" name="Test">
     <classes>
 
-      <class name="com.advaita.TestClass.DocumentNamesTest">
+      <class name="com.advaita.TestClass.SamplingPlanAndGenerationTest">
         <methods>
-          <include name="createDocuments"/>
+          <include name="createSampling"/>
         </methods>
 
       </class>
