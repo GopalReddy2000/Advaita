@@ -1,6 +1,7 @@
 package com.advaita.pageObjects;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.time.Duration;
@@ -12,27 +13,18 @@ import java.util.Random;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.DropDown;
-import com.advaita.Utilities.ExcelUtils;
-import com.advaita.Utilities.ExcelWrite;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class UserSetupPage extends TestBase {
 
@@ -1020,8 +1012,8 @@ public static WebElement AddRow;
 		saveRecord();
 		return this;
 	}
-	@FindBy(xpath = "//button[text()='System mapping ']")
-	WebElement systemMappingTab;
+//	@FindBy(xpath = "//button[text()='System mapping ']")
+//	WebElement systemMappingTab;
 
 	public UserSetupPage navToSysNames()
 	{
