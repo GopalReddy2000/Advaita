@@ -22,7 +22,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.UploadFile;
@@ -296,7 +296,7 @@ public class MasterFormPage extends TestBase {
 		click(driver, masterFormsTab);
 	}
 
-	Process process = new Process();
+	ProcessPage process = new ProcessPage();
 
 	public void createProcess() throws Throwable {
 

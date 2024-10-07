@@ -285,6 +285,7 @@ public class DropDown extends TestBase {
 	            assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
 	        }
 
+	        wait.until(ExpectedConditions.visibilityOf(dropdown));
 	        try {
 	            dropdownWithAllPosibleValidation(dropdown, currentDefaultOption, currentOptionToSelect);
 	        } catch (StaleElementReferenceException e) {

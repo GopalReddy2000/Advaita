@@ -16,24 +16,61 @@ public class PropertieFileUtil {
 
 	// Method to store a single key-value pair in a properties file
 	public static void storeSingleTextInPropertiesFile(String key, String value) throws IOException {
-		Properties properties = new Properties();
+	    Properties properties = new Properties();
 
-		// Load existing properties if they exist
-		try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
-			properties.load(input);
-		} catch (FileNotFoundException e) {
-			System.out.println("Properties file not found. Creating a new one.");
-		}
+	    // Load existing properties if they exist
+	    try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
+	        properties.load(input);
+	    } catch (FileNotFoundException e) {
+	        System.out.println("Properties file not found. Creating a new one.");
+	    }
 
-		// Add the key-value pair to the properties object
-		properties.setProperty(key, value);
+	    // Add the key-value pair to the properties object
+	    properties.setProperty(key, value);
 
-		// Store the updated properties in a file
-		try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_PATH2)) {
-			properties.store(output, "Updated Properties");
-			System.out.println("Text stored in properties file successfully.");
-		}
+	    // Store the updated properties in a file
+	    try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_PATH2)) {
+	        properties.store(output, "Updated Properties");
+
+	        // Print the key and its stored value
+	        System.out.println("Key: '" + key + "' Value: '" + value + "' stored in properties file successfully.");
+	    }
 	}
+
+	
+	// Method to refresh and retrieve text from the properties file (case insensitive)
+	public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
+	    Properties properties = new Properties();
+	    Map<String, String> lowerCaseProperties = new HashMap<>();
+
+	    // Refresh: Load the properties file to ensure it's the latest version
+	    try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
+	        // Load the properties from file
+	        properties.load(input);
+
+	        // Store properties in a Map with lowercase keys for case-insensitive lookup
+	        for (String key : properties.stringPropertyNames()) {
+	            lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
+	        }
+	    } catch (FileNotFoundException e) {
+	        System.out.println("Properties file not found. Please ensure the file path is correct.");
+	        return null; // Return null if the file doesn't exist
+	    } catch (IOException e) {
+	        System.out.println("An error occurred while reading the properties file.");
+	        throw e; // Re-throw the exception if reading fails
+	    }
+
+	    // Retrieve the specific tag value based on the provided key (case insensitive)
+	    String tagText = lowerCaseProperties.get(tagKey.toLowerCase());
+	    if (tagText != null) {
+	        System.out.println("Retrieved value: " + tagText);
+	        return tagText; // Return the value if found
+	    } else {
+	        System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
+	        return null; // Return null if the key is not found
+	    }
+	}
+
 
 	// Method to store text in a properties file
 	public static void storeTextInPropertiesFile(String process, String subProcess, String subSubProcess,
@@ -80,34 +117,5 @@ public class PropertieFileUtil {
 	    return null; // Return null if the key is not found
 	}
 
-
-	 public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
-	        Properties properties = new Properties();
-	        Map<String, String> lowerCaseProperties = new HashMap<>();
-
-	        // Load the properties file
-	        try (InputStream input = PropertieFileUtil.class.getClassLoader()
-	                .getResourceAsStream("SingleTextExtract.properties")) {
-	            if (input == null) {
-	                System.out.println("Sorry, unable to find properties file.");
-	                return null; // Return null if the file is not found
-	            }
-	            properties.load(input);
-
-	            // Store properties in a Map with lowercase keys
-	            for (String key : properties.stringPropertyNames()) {
-	                lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
-	            }
-	        }
-
-	        // Retrieve the specific tag value based on the provided key (case insensitive)
-	        String tagText = lowerCaseProperties.get(tagKey.toLowerCase());
-	        if (tagText != null) {
-	            return tagText; // Return the value if found
-	        } else {
-	            System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
-	            return null; // Return null if the key is not found
-	        }
-	    }
 
 }

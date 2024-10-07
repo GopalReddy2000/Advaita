@@ -1230,7 +1230,7 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
-		
+
 		return this;
 	}
 
@@ -1554,21 +1554,20 @@ public class MastersFieldSets extends TestBase {
 
 	public MastersFieldSets addQuestions(int sectionIndex) throws Throwable {
 
-	    // If sectionIndex is 0, return without adding the question
-	    if (sectionIndex == 0) {
-	        return this;
-	    }
+		// If sectionIndex is 0, return without adding the question
+		if (sectionIndex == 0) {
+			return this;
+		}
 
-	    String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])[" 
-	                               + sectionIndex + "]";
+		String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+				+ sectionIndex + "]";
 
-	    WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
+		WebElement addQuestionButton = driver.findElement(By.xpath(addQuestionXpath));
 
-	    ClickUtilities.clickWithRetry(addQuestionButton, 2);
+		ClickUtilities.clickWithRetry(addQuestionButton, 2);
 
-	    return this;
+		return this;
 	}
-
 
 	public MastersFieldSets addSection() throws Throwable {
 
@@ -2003,7 +2002,8 @@ public class MastersFieldSets extends TestBase {
 			// TODO: handle exception
 			System.out.println("Exception : " + e);
 		}
-
+		
+		
 	}
 
 }

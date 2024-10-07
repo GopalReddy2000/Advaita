@@ -42,7 +42,7 @@ public class TestBase {
 
 	protected static SoftAssert softAssert;
 	public static String mainURl = "https://test.capture.autosherpas.com/";
-//	public static String mainURl = "https://ltfs-test.transmonqa.in/";
+	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
@@ -121,7 +121,7 @@ public class TestBase {
 	}
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
-	WebElement continueButton;
+	public WebElement continueButton;
 
 	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
@@ -134,6 +134,9 @@ public class TestBase {
 		continueButton.click();
 	}
 
+	protected void jsDateExecutor(WebElement dateField, String date) {
+		js.executeScript("arguments[0].value = arguments[1];", dateField, date);
+	}
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(driver, element);

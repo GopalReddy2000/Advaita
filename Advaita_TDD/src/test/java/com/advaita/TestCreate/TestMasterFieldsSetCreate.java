@@ -253,7 +253,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		int numberOfQuestion = 2;
 		boolean fieldSetQuestionRandom = true;
 		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-				numberOfQuestion, MastersFieldSets.DROP_DOWN,MastersFieldSets.TEXT_BOX);
+				numberOfQuestion, MastersFieldSets.DATE,MastersFieldSets.TIME);
 		// Now, add multiple questions to section 1 based on the selected types
 		boolean defineQuestionRandom = true;
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,

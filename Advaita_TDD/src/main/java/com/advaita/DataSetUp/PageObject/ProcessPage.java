@@ -23,7 +23,7 @@ import com.advaita.Utilities.Pagination;
 import Advaita_TDD.Advaita_TDD.FakeData;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
-public class Process extends TestBase {
+public class ProcessPage extends TestBase {
 
 	// ProcessSetup
 	List<String> beforeProcessListText;
@@ -277,13 +277,13 @@ public class Process extends TestBase {
 	
 	FakeData fake = new FakeData();
 
-	public Process() {
+	public ProcessPage() {
 
 		PageFactory.initElements(driver, this);
 	}
 
 	// Create
-	public void createProcess1(String processName, String processDesc) {
+	public ProcessPage createProcess1(String processName, String processDesc) {
 
 		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed.");
 		createProcessButton.click();
@@ -300,28 +300,33 @@ public class Process extends TestBase {
 		assertTrue(processStatusDropDown.isDisplayed(), "processStatusDropDown");
 		Select select = new Select(processStatusDropDown);
 		select.selectByVisibleText("Active");
+		
+		assertTrue(saveandContinueButton.isDisplayed(), "saveandContinueButton is not displayed");
+		saveandContinueButton.click();
 
-		assertTrue(saveButton.isDisplayed(), "saveButton is not displayed");
-		saveButton.click();
-
-		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
-		assertTrue(conformationMesgofCreateProcessElement.isDisplayed(),
-				"conformationMesgofCreateProcessElement is not displayed.");
-
-		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
-		continuElement.click();
+//		assertTrue(saveButton.isDisplayed(), "saveButton is not displayed");
+//		saveButton.click();
+//
+//		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
+//		assertTrue(conformationMesgofCreateProcessElement.isDisplayed(),
+//				"conformationMesgofCreateProcessElement is not displayed.");
+//
+//		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
+//		continuElement.click();
+		
+		return this;
 
 	}
 
-	public void createSubProcess(String subprocessfield, String subprocssDesc) {
+	public ProcessPage createSubProcess(String subprocessfield, String subprocssDesc) {
 
-		assertTrue(fetchProcessName.isDisplayed(), "fetchProcessName is not displayed.");
-		String fetchhprocessName = fetchProcessName.getText();
+//		assertTrue(fetchProcessName.isDisplayed(), "fetchProcessName is not displayed.");
+//		String fetchhprocessName = fetchProcessName.getText();
 
 //		System.out.println(fetchhprocessName);
-
-		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed.");
-		createProcessButton.click();
+//
+//		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed.");
+//		createProcessButton.click();
 
 		wait.until(ExpectedConditions.visibilityOf(subProcessTab));
 		assertTrue(subProcessTab.isDisplayed(), "subProcessTab is not displayed");
@@ -329,8 +334,8 @@ public class Process extends TestBase {
 
 		wait.until(ExpectedConditions.visibilityOf(selectProcessDropDown));
 		assertTrue(selectProcessDropDown.isDisplayed(), "selectProcessDropDown is not displayed");
-		Select select = new Select(selectProcessDropDown);
-		select.selectByVisibleText(fetchhprocessName);
+//		Select select = new Select(selectProcessDropDown);
+//		select.selectByVisibleText(fetchhprocessName);
 
 		assertTrue(subProcessNameField.isDisplayed(), "subProcessNameField is not displayed");
 		subProcessNameField.sendKeys(subprocessfield);
@@ -342,39 +347,43 @@ public class Process extends TestBase {
 		Select select1 = new Select(subProcessStatusDropDown);
 		select1.selectByVisibleText("Active");
 
-		assertTrue(saveButtonInSubProcess.isDisplayed(), "saveButtonInSubProcess is not displayed");
-		saveButtonInSubProcess.click();
-
-		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
-		assertTrue(conformationMesgofCreateProcessElement.isDisplayed(),
-				"conformationMesgofCreateProcessElement is not displayed.");
-
-		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
-		continuElement.click();
+		assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(), "saveandContinnueButtonInSubProcess is not displayed.");
+		saveandContinnueButtonInSubProcess.click();
+//		assertTrue(saveButtonInSubProcess.isDisplayed(), "saveButtonInSubProcess is not displayed");
+//		saveButtonInSubProcess.click();
+//
+//		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
+//		assertTrue(conformationMesgofCreateProcessElement.isDisplayed(),
+//				"conformationMesgofCreateProcessElement is not displayed.");
+//
+//		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
+//		continuElement.click();
+		
+		return this;
 
 	}
 
-	public void createSubSubProcess(String SubsubProcessName, String subSubProcessDesc) throws Throwable {
+	public ProcessPage createSubSubProcess(String SubsubProcessName, String subSubProcessDesc) throws Throwable {
 
 		Thread.sleep(2000);
 
-		assertTrue(dropDown1.isDisplayed(), "dropdown is not displayed");
-		dropDown1.click();
+//		assertTrue(dropDown1.isDisplayed(), "dropdown is not displayed");
+//		dropDown1.click();
+//
+//		Thread.sleep(2000);
+//		assertTrue(fetchSubProcessName.isDisplayed(), "fetchSubProcessName is not displayed.");
+//		String fetchSubProcssNameElement = fetchSubProcessName.getText();
+//		System.out.println("fetchSubProcssNameElement : " + fetchSubProcssNameElement);
 
-		Thread.sleep(2000);
-		assertTrue(fetchSubProcessName.isDisplayed(), "fetchSubProcessName is not displayed.");
-		String fetchSubProcssNameElement = fetchSubProcessName.getText();
-		System.out.println("fetchSubProcssNameElement : " + fetchSubProcssNameElement);
-
-		assertTrue(createProcessButton.isDisplayed(), "create button is not displayed.");
-		createProcessButton.click();
+//		assertTrue(createProcessButton.isDisplayed(), "create button is not displayed.");
+//		createProcessButton.click();
 
 		wait.until(ExpectedConditions.visibilityOf(subSubProcessTab));
 		assertTrue(subSubProcessTab.isDisplayed(), "subSubProcessTab is not displayed");
 		subSubProcessTab.click();
 
-		Select select = new Select(selectSubProcessDropDown);
-		select.selectByVisibleText(fetchSubProcssNameElement);
+//		Select select = new Select(selectSubProcessDropDown);
+//		select.selectByVisibleText(fetchSubProcssNameElement);
 
 		assertTrue(subSubProcessNameField.isDisplayed(), "subSubProcessNameField is not displayed");
 		subSubProcessNameField.sendKeys(SubsubProcessName);
@@ -385,10 +394,18 @@ public class Process extends TestBase {
 		assertTrue(subSubProcessDropDown.isDisplayed(), "subSubProcessDropDown is not displayed");
 		Select select2 = new Select(subSubProcessDropDown);
 		select2.selectByVisibleText("Active");
-
-		assertTrue(save_UpdateButtonInSubsubProcess.isDisplayed(), "save_UpdateButtonInSubsubProcess is not displayed");
+		
+		save_UpdateButtonInSubsubProcess.isDisplayed();
 		save_UpdateButtonInSubsubProcess.click();
+		
+		unWait(2);
+		assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
+		continueButton.click();
 
+//		assertTrue(save_UpdateButtonInSubsubProcess.isDisplayed(), "save_UpdateButtonInSubsubProcess is not displayed");
+//		save_UpdateButtonInSubsubProcess.click();
+
+		return this;
 	}
 
 //###########################################################################################################

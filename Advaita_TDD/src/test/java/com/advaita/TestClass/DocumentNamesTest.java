@@ -1,5 +1,6 @@
 package com.advaita.TestClass;
 
+import Advaita_TDD.Advaita_TDD.LTFS;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
@@ -18,13 +19,15 @@ public class DocumentNamesTest extends TestBase
     LoginPage loginPage;
     HomePage homePage;
     DocumentNamePage documentNamePage;
+    LTFS ltfs;
 
     @BeforeMethod
     public void setup() throws AWTException, InterruptedException {
         initialization();
         loginPage=new LoginPage();
-        homePage = loginPage.login("Capture_admin", "Qwerty@123");
+        homePage = loginPage.login("capture_admin", "Qwerty@123");
         documentNamePage= new DocumentNamePage();
+        ltfs=new LTFS();
     }
 
     @Test(dataProvider = "DocumentNames")
@@ -44,6 +47,13 @@ public class DocumentNamesTest extends TestBase
         documentNamePage.validateInUserSetupPage("PAN Card");
 
     }
+
+@Test
+public void LTFS()
+{
+    ltfs.navToRecordToAuditForm("TW -Customer Visit Feedback form").
+            auditForm("abcd","Ja","22","employee","10","100");
+}
 
     @Test(dataProvider = "DocumentNames")
     public void delete(String recordName)
@@ -104,7 +114,7 @@ public class DocumentNamesTest extends TestBase
     @AfterMethod
     public void tearDown()
     {
-        driver.quit();
+//        driver.quit();
     }
 
 }

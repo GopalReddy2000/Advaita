@@ -4,6 +4,16 @@ import java.sql.Driver;
 
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterTest;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -75,6 +85,58 @@ public class TestSkipReasonCreate extends TestBase {
 		skipReason.SelectSubProcessDropdown();
 		skipReason.selectSubSubProcess();
 		skipReason.continue_CreateSkinReason();
+//		skipReason.reasonTextfields();
+//		skipReason.descriptionTextfield();
+		skipReason.clickOnCreateSkipReason();
+		skipReason.verifyCreatedSkipReasonPopup();
+		skipReason.verifyCreatedSkipReason();
+		skipReason.captureAllCreatedSkipReasons();
+		skipReason.navigateToSkipAudit();
+		skipReason.clickOnSkipAuditReason();
+		skipReason.selecteSkipReason();
+
+		// SearchBy Reasons Name
+		//skipReason.searchThroughReasonsName();
+
+//		skipReason.ClearFilters();
+//		skipReason.EditSKipReasons();
+//		skipReason.CanceCreate_Edit();
+//		skipReason.Delete_SkipReasons();
+	}
+	
+	
+
+//	@Test(priority = 2)
+//	public void searchByProcesses() throws Throwable {
+//		skipReason.navigateTo_AlchemyModule();
+//		skipReason.NavigateTo_Skipreason();
+//
+//		skipReason.SearchThroughProcesses();
+//
+//		String[] expectedValues = { "AJP", "Sub AJP", "Sub Sub AJP" };
+//		skipReason.verifyColumnTitles(driver, expectedValues);
+
+//	}
+
+//	@Test(priority = 3)
+//	public void verifyTheUSerIsAbleToclearAllFilter() throws Throwable {
+//
+//		skipReason.navigateTo_AlchemyModule();
+//		skipReason.NavigateTo_Skipreason();
+//		skipReason.SearchThroughProcesses();
+//		skipReason.ClearFilters();
+
+//	}
+	
+	@Test
+	public void navigate() throws Throwable {
+		
+
+		skipReason.navigateTo_AlchemyModule();
+		skipReason.NavigateTo_Skipreason();
+		skipReason.captureAllCreatedSkipReasons();
+//		skipReason.navigateToSkipAudit();
+//		skipReason.clickOnSkipAuditReason();
 //		skipReason.reasonTextfields();
 //		skipReason.descriptionTextfield();
 		skipReason.clickOnCreateSkipReason();

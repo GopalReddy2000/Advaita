@@ -210,17 +210,17 @@ public class DataSet extends TestBase {
 //	String subProcessValue;
 //	String subSubProcessValue;
 	
-	
-	String processValue = "AJP";
-	String subProcessValue = "Sub AJP";
-	String subSubProcessValue = "Sub Sub AJP";
+
+//	String processValue = "AJP";
+//	String subProcessValue = "Sub AJP";
+//	String subSubProcessValue = "Sub Sub AJP";
 
 	String dataSetName1 = FakeData.firstCapString() + " Name";
 
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	HomePage hp = new HomePage();
 
 	public void createDataSet(String type) throws Throwable {
@@ -589,12 +589,7 @@ public class DataSet extends TestBase {
 
 	public DataSet navigateToDataSetup() throws Throwable {
 
-		String[] processValues = new String[3];
-		fecthProcess_SubProces_SubSubProcess(processValues);
-
-		processValue = processValues[0];
-		subProcessValue = processValues[1];
-		subSubProcessValue = processValues[2];
+		fecthProcess_SubProces_SubSubProcess();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(dataSetup.isDisplayed(), "DataSetup is not Displayed");
@@ -612,18 +607,38 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
-	public DataSet fecthProcess_SubProces_SubSubProcess(String[] processValues) throws Throwable {
+	public DataSet fecthProcess_SubProces_SubSubProcess() throws Throwable {
+		
 		hp.clickOnProcessManagementCreate();
+
 		dropDown1.isDisplayed();
 		dropDown1.click();
 		Thread.sleep(1000);
 		dropDown2.isDisplayed();
 		dropDown2.click();
 		Thread.sleep(1000);
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("process", fetchProcess.getText());
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", fetchsubProcess.getText());
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", fetchsubSubProcess.getText());
+		
+		
+		
+		System.out.println("Process : " + fetchProcess.getText() + "\n"
+				+ "Sub Process : " + fetchsubProcess.getText() + "\n"
+				+ "Sub Sub Process : " + fetchsubSubProcess.getText());
+		
+		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("Process") + "\n"
+				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
+				+ "Data Set Sub Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subSubprocess"));
 
-		processValues[0] = fetchProcess.getText();
-		processValues[1] = fetchsubProcess.getText();
-		processValues[2] = fetchsubSubProcess.getText();
+//		String process = fetchProcess.getText();
+//		String subProcess = fetchsubProcess.getText();
+//		String subSubProcess = fetchsubSubProcess.getText();
+//
+//		PropertieFileUtil.storeSingleTextInPropertiesFile("process", process);
+//		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subProcess);
+//		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", subSubProcess);
 
 		return this;
 	}
@@ -636,19 +651,21 @@ public class DataSet extends TestBase {
 		assertTrue(createDataSetPupup.isDisplayed());
 
 		verifyDataSetNameField(dataSetName);
-		
-		PropertieFileUtil.storeSingleTextInPropertiesFile("process", processValue);
-		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subProcessValue);
-		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", subSubProcessValue);
 
-		processDropDownSelect(processDropDown, processValue)
-				.subProcessDropDownSelect(subProcessDropDown, subProcessValue)
-				.subSubProcessDropDownSelect(subSubProcessDropDown, subSubProcessValue);
+		processDropDownSelect(processDropDown, PropertieFileUtil.getSingleTextFromPropertiesFile("Process"))
+				.subProcessDropDownSelect(subProcessDropDown,
+						PropertieFileUtil.getSingleTextFromPropertiesFile("Subprocess"))
+				.subSubProcessDropDownSelect(subSubProcessDropDown,
+						PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess"));
 
 		return this;
 	}
 
-	public void verifyDataSetNameField(String dataSetName) {
+	public void verifyDataSetNameField(String dataSetName) throws IOException {
+		
+		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("process") + "\n"
+				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
+				+ "Data Set Sub Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess"));
 
 		assertTrue(createDataSetPupup.isDisplayed(), "createDataSetPupup is not displayed.");
 
@@ -687,8 +704,6 @@ public class DataSet extends TestBase {
 		assertTrue(processDropDown.isDisplayed());
 		Select select = new Select(processDropDown);
 		select.selectByVisibleText(processValue);
-		
-		
 
 		return this;
 	}

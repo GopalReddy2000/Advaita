@@ -5,8 +5,14 @@
     <classes>
       <class name="com.advaita.TestCreate.TestNotificationTemplateCreate">
         <methods>
+<<<<<<< HEAD
           <include name="NotificationTemplateCreate"/>
+=======
+          <include name="tearDown"/>
+          <include name="getResult"/>
+>>>>>>> 6429eb930248b0961d56ecee6ee5f0ceb9635347
           <include name="setUp"/>
+          <include name="verifyStageCreate"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestNotificationTemplateCreate -->
     </classes>

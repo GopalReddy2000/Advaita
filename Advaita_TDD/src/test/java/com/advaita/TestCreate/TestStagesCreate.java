@@ -16,7 +16,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.QuestionSelector;
@@ -51,7 +51,7 @@ public class TestStagesCreate extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	Process process;
+	ProcessPage process;
 	DataSet dataset;
 	MetaData metaData;
 	ManualUpload manualUpload;
@@ -87,7 +87,7 @@ public class TestStagesCreate extends TestBase {
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		// Pre-condition
-		process = new Process();
+		process = new ProcessPage();
 		dataset = new DataSet();
 		metaData = new MetaData();
 		manualUpload = new ManualUpload();
@@ -233,7 +233,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 13)
 	public void verifyAddSectionA() throws Throwable {
 		test = reports.createTest("verifyAddSectionA");
-		stages.verifyAddSectionA();
+		stages.verifyAddSectionA(true,false);
 	}
 
 	@Test(priority = 14)
@@ -245,7 +245,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 15)
 	public void verifySelectMetaDataInAddBlockSectionB() throws Throwable {
 		test = reports.createTest("selectMetaDataInAddBlockSectionB");
-		stages.selectMetaDataInAddBlockSectionB(3);
+		stages.selectMetaDataInAddBlockSectionB(3,true,false);
 	}
 
 	@Test(priority = 16)
@@ -291,8 +291,8 @@ public class TestStagesCreate extends TestBase {
 
 		test = reports.createTest("verifyStageCreate");
 		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
-				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown().verifyAddSectionA()
-				.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2)
+				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown().verifyAddSectionA(true,false)
+				.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2,true,false)
 				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
 //		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
