@@ -194,7 +194,7 @@ public class App extends TestBase {
 	public App navToRecordToAuditForm(String stageSelect) {
 		navigateWithinAlchemy(auditForm);
 		selectByVisibleText(stageSearch, stageSelect);
-		jsClick(driver, recordEyeButton);
+		jsClick(recordEyeButton);
 		return this;
 	}
 

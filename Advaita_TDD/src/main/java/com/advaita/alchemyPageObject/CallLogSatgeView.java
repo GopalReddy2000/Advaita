@@ -5,7 +5,6 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -122,7 +121,7 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 		// jsClick(driver, alchemySidemenubar);
 
 	}

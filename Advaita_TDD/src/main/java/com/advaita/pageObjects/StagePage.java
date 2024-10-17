@@ -395,7 +395,7 @@ public class StagePage extends TestBase{
 		if(toggleBtnState.contains("none"))
 		{
 			System.out.println("The "+ section +" toggle button is not toggled");
-			jsClick(driver, toggleButton) ;
+			jsClick(toggleButton) ;
 			System.out.println("The "+ section +" toggle button is toggled now");
 		}else
 		{
@@ -411,7 +411,7 @@ public class StagePage extends TestBase{
 		for(int i=0;i<=4;i++)
 		{
 			int chechBoxIndexes=getRandomIndex(Checkboxes);
-			jsClick(driver, Checkboxes.get(chechBoxIndexes));
+			jsClick(Checkboxes.get(chechBoxIndexes));
 		}
 	}
 
@@ -544,7 +544,7 @@ public class StagePage extends TestBase{
 
 		for(WebElement blockText:sectionBFirstBlockLabel)
 		{
-			jsClick(driver, sectionBFirstBlockLabel.get(0)); 
+			jsClick(sectionBFirstBlockLabel.get(0));
 			String label = blockText.findElement(By.tagName("label")).getText();
 			String value = blockText.findElement(By.tagName("h6")).getText();
 			System.out.println(label + " : " + value);
@@ -730,14 +730,14 @@ public class StagePage extends TestBase{
 
 
 
-		jsClick(driver, sectionAEditButton);
+		jsClick(sectionAEditButton);
 		Select sectionAMetaData = new Select(sectionAMetaDataDropDown);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 		selectDropdownOption(sectionAMetaData, "PVSL Capture Form_metadata");
 		SelectedSectionAMetadata=sectionAMetaData.getFirstSelectedOption().getText();
 		clickCheckBoxes(sectionAMetaDataCheckBoxes);
 
-		jsClick(driver, sectionAMetaDataAdd); 
+		jsClick(sectionAMetaDataAdd);
 
 
 		SelectedCheckBoxesDisplayedInA=new HashSet<>();
@@ -770,7 +770,7 @@ public class StagePage extends TestBase{
 
 
 		//		Section B
-		jsClick(driver, sectionBEditButton1); 
+		jsClick(sectionBEditButton1);
 
 		Select sectionBMetaData1 = new Select(sectionB1MetaDataDropDown);
 		Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
@@ -779,7 +779,7 @@ public class StagePage extends TestBase{
 
 
 		clickCheckBoxes(sectionBMetaDataCheckBoxes);
-		jsClick(driver, sectionBMetaDataAdd); 
+		jsClick(sectionBMetaDataAdd);
 
 
 		 SelectedCheckBoxesDisplayedInB1=new HashSet<>();
@@ -792,7 +792,7 @@ public class StagePage extends TestBase{
 
 
 		//		Section B Block 2
-		jsClick(driver, sectionBEditButton2); 
+		jsClick(sectionBEditButton2);
 
 
 		Select sectionBMetaData2 = new Select(sectionB1MetaDataDropDown);
@@ -803,7 +803,7 @@ public class StagePage extends TestBase{
 
 		clickCheckBoxes(sectionBMetaDataCheckBoxes);
 
-		jsClick(driver, sectionBMetaDataAdd); 
+		jsClick(sectionBMetaDataAdd);
 
 
 		SelectedCheckBoxesDisplayedInB2=new HashSet<>();
@@ -905,19 +905,19 @@ public class StagePage extends TestBase{
 		{
 			//		Modifying to Manual if Auto Selected
 			System.out.println(dispositionManualRadioBtn.isSelected()+" Disposition Auto Radio Button Was Selected");
-			jsClick(driver, dispositionManualRadioBtn);
+			jsClick(dispositionManualRadioBtn);
 			System.out.println(dispositionManualRadioBtn.isSelected()+" Disposition Manual Radio Button is Selected");
 
 			//		Enabling Stages In Manual 
 			if(dispositionManualEnableStageToggle.isSelected()) {
 				System.out.println(dispositionManualEnableStageToggle.isSelected()+" Enable Stages is selected");
 			}else {
-				jsClick(driver, dispositionManualEnableStageToggle); 
+				jsClick(dispositionManualEnableStageToggle);
 				System.out.println(dispositionManualEnableStageToggle.isSelected()+" Enable Stages was not selected, selected now");
 				
 				if (dispositionManualOutsideRadioBtn.isSelected()) {
 //					Editing if Manual Outside Process is Selected
-					jsClick(driver, dispositionManualWithInRadioBtn);
+					jsClick(dispositionManualWithInRadioBtn);
 
 					Select ManualWithInStages= new Select(dispositionManualWithInStages);
 
@@ -926,7 +926,7 @@ public class StagePage extends TestBase{
 				}
 				else {
 //					Editing as Auto if Manual Within Process is Selected
-					jsClick(driver, dispositionManualOutsideRadioBtn);
+					jsClick(dispositionManualOutsideRadioBtn);
 					
 					Select ManualOutsideProcess=new Select(dispositionManualOutsideProcessDropdown);
 					selectDropdownOption(ManualOutsideProcess, "CAPTURE");
@@ -957,11 +957,11 @@ public class StagePage extends TestBase{
 			//		Modifying to Auto if Manual Selected
 
 			System.out.println(dispositionAutoRadioBtn.isSelected()+" Disposition Manual Radio Button Was Selected");
-			jsClick(driver, dispositionAutoRadioBtn);
+			jsClick(dispositionAutoRadioBtn);
 			System.out.println(dispositionAutoRadioBtn.isSelected()+" Disposition Auto Radio Button is Selected");
 
 			if(dispositionAutoOutsideRadioBtn.isSelected()) {
-			jsClick(driver, dispositionAutoWithInRadioBtn);
+			jsClick(dispositionAutoWithInRadioBtn);
 			
 			Select autoWithInStages= new Select(dispositionAutoWithInDropdown);
 			selectDropdownOptionByIndex(autoWithInStages, getRandomIndex(autoWithInStages.getOptions()));
@@ -969,7 +969,7 @@ public class StagePage extends TestBase{
 			
 			}else {
 				
-				jsClick(driver, dispositionAutoOutsideRadioBtn);
+				jsClick(dispositionAutoOutsideRadioBtn);
 				Select autoOutsideProcessDropdown=new Select(dispositionAutoOutsideProcessDropdown);
 				selectDropdownOption(autoOutsideProcessDropdown, "CAPTURE");
 				selectedAutoOutsideProcessDropdown=autoOutsideProcessDropdown.getFirstSelectedOption().getText();
@@ -1001,7 +1001,7 @@ public class StagePage extends TestBase{
 
 		click(driver, editButtons.get(getRandomIndex(editButtons)));
 
-		jsClick(driver, sectionAEditButton);
+		jsClick(sectionAEditButton);
 
 		Select sectionMetaData = new Select(sectionAMetaDataDropDown);
 		System.out.println(sectionMetaData.getOptions().size());

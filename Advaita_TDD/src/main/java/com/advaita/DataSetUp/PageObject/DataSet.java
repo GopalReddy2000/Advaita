@@ -5,7 +5,6 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -548,7 +547,7 @@ public class DataSet extends TestBase {
 
 	public static void clickMultipleTimes(WebElement element, int times) {
 		for (int i = 0; i < times; i++) {
-			jsClick(driver, element);
+			jsClick(element);
 		}
 	}
 
@@ -573,8 +572,8 @@ public class DataSet extends TestBase {
 			System.out.println((a + 1) + "st Delete Button is Enabled: " + deleteDataSet.get(a).isEnabled());
 		}
 
-		jsClick(driver, getRandomElement(deleteDataSet));
-		jsClick(driver, recordDeleteButton);
+		jsClick(getRandomElement(deleteDataSet));
+		jsClick(recordDeleteButton);
 		wait.until(ExpectedConditions.visibilityOf(notificationTxt));
 		System.out.println(notificationTxt.getText());
 		Assert.assertEquals(notificationTxt.getText(), "Dataset has been deleted successfully");
