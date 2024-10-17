@@ -391,8 +391,8 @@ public class Stages extends TestBase {
 
 		Select select = new Select(selectProcessDropDownElement);
 		Thread.sleep(1000);
-		System.out.println("process : " + PropertieFileUtil.getTextFromPropertiesFile("process"));
-		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("process"));
+		System.out.println("process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("process"));
+		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("process"));
 
 		return this;
 	}
@@ -409,8 +409,8 @@ public class Stages extends TestBase {
 		Select select = new Select(selectSubProcessDropDownElement);
 		Thread.sleep(1000);
 
-		System.out.println("subProcess : " + PropertieFileUtil.getTextFromPropertiesFile("subProcess"));
-		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("subProcess"));
+		System.out.println("subProcess : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess"));
+		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess"));
 
 		return this;
 	}
@@ -427,8 +427,8 @@ public class Stages extends TestBase {
 		Select select = new Select(selectSubSubProcessDropDownElement);
 		Thread.sleep(1000);
 
-		System.out.println("subSubProcess : " + PropertieFileUtil.getTextFromPropertiesFile("subSubProcess"));
-		select.selectByVisibleText(PropertieFileUtil.getTextFromPropertiesFile("subSubProcess"));
+		System.out.println("subSubProcess : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess"));
+		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess"));
 
 		return this;
 	}
@@ -458,7 +458,7 @@ public class Stages extends TestBase {
 		return this;
 	}
 
-	public Stages verifyAddSectionA() throws Throwable {
+	public Stages verifyAddSectionA(boolean uniqueIdMataDataField, boolean allMataDataField) throws Throwable {
 
 		assertTrue(sectionA_ExpantionPanel.isDisplayed(), "WebsectionA_ExpantionPanel is not displayed.");
 		assertTrue(addMetaDataMassageInSectionAElement.isDisplayed(),
@@ -480,12 +480,21 @@ public class Stages extends TestBase {
 
 		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
 
-		List<WebElement> checkBoxElements = wait.until(
-				ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
+		if (uniqueIdMataDataField) {
 
-		for (int i = 0; i < checkBoxElements.size(); i++) {
-			WebElement element = checkBoxElements.get(i);
-			wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+			driver.findElement(By.xpath("(//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
+					.click();
+		}
+
+		if (allMataDataField) {
+			List<WebElement> checkBoxElements = wait.until(
+					ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//input[@name='sectionA_fieldname']")));
+
+			for (int i = 0; i < checkBoxElements.size(); i++) {
+				WebElement element = checkBoxElements.get(i);
+				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+			}
+
 		}
 
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
@@ -570,7 +579,8 @@ public class Stages extends TestBase {
 //
 //	}
 
-	public Stages selectMetaDataInAddBlockSectionB(int count) throws Throwable {
+	public Stages selectMetaDataInAddBlockSectionB(int count, boolean uniqueIdMataDataField, boolean allMataDataField)
+			throws Throwable {
 		clickMultipleTimes(addBlocksButtonElement, count - 1);
 
 		List<WebElement> addButtons = driver.findElements(By.xpath(
@@ -590,12 +600,22 @@ public class Stages extends TestBase {
 
 			select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
 
-			List<WebElement> checkBoxes = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-					By.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
+			if (uniqueIdMataDataField) {
+				driver.findElement(By.xpath(
+						"(//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
+						.click();
 
-			checkBoxes.forEach(box -> wait.until(ExpectedConditions.elementToBeClickable(box)).click());
+				sectionBAddButton.click();
+			}
 
-			sectionBAddButton.click();
+			if (allMataDataField) {
+				List<WebElement> checkBoxes = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By
+						.xpath("//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname']")));
+
+				checkBoxes.forEach(box -> wait.until(ExpectedConditions.elementToBeClickable(box)).click());
+				sectionBAddButton.click();
+			}
+
 		}
 		return this;
 	}
@@ -787,6 +807,7 @@ public class Stages extends TestBase {
 	public final static String allowAutoFetch = "Allow Auto Fetch";
 	public final static String allowAutoFetchWithAllocation = "Allow Auto Fetch With Allocation";
 	public final static String allowQuestionMovement = "Allow Question Movement";
+	public final static String allowOthersToTakeAction = "Allow Others To Take Action";
 	public final static String scheduler = "Scheduler";
 	public final static String enableTicketModule = "Enable Ticket Module";
 	public final static String captureLocation = "Capture Location";
@@ -802,10 +823,10 @@ public class Stages extends TestBase {
 
 	// String array to store all variables
 	public final static String[] auditOptions = { recordingRequired, evaluationRequired, openSample, showAuditScore,
-			assignedTo, allowAutoFetch, allowAutoFetchWithAllocation, allowQuestionMovement, scheduler,
-			enableTicketModule, captureLocation, showSkipAudit, showDisposition, showSmsHistory, showWhatsappHistory,
-			showEmailHistory, showInteractionHistory, showStageHistory, previewPreviousStageHistory,
-			showUserDocuments };
+			assignedTo, allowAutoFetch, allowAutoFetchWithAllocation, allowQuestionMovement, allowOthersToTakeAction,
+			scheduler, enableTicketModule, captureLocation, showSkipAudit, showDisposition, showSmsHistory,
+			showWhatsappHistory, showEmailHistory, showInteractionHistory, showStageHistory,
+			previewPreviousStageHistory, showUserDocuments };
 
 	public Stages actionSectionToggle(String... optionNames) {
 

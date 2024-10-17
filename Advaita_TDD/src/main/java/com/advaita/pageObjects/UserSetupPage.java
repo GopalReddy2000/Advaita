@@ -903,6 +903,53 @@ public class UserSetupPage extends TestBase {
 
 	/*	try {
 
+<<<<<<< HEAD
+//		
+//		try {
+//			if(!deleteButton.get(0).isDisplayed()) {
+//			System.out.println("Rows are already added.");
+//			}
+//			}catch (Exception e) {
+//				
+//				AddRow.click();
+//			}
+//				uMProcessTab.click();
+
+		wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown));
+//		dropdownValidation(UMProcessNameDropdown);
+		DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select", ProcessName);
+//		selectByVisibleText(UMProcessNameDropdown, ProcessName);
+
+//		dropdownValidation(UMSubProcessNameDropdown);
+		wait.until(ExpectedConditions.visibilityOf(UMSubProcessNameDropdown));
+		Thread.sleep(1000);
+		DropDown.dropdownWithAllPosibleValidation(UMSubProcessNameDropdown, "Select", SubProcessName);
+//		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
+
+//		dropdownValidation(UMSubSubProcessNameDropdown);
+//		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+		wait.until(ExpectedConditions.visibilityOf(UMSubSubProcessNameDropdown));
+		Thread.sleep(1000);
+		DropDown.dropdownWithAllPosibleValidation(UMSubSubProcessNameDropdown, "Select", SubSubProcess);
+
+//		dropdownValidation(UMStageNameDropdown);
+//		selectByVisibleText(UMStageNameDropdown, Stages);
+		wait.until(ExpectedConditions.visibilityOf(UMStageNameDropdown));
+		Thread.sleep(2000);
+		DropDown.dropdownWithAllPosibleValidation(UMStageNameDropdown, "Select", Stages);
+
+		UMSaveButton.click();
+		unWait(1);
+		continueButton.click();
+
+		return this;
+	}
+
+	public UserSetupPage userMappingUserSuperior(String Stages,String role,String name)
+	{
+		try {
+=======
+>>>>>>> 113c4e248eaefbff61444a63f35824325884da76
 			if (!deleteButton.isDisplayed()) {
 				System.out.println("Rows are already added.");
 			}

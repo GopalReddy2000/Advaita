@@ -3,7 +3,6 @@ package com.advaita.EndtoEnd.run.test;
 import java.io.IOException;
 import java.util.Date;
 
-import org.openqa.selenium.WebElement;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -13,7 +12,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.MetaData;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ScreenShorts;
@@ -48,7 +47,7 @@ public class TEST_Advaita extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	Process process;
+	ProcessPage process;
 	DataSet dataset;
 	MetaData metaData;
 
@@ -79,7 +78,7 @@ public class TEST_Advaita extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		process = new Process();
+		process = new ProcessPage();
 		dataset = new DataSet();
 		metaData = new MetaData();
 

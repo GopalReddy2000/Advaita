@@ -16,6 +16,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.PropertieFileUtil;
@@ -49,7 +50,7 @@ public class TestManualAllocation extends TestBase {
 
 	LoginPage loginPage;
 	HomePage homePage;
-
+	ProcessPage process;
 	MetaData metaData;
 	DataSet dataset;
 	ManualUpload manualUpload;
@@ -85,6 +86,7 @@ public class TestManualAllocation extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
+		process = new ProcessPage();
 		metaData = new MetaData();
 		dataset = new DataSet();
 		manualUpload = new ManualUpload();
@@ -95,176 +97,174 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-//	String employeeName = "EmployeeJ";
-//
-//	final String metaDataName = employeeName + " Details MetaData";
-//	final String manualUploadName = employeeName + " Details Upload";
-//	final String dataSetName = employeeName + " Details";
-//	final String remark = "Test Manual Upload";
-//
-//	@Test(priority = 1)
-//	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
-//		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
-//		homePage.clickOnProcessManagementCreate();
-//
-//		// Get all questions
-//		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
-//		// Define the types and order of questions you want to select
-//		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-//		List<String> types = Arrays.asList("Character", "Text Area", "Number");
-//
-//		// Select questions based on types and order
-//		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 4, true);
-//
-//		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
-//				.createDataSetButtonAndConfirmation();
-//		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
-//
-//	}
-//
-//	@Test(priority = 2)
-//	public void verifynewCreateMetaData() throws Throwable {
-//
-//		test = reports.createTest("verifynewCreateMetaData");
-//
-//		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
-//		homePage.clickOnProcessManagementCreate();
-//
-//		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
-//				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
-//				.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
-//
-//	}
-//
-//	@Test(priority = 3)
-//	public void verifyCreateManualUpload() throws Throwable {
-//
-//		test = reports.createTest("verifyCreateManualUpload");
-//		homePage.clickOnProcessManagementCreate();
-//
-//		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-//				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
-//				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
-//				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
-//
-//	}
-//
-//	@Test(priority = 4)
-//	public void verifyCreateNonMeasurable() throws Throwable {
-//
-//		test = reports.createTest("verifyCreateNonMeasurable");
-//
-//		// Create the test in ExtentReports
-//		// Perform necessary UI steps for creating the field set
-//		stages.navigateNonMeasurableCreate();
-//		// Set the question set name
-//		String questionSetNameString = employeeName + " NM";
-//		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
-//		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
-//		// 3)
-//
-//		int sectionCount = 1;
-//		int numberOfQuestion = 7;
-//		boolean fieldSetQuestionRandom = true;
-//		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-//				numberOfQuestion, MastersFieldSets.DROP_DOWN, MastersFieldSets.MULTIPLE_CHOICE,
-//				MastersFieldSets.TEXT_BOX, MastersFieldSets.SHORT_ANSWER);
-//		// Now, add multiple questions to section 1 based on the selected types
-//		boolean defineQuestionTypeRandom = true;
-//		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
-//				defineQuestionTypeRandom);
-//
-//		masterFieldSet.verifySaveInCreateFieldSet();
-//
-//	}
-//
-//	@Test(priority = 5)
-//	public void verifyStageCreate() throws Throwable {
-//
-//		test = reports.createTest("verifyStageCreate");
-//
-//		String stageName = employeeName + " Stage";
-//
-//		PropertieFileUtil.storeSingleTextInPropertiesFile("stage", stageName);
-//
-//		boolean measurableRadio = false;
-//		boolean nonMeasurableRadio = true;
-//		String viewCheckBoxAddSection[] = { Stages.callLogStageView, Stages.agencyValidation };
-////		String viewCheckBoxAddSection[] = {"all"};
-//
-//		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
-//				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown().verifyAddSectionA()
-//				.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2)
-//				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
-//
-////		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
-//		String viewCheckBox[] = { "all" };
-//
-////		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
-////				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
-//		String toggleButtonOptions[] = { "all" };
-//
-//		stages.actionSection(viewCheckBox).actionSectionToggle(toggleButtonOptions);
-//
-//		stages.dispositionSection().saveAndConfirmation();
-////		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
-//
-//	}
-//
-//	@Test(priority = 6)
-//	public void verifyManualAllocationNavigation() throws Throwable {
-//
-//	test = reports.createTest("verifyManualAllocationNavigation");
-//		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-//		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-//		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-//		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-//
-//
-//		userSetUp.navToRoleAndPerCreate();
-//
-//		userSetUp.userCreationFields("Tester", "QA", "Qwerty@123").singleGroupSelect("Agent")
-//				.clickOnGroupCreateButton();
-//
-//		userSetUp.userMappingRecord("Tester QA").userMappingProcess(process, subProcess, subSubProcess, stages);
-//
-//	}
+	String employeeName = "EmployeeAB";
+
+	final String metaDataName = employeeName + " Details MetaData";
+	final String manualUploadName = employeeName + " Details Upload";
+	final String dataSetName = employeeName + " Details";
+	final String remark = "Test Manual Upload";
+
+	@Test(priority = 1)
+	public void verifyProcessCreate() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+		homePage.clickOnProcessManagementCreate();
+
+		String testName = "TestAB";
+
+		process.createProcess1(testName + " P", "TestPDesc");
+
+		process.createSubProcess(testName + " Sub P", "TestSPDesc");
+
+		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
+
+		Thread.sleep(2000);
+
+	}
+
+	@Test(priority = 2)
+	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+		homePage.clickOnProcessManagementCreate();
+
+		// Get all questions
+		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
+		// Define the types and order of questions you want to select
+		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
+		List<String> types = Arrays.asList("Text Area", "Number");
+
+		// Select questions based on types and order
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 2, true);
+
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+				.createDataSetButtonAndConfirmation();
+		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
+
+	}
+
+	@Test(priority = 3)
+	public void verifynewCreateMetaData() throws Throwable {
+
+		test = reports.createTest("verifynewCreateMetaData");
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
+		homePage.clickOnProcessManagementCreate();
+
+		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
+				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
+				.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
+
+	}
+
+	@Test(priority = 4)
+	public void verifyCreateManualUpload() throws Throwable {
+
+		test = reports.createTest("verifyCreateManualUpload");
+		homePage.clickOnProcessManagementCreate();
+
+		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
+				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
+				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+
+	}
+
+	@Test(priority = 5)
+	public void verifyCreateNonMeasurable() throws Throwable {
+
+		test = reports.createTest("verifyCreateNonMeasurable");
+
+		// Create the test in ExtentReports
+		// Perform necessary UI steps for creating the field set
+		stages.navigateNonMeasurableCreate();
+		// Set the question set name
+		String questionSetNameString = employeeName + " NM";
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
+		// 3)
+
+		int sectionCount = 1;
+		int numberOfQuestion = 3;
+		boolean fieldSetQuestionRandom = true;
+		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
+				numberOfQuestion, MastersFieldSets.DROP_DOWN, MastersFieldSets.TEXT_BOX, MastersFieldSets.SHORT_ANSWER);
+		// Now, add multiple questions to section 1 based on the selected types
+		boolean defineQuestionTypeRandom = true;
+		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
+				defineQuestionTypeRandom);
+
+		masterFieldSet.verifySaveInCreateFieldSet();
+
+	}
 
 	@Test(priority = 6)
-	public void verifyManualAllocationNavigation() throws Throwable {
+	public void verifyStageCreate() throws Throwable {
 
-		test = reports.createTest("verifyManualAllocationNavigation");
-		manualAllocationPage.navigateToAlchemyManualAllocation();
+		test = reports.createTest("verifyStageCreate");
+
+		String stageName = employeeName + " Stage";
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("stage", stageName);
+
+		boolean measurableRadio = false;
+		boolean nonMeasurableRadio = true;
+//		String viewCheckBoxAddSection[] = { Stages.callLogStageView, Stages.agencyValidation };
+		String viewCheckBoxAddSection[] = { "all" };
+
+		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
+				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
+				.verifyAddSectionA(true, false).verifyAddAndRemoveBlockInSectionB(4)
+				.selectMetaDataInAddBlockSectionB(2, true, false)
+				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
+
+//		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
+		String viewCheckBox[] = { "all" };
+
+//		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
+//				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
+		String toggleButtonOptions[] = { "all" };
+
+		stages.actionSection(viewCheckBox).actionSectionToggle(toggleButtonOptions);
+
+		stages.dispositionSection().saveAndConfirmation();
+//		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
 
 	}
 
 	@Test(priority = 7)
-	public void verifyAllocationMethodToogleButton() throws Throwable {
+	public void verifyUserCreateAndUserMapping() throws Throwable {
 
-		test = reports.createTest("verifyAllocationMethodToogleButton");
+		test = reports.createTest("verifyUserCreateAndUserMapping");
+		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
 
-		String toogle = "normalAudit";
-		manualAllocationPage.allocationMethodToggleButton(toogle);
+		userSetUp.navToRoleAndPerCreate();
 
+		userSetUp.userCreationFields(employeeName, "QA", "Qwerty@123").singleGroupSelect("Agent")
+				.clickOnGroupCreateButton();
+
+		userSetUp.userMappingRecord(employeeName + " QA").userMappingProcess(process, subProcess, subSubProcess,
+				stages);
 	}
 
 	@Test(priority = 8)
-	public void verifySelectProcess_subProcess_SubSubProcessDropdown() throws Throwable {
+	public void verifyManualAllocationCreate() throws Throwable {
 
-		test = reports.createTest("verifySelectProcess_subProcess_SubSubProcessDropdown");
+		test = reports.createTest("verifyManualAllocationCreate");
 
+		String toogle = "normalAudit";
 		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
 		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
 		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String allocationType = "QA";
+		String allocationType = "call";
 
-
-		manualAllocationPage
-				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue, subSubProcessValue,stages)
+		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
+				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
+						subSubProcessValue, stages)
 				.allocationTypeDropdown(allocationType);
 	}
-
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {

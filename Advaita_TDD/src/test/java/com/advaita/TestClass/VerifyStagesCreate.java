@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.MetaData;
-import com.advaita.DataSetUp.PageObject.Process;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ScreenShorts;
@@ -43,7 +43,7 @@ public class VerifyStagesCreate extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	Process process;
+	ProcessPage process;
 	DataSet dataset;
 	MetaData metaData;
 
@@ -76,7 +76,7 @@ public class VerifyStagesCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		process = new Process();
+		process = new ProcessPage();
 		dataset = new DataSet();
 		metaData = new MetaData();
 
@@ -159,7 +159,7 @@ public class VerifyStagesCreate extends TestBase {
 	@Test(priority = 13)
 	public void verifyAddSectionA() throws Throwable {
 		test = reports.createTest("verifyAddSectionA");
-		stages.verifyAddSectionA();
+		stages.verifyAddSectionA(true,false);
 	}
 
 	@AfterMethod
