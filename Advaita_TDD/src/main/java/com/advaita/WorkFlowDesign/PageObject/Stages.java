@@ -192,6 +192,15 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//button[contains(@class,'filter_search')]/img")
 	public WebElement searchButton;
 
+	@FindBy(xpath = "//select[@id='multiselect']")
+	public WebElement stageEvaluationDropdown;
+
+	@FindBy(xpath = "(//button[@id='multiselect_rightSelected'])[1]")
+	WebElement multiSelectRightClick;
+	
+	@FindBy(xpath = "//button[contains(@class,'btn-primary')][normalize-space()='Save']")
+	WebElement evaluationSave;
+
 	public Stages() {
 		PageFactory.initElements(driver, this);
 	}
@@ -414,6 +423,7 @@ public class Stages extends TestBase {
 						PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
 				"fetched meta data is not present in meta data drop down.");
 
+		wait.until(ExpectedConditions.visibilityOf(selectMetaDatDropDownElement));
 		Select select = new Select(selectMetaDatDropDownElement);
 
 		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
@@ -441,8 +451,9 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
 		js.executeScript("arguments[0].scrollIntoView(true);", editButtonInSectionAElement);
 		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
-
+		unWait(1);
 		click(driver, editButtonInSectionAElement);
+		unWait(2);
 
 		assertTrue(
 				DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
@@ -517,7 +528,7 @@ public class Stages extends TestBase {
 //
 //	}
 
-	public Stages selectMetaDataInAddBlockSectionB(int count, boolean uniqueIdMataDataField, boolean allMataDataField)
+	public Stages selectMetaDataInAddBlockSectionB(int count, boolean uniqueIdMetaDataField, boolean allMataDataField)
 			throws Throwable {
 		clickMultipleTimes(addBlocksButtonElement, count - 1);
 
@@ -537,8 +548,9 @@ public class Stages extends TestBase {
 			wait.until(ExpectedConditions.visibilityOfAllElements(select.getOptions()));
 
 			select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
+			unWait(1);
 
-			if (uniqueIdMataDataField) {
+			if (uniqueIdMetaDataField) {
 				driver.findElement(By.xpath(
 						"(//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
 						.click();
@@ -815,6 +827,30 @@ public class Stages extends TestBase {
 
 		deleteAndConfirmation(stageName);
 
+		return this;
+	}
+
+	public Stages selectTransIDInEvaluationField(String stage) {
+
+		String xpathEvaluationField = String.format(
+				"//table/tbody/tr/td/a[normalize-space()='%s']/../..//a//img[contains(@title,'Evaluation Fields')]",
+				stage);
+		
+		WebElement evaluationField = driver.findElement(By.xpath(xpathEvaluationField));
+		
+		click(driver, evaluationField);
+
+		Select select = new Select(stageEvaluationDropdown);
+		select.selectByVisibleText("Trans Unique Id");// Replace optionToSelect parameter if you want to Select any
+														// Other Options
+		multiSelectRightClick.click();
+		
+		click(driver, evaluationSave);
+		
+		wait.until(ExpectedConditions.visibilityOf(continueButton));
+		assertTrue(continueButton.isDisplayed(), "continueButton is not displayed.");
+		click(driver, continueButton);
+		
 		return this;
 	}
 

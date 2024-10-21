@@ -9,9 +9,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.PropertieFileUtil;
 
 public class ManualAllocationPage extends TestBase {
 
@@ -47,6 +50,24 @@ public class ManualAllocationPage extends TestBase {
 
 	@FindBy(xpath = "//li[@role='treeitem']")
 	public List<WebElement> toUserList;
+
+	@FindBy(id = "manual_id")
+	public WebElement saveButton;
+
+	@FindBy(xpath = "//h3[text()='Success']/..//button[normalize-space()='Continue']")
+	public WebElement continueButton;
+
+	@FindBy(xpath = "//tr[@class='col_rowval']//input[contains(@class, 'select2-search__field') and @tabindex='-1']")
+	public List<WebElement> toUserFields;
+
+	@FindBy(xpath = "(//tr[@class='col_rowval']//input[contains(@class, 'select2-search__field') and @tabindex='-1'])[1]")
+	public WebElement singleToUserField;
+
+	@FindBy(xpath = "(//a[text()='Allocate'])[1]")
+	public WebElement allocateButton;
+
+	@FindBy(id = "total_sample_count")
+	public WebElement totalSample;
 
 	public ManualAllocationPage() {
 		PageFactory.initElements(driver, this);
@@ -104,7 +125,11 @@ public class ManualAllocationPage extends TestBase {
 //		return this;
 //	}
 
-	public ManualAllocationPage allocationTypeDropdown(String allocationType) throws Throwable {
+	public static String selectGroup = "Agent";
+
+	public ManualAllocationPage allocationTypeDropdown(String allocationType, String userName) throws Throwable {
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("designation", selectGroup);
 
 		switch (allocationType.toLowerCase()) {
 		case "call":
@@ -112,10 +137,46 @@ public class ManualAllocationPage extends TestBase {
 			List<String> multipleLabelTexts = Arrays.asList("Allocation Type *", "Role");
 			List<String> multipleDropdownIds = Arrays.asList("id_allocation_type", "to_role");
 			List<String> multipleDefaultOptions = Arrays.asList("Select", "All");
-			List<String> multipleOptionsToSelect = Arrays.asList("Call Wise", "QA");
+			List<String> multipleOptionsToSelect = Arrays.asList("Call Wise", selectGroup);
 
 			DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts, multipleDropdownIds, multipleDefaultOptions,
 					multipleOptionsToSelect, false);
+
+			String totalSampleCount = totalSample.getText();
+	        String sampleCount = totalSampleCount.contains(": ") ? totalSampleCount.split(": ")[1] : "Not found";
+	        int count = Integer.parseInt(sampleCount);
+
+			System.out.println("sampleCount : " + count);
+
+			for (int i = 1; i <= count; i++) {
+
+				Thread.sleep(1000);
+
+				actions.moveToElement(singleToUserField).perform();
+
+//				jsClick(driver, item);
+				ClickUtilities.clickWithRetry(singleToUserField, 4);
+				Thread.sleep(1000);
+				String userNameXPath = String.format("//li[@role='treeitem'][normalize-space()='%s']", userName);
+				WebElement userNameCall = driver.findElement(By.xpath(userNameXPath));
+				userNameCall.click();
+//				driver.findElement(By.xpath(userNameXPath)).click();
+				actions.moveToElement(allocateButton).perform();
+				click(driver, allocateButton);
+				wait.until(ExpectedConditions.visibilityOf(continueButton));
+				unWait(1);
+				jsClick(driver, continueButton);
+//				continueButton.click();
+				unWait(1);
+//				click(driver, continueButton);
+//				jsClick(driver, continueButton);
+
+				driver.findElement(By.xpath("//h2[normalize-space()='Create Manual Allocation']")).click();
+
+			}
+
+//			String firstInputXPath = "//tr[@class='col_rowval']//input[contains(@class, 'select2-search__field') and @tabindex='-1']";
+
 			break;
 		case "qa":
 
@@ -127,13 +188,14 @@ public class ManualAllocationPage extends TestBase {
 			DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts1, multipleDropdownIds1,
 					multipleDefaultOptions1, multipleOptionsToSelect1, false);
 
-			isMandatory("To User*");
+			DropDown.isMandatory("To User*");
 			click(driver, toUserField);
 
 			for (WebElement item : toUserList) {
 				click(driver, item);
+
 			}
-			
+
 			driver.findElement(By.xpath("//p[contains(text(),'Total Samples')]")).click();
 
 			break;
@@ -156,10 +218,15 @@ public class ManualAllocationPage extends TestBase {
 
 	}
 
-	public void isMandatory(String currentLabelText) {
-		String labelXPath = String.format("//label[contains(text(), '%s')]", currentLabelText);
-		WebElement labelElement = driver.findElement(By.xpath(labelXPath));
-		assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
+	public ManualAllocationPage saveAndConfirmation() throws Throwable {
+
+		click(driver, saveButton);
+
+		wait.until(ExpectedConditions.visibilityOf(continueButton));
+		assertTrue(continueButton.isDisplayed(), "continueButton is not displayed.");
+		click(driver, continueButton);
+
+		return this;
 	}
 
 }

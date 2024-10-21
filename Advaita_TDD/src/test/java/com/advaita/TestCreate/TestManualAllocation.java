@@ -25,6 +25,7 @@ import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.ManualAllocationPage;
+import com.advaita.pageObjects.SamplingPlanAndGenerationPage;
 import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -57,6 +58,7 @@ public class TestManualAllocation extends TestBase {
 	MastersFieldSets masterFieldSet;
 	Stages stages;
 	UserSetupPage userSetUp;
+	SamplingPlanAndGenerationPage SPAG;
 	ManualAllocationPage manualAllocationPage;
 
 	public TestManualAllocation() {
@@ -93,35 +95,53 @@ public class TestManualAllocation extends TestBase {
 		masterFieldSet = new MastersFieldSets();
 		stages = new Stages();
 		userSetUp = new UserSetupPage();
+		SPAG = new SamplingPlanAndGenerationPage();
 		manualAllocationPage = new ManualAllocationPage();
 
 	}
 
-	String employeeName = "EmployeeAB";
+	// Run Test Based on Boolean
+	final boolean processRun = true;
+	final boolean dataSetRun = true;
+	final boolean metaDataRun = true;
+	final boolean manualUploadRun = true;
+	final boolean nonMeasurableRun = true;
+	final boolean stageRun = true;
+	final boolean userRun = true;
+	final boolean samplingPlanRun = true;
+	final boolean manualAllocationRun = true;
+
+	static String employeeName = "DemoEmpJ";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
 	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
 
-	@Test(priority = 1)
+	@Test(priority = 1, enabled = processRun)
 	public void verifyProcessCreate() throws Throwable {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
 		homePage.clickOnProcessManagementCreate();
 
-		String testName = "TestAB";
+//		String testName = "TestAB";
+//
+//		process.createProcess1(testName + " P", "TestPDesc");
+//
+//		process.createSubProcess(testName + " Sub P", "TestSPDesc");
+//
+//		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
 
-		process.createProcess1(testName + " P", "TestPDesc");
+		process.createProcess1(employeeName + " P", "TestPDesc");
 
-		process.createSubProcess(testName + " Sub P", "TestSPDesc");
+		process.createSubProcess(employeeName + " S P", "TestSPDesc");
 
-		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
+		process.createSubSubProcess(employeeName + " S S P", "TestSSPDesc");
 
 		Thread.sleep(2000);
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 2, enabled = dataSetRun)
 	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
 		homePage.clickOnProcessManagementCreate();
@@ -130,10 +150,10 @@ public class TestManualAllocation extends TestBase {
 		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
 		// Define the types and order of questions you want to select
 		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Text Area", "Number");
+		List<String> types = Arrays.asList("Text Area", "Number", "HyperLink");
 
 		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 2, true);
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 3, true);
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
 				.createDataSetButtonAndConfirmation();
@@ -141,7 +161,7 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 3, enabled = metaDataRun)
 	public void verifynewCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifynewCreateMetaData");
@@ -155,20 +175,24 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-	@Test(priority = 4)
+	@Test(priority = 4, enabled = manualUploadRun)
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
 		homePage.clickOnProcessManagementCreate();
+		
+		int addNumberOfRecord = 25;
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
 				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
 
 	}
 
-	@Test(priority = 5)
+	@Test(priority = 5, enabled = nonMeasurableRun)
 	public void verifyCreateNonMeasurable() throws Throwable {
 
 		test = reports.createTest("verifyCreateNonMeasurable");
@@ -196,7 +220,7 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-	@Test(priority = 6)
+	@Test(priority = 6, enabled = stageRun)
 	public void verifyStageCreate() throws Throwable {
 
 		test = reports.createTest("verifyStageCreate");
@@ -227,10 +251,13 @@ public class TestManualAllocation extends TestBase {
 
 		stages.dispositionSection().saveAndConfirmation();
 //		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
-
+		stages.selectTransIDInEvaluationField(stageName);
 	}
 
-	@Test(priority = 7)
+	static String lastName = " QA";
+	static String usernameToDoAction = employeeName + lastName;
+
+	@Test(priority = 7, enabled = userRun)
 	public void verifyUserCreateAndUserMapping() throws Throwable {
 
 		test = reports.createTest("verifyUserCreateAndUserMapping");
@@ -239,16 +266,38 @@ public class TestManualAllocation extends TestBase {
 		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
 
-		userSetUp.navToRoleAndPerCreate();
+		userSetUp.navToUserCreatePage();
 
-		userSetUp.userCreationFields(employeeName, "QA", "Qwerty@123").singleGroupSelect("Agent")
-				.clickOnGroupCreateButton();
+		userSetUp.userCreationFields(employeeName, lastName, "Qwerty@123")
+				.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
 
-		userSetUp.userMappingRecord(employeeName + " QA").userMappingProcess(process, subProcess, subSubProcess,
-				stages);
+		PropertieFileUtil.storeSingleTextInPropertiesFile("userName", usernameToDoAction);
+		userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess, stages);
 	}
 
-	@Test(priority = 8)
+	@Test(priority = 8, enabled = samplingPlanRun)
+	public void verifyCreateSamplingPlan() throws Throwable {
+
+		test = reports.createTest("verifyCreateSamplingPlan");
+
+		SPAG.navToCreate();
+
+		String samplingName = employeeName + " SN";
+
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile("metaData");
+
+		SPAG.createSamplingPlan(processValue, subProcessValue, subSubProcessValue, stages, metaData)
+				.generalTabSPAG(samplingName).generalTabToggleButton("all").saveSamplingAndGetConfirmation();
+
+		SPAG.validationSamplingStatus(stages, processValue, subProcessValue, subSubProcessValue);
+
+	}
+
+	@Test(priority = 9, enabled = manualAllocationRun)
 	public void verifyManualAllocationCreate() throws Throwable {
 
 		test = reports.createTest("verifyManualAllocationCreate");
@@ -263,7 +312,8 @@ public class TestManualAllocation extends TestBase {
 		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
 				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
 						subSubProcessValue, stages)
-				.allocationTypeDropdown(allocationType);
+				.allocationTypeDropdown(allocationType, usernameToDoAction);
+		manualAllocationPage.saveAndConfirmation();
 	}
 
 	@AfterMethod
