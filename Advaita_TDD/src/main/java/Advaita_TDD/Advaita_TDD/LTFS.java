@@ -209,7 +209,7 @@ public class LTFS extends TestBase {
     {
         navigateWithinAlchemy(auditForm);
         selectByVisibleText(stageSearch,stageSelect);
-        jsClick(driver,recordEyeButton);
+        jsClick(recordEyeButton);
         return this;
     }
 
@@ -226,7 +226,7 @@ public class LTFS extends TestBase {
 //
         customerAvailableAtTheRegisteredAddress.click();
 
-        jsClick(driver,yesCustomerAvailableAtTheRegisteredAddress);
+        jsClick(yesCustomerAvailableAtTheRegisteredAddress);
 
         yesCustomerAvailableAtTheRegisteredAddress.click();
 //        unWait(3);
@@ -271,7 +271,7 @@ public class LTFS extends TestBase {
 //
 //        saveRecord();
         try {
-            jsClick(driver,save);
+            jsClick(save);
             unWait(1);
             continueButton.click();
             fail("The Record is saving, without filling the mandatory fields");

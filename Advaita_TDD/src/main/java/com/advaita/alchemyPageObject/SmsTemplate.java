@@ -4,28 +4,20 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.awt.Window;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import org.checkerframework.common.value.qual.StaticallyExecutable;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.ClickUtilities;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import net.bytebuddy.utility.JavaConstant.Dynamic;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
 public class SmsTemplate extends TestBase // Create_Class and extend base class
 {
@@ -454,15 +446,15 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 
 	}
 
 	public void navigateto_SmsTemplateTab() {
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/sms_template_listing/");
-		jsClick(driver, smsTemplateTab);
+		jsClick(smsTemplateTab);
 		assertTrue(smsTemplateText.isDisplayed(), "smsTemplateText is not displayed");
 	}
 
@@ -995,11 +987,11 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/sms_template_listing/");
-		jsClick(driver, smsTemplateTab);
+		jsClick(smsTemplateTab);
 		assertTrue(smsTemplateText.isDisplayed(), "smsTemplateText is not displayed");
 
 		// before SearchData
@@ -1146,7 +1138,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void Delete_createdSmsTemplate() {
 		assertTrue(LastDelete_smsTempalte.isDisplayed(), "LastDelete_smsTempalteis not displayed");
 		// LastDelete_smsTempalte.click();
-		jsClick(driver, LastDelete_smsTempalte);
+		jsClick(LastDelete_smsTempalte);
 
 		assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete is not displayed");
 		deleteButton_delete.click();
@@ -1166,11 +1158,11 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/sms_template_listing/");
-		jsClick(driver, smsTemplateTab);
+		jsClick(smsTemplateTab);
 		assertTrue(smsTemplateText.isDisplayed(), "smsTemplateText is not displayed");
 
 		Thread.sleep(1000);

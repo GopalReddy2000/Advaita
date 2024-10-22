@@ -251,7 +251,7 @@ public class TestManualAllocation extends TestBase {
 
 		stages.dispositionSection().saveAndConfirmation();
 //		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
-		stages.selectTransIDInEvaluationField(stageName);
+		stages.selectTransIDInEvaluationField(stages.stageEvaluationDropdown,stageName);
 	}
 
 	static String lastName = " QA";

@@ -130,7 +130,6 @@ public class DropDown extends TestBase {
 
 		// Check for empty drop down
 		List<WebElement> options = element.findElements(By.tagName("option"));
-		js.executeScript("arguments[0].dispatchEvent(new Event('change'));", element);
 		wait.until(ExpectedConditions.visibilityOfAllElements(options));
 		softAssert.assertTrue(options.size() > 0, "Dropdown has no options.");
 		System.out.println("Number of options in the dropdown: " + options.size());
@@ -193,9 +192,6 @@ public class DropDown extends TestBase {
 				+ "for(var i = 0; i < options.length; i++) { " + "if(options[i].text === '" + visibleText + "') { "
 				+ "options[i].selected = true; " + "break; }}";
 		js.executeScript(selectByVisibleTextScript, element);
-
-		js.executeScript("arguments[0].dispatchEvent(new Event('input'));", element);
-		js.executeScript("arguments[0].dispatchEvent(new Event('change'));", element);
 
 		// Verify the selected option by retrieving its text
 		String selectedOptionText = (String) js.executeScript(getDefaultSelectedScript, element);

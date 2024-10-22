@@ -6,10 +6,8 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -181,7 +179,7 @@ public class userStatus extends TestBase {
 
 		assertTrue(menuSetup.isDisplayed(), "menuSetup is not displayed");
 		// menuSetup.click();
-		jsClick(driver, menuSetup);
+		jsClick(menuSetup);
 
 		List<String> defaultNameMenuSetupLists = new ArrayList<String>();
 		for (WebElement defaultNames : defaultNamesMenuSetup) {
@@ -217,7 +215,7 @@ public class userStatus extends TestBase {
 		assertTrue(userStatus.isDisplayed(), "userStatusis not displayed");
 //		wait.until(ExpectedConditions.visibilityOf(userStatus));		
 //		userStatus.click();
-		jsClick(driver, userStatus);
+		jsClick(userStatus);
 
 		userStatusUrl = driver.getCurrentUrl();
 		System.out.println("userStatusUrl: " + userStatusUrl);
@@ -374,7 +372,7 @@ public class userStatus extends TestBase {
 	public void CreateButtonclick() {
 		assertTrue(createButton.isDisplayed(), "createButtonis not displayed");
 		// createButton.click();
-		jsClick(driver, createButton);
+		jsClick(createButton);
 
 		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
 		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuopis not displayed");
@@ -661,7 +659,7 @@ public class userStatus extends TestBase {
 		assertTrue(updateButton.isEnabled(), "updateButton is not enabled");
 		assertTrue(updateButton.isDisplayed(), "updateButtonis not displayed");
 		
-		jsClick(driver, updateButton);
+		jsClick(updateButton);
 		
 		wait.until(ExpectedConditions.visibilityOf(userStatusUpdatedSuccessfullyPopup));
 		assertTrue(userStatusUpdatedSuccessfullyPopup.isDisplayed(), "userStatusUpdatedSuccessfullyPopup is not displayed");

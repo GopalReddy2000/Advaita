@@ -1,14 +1,11 @@
 package com.advaita.WorkFlowDesign.PageObject;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertTrue;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -23,6 +20,8 @@ import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
+
+import static org.testng.Assert.*;
 
 public class Stages extends TestBase {
 
@@ -57,7 +56,7 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "(//table[@class='process_table w-100']/tbody/tr[2]/td[1]//span)[3]")
 	public WebElement fetchsubSubProcess;
 
-	@FindBy(id = "pills-workflowstages-tab")
+	@FindBy(xpath = "//span[normalize-space()='Workflow Design']")
 	public WebElement workFlowStagesTab;
 
 	@FindBy(xpath = "//button[normalize-space()='Stages']")
@@ -75,13 +74,13 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//h3[text()='Stage Name*']/..//input[@id='stage_name']")
 	public WebElement stageNameTextBoxElement;
 
-	@FindBy(xpath = "//h3[text()='Process*']/..//select[@id='process']")
+	@FindBy(xpath = "//select[@id='process']")
 	public WebElement selectProcessDropDownElement;
 
-	@FindBy(xpath = "//h3[text()='Sub Process*']/..//select[@id='sub_process']")
+	@FindBy(xpath = "//select[@id='sub_process']")
 	public WebElement selectSubProcessDropDownElement;
 
-	@FindBy(xpath = "//h3[text()='Sub Sub Process*']/..//select[@id='s_sub_process']")
+	@FindBy(xpath = "//select[@id='s_sub_process']")
 	public WebElement selectSubSubProcessDropDownElement;
 
 	@FindBy(xpath = "//h3[text()='Calculation Type']/..//select[@id='calculation_type']")
@@ -108,10 +107,16 @@ public class Stages extends TestBase {
 	@FindBy(name = "metadata_names")
 	public WebElement selectMetaDatDropDownElement;
 
+	@FindBy(id = "sectionB_metadata_id")
+	public WebElement sectionBMetaDataDropdown;
+
+	@FindBy(id = "sectionA_metadata_id")
+	public WebElement sectionAMetaDataDropdown;
+
 	@FindBy(xpath = "//input[@name='sectionA_fieldname']")
 	public WebElement metaDataFieldCheckBoxesElement;
 
-	@FindBy(xpath = "(//div[@class='modal-content p-0 ']/..//a[normalize-space()='Add'])[1]")
+	@FindBy(xpath = "(//a[contains(@class,'sectionA_addbtn')])[1]")
 	public WebElement addButtonInaddSectionAPopUp;
 
 	@FindBy(xpath = "//a[text()='edit']/..//a[@data-section='Section A']")
@@ -192,14 +197,62 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "//button[contains(@class,'filter_search')]/img")
 	public WebElement searchButton;
 
+	@FindBy(xpath = "//span[@id='change_error_msg']")
+	public static WebElement errorPop;
+
+	@FindBy(xpath = "//label[@id='stage_name-error']")
+	public static WebElement stageNameError;
+
+	@FindBy(id = "submit_single")
+	public WebElement singeSubmit;
+
+	@FindBy(xpath = "//div[contains(@class,'dynamic_data_sectionA')]//label")
+	public List<WebElement> sectionMetadata;
+
+	@FindBy(xpath = "//a[@data-section='Section A' and text()='edit']")
+	public WebElement sectionAEdit;
+
+	@FindBy(xpath = "//img[@title='Evaluation Fields']")
+	public WebElement evaluationFields;
+
 	@FindBy(xpath = "//select[@id='multiselect']")
 	public WebElement stageEvaluationDropdown;
 
-	@FindBy(xpath = "(//button[@id='multiselect_rightSelected'])[1]")
-	WebElement multiSelectRightClick;
-	
-	@FindBy(xpath = "//button[contains(@class,'btn-primary')][normalize-space()='Save']")
-	WebElement evaluationSave;
+	@FindBy(xpath = "//button[@data-type='minus']")
+	public WebElement addBlockMinus;
+
+	@FindBy(xpath = "//a[contains(@class,'section_c') and not(contains(@class,'mr_18')) and text()='Add']")
+	public WebElement sectionCAdd;
+
+	@FindBy(xpath = "//input[@name='section_name']")
+	public WebElement sectionName;
+
+	@FindBy(xpath = "//input[@name='section_weightage']")
+	public WebElement sectionWeightage;
+
+	@FindBy(xpath = "//a[contains(@class,'section_common_addcls')]")
+	public WebElement sectionCAddButton;
+
+	@FindBy(xpath = "//a[contains(@class,'section_common_addcls')]//following-sibling::a")
+	public WebElement sectionCCancelButton;
+
+	@FindBy(xpath = "//label[@id='section_name-error']")
+	public static WebElement sectionNameError;
+
+
+	@FindBy(id = "filter_date")
+	public  WebElement filterDate;
+
+
+
+
+	private WebElement sectionBAddButton(int sectionNumber)
+	{
+		String xpath="//a[@data-columncnt='"+sectionNumber+"' and text()='Add']";
+
+		return driver.findElement(By.xpath(xpath));
+	}
+
 
 	public Stages() {
 		PageFactory.initElements(driver, this);
@@ -423,7 +476,6 @@ public class Stages extends TestBase {
 						PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
 				"fetched meta data is not present in meta data drop down.");
 
-		wait.until(ExpectedConditions.visibilityOf(selectMetaDatDropDownElement));
 		Select select = new Select(selectMetaDatDropDownElement);
 
 		select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
@@ -451,9 +503,8 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
 		js.executeScript("arguments[0].scrollIntoView(true);", editButtonInSectionAElement);
 		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
-		unWait(1);
+
 		click(driver, editButtonInSectionAElement);
-		unWait(2);
 
 		assertTrue(
 				DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
@@ -528,7 +579,7 @@ public class Stages extends TestBase {
 //
 //	}
 
-	public Stages selectMetaDataInAddBlockSectionB(int count, boolean uniqueIdMetaDataField, boolean allMataDataField)
+	public Stages selectMetaDataInAddBlockSectionB(int count, boolean uniqueIdMataDataField, boolean allMataDataField)
 			throws Throwable {
 		clickMultipleTimes(addBlocksButtonElement, count - 1);
 
@@ -548,9 +599,8 @@ public class Stages extends TestBase {
 			wait.until(ExpectedConditions.visibilityOfAllElements(select.getOptions()));
 
 			select.selectByVisibleText(PropertieFileUtil.getSingleTextFromPropertiesFile("metaData"));
-			unWait(1);
 
-			if (uniqueIdMetaDataField) {
+			if (uniqueIdMataDataField) {
 				driver.findElement(By.xpath(
 						"(//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
 						.click();
@@ -619,7 +669,7 @@ public class Stages extends TestBase {
 
 				ClickUtilities.scrollToViewElement(section);
 
-				jsClick(driver, section);
+				jsClick(section);
 //				section.click();
 
 				if (measurableRadio) {
@@ -630,7 +680,7 @@ public class Stages extends TestBase {
 
 					wait.until(ExpectedConditions.visibilityOf(nonMeasurableRadioButton));
 //					ClickUtilities.clickWithRetry(nonMeasurableRadioButton, 3);
-					jsClick(driver, nonMeasurableRadioButton);
+					jsClick(nonMeasurableRadioButton);
 
 					System.out.println(
 							"Non Measurable : " + PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
@@ -696,14 +746,14 @@ public class Stages extends TestBase {
 				// Dynamic execution: Only click if the toggle button is selected
 				if (toggleButton.isSelected()) {
 					System.out.println("Toggle button is currently ON. Clicking to turn it OFF.");
-					jsClick(driver, toggleButton);
+					jsClick(toggleButton);
 				} else {
 					System.out.println("Toggle button is already OFF. No need to click.");
 				}
 			} else {
 				// Normal execution: Click regardless of the current state
 				System.out.println("Clicking toggle button regardless of its current state.");
-				jsClick(driver, toggleButton);
+				jsClick(toggleButton);
 			}
 
 		} catch (NoSuchElementException e) {
@@ -830,28 +880,322 @@ public class Stages extends TestBase {
 		return this;
 	}
 
-	public Stages selectTransIDInEvaluationField(String stage) {
+//	***********negative Scripts********************
 
-		String xpathEvaluationField = String.format(
-				"//table/tbody/tr/td/a[normalize-space()='%s']/../..//a//img[contains(@title,'Evaluation Fields')]",
-				stage);
-		
-		WebElement evaluationField = driver.findElement(By.xpath(xpathEvaluationField));
-		
-		click(driver, evaluationField);
+	// List of common SQL injection payloads
+	private static final String[] sqlInjectionPayloads = {
+			"' OR 1=1 --",
+			"' OR '1'='1' --",
+			"' OR '1'='1' /*",
+			"' OR 'a'='a'",
+			"' OR 1=1#",
+			"' OR '1'='1",
+			"' OR 'x'='x",
+			"' OR 'x'='x' --",
+			"1; DROP TABLE users --",
+			"' UNION SELECT NULL, NULL, NULL --",
+			"' OR 1=1 LIMIT 1; --",
+			"\" OR 1=1 --",
+			"' OR ''='",
+			"' OR 1=1#",
+			"' OR 1=1/*",
+			"' OR 'x'='x' /*",
+			"'; EXEC xp_cmdshell('whoami'); --"
+	};
 
-		Select select = new Select(stageEvaluationDropdown);
-		select.selectByVisibleText("Trans Unique Id");// Replace optionToSelect parameter if you want to Select any
-														// Other Options
-		multiSelectRightClick.click();
-		
-		click(driver, evaluationSave);
-		
-		wait.until(ExpectedConditions.visibilityOf(continueButton));
-		assertTrue(continueButton.isDisplayed(), "continueButton is not displayed.");
-		click(driver, continueButton);
-		
+	// Utility method to test SQL injection on a textbox
+	public static void testSQLInjection(WebDriver driver, WebElement textBox, WebElement submitBtn, By errorMessageLocator) {
+
+
+		// Loop through each SQL injection payload and input into the textbox
+		for (String payload : sqlInjectionPayloads) {
+			// Clear the text box and input the payload
+			textBox.clear();
+			textBox.sendKeys(payload);
+
+		}
+	}
+
+	public Stages Negative1(String stageName,String process,String subProcess,String subSubProcess)
+	{
+		workFlowStagesTab.click();
+		stagesTab.click();
+		stagesCreateButton.click();
+//		stageNameTextBoxElement.sendKeys("A".repeat(257));
+		sendKeys(stageNameTextBoxElement,stageName);
+		selectByVisibleText(selectProcessDropDownElement,process);
+		unWaitInMilli(500);
+		selectByVisibleText(selectSubProcessDropDownElement,subProcess);
+		unWaitInMilli(500);
+		selectByVisibleText(selectSubSubProcessDropDownElement,subSubProcess);
+		jsClick(manualRadioButton);
+
 		return this;
 	}
+
+	public Stages assertion()
+	{
+
+		assert  stageNameError.isDisplayed();
+
+		return this;
+
+	}
+
+
+	public Stages navToCreatePage()
+	{
+		workFlowStagesTab.click();
+		stagesTab.click();
+		stagesCreateButton.click();
+		return this;
+	}
+
+	public Stages clickOnSingleSubmit()
+	{
+		jsClick(saveButton);
+		return this;
+	}
+	public Stages navigateBack()
+	{
+		backButton.click();
+
+		return this;
+	}
+
+	public Stages NegSectionA(String sectionAMetadata)
+	{
+		addButtonInSectionAElement.click();
+		selectByVisibleText(sectionAMetaDataDropdown,sectionAMetadata);
+		addButtonInaddSectionAPopUp.click();
+
+		return this;
+	}
+
+	public Stages assertNoOptionsInMultiSelect() {
+
+		evaluationFields.click();
+		// Initialize Select class with the multi-select dropdown element
+		Select multiSelect = new Select(stageEvaluationDropdown);
+
+		// Get all the available options in the dropdown
+		int numberOfOptions = multiSelect.getOptions().size();
+
+		// Assert that there are no options in the dropdown
+		assertEquals(numberOfOptions, 0, "The multi-select dropdown contains options, but it should be empty.");
+
+		System.out.println("Assertion passed: The multi-select dropdown has no options.");
+
+		return this;
+	}
+
+
+
+	public static boolean isDisplayed(WebElement element) {
+		try {
+			return element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			System.out.println("Element not found: " + e.getMessage());
+			return false;
+		}
+	}
+
+	@FindBy(xpath = "(//button[@id='multiselect_rightSelected'])[1]")
+	WebElement multiSelectRightClick;
+	public void  selectTransIDInEvaluationField(WebElement MultiSelectElement,String optionToSelect)
+	{
+		Select select=new Select(MultiSelectElement);
+		select.selectByVisibleText("Trans Unique Id");//Replace optionToSelect parameter if you want to Select any Other Options
+		multiSelectRightClick.click();
+
+	}
+
+	private int numberOfOptions(WebElement element)
+	{
+		Select select=new Select(element);
+		return select.getOptions().size();
+	}
+
+	public Stages sectionAAndB()
+	{
+		addButtonInSectionAElement.click();
+
+		assertEquals(numberOfOptions(sectionAMetaDataDropdown),1);
+		cancelButtonInaddSectionAPopUp.click();
+//		assertFalse(addBlockMinus.isEnabled());
+		jsClick(sectionBAddButton(1));
+		assertEquals(numberOfOptions(sectionBMetaDataDropdown),1);
+
+		return this;
+	}
+
+	public Stages sectionCTextbox(String sectionName)
+	{
+		jsClick(sectionCAdd);
+		sendKeys(sectionNameField,sectionName);
+		sendKeys(sectionWeightage,sectionName);
+		assert isDisplayed(sectionNameError);
+		sectionCAddButton.click();
+
+		navigateBack();
+
+		return this;
+	}
+
+	private void sqlInjection(WebElement element,String sqlInjections,WebElement save)
+	{
+		element.sendKeys(sqlInjections);
+		save.click();
+	}
+
+	public Stages navToStagesTable()
+	{
+		workFlowStagesTab.click();
+		stagesTab.click();
+		return this;
+	}
+
+
+	public Stages searchBox(String invalidData,String expectedBehavior)
+	{
+
+		searchBar.sendKeys(invalidData);
+		searchButton.click();
+		// Add logic based on the expected behavior
+		switch (expectedBehavior) {
+			case "none":
+				// No data entered, ensure the page remains the same
+				assertTrue(isPageSame(), "Page should remain the same with no error message.");
+				break;
+
+			case "No entries found":
+				// Invalid input, expect "No entries found" message
+				WebElement noEntriesMessage = driver.findElement(By.xpath("//td[normalize-space()='No Entries Found']")); // Replace with actual locator
+				assertTrue(noEntriesMessage.isDisplayed(), "'No entries found' message should be displayed.");
+				break;
+
+			case "database error":
+				// Unicode input, expect a database error page or relevant error
+				assertTrue(isDatabaseErrorDisplayed("OperationalError"), "Database error should be displayed.");
+				break;
+
+			default:
+				throw new IllegalArgumentException("Unexpected behavior: " + expectedBehavior);
+		}
+		return this;
+	}
+	private boolean isPageSame() {
+		// Implement logic to check if the page remains the same after no input is given
+		// This can include checking if no error message appears, or if the URL has not changed.
+		String currentURL = driver.getCurrentUrl();
+		// Replace this with your original URL or condition to check
+		return currentURL.contains("https://test.capture.autosherpas.com/en/stages/stages_list/");
+	}
+
+	private boolean isDatabaseErrorDisplayed(String exceptionType) {
+		// Implement logic to check for a database error
+		// Example: checking if a specific error message or error page is displayed
+		return driver.getPageSource().contains(exceptionType) ;
+	}
+
+	public Stages testInvalidDate(String invalidDate)
+	{
+		jsDateExecutor(filterDate,invalidDate);
+		searchButton.click();
+		assertFalse(isDatabaseErrorDisplayed("ValidationError"));
+
+
+		return this;
+	}
+
+	public Stages stageNameAndProcess(String stageName,String processValue,String subProcess,String subSubProcess)
+	{
+		stageNameTextBoxElement.sendKeys(stageName);
+		selectByVisibleText(selectProcessDropDownElement,processValue);
+		unWaitInMilli(300);
+		selectByVisibleText(selectSubProcessDropDownElement,subProcess);
+		unWaitInMilli(300);
+		selectByVisibleText(selectSubSubProcessDropDownElement,subSubProcess);
+
+		return this;
+
+	}
+
+	public Stages selectCheckBoxSectionA(String sectionADropdownValue, List<String> inputs){
+		addButtonInSectionAElement.click();
+		selectByVisibleText(sectionAMetaDataDropdown,sectionADropdownValue);
+		selectMultipleCheckboxes(metadataCheckBoxes,checkBoxValueXpath,inputs);
+		addButtonInaddSectionAPopUp.click();
+
+		return this;
+	}
+
+
+	public Stages selectCheckBoxSectionB(String sectionBDropdownValue, List<String> inputs){
+		sectionBAddButton(1).click();
+		selectByVisibleText(sectionBMetaDataDropdown,sectionBDropdownValue);
+		selectMultipleCheckboxes(metadataCheckBoxes,checkBoxValueXpath,inputs);
+		sectionBAddButton.click();
+
+		return this;
+	}
+
+	public Stages selectActionsCheckBoxes(List<String> inputs)
+	{
+
+		selectMultipleCheckboxes(actionsCheckboxes,checkBoxValueXpath,inputs);
+
+		return this;
+	}
+
+
+	@FindBy(xpath = "//input[contains(@name,'ActionCheckbox')]")
+	List<WebElement> actionsCheckboxes;
+
+	@FindBy(xpath = "//input[@name='sectionA_fieldname']")
+	List<WebElement> metadataCheckBoxes;
+
+	@FindBy(xpath = "//div[contains(@class,'col-md-3')]//h7")
+	List<WebElement> toggleButtonNames;
+
+	String toggleButtons="//parent::div//following-sibling::label//span";
+
+	String checkBoxValueXpath ="following-sibling::label";
+
+	public static void selectMultipleCheckboxes( List<WebElement> checkboxes,String xpath,List<String> inputs) {
+		// Locate all checkboxes on the page
+		unWaitInMilli(300);
+
+		// Iterate over all inputs and check corresponding checkboxes
+		for (String input : inputs) {
+			boolean checkboxFound = false;
+			for (WebElement checkbox : checkboxes) {
+				// Locate the associated label for the current checkbox (relative to the checkbox)
+				String checkboxValue = checkbox.findElement(By.xpath("following-sibling::label")).getText();
+
+				// Check if the value matches the input
+				if (checkboxValue.equalsIgnoreCase(input)) {
+					// Select the checkbox if not already selected
+					if (!checkbox.isSelected()) {
+						jsClick(checkbox);
+					}
+					checkboxFound = true;
+					break;
+				}
+			}
+
+			// If the checkbox was not found, you can log or handle it (optional)
+			if (!checkboxFound) {
+				System.out.println("Checkbox with value '" + input + "' not found.");
+			}
+		}
+	}
+
+	public Stages clickOnManual()
+	{
+		jsClick(manualRadioButton);
+		return this;
+	}
+
 
 }

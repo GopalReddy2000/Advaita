@@ -46,7 +46,7 @@ public class TestManualUpload extends TestBase {
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
-		homePage = loginPage.login("Capture_admin", "8433@Taas");
+		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
 		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/ManualUpload Test.html");
 		reports = new ExtentReports();
@@ -77,7 +77,7 @@ public class TestManualUpload extends TestBase {
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		hp.clickOnProcessManagementCreate();
+		homePage.clickOnProcessManagementCreate();
 
 		final String manualUploadName = "EmployeeOne Details Upload";
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)

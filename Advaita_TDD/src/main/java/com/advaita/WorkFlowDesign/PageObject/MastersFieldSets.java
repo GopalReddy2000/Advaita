@@ -354,9 +354,9 @@ public class MastersFieldSets extends TestBase {
 				assertTrue(typeElement.isDisplayed());
 				ClickUtilities.jsClick(driver, typeElement);
 
-				jsClick(driver, requiredToggleButton);
+				jsClick(requiredToggleButton);
 
-				jsClick(driver, escalatedFieldToggleButton);
+				jsClick(escalatedFieldToggleButton);
 
 				Select dropDownSelect = new Select(measurableParameterDropDown);
 
@@ -379,7 +379,7 @@ public class MastersFieldSets extends TestBase {
 //				#####################################################################################################################################
 
 //				assertTrue(driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")).isDisplayed());
-				jsClick(driver, driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")));
+				jsClick(driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")));
 
 				assertTrue(minLengthField.isDisplayed(), "minLengthField is not displayed.");
 				minLengthField.clear();
@@ -441,7 +441,7 @@ public class MastersFieldSets extends TestBase {
 //				
 //				 assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedBeforeToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 
-				jsClick(driver, allowSpCharToggleButton);
+				jsClick(allowSpCharToggleButton);
 //				// Expected toggled background color
 //		        String expectedToggledBackgroundColor = "rgba(43, 197, 84, 1)"; // #28C554 in RGBA
 
@@ -452,7 +452,7 @@ public class MastersFieldSets extends TestBase {
 ////		        // Verify the CSS properties have changed
 //		        assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 ////				
-				jsClick(driver, allowSpCharToggleButton);
+				jsClick(allowSpCharToggleButton);
 
 				Thread.sleep(200);
 				System.out.println(
@@ -527,9 +527,9 @@ public class MastersFieldSets extends TestBase {
 				valueTypeDropDown.selectByVisibleText("All");
 //				valueTypeDropDown.selectByVisibleText("Only Number");
 
-				jsClick(driver, shortAnswerAllowSpCharToggleButton);
+				jsClick(shortAnswerAllowSpCharToggleButton);
 				Thread.sleep(500);
-				jsClick(driver, shortAnswerAllowSpCharToggleButton);
+				jsClick(shortAnswerAllowSpCharToggleButton);
 
 			}
 			if (i == 3) {
@@ -986,7 +986,7 @@ public class MastersFieldSets extends TestBase {
 //		 assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedBeforeToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 
 		Thread.sleep(200);
-		jsClick(driver, isConditionalToggleButton);
+		jsClick(isConditionalToggleButton);
 
 	}
 
@@ -1437,7 +1437,7 @@ public class MastersFieldSets extends TestBase {
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
 //				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
 				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
-				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+				jsClick(driver.findElement(By.xpath(xpathAdd)));
 			}
 
 			// Input the option text
@@ -1567,7 +1567,7 @@ public class MastersFieldSets extends TestBase {
 	public MastersFieldSets addSection() throws Throwable {
 
 		js.executeScript("arguments[0].scrollIntoView(true);", addSectionButton);
-		jsClick(driver, addSectionButton);
+		jsClick(addSectionButton);
 
 		return this;
 	}
@@ -1714,7 +1714,7 @@ public class MastersFieldSets extends TestBase {
 							+ sectionIndex + "]";
 					WebElement addQuestionButton = wait
 							.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
-					jsClick(driver, addQuestionButton);
+					jsClick(addQuestionButton);
 					Thread.sleep(500); // Small delay to ensure the UI is updated
 				}
 
@@ -1833,7 +1833,7 @@ public class MastersFieldSets extends TestBase {
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1)));
-		jsClick(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1));
+		jsClick(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1));
 
 		// Set minLength and maxLength for Text Box
 		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex + 1), minLength);

@@ -7,10 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
@@ -32,6 +29,10 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 import Advaita_TDD.Advaita_TDD.Questions;
+
+import static com.advaita.WorkFlowDesign.PageObject.Stages.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class TestStagesCreate extends TestBase {
 
@@ -63,7 +64,7 @@ public class TestStagesCreate extends TestBase {
 		super();
 	}
 
-	@BeforeTest
+	@BeforeMethod
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
@@ -173,7 +174,7 @@ public class TestStagesCreate extends TestBase {
 		boolean defineQuestionTypeRandom = true;
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
 				defineQuestionTypeRandom);
-		
+
 		masterFieldSet.verifySaveInCreateFieldSet();
 
 	}
@@ -308,33 +309,216 @@ public class TestStagesCreate extends TestBase {
 //		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
 
 	}
-
-	@AfterMethod
-	public void getResult(ITestResult result) throws IOException, Throwable {
-		if (result.getStatus() == ITestResult.FAILURE) {
-			// Mark the test as failed in the ExtentReports
-			Thread.sleep(4000);
-			test.fail(result.getThrowable());
-			// Add screenshot to ExtentReports
-			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
-			test.addScreenCaptureFromPath(screenshotPath);
-			Thread.sleep(4000);
-
-			// Add logs
-			test.log(Status.FAIL, "Test failed at " + new Date());
-
-			// Add custom HTML block
-			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
-		}
-		// Close ExtentReports
-		reports.flush();
+	@Test(dataProvider ="invalidStageNameProvider" )
+	public void testStageName(String stageName)
+	{
+		stages
+				.Negative1(stageName,"AJP","Sub AJP","Sub Sub AJP")
+				.clickOnSingleSubmit()
+		;
+		unWaitInMilli(500);
+		assert isDisplayed(stageNameError);
+		continueButton.click();
+		stages.navigateBack();
 	}
 
-	@AfterTest
+	@Test
+	public void NegTest1(){
+
+		stages.Negative1("Test 2","AJP","Sub AJP","Sub Sub AJP")
+				.NegSectionA("Form Test_metadata")
+				.saveRecord();
+		stages.navigateBack();
+		stages.assertNoOptionsInMultiSelect()
+
+		;
+	}
+
+	@Test
+	public void sectionAandB()
+	{
+		stages.navToCreatePage()
+				.sectionAAndB()
+		;
+	}
+
+
+
+	@DataProvider(name = "invalidStageNameProvider")
+	public Object[][] invalidStageNameData() {
+		return new Object[][] {
+				// Invalid due to special characters (assuming only alphanumeric allowed)
+				{ "Stage@123" },        // Contains '@'
+				{ "Stage#123" },        // Contains '#'
+				{ "Stage!Name" },       // Contains '!'
+				{ "Stage$Name" },       // Contains '$'
+				{ "Stage%Name" },       // Contains '%'
+				{ "Stage^Name" },       // Contains '^'
+				{ "Stage&Name" },       // Contains '&'
+				{ "Stage*Name" },       // Contains '*'
+				{ "Stage(Name)" },      // Contains parentheses
+				{ "Stage+Name" },       // Contains '+'
+				{ "Stage/Name" },       // Contains '/'
+				{ "Stage\\Name" },      // Contains backslash
+				{ "Stage|Name" },       // Contains '|'
+				{ "Stage=Name" },       // Contains '='
+				{ "Stage<Name>" },      // Contains '<' and '>'
+				{ "Stage~Name" },       // Contains '~'
+				{"TestNeg1"},
+				// Invalid due to SQL Injection
+				{ "DROP TABLE stage;" },  // SQL Injection attempt
+				{ "' OR 1=1 --" },        // SQL Injection attempt
+				{ "' OR '1'='1'" },       // SQL Injection attempt
+				{ "1; DROP TABLE users --" },  // SQL Injection attempt
+
+				// Invalid due to script injection
+				{ "<script>alert('test')</script>" },  // Script injection
+
+				// Invalid due to whitespaces
+				{ "   " },               // Whitespace only
+				{ " Stage" },            // Leading whitespace
+				{ "Stage " },            // Trailing whitespace
+				{ " Stage " },           // Leading and trailing whitespace
+				{ "Stage\tName" },       // Contains tab
+				{ "Stage\nName" },       // Contains new line
+
+				// Invalid due to length
+				{ "A".repeat(257) },  // Over maximum length (assuming max length is 100)
+
+				// Invalid due to empty input
+				{ "" }                   // Empty string
+		};
+	}
+	
+	
+	@Test(dataProvider = "invalidTextInput")
+	public void testSectionCTextBox(String invalidData)
+	{
+		stages
+				.navToCreatePage()
+				.sectionCTextbox(invalidData);
+
+
+
+
+	}
+
+	@Test(dataProvider = "invalidSearchData")
+	public void testSearchBox(String invalidData,String expectedBehavior)
+	{
+		stages
+				.navToStagesTable()
+				.searchBox(invalidData,expectedBehavior);
+	}
+
+	@DataProvider(name = "invalidSearchData")
+	public Object[][] invalidSearchData() {
+		return new Object[][]{
+				// Empty input, expect no error message and page remains the same
+				{"", "none"},
+
+				// Invalid Data, expect "No entries found" message
+				{"!@#$%^&*()_+=-`~", "No entries found"},
+
+				// SQL Injection Strings, expect "No entries found"
+				{"' OR 1=1;--", "No entries found"},
+				{"' DROP TABLE users;--", "No entries found"},
+				// Unicode Characters, expect database error or error page
+				{"Ā ā Ă ă Ą ą Ć ć Ĉ ĉ Ċ ċ Č č Ď ď ", "database error"}
+		};
+	}
+
+
+	@DataProvider(name = "sqlInjectionTestData")
+	public Object[][] sqlInjectionTestData() {
+		return new Object[][]{
+				{"' OR '1'='1"},
+				{"' OR '1'='1' --"},
+				{"'; DROP TABLE users --"},
+				{"' UNION SELECT NULL, NULL --"},
+				{"' UNION SELECT username, password FROM users --"},
+				{"'; WAITFOR DELAY '00:00:10' --"},
+				{"1 OR 1=1"},
+				{"' HAVING 1=1"},
+				{"' AND 'x'='x"},
+				{"'; EXEC xp_cmdshell('whoami') --"},
+				{"' ; DELETE FROM users WHERE username = 'admin'; --"},
+				{"' ; INSERT INTO users (username, password) VALUES ('admin', 'password'); --"},
+				{"'; IF (1=1) WAITFOR DELAY '00:00:10'; --"},
+				{"%27%20OR%201%3D1--"},
+				{"0x50 || 0x45 || 0x54"},
+				{"1 UNION SELECT @@version, NULL, NULL --"},
+		};
+	}
+
+	@Test(dataProvider = "invalidDates")
+	public void testDatePicker(String invalidDate)
+	{
+		stages.navToStagesTable()
+				.testInvalidDate(invalidDate);
+	}
+
+
+	@DataProvider(name = "invalidDates")
+	public Object[][] getInvalidDates() {
+		return new Object[][] {
+				{"00-12-2024"},
+				{"32-01-2024"},
+				{"31-04-2024"},
+				{"29-02-2023"},
+				{"31-02-2024"},
+				{"31-06-2024"},
+				{"25-00-2024"},
+				{"10-13-2024"},
+				{"15-15-2024"},
+				{"15-10-99999"},
+				{"15-10-0000"},
+				{"15-10--2024"},
+				{"15-10-23"},
+				{"15/10/2024"},
+				{"15.10.2024"},
+				{"15_10_2024"},
+				{"ab-cd-efgh"},
+				{"12-12-abcd"},
+				{"@@-##-!!!!"},
+				{"--2024"},
+				{"12--2024"},
+				{"--"},
+				{"2024-12-15"},
+				{"31-12-0001"},
+				{"01-01-3000"},
+				{"00-00-2024"},
+				{"00-13-2024"},
+				{"40-02-2024"}
+		};
+	}
+
+//	@AfterMethod
+//	public void getResult(ITestResult result) throws IOException, Throwable {
+//		if (result.getStatus() == ITestResult.FAILURE) {
+//			// Mark the test as failed in the ExtentReports
+//			Thread.sleep(4000);
+//			test.fail(result.getThrowable());
+//			// Add screenshot to ExtentReports
+//			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
+//			test.addScreenCaptureFromPath(screenshotPath);
+//			Thread.sleep(4000);
+//
+//			// Add logs
+//			test.log(Status.FAIL, "Test failed at " + new Date());
+//
+//			// Add custom HTML block
+//			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+//		}
+//		// Close ExtentReports
+//		reports.flush();
+//	}
+
+	@AfterMethod
 	public void tearDown() {
 
-//		driver.manage().window().minimize();
-//		driver.quit();
+		driver.manage().window().minimize();
+		driver.quit();
 		reports.flush();
 
 	}

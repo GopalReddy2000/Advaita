@@ -4,14 +4,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.security.PublicKey;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -370,7 +367,7 @@ public class NotificationTemplate extends TestBase {
 		js.executeScript("arguments[0].scrollIntoView(true);", SlastCretedMetadata);
 		assertTrue(SlastCretedMetadata.isDisplayed(), "SlastCretedMetadata is not displayed");
 		// SlastCretedMetadata.click();
-		jsClick(driver, SlastCretedMetadata);
+		jsClick(SlastCretedMetadata);
 
 		String metaDataURL = driver.getCurrentUrl();
 		System.out.println("metaDataURL :" + metaDataURL);
@@ -415,7 +412,7 @@ public class NotificationTemplate extends TestBase {
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 		String alchemyCurrentUrl = driver.getCurrentUrl();
 		System.out.println("alchemyCurrentUrl : " + alchemyCurrentUrl);
 
@@ -425,7 +422,7 @@ public class NotificationTemplate extends TestBase {
 
 		assertTrue(notificationTemplate_Tab.isDisplayed(), "notificationTemplate_Tab is not displayed");
 		// notificationTemplate_Tab.click();
-		jsClick(driver, notificationTemplate_Tab);
+		jsClick(notificationTemplate_Tab);
 		// driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/cre_notification/");
 
 		String notificationURL = driver.getCurrentUrl();
@@ -788,7 +785,7 @@ public class NotificationTemplate extends TestBase {
 
 		// If not selected, click the radio button
 		if (!isSelected) {
-			jsClick(driver, manualRadioButton);
+			jsClick(manualRadioButton);
 		}
 
 		assertTrue(outsideProcessRadioButton.isDisplayed(), "outsideProcessRadioButtonis not displayed");
@@ -816,7 +813,7 @@ public class NotificationTemplate extends TestBase {
 
 		// If not selected, click the radio button
 		if (!isSelected) {
-			jsClick(driver, manualRadioButton);
+			jsClick(manualRadioButton);
 		}
 
 		assertTrue(withinProcessRadioButton.isDisplayed(), "withinProcessRadioButton is not displayed");

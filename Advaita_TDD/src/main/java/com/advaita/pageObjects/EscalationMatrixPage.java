@@ -329,11 +329,11 @@ public class EscalationMatrixPage extends TestBase {
 	public EscalationMatrixPage navigationToTablePage()
 	{
 		try {
-			jsClick(driver, EscalationMatrixPage);
+			jsClick(EscalationMatrixPage);
 		}catch (Exception e) {
 
-			jsClick(driver, alchemy);
-			jsClick(driver, EscalationMatrixPage);
+			jsClick(alchemy);
+			jsClick(EscalationMatrixPage);
 		}
 
 		return this;
@@ -342,9 +342,9 @@ public class EscalationMatrixPage extends TestBase {
 	public EscalationMatrixPage table(String nameToDelete)
 	{
 
-		jsClick(driver,AJPProcess);
-		jsClick(driver,subAJPProcess);
-		jsClick(driver,subSubAJPProcess);
+		jsClick(AJPProcess);
+		jsClick(subAJPProcess);
+		jsClick(subSubAJPProcess);
 		//		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
 		for (WebElement row : subSubProcessTable) {
@@ -353,7 +353,7 @@ public class EscalationMatrixPage extends TestBase {
 			if (usernameColumn.getText().equals(nameToDelete)) {
 				try {
 					WebElement process = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
-					jsClick(driver, process);
+					jsClick(process);
 
 					System.out.println(nameToDelete + " Successfully Deleted");
 				} catch (Exception e) {
@@ -490,7 +490,7 @@ public class EscalationMatrixPage extends TestBase {
 
 		selectByVisibleText(itemsPerPage,"50");
 
-		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+		jsClick(recordEyeButton.get(recordEyeButton.size() -1));
 
 
 		js.executeScript("window.scrollTo(0, 500);");
@@ -529,7 +529,7 @@ public class EscalationMatrixPage extends TestBase {
 		toDate.click();
 		selectDate(driver,7,2024,"August");
 		searchIcon.click();
-		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+		jsClick(recordEyeButton.get(recordEyeButton.size() -1));
 
 //	Bug	
 
@@ -540,7 +540,7 @@ public class EscalationMatrixPage extends TestBase {
 		navigateWithinAlchemy(rejectAuditForm);
 		selectByVisibleText(stageSearch,"Insurance Stage");
 		searchIcon.click();
-		jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+		jsClick(recordEyeButton.get(recordEyeButton.size() -1));
 		js.executeScript("window.scrollTo(0, 500);");
 		unWait(1);
 		String reviewDecision=reviewDropdown.getText();
@@ -569,7 +569,7 @@ public class EscalationMatrixPage extends TestBase {
 		unWait(1);
 		assignButton.click();
 		unWait(1);
-		jsClick(driver,backButton);
+		jsClick(backButton);
 
 		return this;
 	}
@@ -578,7 +578,7 @@ public class EscalationMatrixPage extends TestBase {
 	{
 		String linkText= "View/Modify "+masterName;
 		WebElement element= driver.findElement(By.linkText(linkText));
-		jsClick(driver,element);
+		jsClick(element);
 	}
 
 

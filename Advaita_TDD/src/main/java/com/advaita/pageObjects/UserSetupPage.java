@@ -1,11 +1,15 @@
 package com.advaita.pageObjects;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.HomePage;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ExcelUtils;
-import com.advaita.Utilities.ExcelWrite;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.NoSuchElementException;
@@ -14,16 +18,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ExcelUtils;
+import com.advaita.Utilities.ExcelWrite;
 
-import static org.testng.Assert.*;
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class UserSetupPage extends TestBase {
 
@@ -541,7 +543,7 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage clickOnGroupCreateButton() {
-		jsClick(driver, userAccountCreateButton);
+		jsClick(userAccountCreateButton);
 		unWait(1);
 		roleContinueButton.click();
 		return this;
@@ -765,7 +767,7 @@ public class UserSetupPage extends TestBase {
 		isElementVisible(createButton, "Process Create Button is Displayed");
 		isElementVisible(processEditButton, "Process Edit Button is Displayed");
 
-		jsClick(driver, processRecords.get(0));
+		jsClick(processRecords.get(0));
 		isElementVisible(processSecondEditButton, "Process Second Process Edit Button is Displayed");
 
 		dataSetTab.click();
@@ -862,7 +864,7 @@ public class UserSetupPage extends TestBase {
 			String Stages) {
 		// Adjust timeout as needed
 		UserMappingProcess.click();
-		jsClick(driver, AddRow);
+		jsClick(AddRow);
 		selectByVisibleText(UMProcessNameDropdown.get(UMProcessNameDropdown.size() - 1), ProcessName);
 		selectByVisibleText(UMSubProcessNameDropdown.get(UMSubProcessNameDropdown.size() - 1), SubProcessName);
 		selectByVisibleText(UMSubSubProcessNameDropdown.get(UMSubSubProcessNameDropdown.size() - 1), SubSubProcess);
@@ -927,7 +929,7 @@ public class UserSetupPage extends TestBase {
 
 	public UserSetupPage userMappingUserSuperior(String Stages, String role, String name) {
 		userSuperiorMappingTab.click();
-		jsClick(driver, AddRow);
+		jsClick(AddRow);
 
 		/*
 		 * try { if (!deleteButton.isDisplayed()) {
@@ -1018,7 +1020,7 @@ public class UserSetupPage extends TestBase {
 
 			}
 
-			jsClick(driver, paginationRightButton);
+			jsClick(paginationRightButton);
 //		roleAndPermissions.click();
 //
 //		List<WebElement>roles=driver.findElements(By.xpath("//td[1]"));
@@ -1135,7 +1137,7 @@ public class UserSetupPage extends TestBase {
 		inputEmail.sendKeys(email);
 		inputPassword.sendKeys(password);
 		inputConfirmPassword.sendKeys(password);
-		jsClick(driver, roleCreateButton);
+		jsClick(roleCreateButton);
 		unWaitInMilli(500);
 		continueButton.click();
 
@@ -1175,7 +1177,7 @@ public class UserSetupPage extends TestBase {
 				sendKeys(inputPassword, password);
 				sendKeys(inputConfirmPassword, password);
 				activeCheckBox.click();
-				jsClick(driver, userUpdate);
+				jsClick(userUpdate);
 				userLogin(UserName, password);
 				assertTrue(LoginPage.signInButton.isDisplayed());
 			} else {
@@ -1201,8 +1203,8 @@ public class UserSetupPage extends TestBase {
 		if (status.equals("Inactive")) {
 			activeCheckBox.click();
 		}
-		jsClick(driver, groupsAllLeft);
-		jsClick(driver, userUpdate);
+		jsClick(groupsAllLeft);
+		jsClick(userUpdate);
 
 		userLogin(UserName, password);
 		assert LoginPage.signInButton.isDisplayed();
@@ -1223,10 +1225,10 @@ public class UserSetupPage extends TestBase {
 			activeCheckBox.click();
 		}
 
-		jsClick(driver, groupsAllLeft);
+		jsClick(groupsAllLeft);
 
 		singleGroupSelect(role);
-		jsClick(driver, userUpdate);
+		jsClick(userUpdate);
 
 		userLogin(UserName, password);
 		assert callLogStageView.isDisplayed();
@@ -1251,7 +1253,7 @@ public class UserSetupPage extends TestBase {
 		navigateWithinUserSetup(roleAndPermissions);
 		createButton.click();
 		inputGroupName.sendKeys(groupName);
-		jsClick(driver, roleCreateButton);
+		jsClick(roleCreateButton);
 		assert groupNameError.isDisplayed();
 		return this;
 	}
@@ -1264,7 +1266,7 @@ public class UserSetupPage extends TestBase {
 		unWait(1);
 		assertFalse(continueButton.isDisplayed());
 		if (continueButton.isDisplayed()) {
-			jsClick(driver, continueButton);
+			jsClick(continueButton);
 		}
 		return this;
 	}
@@ -1280,7 +1282,6 @@ public class UserSetupPage extends TestBase {
 				break;
 			}
 		}
-
 		return this;
 	}
 
@@ -1292,7 +1293,7 @@ public class UserSetupPage extends TestBase {
 		unWait(1);
 		assertFalse(continueButton.isDisplayed());
 		if (continueButton.isDisplayed()) {
-			jsClick(driver, continueButton);
+			jsClick(continueButton);
 		}
 		return this;
 	}

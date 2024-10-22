@@ -112,7 +112,7 @@ public class TestBase {
 	// SendKeys
 
 	public static void sendKeys(WebElement webelement, String str) {
-		jsClick(driver, webelement);
+		jsClick(webelement);
 		webelement.clear();
 		webelement.sendKeys(str);
 	}
@@ -125,8 +125,8 @@ public class TestBase {
 	@FindBy(css = "img.arrow-left")
 	protected WebElement backButton;
 
-	protected void saveRecord() {
-		jsClick(driver, save);
+	public void saveRecord() {
+		jsClick(save);
 		unWait(1);
 		continueButton.click();
 	}
@@ -136,7 +136,7 @@ public class TestBase {
 	}
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
-			jsClick(driver, element);
+			jsClick(element);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class TestBase {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
 
-	public static void jsClick(WebDriver driver, WebElement element) {
+	public static void jsClick(WebElement element) {
 
 		js.executeScript("arguments[0].click();", element);
 	}
@@ -208,10 +208,22 @@ public class TestBase {
 	public void navigateWithinAlchemy(WebElement element) {
 		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-			jsClick(driver, element);
+			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			jsClick(driver, alchemy);
-			jsClick(driver, element);
+			jsClick(alchemy);
+			jsClick(element);
+		}
+
+	}
+	@FindBy(xpath = "(//a[@id='menulist3'])[2]")
+	WebElement masters;
+	public void navigateWithinMasters(WebElement element) {
+		try {
+			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			jsClick(element);
+		} catch (org.openqa.selenium.NoSuchElementException e) {
+			jsClick(masters);
+			jsClick(element);
 		}
 
 	}
@@ -222,10 +234,10 @@ public class TestBase {
 	public void navigateWithinUserSetup(WebElement element) {
 		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-			jsClick(driver, element);
+			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
-			jsClick(driver, userSetup);
-			jsClick(driver, element);
+			jsClick(userSetup);
+			jsClick(element);
 		}
 
 	}

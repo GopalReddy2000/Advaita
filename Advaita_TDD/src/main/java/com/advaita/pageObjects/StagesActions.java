@@ -308,7 +308,7 @@ public class StagesActions extends TestBase{
 			stageHistoryFieldHeader.get(0).getText();
 		}catch (NoSuchElementException e)
 		{
-			jsClick(driver,stageHistorySection);
+			jsClick(stageHistorySection);
 		}
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
 			String actualHeader =evaluationFieldHeader.get(i).getText().trim();
@@ -327,10 +327,10 @@ public class StagesActions extends TestBase{
 
 	public void selectAndClickOptions( List<WebElement> dropdowns, List<String> options, List<WebElement> buttons) {
 		for (int i = 0; i < options.size(); i++) {
-			jsClick(driver,allLeftButton.get(i));
+			jsClick(allLeftButton.get(i));
 
 			selectOptionsInMultiSelect(dropdowns.get(i), options.get(i));
-			jsClick(driver, buttons.get(i));
+			jsClick(buttons.get(i));
 			System.out.println(options.get(i));
 		}
 	}
@@ -386,7 +386,7 @@ public class StagesActions extends TestBase{
 		insuranceStage.click();
 		recordEyeButton.get(0).click();
 
-		jsClick(driver,SOPDocumentSection);
+		jsClick(SOPDocumentSection);
 		assert (SOPRecords.get(0).getText().equals(uploadedSOP));
 
 
@@ -490,9 +490,9 @@ public class StagesActions extends TestBase{
 //		saveRecord();
 
 		navigateWithinAlchemy(callLogTabView);
-		jsClick(driver,insuranceStage);
-		jsClick(driver,recordEyeButton.get(recordEyeButton.size()-1));
-		jsClick(driver,interactionHistory);
+		jsClick(insuranceStage);
+		jsClick(recordEyeButton.get(recordEyeButton.size()-1));
+		jsClick(interactionHistory);
 		unWait(1);
 		List<String> actualInteractionHeaders = new ArrayList<>();
 		for (int i = 0; i < stageProcessFieldsList.size(); i++) {

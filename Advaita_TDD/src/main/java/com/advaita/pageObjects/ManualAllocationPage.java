@@ -165,7 +165,7 @@ public class ManualAllocationPage extends TestBase {
 				click(driver, allocateButton);
 				wait.until(ExpectedConditions.visibilityOf(continueButton));
 				unWait(1);
-				jsClick(driver, continueButton);
+				jsClick(continueButton);
 //				continueButton.click();
 				unWait(1);
 //				click(driver, continueButton);

@@ -193,11 +193,11 @@ public class EmailTemplatePage extends TestBase{
 
 
 		try {
-			jsClick(driver,emailTemplate);
+			jsClick(emailTemplate);
 
 		}catch (NoSuchElementException e) {
 			alchemy.click();
-			jsClick(driver,emailTemplate);
+			jsClick(emailTemplate);
 		}
 		return this;
 	}
@@ -222,7 +222,7 @@ public class EmailTemplatePage extends TestBase{
 
 	public EmailTemplatePage validateDropdowns() 
 	{
-		jsClick(driver,emailTemplate);
+		jsClick(emailTemplate);
 		create.click();
 		//		dropdownUtil(processDropdown,processExpectedOptions);
 		unWait(1);
@@ -311,7 +311,7 @@ public class EmailTemplatePage extends TestBase{
 			String Process,String SubProcess,String SubSubProcess,String Stage,String TemplateName,
 			String fromMail,String toMail,String CCMail,String BCC,String Subject,String Message)
 	{
-		jsClick(driver,emailTemplate);
+		jsClick(emailTemplate);
 		create.click();
 		//		dropdownUtil(processDropdown,processExpectedOptions);
 		unWait(1);
@@ -393,7 +393,7 @@ public class EmailTemplatePage extends TestBase{
 		assertEquals(Subject,actualSubject);
 		//		assertEquals(Message,inputMessage.getText());
 		send.click();
-		jsClick(driver,custPageBack);
+		jsClick(custPageBack);
 		return this;
 	}
 
@@ -414,7 +414,7 @@ public class EmailTemplatePage extends TestBase{
 				case "Delete":
 					try {
 						WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
-						jsClick(driver, deleteButton);
+						jsClick(deleteButton);
 
 						confirmDeleteButton.click();
 						unWait(2);
@@ -428,7 +428,7 @@ public class EmailTemplatePage extends TestBase{
 				case "Edit":
 					try {
 						WebElement editButton = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
-						jsClick(driver, editButton);
+						jsClick(editButton);
 					} catch (Exception e) {
 						System.out.println("Failed to edit the record: " + e.getMessage());
 					}
@@ -476,7 +476,7 @@ public class EmailTemplatePage extends TestBase{
 			// Handle unexpected values of ToEdit
 			throw new IllegalArgumentException("Unexpected value: " + ToEdit);
 		}
-		jsClick(driver,templateCreate);
+		jsClick(templateCreate);
 		unWait(1);
 		continueButton.click();
 
@@ -530,7 +530,7 @@ public class EmailTemplatePage extends TestBase{
 
 		// Click send button and navigate back
 		send.click();
-		jsClick(driver, custPageBack);
+		jsClick(custPageBack);
 
 		return this;
 	}
@@ -538,7 +538,7 @@ public class EmailTemplatePage extends TestBase{
 	public EmailTemplatePage variables(String valueType, String inputVariable, String variable1, String variable2, 
 			String selectValue1, String selectValue2, String defaultValue1, String defaultValue2) {
 		try {
-			jsClick(driver, emailTemplate);
+			jsClick(emailTemplate);
 			create.click();
 
 			unWait(1);
@@ -591,7 +591,7 @@ public class EmailTemplatePage extends TestBase{
 		}
 
 		try {
-			jsClick(driver, templateCreate);
+			jsClick(templateCreate);
 			unWait(1);
 			continueButton.click();
 		} catch (Exception e) {

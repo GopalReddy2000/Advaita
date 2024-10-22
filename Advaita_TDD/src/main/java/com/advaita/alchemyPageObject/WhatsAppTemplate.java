@@ -395,8 +395,8 @@ public class WhatsAppTemplate extends TestBase // Create_Class and extend base c
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 		
 	}
 	
@@ -404,7 +404,7 @@ public class WhatsAppTemplate extends TestBase // Create_Class and extend base c
 	{
 		
 		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/whatsapp_template_listing/");
-		jsClick(driver, whatsAppTemplate_Tab);
+		jsClick(whatsAppTemplate_Tab);
 		assertTrue(whatsAppTemplateText.isDisplayed(), " whatsApp TemplateText is not displayed");
 	}
 	
@@ -864,7 +864,7 @@ public class WhatsAppTemplate extends TestBase // Create_Class and extend base c
 			js.executeScript("arguments[0].scrollIntoView(true);", businessWhatsAppIcon_userAccountSatgeView); 
 			 assertTrue(businessWhatsAppIcon_userAccountSatgeView.isDisplayed(), FirstCreatedUserName);
 			 //businessWhatsAppIcon_userAccountSatgeView.click();
-			 jsClick(driver, businessWhatsAppIcon_userAccountSatgeView);
+			 jsClick(businessWhatsAppIcon_userAccountSatgeView);
 			 
 			 wait.until(ExpectedConditions.visibilityOf(whatsappBusinessPopup));
 			 assertTrue(whatsappBusinessPopup.isDisplayed(), "whatsappBusinessPopup.is not displayed");
