@@ -74,6 +74,12 @@ public class EmailTemplateTest extends TestBase{
 		emailTemplatePage.validateDropdowns();
 	}
 
+	@Test
+	public void smsTemplate()
+	{
+		emailTemplatePage.smsTemplate();
+	}
+
 	@Test(dataProvider = "Email Template")
 	public void emailTempalteCreateTest(String TemplateName, String fromMail, String toMail, String CCMail, String BCC, String Subject, String Message)
 	{

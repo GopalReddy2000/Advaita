@@ -3,8 +3,7 @@ package com.advaita.BaseClass;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.time.Duration;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -57,18 +56,26 @@ public class TestBase {
 //		cap.setCapability("applicationCacheEnabled", false);
 //		options.merge(cap);
 //
-//		Map<String, Object> prefs = new HashMap<>();
-//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-//		options.setExperimentalOption("prefs", prefs);
-//		driver = new ChromeDriver(options);
+		options = new ChromeOptions();
+		Map<String, Object> prefs = new HashMap<>();
+		// Set Chrome preferences to block microphone and camera
 
-
+		prefs.put("profile.default_content_setting_values.media_stream_mic", 2);  // 1: Allow, 2: Block
+		prefs.put("profile.default_content_setting_values.media_stream_camera", 2);  // Block camera as well
+		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
+		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
-		driver = new ChromeDriver();
+
+		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+
+
+//		driver = new ChromeDriver(options);
+
 
 		actions = new Actions(driver);
 		robot = new Robot();
@@ -117,6 +124,9 @@ public class TestBase {
 		webelement.sendKeys(str);
 	}
 
+	volatile String a="James";
+	
+
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
 	public WebElement continueButton;
 
@@ -144,6 +154,10 @@ public class TestBase {
 		js.executeScript("window.scrollTo(0, " + toScroll + ");");
 	}
 
+	// Method to scroll to a specific percentage of the page
+	public void scrollToPercentage(int percentage) {
+		js.executeScript("window.scrollTo(0, document.body.scrollHeight * " + (percentage / 100.0) + ");");
+	}
 	public void jsWindowsScrollIntoView(WebElement element) {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
@@ -248,7 +262,7 @@ public class TestBase {
 		LoginPage.usernameField.sendKeys(UserName);
 		LoginPage.passwordField.sendKeys("Qwerty@123");
 		LoginPage.signInButton.click();
-		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
+//		driver.navigate().to("https://test.capture.autosherpas.com/en/master_parameters/measurable_set/");
 	}
 
 	public String jsInnerText(WebElement element) {

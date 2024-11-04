@@ -33,10 +33,10 @@ public class StagesActions extends TestBase{
 	public static WebElement evaluationMultiSearch;
 
 	@FindBy(xpath="//select[@id='multiselect']")
-	public static WebElement fromMultiSelectDropdown;
+	public static WebElement multiSelectDropdownFrom;
 
 	@FindBy(xpath="//select[@id='multiselect_to']")
-	public static WebElement toMultiSelectDropdown;
+	public static WebElement multiSelectDropdownTo;
 
 	@FindBy(xpath="//button[@id='multiselect_rightAll']")
 	WebElement allRightButton;
@@ -124,6 +124,13 @@ public class StagesActions extends TestBase{
 
 	@FindBy(xpath ="//select[@id='muti_unique_multiselect']")
 	WebElement multiSelectDropdown;
+
+	@FindBy(xpath ="//select[not(contains(@id,'to'))]")
+	public List<WebElement> fromMultiselectDropdown;
+
+	@FindBy(xpath ="//select[contains(@id,'to')]")
+	public List<WebElement> toMultiSelectDropdown;
+
 
 	@FindBy(xpath ="//select[@id='textbox_multiselect']")
 	WebElement textBoxDropdown;
@@ -267,7 +274,7 @@ public class StagesActions extends TestBase{
 	public StagesActions escalationFields()
 	{
 		allLeftButton.get(0).click();
-		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
+		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
 //		singleRightButton.click();
 		saveRecord();
 
@@ -292,7 +299,7 @@ public class StagesActions extends TestBase{
 	{
 //		allLeftButton.get(0).click();
 //		// evaluationFieldOptions and stageHistoryOptions Field Options are same.
-//		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
+//		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
 ////		singleRightButton.click();
 //
 //		saveRecord();
@@ -345,7 +352,7 @@ public class StagesActions extends TestBase{
 	public StagesActions evaluationFilter()
 	{
 		selectAndClickOptions(
-				Arrays.asList(fromMultiSelectDropdown,
+				Arrays.asList(multiSelectDropdownFrom,
 						datePickerDropdown,
 						dateRangerDropdown,
 						multiSelectDropdown,
@@ -438,7 +445,8 @@ public class StagesActions extends TestBase{
 
 	public StagesActions reportFields()
 	{
-		selectOptionsInMultiSelect(fromMultiSelectDropdown,reportFieldsOptions);
+		selectOptionsInMultiSelect(multiSelectDropdownFrom
+				,reportFieldsOptions);
 		saveRecord();
 
 		navigateWithinAlchemy(validationStatusReport);
@@ -486,7 +494,7 @@ public class StagesActions extends TestBase{
 	public StagesActions stageProcessFields()
 	{
 
-//		selectOptionsInMultiSelect(fromMultiSelectDropdown,stageProcessFieldsList);
+//		selectOptionsInMultiSelect(multiSelectDropdownFrom,stageProcessFieldsList);
 //		saveRecord();
 
 		navigateWithinAlchemy(callLogTabView);
@@ -515,7 +523,7 @@ public class StagesActions extends TestBase{
 	public StagesActions reportFilters()
 	{
 		selectAndClickOptions(
-			Arrays.asList(fromMultiSelectDropdown,
+			Arrays.asList(multiSelectDropdownFrom,
 					datePickerDropdown,
 					dateRangerDropdown,
 					multiSelectDropdown,

@@ -220,7 +220,7 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
-	public EmailTemplatePage validateDropdowns() 
+	public EmailTemplatePage validateDropdowns()
 	{
 		jsClick(emailTemplate);
 		create.click();
@@ -251,6 +251,22 @@ public class EmailTemplatePage extends TestBase{
 		subSubProcessDrp.selectByVisibleText(Value);
 
 	}
+
+	public EmailTemplatePage smsTemplate()
+	{
+		navigateWithinAlchemy(driver.findElement(By.linkText("SMS Template")));
+		selectByVisibleText(searchProcessDropdown,"DemoEmpH P");
+//		unWaitInMilli(400);
+		selectByVisibleText(searchSubProcessDropdown,"DemoEmpH S P");
+//		unWaitInMilli(400);
+		selectByVisibleText(searchSubSubProcessDropdown,"DemoEmpH S S P");
+//		unWaitInMilli(400);
+		selectByVisibleText(searchStageDropdown,"DemoEmpH Stage");
+
+
+		return this;
+	}
+
 
 	public EmailTemplatePage dropdownUtil(WebElement dropdownElement,String expectedOption)
 	{
@@ -303,7 +319,7 @@ public class EmailTemplatePage extends TestBase{
 
 		for(WebElement options:ProcessDrp.getOptions())
 		{
-			System.out.println(options.getText()); 
+			System.out.println(options.getText());
 		}
 	}
 
@@ -355,8 +371,8 @@ public class EmailTemplatePage extends TestBase{
 
 		callLogTabView.click();
 		insuranceStage.click();
-		 NameOfTheCustomer=driver.findElement(By.xpath("//tbody//td[5]")).getText();
-		 phoneNumber=driver.findElement(By.xpath("//tbody//td[7]")).getText();
+		NameOfTheCustomer=driver.findElement(By.xpath("//tbody//td[5]")).getText();
+		phoneNumber=driver.findElement(By.xpath("//tbody//td[7]")).getText();
 		unWait(1);
 		CustomerEmail=custEmail.getText();
 		eyeButton.click();
@@ -373,7 +389,7 @@ public class EmailTemplatePage extends TestBase{
 	FetchDataFromInputTagWithJS inputTagText= new FetchDataFromInputTagWithJS();
 
 	public EmailTemplatePage verifyTemplate(String TemplateName,
-			String fromMail,String CCMail,String BCC,String Subject,String Message)
+											String fromMail,String CCMail,String BCC,String Subject,String Message)
 	{
 		emailButton.click();
 		unWait(1);
@@ -411,31 +427,31 @@ public class EmailTemplatePage extends TestBase{
 
 			if (usernameColumn.getText().contains(nameToDelete)) {
 				switch (action) {
-				case "Delete":
-					try {
-						WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
-						jsClick(deleteButton);
+					case "Delete":
+						try {
+							WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
+							jsClick(deleteButton);
 
-						confirmDeleteButton.click();
-						unWait(2);
-						continueButton.click();
-						System.out.println(nameToDelete + " Successfully Deleted");
-					} catch (Exception e) {
-						System.out.println("Failed to delete the record: " + e.getMessage());
-					}
-					break;
+							confirmDeleteButton.click();
+							unWait(2);
+							continueButton.click();
+							System.out.println(nameToDelete + " Successfully Deleted");
+						} catch (Exception e) {
+							System.out.println("Failed to delete the record: " + e.getMessage());
+						}
+						break;
 
-				case "Edit":
-					try {
-						WebElement editButton = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
-						jsClick(editButton);
-					} catch (Exception e) {
-						System.out.println("Failed to edit the record: " + e.getMessage());
-					}
-					break;
+					case "Edit":
+						try {
+							WebElement editButton = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
+							jsClick(editButton);
+						} catch (Exception e) {
+							System.out.println("Failed to edit the record: " + e.getMessage());
+						}
+						break;
 
-				default:
-					System.out.println("Invalid action: " + action);
+					default:
+						System.out.println("Invalid action: " + action);
 				}
 				// Once the action is performed, exit the loop
 				break;
@@ -457,24 +473,24 @@ public class EmailTemplatePage extends TestBase{
 		}
 
 		switch (ToEdit) {
-		case "From":
-			EditInput(inputFromMail, editFromMail);
-			break;
-		case "To":
-			selectByVisibleText(toMailDropdown, editToMail);
-			break;
-		case "BCC":
-			EditInput(inputBCCMail, editBCCMail);
-			break;
-		case "CC":
-			EditInput(inputCCMail, editCCMail);
-			break;
-		case "Subject":
-			EditInput(inputSubject, EditSubject);
-			break;
-		default:
-			// Handle unexpected values of ToEdit
-			throw new IllegalArgumentException("Unexpected value: " + ToEdit);
+			case "From":
+				EditInput(inputFromMail, editFromMail);
+				break;
+			case "To":
+				selectByVisibleText(toMailDropdown, editToMail);
+				break;
+			case "BCC":
+				EditInput(inputBCCMail, editBCCMail);
+				break;
+			case "CC":
+				EditInput(inputCCMail, editCCMail);
+				break;
+			case "Subject":
+				EditInput(inputSubject, EditSubject);
+				break;
+			default:
+				// Handle unexpected values of ToEdit
+				throw new IllegalArgumentException("Unexpected value: " + ToEdit);
 		}
 		jsClick(templateCreate);
 		unWait(1);
@@ -491,7 +507,7 @@ public class EmailTemplatePage extends TestBase{
 			String ccMail,
 			String bcc,
 			String subject
-			) {
+	) {
 		// Click the email button
 		emailButton.click();
 		unWait(1);
@@ -512,20 +528,20 @@ public class EmailTemplatePage extends TestBase{
 
 		// Switch case to check the edited field
 		switch (toEdit) {
-		case "From":
-			assertEquals(fromMail, actualFromMail);
-			break;
-		case "BCC":
-			assertEquals(bcc, actualBCC);
-			break;
-		case "CC":
-			assertEquals(ccMail, actualCCMail);
-			break;
-		case "Subject":
-			assertEquals(subject, actualSubject);
-			break;
-		default:
-			throw new IllegalArgumentException("Invalid value for 'toEdit': " + toEdit);
+			case "From":
+				assertEquals(fromMail, actualFromMail);
+				break;
+			case "BCC":
+				assertEquals(bcc, actualBCC);
+				break;
+			case "CC":
+				assertEquals(ccMail, actualCCMail);
+				break;
+			case "Subject":
+				assertEquals(subject, actualSubject);
+				break;
+			default:
+				throw new IllegalArgumentException("Invalid value for 'toEdit': " + toEdit);
 		}
 
 		// Click send button and navigate back
@@ -535,8 +551,8 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
-	public EmailTemplatePage variables(String valueType, String inputVariable, String variable1, String variable2, 
-			String selectValue1, String selectValue2, String defaultValue1, String defaultValue2) {
+	public EmailTemplatePage variables(String valueType, String inputVariable, String variable1, String variable2,
+									   String selectValue1, String selectValue2, String defaultValue1, String defaultValue2) {
 		try {
 			jsClick(emailTemplate);
 			create.click();
@@ -568,23 +584,23 @@ public class EmailTemplatePage extends TestBase{
 			inputTemplateVarField.get(1).sendKeys(variable2);
 
 			switch (valueType) {
-			case "Stage":
-				selectByVisibleText(subjectStageDropdown.get(0), selectValue1);
-				selectByVisibleText(subjectStageDropdown.get(1), selectValue2);
-				selectByVisibleText(templateStageDropdown.get(0), selectValue1);
-				selectByVisibleText(templateStageDropdown.get(1), selectValue2);
-				break;
+				case "Stage":
+					selectByVisibleText(subjectStageDropdown.get(0), selectValue1);
+					selectByVisibleText(subjectStageDropdown.get(1), selectValue2);
+					selectByVisibleText(templateStageDropdown.get(0), selectValue1);
+					selectByVisibleText(templateStageDropdown.get(1), selectValue2);
+					break;
 
-			case "Default":
-				inputSubjectDefaultValue.get(0).sendKeys(defaultValue1);
-				inputSubjectDefaultValue.get(1).sendKeys(defaultValue2);
-				inputTemplateDefaultField.get(0).sendKeys(defaultValue1);
-				inputTemplateDefaultField.get(1).sendKeys(defaultValue2);
-				break;
+				case "Default":
+					inputSubjectDefaultValue.get(0).sendKeys(defaultValue1);
+					inputSubjectDefaultValue.get(1).sendKeys(defaultValue2);
+					inputTemplateDefaultField.get(0).sendKeys(defaultValue1);
+					inputTemplateDefaultField.get(1).sendKeys(defaultValue2);
+					break;
 
-			default:
-				System.out.println("Invalid valueType: " + valueType);
-				break;
+				default:
+					System.out.println("Invalid valueType: " + valueType);
+					break;
 			}
 		} catch (Exception e) {
 			System.out.println("An error occurred while creating the email template: " + e.getMessage());
@@ -603,7 +619,7 @@ public class EmailTemplatePage extends TestBase{
 
 	public EmailTemplatePage verifyVaribles() {
 
-		
+
 		// Click the email button
 		emailButton.click();
 		unWait(1);
