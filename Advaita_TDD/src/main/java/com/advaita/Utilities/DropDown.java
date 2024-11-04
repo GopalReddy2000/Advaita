@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -124,6 +125,82 @@ public class DropDown extends TestBase {
 		}
 	}
 
+	public static void jsDropdownWithAllPossibleValidation(WebDriver driver, WebElement element, String defaultValue,
+			String visibleText) throws Throwable {
+
+		// Check for empty drop down
+		List<WebElement> options = element.findElements(By.tagName("option"));
+		wait.until(ExpectedConditions.visibilityOfAllElements(options));
+		softAssert.assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+		// Check if any option is selected by default
+		Thread.sleep(1000);
+		String getDefaultSelectedScript = "return arguments[0].options[arguments[0].selectedIndex].text;";
+		String defaultSelectedOption = (String) js.executeScript(getDefaultSelectedScript, element);
+
+		System.out.println("defaultSelectedOption : " + defaultSelectedOption);
+
+		if (defaultSelectedOption != null) {
+			// Verify the default selected option
+			softAssert.assertEquals(defaultSelectedOption, defaultValue, "Default selected option is incorrect.");
+		} else {
+			// Assert that a default option should be selected
+			softAssert.fail("No default selected option is present.");
+		}
+
+		// Use JavaScript to get all the options' text from the dropdown
+		String getAllOptionsScript = "var options = arguments[0].options; " + "var texts = []; "
+				+ "for (var i = 0; i < options.length; i++) { " + "    texts.push(options[i].text); " + "} "
+				+ "return texts;";
+
+		List<String> optionTexts = (List<String>) js.executeScript(getAllOptionsScript, element);
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (String optionText : optionTexts) {
+			System.out.println(optionText);
+			softAssert.assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int k = 0; k < Math.min(5, options.size()); k++) {
+			// Use JavaScript to select an option by index
+			String selectByIndexScript = "arguments[0].selectedIndex=" + k + ";";
+			js.executeScript(selectByIndexScript, element);
+
+			// After selecting the option, refetch the list of options
+			List<WebElement> refreshedOptions = element.findElements(By.tagName("option"));
+
+			// Verify the selected option by retrieving its text using JavaScript
+			String selectedOptionText = (String) js.executeScript(getDefaultSelectedScript, element);
+
+			// Ensure you are comparing the right option's text (use the refreshed list)
+			softAssert.assertEquals(selectedOptionText, refreshedOptions.get(k).getText(),
+					"Failed to select the option by index " + k);
+
+			System.out.println(
+					"Option '" + refreshedOptions.get(k).getText() + "' was successfully selected by index " + k + ".");
+		}
+
+		unWait(1);
+		assertNotNull(visibleText, "visibleText is null");
+
+		// Use JavaScript to select the option by visible text
+		String selectByVisibleTextScript = "var options = arguments[0].options; "
+				+ "for(var i = 0; i < options.length; i++) { " + "if(options[i].text === '" + visibleText + "') { "
+				+ "options[i].selected = true; " + "break; }}";
+		js.executeScript(selectByVisibleTextScript, element);
+
+		// Verify the selected option by retrieving its text
+		String selectedOptionText = (String) js.executeScript(getDefaultSelectedScript, element);
+		softAssert.assertEquals(selectedOptionText, visibleText.trim(), "Selected option is incorrect.");
+
+		// Soft assert all
+//		softAssert.assertAll();
+	}
+
 	public static void dropdownWithAllPosibleValidation(WebElement element, String defaultValue, String visibleText)
 			throws Throwable {
 
@@ -152,6 +229,7 @@ public class DropDown extends TestBase {
 		}
 
 		// Print all options and check for duplicates
+		unWait(1);
 		wait.until(ExpectedConditions.visibilityOfAllElements(options));
 		Set<String> uniqueOptions = new HashSet<>();
 		System.out.println("Dropdown options:");
@@ -171,6 +249,9 @@ public class DropDown extends TestBase {
 					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
 		}
 
+//		wait.until(ExpectedConditions.visibilityOfAllElements(options));
+		// After selecting the option, refetch the list of options
+		List<WebElement> refreshedOptions = element.findElements(By.tagName("option"));
 		assertNotNull(visibleText, "visibleText is null");
 		dropDown.selectByVisibleText(visibleText);
 
@@ -197,8 +278,6 @@ public class DropDown extends TestBase {
 
 		return false; // Text not found in the dropdown
 	}
-	
-	
 
 	public static boolean validateSelectedDropdownOption(WebElement dropDownElement, String optionToSelect)
 			throws Throwable {
@@ -222,9 +301,6 @@ public class DropDown extends TestBase {
 		return isValid;
 	}
 
-	
-	
-	
 	// Utility method for star mark validation and dropdown interaction
 	public static void validateStarMarkAndHandleDropdown(String labelText, String dropdownId, String defaultOption,
 			String optionToSelect) throws Throwable {
@@ -241,66 +317,73 @@ public class DropDown extends TestBase {
 		// Locate and handle the dropdown using the Select class
 		WebElement dropdown = driver.findElement(By.xpath(dropdownXPath));
 		wait.until(ExpectedConditions.visibilityOf(dropdown));
-		
+
 		try {
 			dropdownWithAllPosibleValidation(dropdown, defaultOption, optionToSelect);
-	    } catch (StaleElementReferenceException e) {
-	    	dropdownWithAllPosibleValidation(dropdown, defaultOption, optionToSelect);
-	    }
+		} catch (StaleElementReferenceException e) {
+			dropdownWithAllPosibleValidation(dropdown, defaultOption, optionToSelect);
+		}
 //		dropdownWithAllPosibleValidation(dropdown, defaultOption, optionToSelect);
 	}
-	
-	
-	public static void validateStarMarkAndHandleDropdowns(Object labelText, Object dropdownId,
-	        Object defaultOption, Object optionToSelect, boolean checkStarMark) throws Throwable {
 
-	    // Convert single values to lists for uniform handling
-	    List<String> labelTexts = (labelText instanceof String) ? List.of((String) labelText) : (List<String>) labelText;
-	    List<String> dropdownIds = (dropdownId instanceof String) ? List.of((String) dropdownId) : (List<String>) dropdownId;
-	    List<String> defaultOptions = (defaultOption instanceof String) ? List.of((String) defaultOption) : (List<String>) defaultOption;
-	    List<String> optionsToSelect = (optionToSelect instanceof String) ? List.of((String) optionToSelect) : (List<String>) optionToSelect;
+	public static void validateStarMarkAndHandleDropdowns(Object labelText, Object dropdownId, Object defaultOption,
+			Object optionToSelect, boolean checkStarMark) throws Throwable {
 
-	    // Validate the input sizes
-	    if (dropdownIds.size() != optionsToSelect.size() || labelTexts.size() != dropdownIds.size()) {
-	        throw new IllegalArgumentException("The number of label texts, dropdown IDs, and options must match.");
-	    }
+		// Convert single values to lists for uniform handling
+		List<String> labelTexts = (labelText instanceof String) ? List.of((String) labelText)
+				: (List<String>) labelText;
+		List<String> dropdownIds = (dropdownId instanceof String) ? List.of((String) dropdownId)
+				: (List<String>) dropdownId;
+		List<String> defaultOptions = (defaultOption instanceof String) ? List.of((String) defaultOption)
+				: (List<String>) defaultOption;
+		List<String> optionsToSelect = (optionToSelect instanceof String) ? List.of((String) optionToSelect)
+				: (List<String>) optionToSelect;
 
-	    for (int i = 0; i < dropdownIds.size(); i++) {
-	        String currentLabelText = labelTexts.get(i);
-	        String currentDropdownId = dropdownIds.get(i);
-	        String currentOptionToSelect = optionsToSelect.get(i);
-	        String currentDefaultOption = defaultOptions.get(i);
+		// Validate the input sizes
+		if (dropdownIds.size() != optionsToSelect.size() || labelTexts.size() != dropdownIds.size()) {
+			throw new IllegalArgumentException("The number of label texts, dropdown IDs, and options must match.");
+		}
 
-	        // Construct the XPath for the label
-	        String labelXPath = String.format("//label[contains(text(), '%s')]", currentLabelText);
-	        String dropdownXPath = String.format("%s/..//select[@id='%s']", labelXPath, currentDropdownId);
+		for (int i = 0; i < dropdownIds.size(); i++) {
+			String currentLabelText = labelTexts.get(i);
+			String currentDropdownId = dropdownIds.get(i);
+			String currentOptionToSelect = optionsToSelect.get(i);
+			String currentDefaultOption = defaultOptions.get(i);
 
-	        // Locate the dropdown
-	        WebElement dropdown = driver.findElement(By.xpath(dropdownXPath));
-	        wait.until(ExpectedConditions.visibilityOf(dropdown));
+			// Construct the XPath for the label
+			String labelXPath = String.format("//label[contains(text(), '%s')]", currentLabelText);
+			String dropdownXPath = String.format("%s/..//select[@id='%s']", labelXPath, currentDropdownId);
 
-	        // Check for star mark if required
-	        if (checkStarMark) {
-	            WebElement labelElement = driver.findElement(By.xpath(labelXPath));
-	            assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
-	        }
+			// Locate the dropdown
+			WebElement dropdown = driver.findElement(By.xpath(dropdownXPath));
+			wait.until(ExpectedConditions.visibilityOf(dropdown));
 
-	        wait.until(ExpectedConditions.visibilityOf(dropdown));
-	        try {
-	            dropdownWithAllPosibleValidation(dropdown, currentDefaultOption, currentOptionToSelect);
-	        } catch (StaleElementReferenceException e) {
-	            dropdownWithAllPosibleValidation(dropdown, currentDefaultOption, currentOptionToSelect);
-	        }
-	    }
+			// Check for star mark if required
+			if (checkStarMark) {
+				WebElement labelElement = driver.findElement(By.xpath(labelXPath));
+				assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
+			}
+
+			wait.until(ExpectedConditions.visibilityOf(dropdown));
+			try {
+				dropdownWithAllPosibleValidation(dropdown, currentDefaultOption, currentOptionToSelect);
+			} catch (StaleElementReferenceException e) {
+				dropdownWithAllPosibleValidation(dropdown, currentDefaultOption, currentOptionToSelect);
+			}
+		}
 	}
 
-	 
-	 //usage
-	 
+	// usage
+
 //	 List<WebElement> dropdowns = List.of(singleDropdown);
 //	 List<String> optionsToSelect = List.of("Single Option"); // Replace with your option
 //
 //   // Handle the single dropdown
 //   DropDown.handleRelativeDropdowns(dropdowns, optionsToSelect);
 
+	public static void isMandatory(String currentLabelText) {
+		String labelXPath = String.format("//label[contains(text(), '%s')]", currentLabelText);
+		WebElement labelElement = driver.findElement(By.xpath(labelXPath));
+		assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
+	}
 }

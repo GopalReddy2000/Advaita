@@ -74,6 +74,9 @@ public class ManualUpload extends TestBase {
 	@FindBy(xpath = "//span[normalize-space()='Manual Data has been created successfully']")
 	public WebElement confirmationAfterCreatedManualUpload;
 
+	@FindBy(xpath = "//span[text()='Total Records :']/following-sibling::span[1]")
+	public WebElement noOfUploadedRecord;
+
 	public ManualUpload() {
 
 		PageFactory.initElements(driver, this);

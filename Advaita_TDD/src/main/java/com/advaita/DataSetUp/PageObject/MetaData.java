@@ -889,7 +889,7 @@ public class MetaData extends TestBase {
 
 		click(driver, continueAfetrUpdateMetaData);
 
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 
 		try {
 			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(

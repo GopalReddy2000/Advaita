@@ -41,7 +41,7 @@ public class TestBase {
 
 	protected static SoftAssert softAssert;
 	public static String mainURl = "https://test.capture.autosherpas.com/";
-	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
+//	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
@@ -69,8 +69,8 @@ public class TestBase {
 		driver = new ChromeDriver(options);
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(25));
 
 
 

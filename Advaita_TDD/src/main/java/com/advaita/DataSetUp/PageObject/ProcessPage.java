@@ -314,6 +314,8 @@ public class ProcessPage extends TestBase {
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
 		
+		unWait(1);
+		
 		return this;
 
 	}
@@ -358,6 +360,7 @@ public class ProcessPage extends TestBase {
 //
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
+		unWait(1);
 		
 		return this;
 
@@ -398,6 +401,7 @@ public class ProcessPage extends TestBase {
 		save_UpdateButtonInSubsubProcess.isDisplayed();
 		save_UpdateButtonInSubsubProcess.click();
 		
+		wait.until(ExpectedConditions.visibilityOf(createSuceessMessage));
 		unWait(2);
 		assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();

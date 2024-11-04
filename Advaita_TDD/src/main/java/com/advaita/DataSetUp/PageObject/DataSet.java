@@ -660,7 +660,7 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
-	public void verifyDataSetNameField(String dataSetName) throws IOException {
+	public void verifyDataSetNameField(String dataSetName) throws Throwable {
 		
 		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("process") + "\n"
 				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
