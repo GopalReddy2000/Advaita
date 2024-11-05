@@ -35,6 +35,7 @@ public class UserSetupTest extends TestBase {
 
 	ProcessPage process;
 	FakeData fake = new FakeData();
+
 	public String processName = "P " + fake.lastName1();
 
 	public String processDesc = "P Desc";
@@ -114,7 +115,6 @@ public class UserSetupTest extends TestBase {
 	@Test
 	public void roleCreate()
 	{
-
 		userSetupPage.navToRoleAndPerCreate()
 				.createRoles(roleNameForAlchemy,"Alchemy",userSetupPage.excelToUploadModulePermissions);
 	}
@@ -219,7 +219,6 @@ public class UserSetupTest extends TestBase {
 		userSetupPage.deleteRoleByName(roleName);
 //		excelUserManagement.removeUserRole(roleName);
 
-		System.out.println("");
 		System.out.println("Test Is Completed and Passed!!🎉🎉");
 
 	}

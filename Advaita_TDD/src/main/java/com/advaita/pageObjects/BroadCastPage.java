@@ -85,13 +85,10 @@ public class BroadCastPage extends TestBase{
 	@FindBy(xpath = "//button[text()='Delete']")
 	public WebElement confirmDeleteButton;
 
-
-
-
-
 	public BroadCastPage(){	
 		PageFactory.initElements(driver, this);
 	}
+
 
 	public BroadCastPage navigation()
 	{

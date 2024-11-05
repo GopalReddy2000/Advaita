@@ -954,7 +954,8 @@ public class MeasurableSetPage extends TestBase {
 
 	public MeasurableSetPage deleteRecordByName( String nameToDelete)
 	{
-		workFlowDesign.click();
+
+		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
 		click(driver, measurableTab);
 

@@ -65,13 +65,13 @@ public class TestBase {
 		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
 		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
-
-		driver = new ChromeDriver(options);
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(25));
-
+		if(driver==null) {
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().deleteAllCookies();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+		}
 
 
 //		driver = new ChromeDriver(options);
@@ -242,12 +242,11 @@ public class TestBase {
 
 	}
 
-	@FindBy(id = "menulist1")
+	@FindBy(xpath = "//a[@id='menulist1']")
 	WebElement userSetup;
 
 	public void navigateWithinUserSetup(WebElement element) {
 		try {
-			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			jsClick(userSetup);
