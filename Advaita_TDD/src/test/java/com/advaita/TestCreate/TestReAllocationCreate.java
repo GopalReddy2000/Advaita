@@ -92,14 +92,13 @@ public class TestReAllocationCreate extends TestBase {
 		userSetUp = new UserSetupPage();
 		SPAG = new SamplingPlanAndGenerationPage();
 		manualAllocationPage = new ManualAllocationPage();
-
 		reAllocation = new ReAllocationPage();
 
 	}
 
 	// Run Test Based on Boolean
-	final boolean processRun = true;
-	final boolean dataSetRun = true;
+	final boolean processRun = false;
+	final boolean dataSetRun = false;
 	final boolean metaDataRun = true;
 	final boolean manualUploadRun = true;
 	final boolean nonMeasurableRun = true;
@@ -109,7 +108,7 @@ public class TestReAllocationCreate extends TestBase {
 	final boolean manualAllocationRun = true;
 	final boolean reAllocationRun = true;
 
-	static String employeeName = "DemoEmpK";
+	static String employeeName = "DemoEmpM";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
@@ -250,41 +249,53 @@ public class TestReAllocationCreate extends TestBase {
 
 		stages.dispositionSection().saveAndConfirmation();
 //			stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
-		stages.selectTransIDInEvaluationField(stages.stageEvaluationDropdown,stageName);
+		stages.transIDInEvaluationField();
 	}
 
 	static String lastName;
-	static String usernameToDoAction = employeeName + lastName;
+	static String usernameToDoAction;
 
 	@Test(priority = 7, enabled = userRun)
 	public void verifyUserCreateAndUserMapping() throws Throwable {
 
 		test = reports.createTest("verifyUserCreateAndUserMapping");
+
 		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
 		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
 		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
 
-		for (int i = 1; i <= 2; i++) {
-			userSetUp.navToUserCreatePage();
+		userSetUp.navToUserCreatePage();
 
-			lastName = " QA" + i;
+		for (int userIndex = 1; userIndex <= 2; userIndex++) {
 
-			userSetUp.userCreationFields(employeeName, lastName, "Qwerty@123")
-					.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
+			lastName = "QA" + userIndex;
+			usernameToDoAction = employeeName + " " + lastName;
 
-			if (i == 1) {
-				PropertieFileUtil.storeSingleTextInPropertiesFile("userName", usernameToDoAction);
-				userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess,
-						stages);
+			createUserAndMapToProcess(employeeName, lastName, usernameToDoAction, process, subProcess, subSubProcess,
+					stages, userIndex);
+
+			if (userIndex == 1) {
+				click(driver, userSetUp.userManagement);
 			}
-			if (i == 2) {
-				PropertieFileUtil.storeSingleTextInPropertiesFile("userName2", usernameToDoAction);
-				userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess,
-						stages);
-			}
-
 		}
+	}
+
+	/**
+	 * Helper method to handle user creation and mapping.
+	 */
+	private void createUserAndMapToProcess(String employeeName, String lastName, String username, String process,
+			String subProcess, String subSubProcess, String stages, int userIndex) throws Throwable {
+
+		// Create user and assign a group
+		userSetUp.userCreationFields(employeeName, lastName, "Qwerty@123")
+				.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
+
+		// Store userName in properties file
+		PropertieFileUtil.storeSingleTextInPropertiesFile("userName" + userIndex, username);
+
+		// Perform user mapping
+		userSetUp.userMappingRecord2(username).userMappingProcess(process, subProcess, subSubProcess, stages);
 	}
 
 	@Test(priority = 8, enabled = samplingPlanRun)
@@ -320,7 +331,7 @@ public class TestReAllocationCreate extends TestBase {
 		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
 		String allocationType = "call";
-		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName");
+		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
 
 		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
 				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
@@ -336,20 +347,22 @@ public class TestReAllocationCreate extends TestBase {
 		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
 		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String desigNation = PropertieFileUtil.getSingleTextFromPropertiesFile("designation");
-		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName");
+		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile("designation");
+		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
+		String userName2 = PropertieFileUtil.getSingleTextFromPropertiesFile("userName2");
+
+		// ToUsers We can give multiple
+		List<String> toUsers = Arrays.asList(userName2);
 
 		reAllocation.navigateToReAllocation()
 				.selectProcess_SubProcess_SubSubProcess_Stages(processValue, subProcessValue, subSubProcessValue)
-				.selectStages(stages).selectFromDesignation(desigNation);
-				
-				
-//				.selectFromUser(userName).search()
-//				.selectToDesignation(desigNation).selectToUser(desigNation);
+				.selectStages(stages).selectFromDesignation(designation).selectFromUser(userName).search()
+				.selectToDesignation(designation).selectToUser(toUsers);
 //
-//		String condition = "Single";
-////		String condition ="All";
-//		reAllocation.reAllocationOfRecords(condition, 1);
+		String condition = "Single";
+//		String condition = "Multiple";
+//		String condition ="All";
+		reAllocation.reAllocationOfRecords(4, condition, designation, toUsers);
 
 	}
 

@@ -138,7 +138,7 @@ public class UserSetupPage extends TestBase {
 	WebElement userSetup;
 
 	@FindBy(linkText = "User Management")
-	WebElement userManagement;
+	public WebElement userManagement;
 
 	@FindBy(linkText = "Role & Permissions")
 	WebElement roleAndPermissions;
@@ -466,7 +466,6 @@ public class UserSetupPage extends TestBase {
 	public UserSetupPage navToUserCreatePage() {
 		userSetup.click();
 		click(driver, userManagement);
-		userManagementCreateButton.click();
 		return this;
 	}
 
@@ -506,6 +505,8 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage userCreationFields(String fName, String lName, String pass) {
+		userManagementCreateButton.click();
+
 		firstName = fName;
 		lastName = lName;
 		password = pass;
@@ -857,12 +858,23 @@ public class UserSetupPage extends TestBase {
 		return this;
 	}
 
+	public UserSetupPage userMappingRecord2(String usernameToDoAction) {
+
+		String userMaping = String.format(
+				"//table/tbody/tr/td[normalize-space()='%s']/..//td[last()]//img[contains(@title,'User Mapping')]",
+				usernameToDoAction);
+		click(driver, driver.findElement(By.xpath(userMaping)));
+
+		return this;
+	}
+
 	@FindBy(xpath = "//button[text()='Process ']")
 	WebElement UserMappingProcess;
 
 	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName, String SubSubProcess,
 			String Stages) {
 		// Adjust timeout as needed
+//		userMappingbutton.click();
 		UserMappingProcess.click();
 		jsClick(AddRow);
 		selectByVisibleText(UMProcessNameDropdown.get(UMProcessNameDropdown.size() - 1), ProcessName);
@@ -916,10 +928,10 @@ public class UserSetupPage extends TestBase {
 		 */
 
 		UMSaveButton.click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-		wait.until(ExpectedConditions.visibilityOf(continueButton));
-		unWait(1);
-		continueButton.click();
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+//		wait.until(ExpectedConditions.visibilityOf(continueButton));
+//		unWait(1);
+//		continueButton.click();
 
 		return this;
 	}
