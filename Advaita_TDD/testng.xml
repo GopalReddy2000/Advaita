@@ -9,9 +9,9 @@
   <test thread-count="1" name="Test">
     <classes>
 
-      <class name="com.advaita.TestClass.FieldToMasterTest">
+      <class name="com.advaita.TestClass.EscalationMatrixTest">
         <methods>
-          <include name="testMasters"/>
+          <include name="searchBox"/>
         </methods>
 
       </class>

@@ -76,7 +76,6 @@ public class UserSetupTest extends TestBase {
 	String Password="Qwerty@123";
 	ExcelUserManagement excelUserManagement;
 	UserSetupTest()
-
 	{
 		super();
 	}
@@ -553,7 +552,7 @@ public class UserSetupTest extends TestBase {
 //		return userData;
 	}
 
-	List<String> evaluationFileds=List.of("Name","Phone","Trans");
+	List<String> evaluationFields =List.of("Name","Phone","Trans");
 
 	@DataProvider(name = "System Names")
 	public Object[][] systemNamesMapping() {
