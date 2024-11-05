@@ -238,6 +238,12 @@ public class Stages extends TestBase {
 
 	@FindBy(xpath = "//label[@id='section_name-error']")
 	public static WebElement sectionNameError;
+	
+	@FindBy(xpath = "(//a/img[@title='Evaluation Fields'])[1]")
+	public static WebElement evalutionFieldButton;
+	
+	@FindBy(xpath = "//button[normalize-space()='Save']")
+	public WebElement saveButton2;
 
 
 	@FindBy(id = "filter_date")
@@ -877,6 +883,19 @@ public class Stages extends TestBase {
 
 		deleteAndConfirmation(stageName);
 
+		return this;
+	}
+	
+	public Stages transIDInEvaluationField() {
+		
+		evalutionFieldButton.click();
+		selectTransIDInEvaluationField(stageEvaluationDropdown, null);
+		actions.moveToElement(saveButton2).perform();
+		saveButton2.click();
+		
+		wait.until(ExpectedConditions.visibilityOf(continueButton));
+		continueButton.click();
+		
 		return this;
 	}
 

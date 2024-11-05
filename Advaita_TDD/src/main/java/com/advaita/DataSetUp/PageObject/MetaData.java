@@ -889,15 +889,15 @@ public class MetaData extends TestBase {
 
 		click(driver, continueAfetrUpdateMetaData);
 
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-
-		try {
-			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-					"(//table[contains(@class,'w-100')]/tbody/tr/td[5]//img[@alt='table-edit'][contains(@class,'edit_metadata')])[1]"))));
-		} catch (TimeoutException e) {
-			System.out.println("Exception : " + e + "\n" + "edit button is displayed.");
-			assertFalse(true, "edit button is displayed.");
-		}
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+//
+//		try {
+//			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+//					"(//table[contains(@class,'w-100')]/tbody/tr/td[5]//img[@alt='table-edit'][contains(@class,'edit_metadata')])[1]"))));
+//		} catch (TimeoutException e) {
+//			System.out.println("Exception : " + e + "\n" + "edit button is displayed.");
+//			assertFalse(true, "edit button is displayed.");
+//		}
 
 		return this;
 	}

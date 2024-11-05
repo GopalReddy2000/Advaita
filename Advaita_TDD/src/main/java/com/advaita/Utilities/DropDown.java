@@ -215,7 +215,6 @@ public class DropDown extends TestBase {
 		System.out.println("Number of options in the dropdown: " + options.size());
 
 		// Check if any option is selected by default
-		Thread.sleep(1000);
 		WebElement defaultSelectedOption = dropDown.getFirstSelectedOption();
 		String expectedDefaultOption = defaultValue; // Replace with expected default value
 
@@ -229,8 +228,9 @@ public class DropDown extends TestBase {
 		}
 
 		// Print all options and check for duplicates
-		unWait(1);
-		wait.until(ExpectedConditions.visibilityOfAllElements(options));
+		unWait(2);
+//		List<WebElement> refreshedOptions = element.findElements(By.tagName("option"));
+//		wait.until(ExpectedConditions.visibilityOfAllElements(options));
 		Set<String> uniqueOptions = new HashSet<>();
 		System.out.println("Dropdown options:");
 		for (WebElement option : options) {
@@ -251,7 +251,7 @@ public class DropDown extends TestBase {
 
 //		wait.until(ExpectedConditions.visibilityOfAllElements(options));
 		// After selecting the option, refetch the list of options
-		List<WebElement> refreshedOptions = element.findElements(By.tagName("option"));
+		List<WebElement> refreshedOptions1 = element.findElements(By.tagName("option"));
 		assertNotNull(visibleText, "visibleText is null");
 		dropDown.selectByVisibleText(visibleText);
 

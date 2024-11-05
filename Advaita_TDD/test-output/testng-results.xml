@@ -1,17 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="8" passed="8" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-10-21T16:40:09 IST" name="Default suite" finished-at="2024-10-21T16:40:30 IST" duration-ms="21093">
+  <suite started-at="2024-10-23T12:45:46 IST" name="Default suite" finished-at="2024-10-23T12:51:54 IST" duration-ms="367985">
     <groups>
     </groups>
-    <test started-at="2024-10-21T16:40:09 IST" name="Default test" finished-at="2024-10-21T16:40:30 IST" duration-ms="21093">
+    <test started-at="2024-10-23T12:45:46 IST" name="Default test" finished-at="2024-10-23T12:51:54 IST" duration-ms="367985">
       <class name="com.advaita.TestCreate.TestReAllocationCreate">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestReAllocationCreate@64a8c844]" started-at="2024-10-21T16:40:09 IST" name="setUp" finished-at="2024-10-21T16:40:16 IST" duration-ms="7073" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:45:46 IST" name="setUp" finished-at="2024-10-23T12:45:53 IST" duration-ms="6853" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyReAllocationCreate()[pri:10, instance:com.advaita.TestCreate.TestReAllocationCreate@64a8c844]" started-at="2024-10-21T16:40:16 IST" name="verifyReAllocationCreate" finished-at="2024-10-21T16:40:30 IST" duration-ms="13936" status="PASS">
+        <test-method signature="verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:45:53 IST" name="verifynewCreateMetaData" finished-at="2024-10-23T12:46:18 IST" duration-ms="24799" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifynewCreateMetaData -->
+        <test-method signature="verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:46:18 IST" name="verifyCreateManualUpload" finished-at="2024-10-23T12:46:40 IST" duration-ms="21640" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateManualUpload -->
+        <test-method signature="verifyCreateNonMeasurable()[pri:5, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:46:40 IST" name="verifyCreateNonMeasurable" finished-at="2024-10-23T12:47:02 IST" duration-ms="21916" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateNonMeasurable -->
+        <test-method signature="verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:02 IST" name="verifyStageCreate" finished-at="2024-10-23T12:47:39 IST" duration-ms="37054" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyStageCreate -->
+        <test-method signature="verifyUserCreateAndUserMapping()[pri:7, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:39 IST" name="verifyUserCreateAndUserMapping" finished-at="2024-10-23T12:47:56 IST" duration-ms="17412" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyUserCreateAndUserMapping -->
+        <test-method signature="verifyCreateSamplingPlan()[pri:8, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:56 IST" name="verifyCreateSamplingPlan" finished-at="2024-10-23T12:48:18 IST" duration-ms="21774" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyCreateSamplingPlan -->
+        <test-method signature="verifyManualAllocationCreate()[pri:9, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:48:18 IST" name="verifyManualAllocationCreate" finished-at="2024-10-23T12:50:50 IST" duration-ms="152132" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyManualAllocationCreate -->
+        <test-method signature="verifyReAllocationCreate()[pri:10, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:50:50 IST" name="verifyReAllocationCreate" finished-at="2024-10-23T12:51:54 IST" duration-ms="64331" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyReAllocationCreate -->

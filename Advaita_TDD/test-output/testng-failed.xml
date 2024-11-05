@@ -5,8 +5,15 @@
     <classes>
       <class name="com.advaita.TestCreate.TestReAllocationCreate">
         <methods>
+          <include name="verifyCreateManualUpload"/>
+          <include name="verifyUserCreateAndUserMapping"/>
           <include name="setUp"/>
+          <include name="verifynewCreateMetaData"/>
+          <include name="verifyCreateNonMeasurable"/>
+          <include name="verifyStageCreate"/>
           <include name="verifyReAllocationCreate"/>
+          <include name="verifyManualAllocationCreate"/>
+          <include name="verifyCreateSamplingPlan"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestReAllocationCreate -->
     </classes>
