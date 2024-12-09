@@ -4,10 +4,10 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.List;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import com.advaita.pageObjects.StagesActions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.*;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
@@ -80,7 +80,8 @@ public class UserSetupTest extends TestBase {
 	{
 		super();
 	}
-	@BeforeMethod
+
+	@BeforeTest
 	public void setUp() throws Exception   {
 
 		initialization();
@@ -499,20 +500,59 @@ public class UserSetupTest extends TestBase {
 
 
 	}
-@Test(dataProvider = "rolePermissionData")
+	@Test(dataProvider = "rolePermissionData")
 	public void testSystemNames(String systemNames)
 	{
 		userSetupPage
 				.editSystemNameWithInvalidInputs(systemNames,"Renamed"+systemNames);
-		
+
 	}
 
+	@Test
+	public void stagesFilter(){
+		userSetupPage.navToUserManagement();
+		userSetupPage.StagesFilter("Mayert Gaylord");
+	}
+	@Test
+	public void testSearchRole(){
+		userSetupPage.navToUserManagement();
+		userSetupPage.searchRole("Admin");
+	}
+
+	@Test
+	public void testSuperiorRole(){
+		userSetupPage.navToUserManagement();
+		userSetupPage.searchRole("Team Lead").superiorName("JamesLead");
+	}
+	@Test
+	public void testStatus(){
+		userSetupPage.navToUserManagement()
+
+				.status("Active");
+	}
+
+	@Test
+	public void testDropdownSearch(){
+		userSetupPage.navToUserManagement().dropdownSearch("Team Lead","JamesLead","Active");
+	}
+
+
+	@Test
+	public void testSearchProcess(){
+		userSetupPage.navToUserManagement().searchProcess("AJP","Sub AJP","Sub Sub AJP","FreshFieldSet Stages");
+
+	}
+
+@Test
+public void textExports(){
+	userSetupPage.navToUserManagement().testExport("das Abhijit@wyzminz.com");
+}
 
 
 	@AfterMethod
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 	}
 
 
@@ -595,6 +635,8 @@ public class UserSetupTest extends TestBase {
 				{" "}
 		};
 	}
+
+
 
 
 }

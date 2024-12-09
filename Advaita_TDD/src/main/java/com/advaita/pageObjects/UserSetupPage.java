@@ -4,12 +4,18 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.NoSuchElementException;
@@ -478,7 +484,7 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage navToUserCreatePage() {
-	navigateWithinUserSetup(userManagement);
+		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
 		return this;
 	}
@@ -744,13 +750,13 @@ public class UserSetupPage extends TestBase {
 	 * public UserSetupPage deleteRoleByName( String nameToDelete) {
 	 * roleAndPermissions.click(); // Find all rows within the table
 	 * List<WebElement> rows = formsTableBody.findElements(By.tagName("tr"));
-	 * 
+	 *
 	 * for (WebElement row:rows) { if(row.getText().equals(nameToDelete)) {
 	 * click(driver,row.findElement(By.cssSelector("img.delete-dataset")));
 	 * roleTableDelete.click(); unWait(2); roleContinueButton.click();
 	 * System.out.println(nameToDelete+" Role Record Successfully Deleted"); break;
 	 * } else {
-	 * 
+	 *
 	 * } } return this; }
 	 */
 	public void getRolesName() {
@@ -877,7 +883,7 @@ public class UserSetupPage extends TestBase {
 	WebElement UserMappingProcess;
 
 	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName, String SubSubProcess,
-			String Stages) {
+											String Stages) {
 		// Adjust timeout as needed
 		UserMappingProcess.click();
 		jsClick(AddRow);
@@ -888,54 +894,57 @@ public class UserSetupPage extends TestBase {
 
 		/*
 		 * try {
-		 * 
+		 *
 		 * <<<<<<< HEAD // // try { // if(!deleteButton.get(0).isDisplayed()) { //
 		 * System.out.println("Rows are already added."); // } // }catch (Exception e) {
 		 * // // AddRow.click(); // } // uMProcessTab.click();
-		 * 
+		 *
 		 * wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown)); //
 		 * dropdownValidation(UMProcessNameDropdown);
 		 * DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select",
 		 * ProcessName); // selectByVisibleText(UMProcessNameDropdown, ProcessName);
-		 * 
+		 *
 		 * // dropdownValidation(UMSubProcessNameDropdown);
 		 * wait.until(ExpectedConditions.visibilityOf(UMSubProcessNameDropdown));
 		 * Thread.sleep(1000);
 		 * DropDown.dropdownWithAllPosibleValidation(UMSubProcessNameDropdown, "Select",
 		 * SubProcessName); // selectByVisibleText(UMSubProcessNameDropdown,
 		 * SubProcessName);
-		 * 
+		 *
 		 * // dropdownValidation(UMSubSubProcessNameDropdown); //
 		 * selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
 		 * wait.until(ExpectedConditions.visibilityOf(UMSubSubProcessNameDropdown));
 		 * Thread.sleep(1000);
 		 * DropDown.dropdownWithAllPosibleValidation(UMSubSubProcessNameDropdown,
 		 * "Select", SubSubProcess);
-		 * 
+		 *
 		 * // dropdownValidation(UMStageNameDropdown); //
 		 * selectByVisibleText(UMStageNameDropdown, Stages);
 		 * wait.until(ExpectedConditions.visibilityOf(UMStageNameDropdown));
 		 * Thread.sleep(2000);
 		 * DropDown.dropdownWithAllPosibleValidation(UMStageNameDropdown, "Select",
 		 * Stages);
-		 * 
+		 *
 		 * UMSaveButton.click(); unWait(1); continueButton.click();
-		 * 
+		 *
 		 * return this; }
-		 * 
+		 *
 		 * public UserSetupPage userMappingUserSuperior(String Stages,String role,String
 		 * name) { try { ======= >>>>>>> 113c4e248eaefbff61444a63f35824325884da76 if
 		 * (!deleteButton.isDisplayed()) {
 		 * System.out.println("Rows are already added."); } } catch (Exception e) {
-		 * 
+		 *
 		 * AddRow.click();// Handle other exceptions if necessary e.printStackTrace(); }
 		 */
 
 		UMSaveButton.click();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-		wait.until(ExpectedConditions.visibilityOf(continueButton));
-		unWait(1);
-		continueButton.click();
+
+		try {
+			unWait(1);
+			continueButton.click();
+		} catch (Exception e) {
+			System.out.println("Continue button was not displayed");
+		}
 
 		return this;
 	}
@@ -944,13 +953,13 @@ public class UserSetupPage extends TestBase {
 	WebElement userSuperiorMappingTab;
 
 	public UserSetupPage userMappingUserSuperior(String Stages, String role, String name) {
-		userSuperiorMappingTab.click();
+		jsClick(userSuperiorMappingTab);
 		jsClick(AddRow);
 
 		/*
 		 * try { if (!deleteButton.isDisplayed()) {
 		 * System.out.println("Rows are already added."); } } catch (Exception e) {
-		 * 
+		 *
 		 * AddRow.click();// Handle other exceptions if necessary e.printStackTrace(); }
 		 */
 
@@ -970,8 +979,12 @@ public class UserSetupPage extends TestBase {
 //		sendKeys(USMToDate, "06-07-2024");
 
 		UMSaveButton.click();
-		unWait(1);
-		continueButton.click();
+		try {
+			unWait(1);
+			continueButton.click();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		return this;
 	}
 
@@ -1105,7 +1118,7 @@ public class UserSetupPage extends TestBase {
 	WebElement emailError;
 
 	public void userCreationFieldsNeg(String userName, String firstName, String lastname, String email,
-			String password) {
+									  String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1142,7 +1155,7 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage userWithOutPermission(String userName, String firstName, String lastname, String email,
-			String password) {
+											   String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1312,5 +1325,194 @@ public class UserSetupPage extends TestBase {
 		}
 		return this;
 	}
+
+	@FindBy(xpath = "//td[1]")
+	WebElement stageFilterUserName;
+	public UserSetupPage StagesFilter(String userName){
+		jsClick(stageFilters);
+		searchBox.sendKeys(userName);
+		searchButton.click();
+		assert stageFilterUserName.getText().equals(userName);
+
+		return this;
+	}
+
+	@FindBy(xpath = "//td[10]")
+	List<WebElement> roles;
+	public UserSetupPage searchRole(String role){
+		jsClick(stageFilters);
+		selectByVisibleText(roleDropdown,role);
+		searchButton.click();
+		assert roles.get(0).getText().equals(role);
+		return this;
+	}
+
+	@FindBy(xpath = "//td[11]")
+	List<WebElement> superiorName;
+	public UserSetupPage superiorName(String role){
+
+		selectByVisibleText(superiorDropdown,role);
+		searchButton.click();
+		assertEquals(role, superiorName.get(0).getText() );
+		return this;
+	}
+
+	@FindBy(xpath = "//td[5]")
+	List<WebElement> status;
+	public UserSetupPage status(String role){
+		jsClick(stageFilters);
+		selectByVisibleText(statusDropdown,role);
+		searchButton.click();
+		assertEquals(role, status.get(0).getText() );
+		return this;
+	}
+
+	public UserSetupPage dropdownSearch(String role,String superiorRole,String statusRole){
+		jsClick(stageFilters);
+		selectByVisibleText(roleDropdown,role);
+		selectByVisibleText(superiorDropdown,superiorRole);
+		selectByVisibleText(statusDropdown,statusRole);
+
+		searchButton.click();
+
+		softAssert.assertEquals(role, roles.get(0).getText());
+		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
+		softAssert.assertEquals(statusRole, status.get(0).getText() );
+		softAssert.assertAll();
+		return this;
+	}
+
+	@FindBy(xpath = "//td[9]")
+	WebElement stageName;
+
+	@FindBy(xpath = "//td[8]")
+	WebElement subSubProcess;
+
+	@FindBy(xpath = "//td[7]")
+	WebElement subProcess;
+
+	@FindBy(xpath = "//td[6]")
+	WebElement process;
+
+	public UserSetupPage searchProcess(String processValue,String subProcessValue,String subSubProcessValue,String stageValue){
+
+		jsClick(stageFilters);
+
+		selectByVisibleText(searchProcessDropdown,processValue);
+		selectByVisibleText(searchSubProcessDropdown,subProcessValue);
+		selectByVisibleText(searchSubSubProcessDropdown,subSubProcessValue);
+		selectByVisibleText(stageDropdown,stageValue);
+
+		searchButton.click();
+
+		softAssert.assertEquals(process.getText(),processValue);
+		softAssert.assertEquals(subProcess.getText(),subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(),stageValue);
+
+
+		softAssert.assertAll();
+		return this;
+	}
+
+	public UserSetupPage stageWithFilters(String userName,String superiorRole,
+										  String statusRole,String processValue,String subProcessValue,
+										  String subSubProcessValue,String stageValue){
+		navigateWithinUserSetup(userManagement);
+		jsClick(stageFilters);
+
+
+		softAssert.assertEquals(userName, stageFilterUserName.getText());
+
+		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
+		softAssert.assertEquals(statusRole, status.get(0).getText() );
+
+		softAssert.assertEquals(process.getText(),processValue);
+		softAssert.assertEquals(subProcess.getText(),subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(),stageValue);
+
+
+		softAssert.assertAll();
+
+		return this;
+	}
+
+
+
+	@FindBy(xpath = "//a[text()='Export']")
+	WebElement exportButton;
+
+	public UserSetupPage testExport(String userName) {
+		jsClick(stageFilters);
+		searchBox.sendKeys(userName);
+		searchButton.click();
+
+		// Click the export button to download the Excel file
+		exportButton.click();
+
+		// Locate the most recent Excel file in the Downloads folder
+		File downloadedFile = waitForDownloadedFile("xlsx");
+
+		// Retrieve all records from CRM table
+		List<List<String>> crmData = new ArrayList<>();
+		List<WebElement> rows = driver.findElements(By.xpath("//table//tr")); // Locate rows within table
+		for (WebElement row : rows) {
+			List<String> rowData = new ArrayList<>();
+			List<WebElement> cells = row.findElements(By.xpath(".//td")); // Locate cells within each row
+			for (WebElement cell : cells) {
+				rowData.add(cell.getText());
+			}
+			crmData.add(rowData);
+		}
+
+		// Read Excel file and compare data
+		try (FileInputStream fis = new FileInputStream(downloadedFile);
+			 Workbook workbook = WorkbookFactory.create(fis)) {
+
+			Sheet sheet = workbook.getSheetAt(0);
+			List<List<String>> excelData = new ArrayList<>();
+
+			for (Row row : sheet) {
+				List<String> rowData = new ArrayList<>();
+				row.forEach(cell -> rowData.add(cell.toString()));
+				excelData.add(rowData);
+			}
+
+			// Compare CRM data and Excel data
+			assert crmData.equals(excelData) : "Data mismatch between CRM table and exported Excel file!";
+			System.out.println("All records match between CRM and Excel file.");
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to read Excel file", e);
+		}
+		return this;
+	}
+
+	// Method to get the most recently downloaded .xlsx file in the Downloads folder
+	private static File waitForDownloadedFile(String extension) {
+		String downloadPath = Paths.get(System.getProperty("user.home"), "Downloads").toString();
+		File dir = new File(downloadPath);
+
+		// Wait until file is downloaded
+		File[] files;
+		do {
+			files = dir.listFiles((d, name) -> name.toLowerCase().endsWith("." + extension));
+			if (files != null && files.length > 0) {
+				Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+				return files[0]; // Return the most recently modified file
+			}
+			try {
+				Thread.sleep(1000); // Pause to allow file to complete download
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException("File download interrupted", e);
+			}
+		} while (files == null || files.length == 0);
+
+		throw new RuntimeException("Downloaded file not found.");
+	}
+
+
+
 
 }

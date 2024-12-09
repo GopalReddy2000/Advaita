@@ -118,9 +118,11 @@ public class TestMetaDataCreate extends TestBase {
 	@Test(dataProvider = "invalidRecordNameData")
 	public void setMetaDataName(String metaDataName,String errorMessage)
 	{
-		metaData.navToMetadataTable()
+		metaData. navToMetadataTable()
 		.metaDataTextBox(metaDataName,errorMessage);
 	}
+
+
 
 	@DataProvider(name = "invalidRecordNameData")
 	public Object[][] invalidRecordNameData() {

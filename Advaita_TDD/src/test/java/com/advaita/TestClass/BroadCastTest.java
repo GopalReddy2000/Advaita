@@ -47,9 +47,9 @@ public class BroadCastTest extends TestBase{
 	@DataProvider(name = "broadcastData")
 	public Object[][] createBroadcastData() {
 		return new Object[][] {
-//			{"Quarterly Performance Review", "Don’t miss the Q2 Performance Review summary in your inbox!","Admin"},
-//			{"Product Launch Announcement", "Exciting news! Our new product launches tomorrow – check it out!","Admin"},
-//			{"Customer Satisfaction Survey", "Help us improve by completing the Customer Satisfaction Survey!","Admin"},
+			{"Quarterly Performance Review", "Don’t miss the Q2 Performance Review summary in your inbox!","Admin"},
+			{"Product Launch Announcement", "Exciting news! Our new product launches tomorrow – check it out!","Admin"},
+			{"Customer Satisfaction Survey", "Help us improve by completing the Customer Satisfaction Survey!","Admin"},
 			{"Weekly Sales Highlights", "Catch up on this week's top sales highlights and achievements!","Admin"},
 			{"Upcoming Training Session", "Reminder: Join our training session on advanced CRM features next week!","Admin"},
 			{"New Feature Release", "Explore the latest CRM feature release now available in your dashboard!","Admin"},
@@ -67,7 +67,6 @@ public class BroadCastTest extends TestBase{
 		bc.getTemplateNames();
 		
 	}
-	
 	@Test(dataProvider = "TemplateNames")
 	public void searchFunctionlity(String Template)
 	{
@@ -125,7 +124,7 @@ public class BroadCastTest extends TestBase{
 	public void tearDown() {
 
 //		driver.manage().window().maximize();
-		driver.quit();
+//		driver.quit();
 	}
 
 

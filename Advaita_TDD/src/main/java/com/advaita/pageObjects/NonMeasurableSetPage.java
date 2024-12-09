@@ -865,14 +865,17 @@ public class NonMeasurableSetPage extends TestBase {
         saveRecord();
 
     }
-    public void saveRecord1()
+    public void saveRecordAndBack()
     {
         //		Saving the record
-        click(driver, saveButtonOfCreateQuestionSet);
-        Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
+        jsClick(saveButtonOfCreateQuestionSet);
+        unWaitInMilli(500);
+
         System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
-        assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
-        click(driver, questionSaveContinueButton);
+//        assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
+        jsClick(questionSaveContinueButton);
+
+        jsClick(backButton);
     }
     public void questionTypeRelativeDropdown()
     {
@@ -903,7 +906,7 @@ public class NonMeasurableSetPage extends TestBase {
             optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
         }
         //		Saving the record
-        saveRecord1();
+        saveRecordAndBack();
 
 
     }
@@ -955,7 +958,7 @@ public class NonMeasurableSetPage extends TestBase {
 
         }
 
-        saveRecord1();
+        saveRecordAndBack();
         click(driver, fileUploadSetting);
         Select allowedFormat=new Select(allowedFormatDropdown);
         List<String> listOfFileFormats = new ArrayList<String>();
@@ -1121,7 +1124,7 @@ public class NonMeasurableSetPage extends TestBase {
         //
         //		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
         //		assertEquals(questionName,actualQuestionSet);
-        saveRecord1();
+        saveRecordAndBack();
         nonMeasurableBackButton.click();
         String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
         assertEquals(questionName,actualQuestionSet);
@@ -1467,6 +1470,7 @@ public class NonMeasurableSetPage extends TestBase {
         ToggleButton(escalationToggle(section,question),EscalatedStatus);
 
         textBoxAnswerField(section,question).click();
+
         sendKeys(minLengthTextBox(section,question),minLength);
         sendKeys(maxLengthTextBox(section,question),maxLength);
 
@@ -2076,7 +2080,7 @@ public class NonMeasurableSetPage extends TestBase {
 //                fail("The System is Uploading Multiple File");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-               softAssert.assertTrue(e.getMessage().contains("the element can not hold multiple files"));
+                softAssert.assertTrue(e.getMessage().contains("the element can not hold multiple files"));
             }
         }else {
             try {

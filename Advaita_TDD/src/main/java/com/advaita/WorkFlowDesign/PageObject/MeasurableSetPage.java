@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static com.advaita.pageObjects.NonMeasurableSetPage.successfullyNonMeasurableUpdatedMassage;
 import static org.testng.Assert.*;
 
 public class MeasurableSetPage extends TestBase {
@@ -841,14 +842,17 @@ public class MeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-	public void saveRecord1()
+	public void saveRecordAndBack()
 	{
 		//		Saving the record
-		click(driver, saveButtonOfCreateQuestionSet);
-		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		System.out.println(successfullymeasurableUpdatedMassage.getText());
-		assertTrue(successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
-		click(driver, questionSaveContinueButton);
+		jsClick(saveButtonOfCreateQuestionSet);
+		unWaitInMilli(1000);
+
+		System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
+		assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been updated successfully") );
+		jsClick(questionSaveContinueButton);
+
+		jsClick(backButton);
 	}
 	public void questionTypeRelativeDropdown()
 	{
@@ -879,7 +883,7 @@ public class MeasurableSetPage extends TestBase {
 			optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
 		}
 		//		Saving the record
-		saveRecord1();
+		saveRecordAndBack();
 
 
 	}
@@ -931,7 +935,7 @@ public class MeasurableSetPage extends TestBase {
 
 		}
 
-		saveRecord1();
+		saveRecordAndBack();
 		click(driver, fileUploadSetting);
 		Select allowedFormat=new Select(allowedFormatDropdown);
 		List<String> listOfFileFormats = new ArrayList<String>();

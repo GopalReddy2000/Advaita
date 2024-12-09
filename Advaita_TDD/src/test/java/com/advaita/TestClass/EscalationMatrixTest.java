@@ -3,21 +3,28 @@ package com.advaita.TestClass;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.pageObjects.EscalationMatrixPage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
 public class EscalationMatrixTest extends TestBase{
+	private static final Logger log = LoggerFactory.getLogger(EscalationMatrixTest.class);
 	LoginPage loginPage;
 	HomePage homePage;
 	EscalationMatrixPage escalationMatrixPage;
 
-	EscalationMatrixTest()
-	{
+	EscalationMatrixTest() throws IOException {
 		super();
 	}
 	@BeforeTest
@@ -77,7 +84,13 @@ public class EscalationMatrixTest extends TestBase{
 
 		}
 	}
-	String stageName="FreshFieldSet Stages";
+
+	String process= PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+	String subProcess= PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+	String subSubProcess= PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+	String stageName= PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+
+	String superAdmin="Capture_admin";
 	String agent="JamesAgent";
 	String lead="JamesLead";
 	String admin="James Admin";
@@ -89,11 +102,9 @@ public class EscalationMatrixTest extends TestBase{
 	@Test
 	public void agencyValidation()
 	{
-
 		escalationMatrixPage.agentAssignment(stageName,agent);
 		loginToUser(lead);
 		escalationMatrixPage.agencyValidation(stageName,accept,agent,accept);
-
 
 	}
 	@Test
@@ -137,7 +148,6 @@ public class EscalationMatrixTest extends TestBase{
 				.validationStatusLocalFilterWithDropdown();
 	}
 
-
 	@Test
 	public void agencyTest()
 	{
@@ -160,28 +170,29 @@ public class EscalationMatrixTest extends TestBase{
 	}
 
 	@Test(invocationCount = 10)
-	public void disposeDatas(){
+	public void disposeData(){
 
 		escalationMatrixPage.disposeData(stageName,agent);
 	}
 
-	@Test(invocationCount = 10)
+	@Test
 	public void endToEndAccept(){
 
-
 		escalationMatrixPage
-//				.escalateRecordEndToEnd(stageName)
+				.escalateRecordEndToEnd(stageName)
 				.agentAssignment(stageName,agent);
-//		loginToUser(lead);
-//		escalationMatrixPage
-//				.agencyValidation(stageName,accept,agent,agent);
-//		loginToUser(admin);
-//		escalationMatrixPage
-//				.agencyValidation(stageName,accept,agent,lead);
-//		escalationMatrixPage
-//				.validationStatusReportFilter(stageName,fromDate,toDate);
+		loginToUser(superAdmin);
+		escalationMatrixPage.
+		loginToUser(lead);
+		escalationMatrixPage
+				.agencyValidation(stageName,accept,agent,agent);
+		loginToUser(admin);
+		escalationMatrixPage
+				.agencyValidation(stageName,accept,agent,lead);
+		escalationMatrixPage
+				.validationStatusReportFilter(stageName,fromDate,toDate);
 
-//		Bug on the order of storing the record.
+//		Bug on the order of storing the record.New records are stored at the last.
 
 
 	}
@@ -193,16 +204,13 @@ public class EscalationMatrixTest extends TestBase{
 				.agentAssignment(stageName,agent);
 		loginToUser(lead);
 		escalationMatrixPage
-				.agencyValidation(stageName,reject,agent,agent)
-
-		;
+				.agencyValidation(stageName,reject,agent,agent);
 		loginToUser(agent);
 		escalationMatrixPage.rejectedAuditForm(stageName,agent,lead);
-
 	}
 
 
-	@Test
+	@Test(invocationCount = 10)
 	public void endToEndAdminReject(){
 
 		escalationMatrixPage
@@ -219,11 +227,7 @@ public class EscalationMatrixTest extends TestBase{
 		loginToUser(agent);
 		escalationMatrixPage.rejectedAuditForm(stageName,agent,admin);
 
-
-
-
 	}
-
 
 //	Negative Test
 
@@ -271,6 +275,31 @@ public class EscalationMatrixTest extends TestBase{
 //				.escalateRecordEndToEnd()
 				.navigateToValidationStatusReport("JamesAgent","Bhuvana Qset Stage","Reviewed","James@gmail.com")
 		;
+	}
+
+
+	@Test
+	public void transActionReport(){
+		escalationMatrixPage.transActionReport(process,subProcess,subSubProcess,stageName,fromDate,toDate);
+
+	}
+
+	@Test
+	public void transItemsPerPage(){
+		navigateWithinAlchemy(EscalationMatrixPage.transActionReport);
+		escalationMatrixPage
+				.transActionReport(process,subProcess,subSubProcess,stageName,fromDate,toDate)
+				.validateRecordsPerPage()
+				;
+	}
+
+	@Test
+	public void transLocalFilter(){
+
+		navigateWithinAlchemy(EscalationMatrixPage.transActionReport);
+		escalationMatrixPage
+				.transActionReport(process,subProcess,subSubProcess,stageName,fromDate,toDate)
+				.validationStatusLocalFilterWithDropdown();
 	}
 
 

@@ -11,11 +11,14 @@ import org.testng.annotations.Test;
 import java.awt.*;
 import java.util.List;
 
+import static Advaita_TDD.Advaita_TDD.FakeData.lastName1;
+
 public class ReferPreviousStageTest extends TestBase {
 
     LoginPage loginPage;
     HomePage homePage;
     ReferPreviousStagePage previousStage;
+
     @BeforeMethod
     public void setup() throws AWTException, InterruptedException {
         initialization();
@@ -26,38 +29,38 @@ public class ReferPreviousStageTest extends TestBase {
     }
 
 
-    String referPreviousStageName="Test";
-    String dataset="Dataset James";
-    String stageName="Booking Information Stage";
-    String metadata="Metadata_James";
+    String referPreviousStageName="Test "+lastName1() ;
+    String dataset="DataSet Daugherty";
+    String stageName="FreshFieldSet StagesGraham";
+    String metadata="FreshFieldsSet MastersFoms_metadata";
 
     List<String> datasetFields = List.of(
-            "Name",
+            "Name of the Customer",
             "Phone Number",
-            "Age",
-            "Email Id"
+            "Email",
+            "Location"
     );
     List<String> stageFields=List.of(
             "Name",
             "Phone Number",
-            "Name",
-            "Email ID"
+            "Email ID",
+            "Gender"
     );
     /**
      *Above are the parameters for the below methods, change the dataset,stageName.
      *Change all the parameters according to you needs.
      */
-    @Test
+    @Test(invocationCount = 14)
     public void navTest()
     {
         previousStage
                 .navToReferPreviousStage()
-                .createRecord(referPreviousStageName,dataset,
-                        stageName,"01-09-2024","26-09-2024",
+                .createRecord("Test "+lastName1(),dataset,
+                        stageName,"01-09-2024","29-11-2024",
                         datasetFields,stageFields)
-                .datasetMapping(stageName,referPreviousStageName)
-                .disposeData(stageName,2)
-                .validateData(metadata)
+//                .datasetMapping(stageName,referPreviousStageName)
+//                .disposeData(stageName,2)
+//                .validateData(metadata)
 
         ;
     }

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.sun.jna.WString;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
@@ -51,6 +52,28 @@ public class DataSet extends TestBase {
 
 	@FindBy(xpath = "//input[@name='form-0-dataset_fieldname']")
 	public WebElement fieldNameField;
+
+
+	@FindBy(xpath = "//input[contains(@id,'dataset_fieldname') and not(contains(@id,'prefix'))]")
+	public List<WebElement> fieldNameFields;
+
+	@FindBy(xpath = "//input[contains(@id,'ds_field_label') and not(contains(@id,'prefix'))]")
+	public List<WebElement> labelFieldNames;
+
+	@FindBy(xpath = "//select[contains(@id,'ds_field_type') and not(contains(@id,'prefix'))]")
+	public List<WebElement> fieldTypes;
+
+	@FindBy(xpath = "//textarea[contains(@id,'ds_field_value') and not(contains(@id,'prefix'))]")
+	public List<WebElement> maxLengthFields;
+
+	@FindBy(xpath = "//select[contains(@id,'ds_is_mandatory') and not(contains(@id,'prefix'))]")
+	public List<WebElement> isMandatoryDropdown;
+
+	@FindBy(xpath = "//a[@id='add_more']")
+	public WebElement addRow;
+
+	@FindBy(id = "create_btn")
+	public WebElement create;
 
 	@FindBy(xpath = "//input[@id='id_form-0-ds_field_label']")
 	public WebElement labelField;
@@ -116,6 +139,9 @@ public class DataSet extends TestBase {
 
 	@FindBy(xpath = "(//img[@alt='delete-icon'])[4]")
 	public WebElement deleteButton;
+
+	@FindBy(xpath = "//tr[not(@id='empty_form')]//img[@alt='delete-icon']")
+	public List<WebElement> deleteButtons;
 
 	@FindBy(id = "create_btn")
 	public WebElement dataSetCreateButton;
@@ -230,6 +256,8 @@ public class DataSet extends TestBase {
 		dropDown1.click();
 		Thread.sleep(1000);
 		dropDown2.isDisplayed();
+
+
 		dropDown2.click();
 		Thread.sleep(1000);
 
@@ -489,7 +517,7 @@ public class DataSet extends TestBase {
 				.getText();
 
 		String subSubProcesText = driver.findElement(By
-				.xpath("//h3[normalize-space()='Sub Sub Process']/..//h3[@class='process-first ss_process_name_data']"))
+						.xpath("//h3[normalize-space()='Sub Sub Process']/..//h3[@class='process-first ss_process_name_data']"))
 				.getText();
 
 		System.out.println("createdDataSet : " + createdDataSet + "\n" + procesText + "\n" + subProcesText + "\n"
@@ -607,7 +635,7 @@ public class DataSet extends TestBase {
 	}
 
 	public DataSet fecthProcess_SubProces_SubSubProcess() throws Throwable {
-		
+
 		hp.clickOnProcessManagementCreate();
 
 		dropDown1.isDisplayed();
@@ -616,17 +644,17 @@ public class DataSet extends TestBase {
 		dropDown2.isDisplayed();
 		dropDown2.click();
 		Thread.sleep(1000);
-		
+
 		PropertieFileUtil.storeSingleTextInPropertiesFile("process", fetchProcess.getText());
 		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", fetchsubProcess.getText());
 		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", fetchsubSubProcess.getText());
-		
-		
-		
+
+
+
 		System.out.println("Process : " + fetchProcess.getText() + "\n"
 				+ "Sub Process : " + fetchsubProcess.getText() + "\n"
 				+ "Sub Sub Process : " + fetchsubSubProcess.getText());
-		
+
 		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("Process") + "\n"
 				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
 				+ "Data Set Sub Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subSubprocess"));
@@ -639,6 +667,147 @@ public class DataSet extends TestBase {
 //		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subProcess);
 //		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", subSubProcess);
 
+		return this;
+	}
+
+	public DataSet navToDataset(){
+		dataSetup.click();
+		dataSetTab.click();
+
+		return this;
+	}
+
+	public DataSet createDatasetButton(){
+		jsClick(createDataSetButton);
+		return this;
+	}
+
+	public DataSet datasetNameField(String datasetName ){
+		sendKeys(dataSetNameField,datasetName);
+		return this;
+	}
+	public DataSet processDropdown(String process){
+		selectByVisibleText(processDropDown,process);
+		return this;
+	}
+
+	public DataSet subProcessDropdown(String subProcess){
+		selectByVisibleText(subProcessDropDown,subProcess);
+		return this;
+	}
+
+	public DataSet subSubProcessDropdown(String subSubProcess){
+		selectByVisibleText(subSubProcessDropDown,subSubProcess);
+		return this;
+	}
+
+	public DataSet deleteAllFields(){
+		clickMultipleTimes(deleteButtons.get(0),deleteButtons.size());
+		return this;
+	}
+
+	@FindBy (id = "dataset_name-error")
+	WebElement datasetError;
+
+	@FindBy (id = "process-error")
+	WebElement processError;
+
+	@FindBy (id = "sub_process-error")
+	WebElement subProcessError;
+
+	@FindBy (id = "s_sub_process-error")
+	WebElement subSubProcessError;
+
+
+
+
+	public DataSet createDataset(String datasetName,String process,String subProcess,String subSubProcess){
+		dataSetup.click();
+		dataSetTab.click();
+		createDataSetButton.click();
+		dataSetNameField.sendKeys(datasetName);
+
+		selectByVisibleText(processDropDown,process);
+		selectByVisibleText(subProcessDropDown,subProcess);
+		selectByVisibleText(subSubProcessDropDown,subSubProcess);
+
+		return this;
+	}
+
+	public void selectByValue(WebElement element,String value){
+
+		Select select=new Select(element);
+		select.selectByValue(value);
+	}
+
+	public DataSet fieldNameInput(int fieldNameNumber, String fieldName){
+		sendKeys(fieldNameFields.get(fieldNameNumber),fieldName);
+		return this;
+	}
+
+	public DataSet labelNameInput(int fieldNameNumber, String fieldName){
+		sendKeys(labelFieldNames.get(fieldNameNumber),fieldName);
+		return this;
+	}
+
+	public DataSet type(int fieldNameNumber,String fieldType){
+		selectByVisibleText(fieldTypes.get(fieldNameNumber),fieldType);
+		return this;
+	}
+
+	public DataSet maxLengthFields(int fieldNameNumber,String maxLength){
+		selectByVisibleText(maxLengthFields.get(fieldNameNumber),maxLength);
+		return this;
+	}
+
+	public DataSet isMandatory(int fieldNameNumber,String isMandatoryValue){
+		selectByValue(isMandatoryDropdown.get(fieldNameNumber),isMandatoryValue);
+		return this;
+	}
+
+	public boolean datasetError(String  dataSetError){
+
+		return datasetError.isDisplayed()&& datasetError.getText().equals(dataSetError);
+	}
+
+	public boolean processError(){
+
+		return processError.isDisplayed();
+	}
+
+	public boolean subProcessError(){
+
+		return subProcessError.isDisplayed();
+	}
+
+	public boolean subSubProcessError(){
+
+		return subSubProcessError.isDisplayed();
+	}
+
+
+	public DataSet addFieldNames(int fieldNameNumber, String fieldName,String fieldType,String maxLength,String isMandatoryValue){
+		fieldNameFields.get(fieldNameNumber).sendKeys(fieldName);
+		labelFieldNames.get(fieldNameNumber).sendKeys(fieldName);
+		selectByVisibleText(fieldTypes.get(fieldNameNumber),fieldType);
+		maxLengthFields.get(fieldNameNumber).sendKeys(maxLength);
+		selectByValue(isMandatoryDropdown.get(fieldNameNumber),isMandatoryValue);
+
+		return this;
+	}
+
+	public DataSet addRow(){
+		jsClick(addRow);
+		return this;
+	}
+	public  DataSet recordCreateButton(){
+		jsClick(create);
+		return this;
+	}
+	public DataSet datasetCreate(){
+		create.click();
+		unWaitInMilli(500);
+		continueButton.click();
 		return this;
 	}
 
@@ -661,7 +830,7 @@ public class DataSet extends TestBase {
 	}
 
 	public void verifyDataSetNameField(String dataSetName) throws Throwable {
-		
+
 		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("process") + "\n"
 				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
 				+ "Data Set Sub Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess"));
@@ -675,6 +844,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetNameField.isEnabled(), "dataSetNameField is not enabled.");
 
 		String existingText = dataSetNameField.getAttribute("value");
+		assert existingText != null;
 		assertTrue(existingText.isEmpty(), "dataSetNameField is not empty before entering text.");
 
 		assertNotNull(dataSetName, "dataSetName is null.");
@@ -845,9 +1015,13 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
-//	DataSet
+	@FindBy(xpath = "//h2[text()='Create Dataset']/following-sibling::span")
+	WebElement close;
 
-
+	public DataSet close(){
+		jsClick(close);
+		return this;
+	}
 
 
 }

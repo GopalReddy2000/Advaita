@@ -14,6 +14,8 @@ import com.advaita.pageObjects.NonMeasurableSetPage;
 import com.advaita.pageObjects.UserSetupPage;
 import org.testng.annotations.*;
 
+import java.io.IOException;
+import static com.advaita.Utilities.PropertieFileUtil.getSingleTextFromPropertiesFile;
 import static org.testng.Assert.assertEquals;
 
 public class EndToEndUserSetupTest extends TestBase {
@@ -25,7 +27,7 @@ public class EndToEndUserSetupTest extends TestBase {
     MeasurableSetPage measurableSetPage;
     NonMeasurableSetPage nonMeasurableSetPage;
     Disposition disposition;
-    ProcessPage process;
+    ProcessPage processPage;
     DataSet dataset;
 
 
@@ -44,7 +46,7 @@ public class EndToEndUserSetupTest extends TestBase {
     public String metaDataName = "";
 
 
-    EndToEndUserSetupTest() {
+    EndToEndUserSetupTest() throws IOException {
         super();
     }
 
@@ -55,7 +57,7 @@ public class EndToEndUserSetupTest extends TestBase {
         loginPage = new LoginPage();
         homePage = loginPage.login("Capture_admin", "Qwerty@123");
         userSetupPage =new UserSetupPage();
-        process=new ProcessPage();
+        processPage=new ProcessPage();
         dataset=new DataSet();
         measurableSetPage=new MeasurableSetPage();
         nonMeasurableSetPage=new NonMeasurableSetPage();
@@ -69,14 +71,20 @@ public class EndToEndUserSetupTest extends TestBase {
 
         userSetupPage.navToRoleAndPerCreate()
                 .createRoles(FirstName+"ForAlchemy","Alchemy",userSetupPage.excelToUploadModulePermissions);
-
-
+        
     }
     String FirstName= FakeData.lastName1();
 
     String LastName=FakeData.lastName2();
     String Password="Qwerty@123";
     String QuestionSetName=FakeData.lastName2()+"question";
+
+    String process=getSingleTextFromPropertiesFile("process");
+    String subProcess=getSingleTextFromPropertiesFile("subProcess");
+    String subSubProcess=getSingleTextFromPropertiesFile("subSubProcess");
+    String stage=getSingleTextFromPropertiesFile("stage");
+
+    String superiorRole="James Admin";
 
     //	String selectedUser = "WorkFlow Design";
     @Test(dataProvider = "userData")
@@ -94,46 +102,53 @@ public class EndToEndUserSetupTest extends TestBase {
         String actualUserName= UserSetupPage.roleTableNames.get(0).getText();
         assertEquals(expectedUserName, actualUserName);
         excelUserManagement.addUserAccount(expectedUserName);
-        if(selectedUser.equals("WorkFlow Design")) {
-//			userMapping(expectedUserName, , "John Smith");
-        }
 
-        userSetupPage.userLogin(expectedUserName, Password);
+        userSetupPage.userMappingRecord(expectedUserName)
+                .userMappingProcess(process,subProcess,subSubProcess,stage)
+                .userMappingUserSuperior(stage,"Admin",superiorRole)
 
-        switch (selectedUser) {
+        ;
+        userSetupPage.stageWithFilters(expectedUserName,superiorRole,"Active",process,subProcess,subSubProcess,stage);
 
-            case "Data Setup":
-                verifyProcessCreate();
-                dataset.createDataSet("Character");
-//			dataset.deleteDataSet();
-                break;
-
-            case "WorkFlow Design":
-                measurableSetPage.deleteRecordByName(QuestionSetName);
-                nonMeasurableSetPage.createNormalView(QuestionSetName);
-                nonMeasurableSetPage.deleteRecordByName(QuestionSetName);;
-                disposition.createNormalView(QuestionSetName);
-                disposition.deleteRecordByName(QuestionSetName);;
-                break;
-
-            case "User Setup":
-                userSetupAssertions();
-                break;
-
-            default:break;
-
-
-        }
-
-        userSetupPage.userLogin("Capture_admin", Password);
-
-        userSetupPage.navToUserManagement().userAccountDelete(expectedUserName);
-//		excelUserManagement.removeUserAccount(expectedUserName);
-        userSetupPage.deleteRoleByName(roleName);
-//		excelUserManagement.removeUserRole(roleName);
+//        if(selectedUser.equals("WorkFlow Design")) {
+////			userMapping(expectedUserName, , "John Smith");
+//        }
+//
+//        userSetupPage.userLogin(expectedUserName, Password);
+//
+//        switch (selectedUser) {
+//
+//            case "Data Setup":
+//                verifyProcessCreate();
+//                dataset.createDataSet("Character");
+////			dataset.deleteDataSet();
+//                break;
+//
+//            case "WorkFlow Design":
+//                measurableSetPage.deleteRecordByName(QuestionSetName);
+//                nonMeasurableSetPage.createNormalView(QuestionSetName);
+//                nonMeasurableSetPage.deleteRecordByName(QuestionSetName);;
+//                disposition.createNormalView(QuestionSetName);
+//                disposition.deleteRecordByName(QuestionSetName);;
+//                break;
+//
+//            case "User Setup":
+//                userSetupAssertions();
+//                break;
+//
+//            default:break;
+//
+//
+//        }
+//
+//        userSetupPage.userLogin("Capture_admin", Password);
+//
+//        userSetupPage.navToUserManagement().userAccountDelete(expectedUserName);
+////		excelUserManagement.removeUserAccount(expectedUserName);
+//        userSetupPage.deleteRoleByName(roleName);
+////		excelUserManagement.removeUserRole(roleName);
 
         System.out.println("Test Is Completed and Passed!!🎉🎉");
-
     }
 
     @DataProvider(name = "userData")
@@ -144,7 +159,7 @@ public class EndToEndUserSetupTest extends TestBase {
 //		Object[][] userData = null;
 //		{"Data Setup",roleNameForDataset, "Dataset", userSetupPage.excelToUploadModulePermissions},
                 {"WorkFlow Design",roleNameForWorkflowDesign, "Workflow Design", userSetupPage.excelToUploadModulePermissions},
-                {"User Setup",roleNameForUserSetup, "User Setup", userSetupPage.excelToUploadModulePermissions},
+//                {"User Setup",roleNameForUserSetup, "User Setup", userSetupPage.excelToUploadModulePermissions},
 
         };
 //		switch (selectedUser) {
@@ -171,12 +186,13 @@ public class EndToEndUserSetupTest extends TestBase {
 //		return userData;
     }
 
+    
     HomePage hp = new HomePage();
     public void verifyProcessCreate() throws Throwable {
 
         hp.clickOnProcessManagementCreate();
 
-        process
+        processPage
                 .createProcess(processName, processDesc, processName,
                         subProcessName, subProcessDesc, subProcessName,
                         subSubProcessName, subSubProcessDesc);

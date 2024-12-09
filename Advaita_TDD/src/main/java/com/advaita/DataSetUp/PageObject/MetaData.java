@@ -79,6 +79,9 @@ public class MetaData extends TestBase {
 	@FindBy(id = "metadata_name")
 	public WebElement metaDataNameField;
 
+	@FindBy(id = "create_btn")
+	public WebElement create;
+
 	@FindBy(xpath = "//button[@class='quantity-right-plus btn counter-btn btn-number']")
 	public WebElement addPlusColumn;
 
@@ -1157,6 +1160,97 @@ public class MetaData extends TestBase {
 		String actualError = driver.findElement(errorMessage).getText();
 		Assert.assertEquals(actualError, expectedError, "Security vulnerability detected.");
 	}
+
+	@FindBy(xpath = "//button[normalize-space()='Execute']")
+	WebElement execute;
+
+	@FindBy(xpath = "//table[@class='w-100']//tr[1]//td[1]")
+	WebElement metaDataRecordName;
+
+	public MetaData metaDataCreate(String metaDataName,String process,String subProcess,String subSubProcess,String dataSetValue){
+		dataSetup.click();
+		metaDataTab.click();
+		createMetaDataButton.click();
+
+
+		sendKeys(metaDataNameField,metaDataName);
+		selectByVisibleText(selectProcessDropDown,process);
+		selectByVisibleText(selectSubProcessDropDown,subProcess);
+		selectByVisibleText(selectSubSubProcessDropDown,subSubProcess);
+		selectByVisibleText(selectDataSetDropDown,dataSetValue);
+
+		create.click();
+		unWaitInMilli(1000);
+		continueButton.click();
+
+		metaDataRecordName.click();
+
+		clickOnTransUniqueId("Trans_Unique_Id");
+
+		jsClick(saveButtonInUpadteMetaData);
+		unWaitInMilli(500);
+		continueButton.click();
+		return this;
+	}
+
+	public MetaData clickOnTransUniqueId(String usernameToDoAction){
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody[@class='view_all_colmns']//tr"));
+
+		for (WebElement row : rows) {
+
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			try {
+				if (usernameToDoAction.equals(usernameColumn.getText())) {
+
+					WebElement deleteButton = row.findElement(By.xpath(".//input[@type='checkbox']"));
+					jsClick(deleteButton);
+					System.out.println(usernameToDoAction + " Successfully Clicked");
+					break;
+
+				}else {
+					System.out.println(usernameToDoAction+" Is not Found");
+				}
+			}catch (NoSuchElementException e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+
+
+		return this;
+	}
+
+	public MetaData execute(String usernameToDoAction){
+		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+		for (WebElement row : rows) {
+
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			try {
+				if (usernameToDoAction.equals(usernameColumn.getText())) {
+
+					WebElement deleteButton = row.findElement(By.xpath(".//img[contains(@class,'edit_metadata')]"));
+					jsClick(deleteButton);
+					System.out.println(usernameToDoAction + " Successfully Clicked");
+					break;
+
+				}else {
+					System.out.println(usernameToDoAction+" Is not Found");
+				}
+			}catch (NoSuchElementException e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+		execute.click();
+		unWaitInMilli(500);
+		continueButton.click();
+
+		return this;
+	}
+
+
+
 
 
 }
