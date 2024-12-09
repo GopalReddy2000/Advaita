@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -74,8 +75,23 @@ public class ManualUpload extends TestBase {
 	@FindBy(xpath = "//span[normalize-space()='Manual Data has been created successfully']")
 	public WebElement confirmationAfterCreatedManualUpload;
 
-	@FindBy(xpath = "//span[text()='Total Records :']/following-sibling::span[1]")
+	@FindBy(id = "id_upload_name-error")
+	public WebElement nameFieldError;
+
+	@FindBy(id = "change_error_msg")
+	public WebElement errorMessagePop;
+
+	@FindBy(xpath = "//h2[text()='Create Manual Upload']/following-sibling::span")
+	public WebElement close;
+
+@FindBy(xpath = "//span[text()='Total Records :']/following-sibling::span[1]")
 	public WebElement noOfUploadedRecord;
+
+	@FindBy(xpath = "//span[text()='Data Setup']")
+	public WebElement dataSetup;
+
+	@FindBy(xpath = "//button[text()='Data Upload']")
+	public WebElement dataUpload;
 
 	public ManualUpload() {
 
@@ -147,7 +163,7 @@ public class ManualUpload extends TestBase {
 	}
 
 	public ManualUpload formatDownloadAndUpdateAndUpload(ArrayList<String> filteredItems,
-			List<Map<String, String>> generatedQuestions, int noOfQuestionsInExcel) throws Throwable {
+														 List<Map<String, String>> generatedQuestions, int noOfQuestionsInExcel) throws Throwable {
 
 		click(driver, exportSampleFormatButton);
 
@@ -229,7 +245,6 @@ public class ManualUpload extends TestBase {
 				}
 			}
 		}
-
 		fis.close();
 
 		FileOutputStream fos = new FileOutputStream(downloadedFile);
@@ -294,5 +309,106 @@ public class ManualUpload extends TestBase {
 
 		return this;
 	}
+
+	public static void sendKeysWithParams( WebElement element, String text) {
+		js.executeScript("arguments[0].value = arguments[1];", element, text);
+	}
+
+	public ManualUpload manualUploadRecord(String recordName,String dataSet,
+										   String uploadFile,String remarks,
+										   String fileName,String sheetName){
+
+
+		dataSetup.click();
+		dataUpload.click();
+		manualUploadTab.click();
+
+		createManualUploadButton.click();
+
+		nameField.sendKeys(recordName);
+		selectByVisibleText(dataSetDropdown,dataSet);
+
+		uploadElement.sendKeys(uploadFile);
+		uploadRemarkField.sendKeys(remarks);
+//		fileNameField.sendKeys(fileName);
+		sendKeysWithParams(fileNameField,fileName);
+		sheetNameField.sendKeys(sheetName);
+
+		createButton.click();
+		unWaitInMilli(500);
+		continueButton.click();
+
+		return this;
+	}
+
+	public ManualUpload navToManualUpload(){
+		dataSetup.click();
+		dataUpload.click();
+		manualUploadTab.click();
+		return this;
+	}
+
+	public ManualUpload create(){
+		createManualUploadButton.click();
+		return this;
+	}
+
+	public ManualUpload name(String fileName){
+		sendKeys(nameField,fileName);
+		return this;
+	}
+
+	public ManualUpload datasetDropdown(String datasetName){
+		selectByVisibleText(dataSetDropdown,datasetName);
+		return this;
+	}
+
+	public ManualUpload exportSampleFormat(){
+		exportSampleFormatButton.click();
+		return this;
+	}
+
+	public ManualUpload uploadSheet(String uploadFile){
+		sendKeys(uploadElement,uploadFile);
+		return this;
+	}
+
+	public ManualUpload remarksField(String uploadRemarks){
+		sendKeys(uploadRemarkField,uploadRemarks);
+		return this;
+	}
+
+	public ManualUpload fileName(String filename){
+		sendKeysWithParams(fileNameField,filename);
+		return this;
+	}
+	public ManualUpload sheetName(String sheetname){
+		sendKeysWithParams(sheetNameField,sheetname);
+		return this;
+	}
+
+	public ManualUpload recordCreate(){
+		createButton.click();
+		return this;
+	}
+
+	public boolean nameError(String errorMessage){
+		try {
+			return nameFieldError.isDisplayed() && nameFieldError.getText().equals(errorMessage);
+		}catch (NoSuchElementException e){
+			System.out.println("No Error Message Displayed as: "+errorMessage);
+			return false;
+		}
+	}
+
+	public WebElement errorDialogBox(){
+		return errorMessagePop;
+	}
+
+	public ManualUpload closeDialogBox(){
+		jsClick(close);
+		return this;
+	}
+
 
 }

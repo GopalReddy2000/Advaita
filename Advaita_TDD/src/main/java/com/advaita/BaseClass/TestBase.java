@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
+import com.advaita.pageObjects.EmailTemplatePage;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +26,9 @@ import com.advaita.Login.Home.LoginPage;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class TestBase {
 
@@ -65,13 +69,13 @@ public class TestBase {
 		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
 		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
-
-		driver = new ChromeDriver(options);
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(25));
-
+		if(driver==null) {
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().deleteAllCookies();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			wait = new WebDriverWait(driver, Duration.ofSeconds(25));
+		}
 
 
 //		driver = new ChromeDriver(options);
@@ -242,12 +246,11 @@ public class TestBase {
 
 	}
 
-	@FindBy(id = "menulist1")
+	@FindBy(xpath = "//a[@id='menulist1']")
 	WebElement userSetup;
 
 	public void navigateWithinUserSetup(WebElement element) {
 		try {
-			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			jsClick(userSetup);
@@ -294,6 +297,53 @@ public class TestBase {
 		}
 
 	}
+
+
+	public void dropdownUtil(WebElement dropdownElement, String expectedOption)
+	{
+		Select dropdown=new Select(dropdownElement);
+        assertFalse(dropdown.isMultiple());
+		try {
+			List<WebElement> options = dropdown.getOptions();
+
+			// Check if options list is empty or contains only one placeholder option
+			if (options.isEmpty() || (options.size() == 1 && options.get(0).getText().isEmpty())) {
+				throw new AssertionError("Dropdown is empty or contains only a placeholder option.");
+			} else {
+				System.out.println("Dropdown contains options.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AssertionError("Error validating dropdown options.", e);
+		}
+
+		//		Verify the dropdown contains the expected options.
+
+		try {
+			// Get all options from the dropdown
+			List<WebElement> options = dropdown.getOptions();
+
+			// Create a list to hold the actual options text
+			List<String> actualOptions = new ArrayList<>();
+			for (WebElement option : options) {
+				actualOptions.add(option.getText());
+			}
+
+			// Check if each expected option is present in the actual options
+
+			if (!actualOptions.contains(expectedOption)) {
+				throw new AssertionError("Dropdown does not contain expected option: " + expectedOption);
+			}
+
+			System.out.println("Dropdown contains all expected options.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new AssertionError("Error validating dropdown options.", e);
+		}
+
+
+	}
+
 
 	public static void click1(WebDriver driver, WebElement element) {
 		try {

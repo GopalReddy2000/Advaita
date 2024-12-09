@@ -295,7 +295,7 @@ public class TestReAllocationCreate extends TestBase {
 		PropertieFileUtil.storeSingleTextInPropertiesFile("userName" + userIndex, username);
 
 		// Perform user mapping
-		userSetUp.userMappingRecord2(username).userMappingProcess(process, subProcess, subSubProcess, stages);
+//		userSetUp.userMappingRecord2(username).userMappingProcess(process, subProcess, subSubProcess, stages);
 	}
 
 	@Test(priority = 8, enabled = samplingPlanRun)

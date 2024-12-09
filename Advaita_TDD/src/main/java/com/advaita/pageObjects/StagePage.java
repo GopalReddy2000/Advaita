@@ -656,7 +656,6 @@ public class StagePage extends TestBase{
 
 	}
 
-	
 
 	public void editStageNavigation()
 	{
@@ -666,13 +665,9 @@ public class StagePage extends TestBase{
 
 		click(driver, tablePages.get(randomPageIndex));
 
-
 		int randomIndex = getRandomIndex(editButtons);
 
 		click(driver, editButtons.get(randomIndex));
-
-
-
 
 	}
 
@@ -729,7 +724,6 @@ public class StagePage extends TestBase{
 		Assert.assertEquals(expectedStrings, ActualStrings);
 
 
-
 		jsClick(sectionAEditButton);
 		Select sectionAMetaData = new Select(sectionAMetaDataDropDown);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
@@ -768,7 +762,6 @@ public class StagePage extends TestBase{
 		}
 
 
-
 		//		Section B
 		jsClick(sectionBEditButton1);
 
@@ -776,7 +769,6 @@ public class StagePage extends TestBase{
 		Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
 		selectDropdownOption(sectionBMetaData1, "PVSL_Capture Customer Info_metadata");
 		SelectedSecBMetaData=sectionBMetaData1.getFirstSelectedOption().getText();
-
 
 		clickCheckBoxes(sectionBMetaDataCheckBoxes);
 		jsClick(sectionBMetaDataAdd);
@@ -789,7 +781,6 @@ public class StagePage extends TestBase{
 			SelectedCheckBoxesDisplayedInB1.add(sectionB1DisplayedCheckBox.get(a).getText());
 			System.out.println("Section B Block CheckedBoxes: "+(a+1)+sectionB1DisplayedCheckBox.get(a).getText());
 		}
-
 
 		//		Section B Block 2
 		jsClick(sectionBEditButton2);
@@ -822,7 +813,6 @@ public class StagePage extends TestBase{
 		 * disposition();
 		 */
 
-
 		//		editSave.click();
 		//		wait.until(ExpectedConditions.visibilityOf(editSuccessContinue));
 		//		editSuccessContinue.click();
@@ -831,10 +821,6 @@ public class StagePage extends TestBase{
 		//
 		//		assertEquals(listOfDataSet.get( randomIndex).getText(), renaming);
 		//		
-
-
-
-
 
 
 	}
@@ -859,16 +845,12 @@ public class StagePage extends TestBase{
 			}
 		}
 
-
-
-
 	}
 
 	public void secPreferences()
 	{
 		CommonNavigation();
 		click(driver, editButtons.get(0));
-
 
 		toggleToggleButton(ToggleBtnAState,secAActToggleBtn,"Section A");
 
@@ -887,13 +869,7 @@ public class StagePage extends TestBase{
 		sectionDropdown(sectionCDropDown,"selectedDropdownSectionC");
 		SelectedSectionCDropdownInPreferences=sectionCDropDown.getFirstSelectedOption().getText();
 
-
-
-
-
 	}
-
-	
 
 
 	public void disposition()
@@ -944,14 +920,8 @@ public class StagePage extends TestBase{
 					selectDropdownOptionByIndex(ManualOutsideStages, getRandomIndex(ManualOutsideStages.getOptions()));
 					SelectedManualOutsideStages=ManualOutsideStages.getFirstSelectedOption().getText();
 					
-						
-					
 				}
-				
-
-
 			}
-
 
 		}else {
 			//		Modifying to Auto if Manual Selected
@@ -985,15 +955,12 @@ public class StagePage extends TestBase{
 				Select autoOutsideStagesDropdown=new Select(dispositionAutoOutsideStagesDropdown);
 				selectDropdownOptionByIndex(autoOutsideStagesDropdown, getRandomIndex(autoOutsideStagesDropdown.getOptions()));
 				selectedAutoOutsideStagesDropdown=autoOutsideStagesDropdown.getFirstSelectedOption().getText();
-				
-				
+
 			}
 			
 		}
 
 	}
-
-
 
 	public void editSectionAAndB()
 	{
@@ -1014,12 +981,9 @@ public class StagePage extends TestBase{
 			System.out.println(metaData.getText());
 		}
 
-
 		softAssert.assertAll();
 
 	}
-
-
 
 
 

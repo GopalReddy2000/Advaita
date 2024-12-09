@@ -1,7 +1,6 @@
 package com.advaita.pageObjects;
 
 import com.advaita.BaseClass.TestBase;
-import com.sun.jna.WString;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -20,7 +19,6 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static Advaita_TDD.Advaita_TDD.FakeData.lastName2;
@@ -211,6 +209,24 @@ public class EscalationMatrixPage extends TestBase {
 	@FindBy(linkText ="Rejected Audit Form")
 	WebElement rejectedAuditForm;
 
+
+//	*********TransAction Report*****************
+
+
+	@FindBy(linkText = "Transaction Report")
+	public static WebElement transActionReport;
+
+	@FindBy(xpath = "//select[@name='Audit_Created_By']")
+	public static WebElement auditCreatedByFilter;
+
+	@FindBy(xpath = "//select[@name='Email ID']")
+	public static WebElement emailIdFilter;
+
+	@FindBy(xpath = "//select[@name='Name']")
+	public static WebElement nameFilter;
+
+	@FindBy(xpath = "//select[@name='Review Status']")
+	public static WebElement reviewStatusFilter;
 
 
 	String customerEmail;
@@ -599,7 +615,7 @@ public class EscalationMatrixPage extends TestBase {
 
 		assert  submittedBy.getText().equals(submitted);
 		assert escalationDisposition.getText().equals("REJECT");
-		assert auditCreatedBy.getText().equals(createdBy);
+		assert auditCreatedByValue.getText().equals(createdBy);
 
 
 		return this;
@@ -734,15 +750,15 @@ public class EscalationMatrixPage extends TestBase {
 	@FindBy(xpath = "//td[4]")
 	static WebElement escalationDisposition;
 
-	@FindBy(xpath = "//td[10]")
-	static WebElement auditCreatedBy;
+	@FindBy(xpath = "//td[11]")
+	static WebElement auditCreatedByValue;
 
 	@FindBy(xpath = "//td[20]")
 	static WebElement submittedBy;
 
 	public static void assertEscalations(String status, String createdBy,String submitted){
 		String escalationStatus=escalationDisposition.getText();
-		String createdByText=auditCreatedBy.getText();
+		String createdByText=auditCreatedByValue.getText();
 		String submittedByText=submittedBy.getText();
 //		softAssert.assertEquals(escalationStatus, status);
 		softAssert.assertEquals(createdByText, createdBy);
@@ -824,7 +840,7 @@ public class EscalationMatrixPage extends TestBase {
 
 		searchIcon.click();
 
-//	Bug
+//	Bug, the new records are stored at the last.
 
 		return this;
 	}
@@ -917,27 +933,7 @@ public class EscalationMatrixPage extends TestBase {
 		return this;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public EscalationMatrixPage validateRecordsPerPage() {
-
 
 		// Define options to test (10, 20, 50 records per page)
 		int[] optionsToTest = {10, 20, 50};
@@ -1096,7 +1092,51 @@ public class EscalationMatrixPage extends TestBase {
 		}
 	}
 
+//	*********Transaction Report***********
 
+	public EscalationMatrixPage transActionReport(String process, String subProcess,String subSubProcess,String stageName, String fromDateValue, String toDateValue){
+
+		navigateWithinAlchemy(transActionReport);
+		selectByVisibleText(processSearch, process);
+		dropdownUtil(processSearch,process);
+		selectByVisibleText(subProcessSearch, subProcess);
+		dropdownUtil(subProcessSearch,subProcess);
+		selectByVisibleText(subSubProcessSearch, subSubProcess);
+		dropdownUtil(subSubProcessSearch,subSubProcess);
+		selectByVisibleText(stageSearch, stageName);
+		dropdownUtil(stageSearch,stageName);
+
+		jsDateExecutor(fromDate,fromDateValue);
+
+		jsDateExecutor(toDate,toDateValue);
+
+		searchIcon.click();
+
+
+		return this;
+	}
+
+
+	public EscalationMatrixPage localFilter(String auditedBy,String email,String name,String reviewStatus){
+
+		localFilters.click();
+
+		selectByVisibleText(auditCreatedByFilter,auditedBy);
+		selectByVisibleText(emailIdFilter,email);
+		selectByVisibleText(nameFilter,name);
+		selectByVisibleText(reviewStatusFilter,reviewStatus);
+
+		searchBox.click();
+
+		return this;
+	}
+
+	public EscalationMatrixPage assertTransAction(){
+
+
+
+		return this;
+	}
 
 
 

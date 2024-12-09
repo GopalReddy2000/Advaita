@@ -170,8 +170,11 @@ public class Stages extends TestBase {
 	@FindBy(xpath = "(//label[normalize-space()='Non Measurable Set']/input[@type='radio'])[1]")
 	public WebElement nonMeasurableRadioButton;
 
-	@FindBy(xpath = "//select[contains(@data-type,'Mesaurable')]")
-	public WebElement selectQuestionSetDropDown;
+	@FindBy(xpath = "//select[@data-type='Mesaurable']")
+	public WebElement measurableQuestionSet;
+
+	@FindBy(xpath = "//select[@data-type='NonMesaurable']")
+	public WebElement nonMeasurableQuestionSet;
 
 	@FindBy(xpath = "//label[normalize-space()='Manual']/input[@type='radio']")
 	public WebElement manualRadioButton;
@@ -238,10 +241,10 @@ public class Stages extends TestBase {
 
 	@FindBy(xpath = "//label[@id='section_name-error']")
 	public static WebElement sectionNameError;
-	
+
 	@FindBy(xpath = "(//a/img[@title='Evaluation Fields'])[1]")
 	public static WebElement evalutionFieldButton;
-	
+
 	@FindBy(xpath = "//button[normalize-space()='Save']")
 	public WebElement saveButton2;
 
@@ -258,6 +261,7 @@ public class Stages extends TestBase {
 
 		return driver.findElement(By.xpath(xpath));
 	}
+
 
 
 	public Stages() {
@@ -364,6 +368,17 @@ public class Stages extends TestBase {
 
 		return this;
 	}
+
+	public Stages navigateToStageCreate(){
+		workFlowStagesTab.click();
+		stagesTab.click();
+		stagesCreateButton.click();
+
+
+		return this;
+
+	}
+
 
 	public Stages verifyStageNameTextBox(String StageName) {
 
@@ -608,7 +623,7 @@ public class Stages extends TestBase {
 
 			if (uniqueIdMataDataField) {
 				driver.findElement(By.xpath(
-						"(//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
+								"(//h1[normalize-space()='Select Section B']/../..//input[@name='sectionA_fieldname'])[last()-3 > 0 and position()=last()-3]"))
 						.click();
 
 				sectionBAddButton.click();
@@ -696,7 +711,7 @@ public class Stages extends TestBase {
 				clickOnCheckBoxes(allOptionsMeasurable, "all");
 				clickOnCheckBoxes(allOptionsMeasurable, optionNames);
 
-				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select",
+				DropDown.dropdownWithAllPosibleValidation(nonMeasurableQuestionSet, "Select",
 						PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
 
 			} else {
@@ -846,7 +861,7 @@ public class Stages extends TestBase {
 
 		ClickUtilities.scrollToViewElement(manualRadioButton);
 
-		click(driver, manualRadioButton);
+		jsClick(manualRadioButton);
 
 		return this;
 	}
@@ -876,6 +891,57 @@ public class Stages extends TestBase {
 		return this;
 	}
 
+	private WebElement sectionCTab(String sectionName){
+		String xpath="//button[text()='"+sectionName+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement measurableSetRadioButton(String sectionName){
+		String xpath="//label[normalize-space()='Measurable Set']//input[@data-sectionname='"+sectionName+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	private WebElement nonMeasurableSetRadioButton(String sectionName){
+		String xpath="//label[normalize-space()='Non Measurable Set']//input[@data-sectionname='"+sectionName+"']";
+		return driver.findElement(By.xpath(xpath));
+	}
+
+	public Stages measurableDropdown(String sectionCName,String measurableSet){
+
+		jsClick(addSomeSectionButton);
+		unWaitInMilli(400);
+		sendKeys(sectionNameField,sectionCName);
+		unWaitInMilli(500);
+		jsClick(sectionCAddButton);
+
+		jsClick(sectionCTab(sectionCName));
+
+		jsClick(measurableSetRadioButton(sectionCName));
+
+		jsWindowsScrollIntoView(measurableQuestionSet);
+		unWaitInMilli(500);
+		selectByVisibleText(measurableQuestionSet,measurableSet);
+
+		return this;
+	}
+
+	public Stages nonMeasurableDropdown(String sectionCName,String nonMeasurableSet){
+
+		jsClick(addSomeSectionButton);
+		sendKeys(sectionNameField,sectionCName);
+		unWaitInMilli(500);
+		jsClick(sectionCAddButton);
+
+		jsClick(sectionCTab(sectionCName));
+		unWaitInMilli(500);
+		jsClick(nonMeasurableSetRadioButton(sectionCName));
+
+//		jsWindowsScrollIntoView(nonMeasurableQuestionSet);
+
+		selectByVisibleText(nonMeasurableQuestionSet,nonMeasurableSet);
+		return this;
+	}
+
 	public Stages searchAndDeleteCreatedStage(String stageName) {
 
 		SendDataUtils.clearAndSendKeys(searchBar, stageName);
@@ -885,17 +951,17 @@ public class Stages extends TestBase {
 
 		return this;
 	}
-	
+
 	public Stages transIDInEvaluationField() {
-		
+
 		evalutionFieldButton.click();
 		selectTransIDInEvaluationField(stageEvaluationDropdown, null);
 		actions.moveToElement(saveButton2).perform();
 		saveButton2.click();
-		
+
 		wait.until(ExpectedConditions.visibilityOf(continueButton));
 		continueButton.click();
-		
+
 		return this;
 	}
 
@@ -924,7 +990,6 @@ public class Stages extends TestBase {
 
 	// Utility method to test SQL injection on a textbox
 	public static void testSQLInjection(WebDriver driver, WebElement textBox, WebElement submitBtn, By errorMessageLocator) {
-
 
 		// Loop through each SQL injection payload and input into the textbox
 		for (String payload : sqlInjectionPayloads) {
@@ -1140,20 +1205,21 @@ public class Stages extends TestBase {
 
 	}
 
-	public Stages selectCheckBoxSectionA(String sectionADropdownValue, List<String> inputs){
+	public Stages selectCheckBoxSectionA(String metaDataName, List<String> inputs){
+
 		addButtonInSectionAElement.click();
-		selectByVisibleText(sectionAMetaDataDropdown,sectionADropdownValue);
-		selectMultipleCheckboxes(metadataCheckBoxes,checkBoxValueXpath,inputs);
+		selectByVisibleText(sectionAMetaDataDropdown,metaDataName);
+		selectMultipleCheckboxes(metadataCheckBoxes, inputs);
 		addButtonInaddSectionAPopUp.click();
 
 		return this;
 	}
 
 
-	public Stages selectCheckBoxSectionB(String sectionBDropdownValue, List<String> inputs){
+	public Stages selectCheckBoxSectionB(String metaDataName, List<String> inputs){
 		sectionBAddButton(1).click();
-		selectByVisibleText(sectionBMetaDataDropdown,sectionBDropdownValue);
-		selectMultipleCheckboxes(metadataCheckBoxes,checkBoxValueXpath,inputs);
+		selectByVisibleText(sectionBMetaDataDropdown, metaDataName);
+		selectMultipleCheckboxes(metadataCheckBoxes, inputs);
 		sectionBAddButton.click();
 
 		return this;
@@ -1161,8 +1227,7 @@ public class Stages extends TestBase {
 
 	public Stages selectActionsCheckBoxes(List<String> inputs)
 	{
-
-		selectMultipleCheckboxes(actionsCheckboxes,checkBoxValueXpath,inputs);
+		selectMultipleCheckboxes(actionsCheckboxes, inputs);
 
 		return this;
 	}
@@ -1181,7 +1246,7 @@ public class Stages extends TestBase {
 
 	String checkBoxValueXpath ="following-sibling::label";
 
-	public static void selectMultipleCheckboxes( List<WebElement> checkboxes,String xpath,List<String> inputs) {
+	public static void selectMultipleCheckboxes( List<WebElement> checkboxes,List<String> inputs) {
 		// Locate all checkboxes on the page
 		unWaitInMilli(300);
 
@@ -1193,7 +1258,7 @@ public class Stages extends TestBase {
 				String checkboxValue = checkbox.findElement(By.xpath("following-sibling::label")).getText();
 
 				// Check if the value matches the input
-				if (checkboxValue.equalsIgnoreCase(input)) {
+				if (checkboxValue.contains(input)) {
 					// Select the checkbox if not already selected
 					if (!checkbox.isSelected()) {
 						jsClick(checkbox);

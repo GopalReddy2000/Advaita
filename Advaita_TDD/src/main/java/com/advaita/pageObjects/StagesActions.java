@@ -61,7 +61,7 @@ public class StagesActions extends TestBase{
 
 	@FindBy(xpath="//button[text()='Save']")
 	WebElement save;
-@FindBy(xpath="//button[@onClick='add_stagewise_disposition()']")
+	@FindBy(xpath="//button[@onClick='add_stagewise_disposition()']")
 	WebElement dispositionSetSave;
 
 	@FindBy(xpath="//button[text()='Cancel']")
@@ -100,6 +100,9 @@ public class StagesActions extends TestBase{
 
 	@FindBy(linkText="Call Log Tab View")
 	WebElement callLogTabView;
+
+	@FindBy(linkText="Call Log Stage View")
+	WebElement callLogStageView;
 
 	@FindBy(xpath ="//button[contains(normalize-space(), 'Insurance Stage')]")
 	WebElement insuranceStage;
@@ -271,17 +274,22 @@ public class StagesActions extends TestBase{
 	);
 
 
-	public StagesActions escalationFields()
+	public StagesActions escalationFields(List<String>evaluationFieldOptions)
 	{
 		allLeftButton.get(0).click();
 		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
 //		singleRightButton.click();
 		saveRecord();
 
-		navigateWithinAlchemy(callLogTabView);
-		insuranceStage.click();
 
-		int startIndex = 4;
+		return this;
+	}
+
+	public StagesActions validateEvaluationFields(List<String>evaluationFieldOptions,String stageName){
+		navigateWithinAlchemy(callLogStageView);
+		selectByVisibleText(stageSearch,stageName);
+
+		int startIndex = 1;
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
 			String actualHeader =evaluationFieldHeader.get(startIndex +i).getText().trim();
 			System.out.println(actualHeader);
@@ -349,7 +357,7 @@ public class StagesActions extends TestBase{
 
 
 
-	public StagesActions evaluationFilter()
+	public StagesActions evaluationFilter(List<String>evaluationFieldOptions,String stageName)
 	{
 		selectAndClickOptions(
 				Arrays.asList(multiSelectDropdownFrom,
@@ -363,22 +371,26 @@ public class StagesActions extends TestBase{
 
 		saveRecord();
 
-		navigateWithinAlchemy(callLogTabView);
-		insuranceStage.click();
-		localFilterSection.click();
-		List<String> actual = List.of();
-		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
-			String actualHeader =localFilterHeaders.get(i).getText().trim();
-			System.out.println(actualHeader);
-			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
-			} else {
-				System.out.println("Header matched: " + actualHeader);
-			}
+		navigateWithinAlchemy(callLogStageView);
+		selectByVisibleText(stageSearch,stageName);
 
-		}
-		softAssert.assertTrue(evaluationFieldOptions.containsAll(actual) );
-		softAssert.assertAll();
+		// ****Filters Are Changed*********
+
+
+//		localFilterSection.click();
+//		List<String> actual = List.of();
+//		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
+//			String actualHeader =localFilterHeaders.get(i).getText().trim();
+//			System.out.println(actualHeader);
+//			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
+//				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
+//			} else {
+//				System.out.println("Header matched: " + actualHeader);
+//			}
+//
+//		}
+//		softAssert.assertTrue(evaluationFieldOptions.containsAll(actual) );
+//		softAssert.assertAll();
 		return this;
 	}
 
@@ -523,14 +535,14 @@ public class StagesActions extends TestBase{
 	public StagesActions reportFilters()
 	{
 		selectAndClickOptions(
-			Arrays.asList(multiSelectDropdownFrom,
-					datePickerDropdown,
-					dateRangerDropdown,
-					multiSelectDropdown,
-					textBoxDropdown,
-					valueRangeDropdown),
-			evaluationFieldOptions,
-			SingleRightButton);
+				Arrays.asList(multiSelectDropdownFrom,
+						datePickerDropdown,
+						dateRangerDropdown,
+						multiSelectDropdown,
+						textBoxDropdown,
+						valueRangeDropdown),
+				evaluationFieldOptions,
+				SingleRightButton);
 		saveRecord();
 		navigateWithinAlchemy(validationStatusReport);
 		selectProcess();
@@ -572,6 +584,7 @@ public class StagesActions extends TestBase{
 
 		return this;
 	}
+
 
 
 

@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
@@ -24,6 +21,8 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import Advaita_TDD.Advaita_TDD.App;
 import Advaita_TDD.Advaita_TDD.Questions;
 
+import static Advaita_TDD.Advaita_TDD.FakeData.lastName2;
+
 public class TestManualUpload extends TestBase {
 
 	public ExtentReports reports;
@@ -34,7 +33,7 @@ public class TestManualUpload extends TestBase {
 	HomePage homePage;
 
 	ManualUpload manualUpload;
-	
+
 	App app;
 
 	public TestManualUpload() {
@@ -66,11 +65,11 @@ public class TestManualUpload extends TestBase {
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
 		manualUpload = new ManualUpload();
-		
+
 		app = new App();
 
 	}
-	
+
 	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
@@ -111,6 +110,105 @@ public class TestManualUpload extends TestBase {
 		}
 		// Close ExtentReports
 		reports.flush();
+	}
+
+	@Test(dataProvider = "invalidRecordNameData")
+	public void name(String recordName,String errorMessage){
+		manualUpload
+				.navToManualUpload()
+				.create().name(recordName).recordCreate()
+				.nameError(errorMessage)
+		;
+	}
+
+	@DataProvider(name = "invalidRecordNameData")
+	public Object[][] invalidRecordNameData() {
+		return new Object[][] {
+				{"", "This field is required."},
+				{"   ", "Record name cannot be just spaces."},
+				{"a".repeat(258), "Record name cannot exceed 255 characters."},
+				{"ƀ Ɓ Ƃ ƃ Ƅ ƅ Ɔ Ƈ ƈ Ɖ Ɗ Ƌ", "Record name cannot contain Unicode characters."},
+				{"#Record$", "Record name cannot contain special characters."},
+				{"123456", "Record name cannot be numeric only."},
+				{"!!!@@@", "Record name cannot be only special characters."},
+				{"SELECT * FROM records", "Invalid input detected."},
+				{"<record>Test</record>", "Invalid input detected."},
+				{"record    name", "Record name cannot contain consecutive spaces."},
+				{"DemoEmpJ Details MetaData", "Metadata Name Already Exists"}
+		};
+	}
+
+	String uploadSheet=System.getProperty("user.dir")+"/ExcelFiles/Synthetic_Test_Data.xlsx";
+	String fileName="Synthetic_Test_Data.xlsx";
+
+	@Test(dataProvider = "invalidRemarksTestData")
+	public void invalidRemarks(String remarks,String error){
+		manualUpload
+				.navToManualUpload()
+				.create().name(lastName2()+" ManualUpload")
+				.datasetDropdown("Dataset AJP").uploadSheet(uploadSheet).remarksField(remarks).fileName(fileName)
+				.create()
+		;
+//		No Error for Remarks Field
+	}
+
+	@Test
+	public void invalidFileName(String fileName){
+		manualUpload
+				.navToManualUpload()
+				.create().name(lastName2()+" ManualUpload")
+				.datasetDropdown("Dataset AJP").uploadSheet(uploadSheet).remarksField("remarks").fileName(fileName)
+				.create()
+				;
+//		No Proper Error Code for invalid FileName
+	}
+
+	@DataProvider(name = "invalidRemarksTestData")
+	public static Object[][] negativeTestData() {
+		return new Object[][]{
+				// Only Spaces
+				{"   ", "Input should be ignored or show an error message."},
+
+				// Exceeding Character Limit (Assume max limit is 50)
+				{"abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz", "Input exceeds max length of 50 characters."},
+
+				// Special Characters
+				{"@#$%^&*", "Special characters are not allowed."},
+
+				// SQL Injection
+				{"'; DROP TABLE users; --", "Invalid characters in input."},
+
+				// Script Injection (XSS)
+				{"<script>alert('XSS')</script>", "Invalid characters in input."},
+
+				// Numeric Input (If Not Allowed)
+				{"1234567890", "Numeric input is not valid."},
+
+				// Non-ASCII or Unicode Characters
+				{"你好", "Non-ASCII characters are not allowed."},
+				{"😊", "Emojis are not allowed."},
+
+				// Leading and Trailing Spaces
+				{"  ValidInput", "Leading spaces should be trimmed or show an error message."},
+				{"ValidInput  ", "Trailing spaces should be trimmed or show an error message."},
+
+				// Single Character Input (if min length is 3)
+				{"A", "Input must be at least 3 characters long."},
+
+				// HTML Special Characters
+				{"&<>'\"/", "HTML special characters are not allowed."},
+
+				// Newline Characters
+				{"Line1\nLine2", "Newline characters are not allowed."},
+
+				// Extremely Long Input
+				{"a".repeat(5000), "Input exceeds the maximum allowed length."}
+		};
+	}
+
+	@AfterMethod
+	public void close(){
+		manualUpload.closeDialogBox();
 	}
 
 	@AfterTest
