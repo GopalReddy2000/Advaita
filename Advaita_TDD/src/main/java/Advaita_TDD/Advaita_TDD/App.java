@@ -20,6 +20,7 @@ public class App extends TestBase {
 	@FindBy(id = "stage_search")
 	WebElement stageSearch;
 
+	
 	@FindBy(xpath = "//td[1]//img")
 	WebElement recordEyeButton;
 
