@@ -142,31 +142,42 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	}
 
 	/**
-	 * Creates a sampling plan by filling out the necessary form fields and performing actions
-	 * based on the provided parameters. This includes selecting dropdown options, inputting
-	 * values into text fields, handling conditional actions based on the given flags, and
-	 * finally submitting the form.
+	 * Creates a sampling plan by filling out the necessary form fields and
+	 * performing actions based on the provided parameters. This includes selecting
+	 * dropdown options, inputting values into text fields, handling conditional
+	 * actions based on the given flags, and finally submitting the form.
 	 *
-	 * @param process           The process to select from the process dropdown.
-	 * @param subProcess       The sub-process to select from the sub-process dropdown.
-	 * @param subSubprocess    The sub-sub-process to select from the sub-subprocess dropdown.
-	 * @param Stages           The stage to select from the stages dropdown.
-	 * @param samplingPlaneName The name of the sampling plan to be entered.
-	 * @param fromDate         The "from" date for the sampling plan (in string format).
-	 * @param toDate           The "to" date for the sampling plan (in string format).
-	 * @param samplingTo       The sampling destination to select from the dropdown.
-	 * @param totalDataCall    The total data calls to enter in the corresponding field.
-	 * @param allSampleCondition Flag to indicate if all sample conditions should be considered (either "yes" or "no").
-	 * @param needCondition    Flag to indicate if specific sampling conditions are needed (either "yes" or "no").
-	 * @param needScheduling   Flag to indicate if scheduling is needed (either "yes" or "no").
+	 * @param process            The process to select from the process dropdown.
+	 * @param subProcess         The sub-process to select from the sub-process
+	 *                           dropdown.
+	 * @param subSubprocess      The sub-sub-process to select from the
+	 *                           sub-subprocess dropdown.
+	 * @param Stages             The stage to select from the stages dropdown.
+	 * @param samplingPlaneName  The name of the sampling plan to be entered.
+	 * @param fromDate           The "from" date for the sampling plan (in string
+	 *                           format).
+	 * @param toDate             The "to" date for the sampling plan (in string
+	 *                           format).
+	 * @param samplingTo         The sampling destination to select from the
+	 *                           dropdown.
+	 * @param totalDataCall      The total data calls to enter in the corresponding
+	 *                           field.
+	 * @param allSampleCondition Flag to indicate if all sample conditions should be
+	 *                           considered (either "yes" or "no").
+	 * @param needCondition      Flag to indicate if specific sampling conditions
+	 *                           are needed (either "yes" or "no").
+	 * @param needScheduling     Flag to indicate if scheduling is needed (either
+	 *                           "yes" or "no").
 	 *
-	 * @return SamplingPlanAndGenerationPage The current page object for chaining purposes.
+	 * @return SamplingPlanAndGenerationPage The current page object for chaining
+	 *         purposes.
 	 */
 	public SamplingPlanAndGenerationPage createSampling(String process, String subProcess, String subSubprocess,
-														String Stages, String samplingPlaneName, String samplingTo,
-														String totalDataCall, String allSampleCondition, String needCondition, String needScheduling) {
+			String Stages, String samplingPlaneName, String samplingTo, String totalDataCall, String allSampleCondition,
+			String needCondition, String needScheduling) {
 
-		// Select values from dropdowns for process, sub-process, sub-subprocess, and stages.
+		// Select values from dropdowns for process, sub-process, sub-subprocess, and
+		// stages.
 		selectByVisibleText(processDropdown, process);
 		selectByVisibleText(subProcessDropdown, subProcess);
 		selectByVisibleText(subSubProcessDropdown, subSubprocess);
@@ -200,34 +211,35 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 			if (allSampleCondition.equals("yes")) {
 //				considerAllocatedData.click();  // Don't Consider allocated data.
 //				considerAuditedData.click();    // Don't Consider audited data.
-				allSample.click();              // Select all sample.
+				allSample.click(); // Select all sample.
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());  // Handle exceptions in sample condition handling.
+			System.out.println(e.getMessage()); // Handle exceptions in sample condition handling.
 		}
 
 		// Handle the need for specific conditions or scheduling based on flags.
 		if (needCondition.equalsIgnoreCase("yes")) {
-			// Code for creating sampling conditions (currently commented out due to XPath issues).
+			// Code for creating sampling conditions (currently commented out due to XPath
+			// issues).
 			// createSamplingConditions("");
 		} else if (needScheduling.equalsIgnoreCase("yes")) {
 			// Code for handling scheduling (currently commented out due to XPath issues).
 		} else {
 			// If neither condition nor scheduling are needed, move to the next steps.
-			nextForConditional.click();  // Click the "next" button for conditions.
-			nextForScheduling.click();   // Click the "next" button for scheduling.
-			save.click();                // Save the sampling plan.
+			nextForConditional.click(); // Click the "next" button for conditions.
+			nextForScheduling.click(); // Click the "next" button for scheduling.
+			save.click(); // Save the sampling plan.
 		}
 
 		// Wait for the continue button to appear and confirm the success message.
 		try {
-			unWait(1);  // Explicit wait to ensure elements are visible.
+			unWait(1); // Explicit wait to ensure elements are visible.
 			assertTrue(continueButton.isDisplayed(), "Continue Button is not visible");
-			System.out.println("Sample is Generated Successfully");  // Print success message.
+			System.out.println("Sample is Generated Successfully"); // Print success message.
 
-			continueButton.click();  // Click the continue button to complete the process.
+			continueButton.click(); // Click the continue button to complete the process.
 		} catch (Exception e) {
-			System.out.println(e.getMessage());  // Handle any exceptions if continue button is not visible.
+			System.out.println(e.getMessage()); // Handle any exceptions if continue button is not visible.
 		}
 
 		// Return the current page object to allow method chaining.
@@ -242,32 +254,32 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	}
 
 	public SamplingPlanAndGenerationPage createSamplingConditions(String conditionDropdowns,
-																  String equalsOrNotEqualsCondition) {
+			String equalsOrNotEqualsCondition) {
 		nextForConditional.click();
 		selectByVisibleText(fieldDropdown.get(0), "");
 		selectByVisibleText(conditionDropdown.get(0), "");
 		switch (conditionDropdowns) {
-			case "equals":
-			case "not equals":
-				selectByVisibleText(equalAndNoEqualDropdown.get(0), equalsOrNotEqualsCondition);
-				if (equalsOrNotEqualsCondition.equals("textBox")) {
-					conditionTextInputFields.get(0).sendKeys();
-				}
-				if (equalsOrNotEqualsCondition.equals("dropdown")) {
-
-				}
-				break;
-			case "greater than":
-			case "greater than equal to":
-			case "lesser than":
-			case "lesser tha or equal to":
-			case "date":
-			case "date between":
+		case "equals":
+		case "not equals":
+			selectByVisibleText(equalAndNoEqualDropdown.get(0), equalsOrNotEqualsCondition);
+			if (equalsOrNotEqualsCondition.equals("textBox")) {
 				conditionTextInputFields.get(0).sendKeys();
-				break;
-			case "dropdown":
-				conditionDropdown.get(0).sendKeys();
-			case "multiselect":
+			}
+			if (equalsOrNotEqualsCondition.equals("dropdown")) {
+
+			}
+			break;
+		case "greater than":
+		case "greater than equal to":
+		case "lesser than":
+		case "lesser tha or equal to":
+		case "date":
+		case "date between":
+			conditionTextInputFields.get(0).sendKeys();
+			break;
+		case "dropdown":
+			conditionDropdown.get(0).sendKeys();
+		case "multiselect":
 
 		}
 
@@ -282,7 +294,7 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 //    ##################### Code By Gopal ################################
 
 	public SamplingPlanAndGenerationPage createSamplingPlan(String process, String subProcess, String subSubProcess,
-															String stages, String metaData) throws Throwable {
+			String stages, String metaData) throws Throwable {
 
 		List<String> multipleLabelTexts = Arrays.asList("Process*", "Sub Process*", "Sub Sub Process*", "Stages*",
 				"Metadata*");
@@ -333,26 +345,27 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	 */
 
 	public SamplingPlanAndGenerationPage generalTabToggleButton(String toggleOption) {
+
+		// Convert input to lowercase once for comparison
+		String option = toggleOption.toLowerCase();
+
+		// Reset initial state
 		click(driver, considerAllocatedData);
 		click(driver, considerAuditedData);
 
-		switch (toggleOption.toLowerCase()) {
-			case "considerAllocatedData":
-				click(driver, considerAllocatedData);
-				break;
-			case "considerAuditedData":
-				click(driver, considerAuditedData);
-				break;
-			case "allSample":
-				click(driver, allSample);
-				break;
-			case "all":
-				click(driver, considerAllocatedData);
-				click(driver, considerAuditedData);
-				click(driver, allSample);
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid toggle option: " + toggleOption);
+		// Handle toggle options
+		if ("considerallocateddata".equals(option)) {
+			click(driver, considerAllocatedData);
+		} else if ("considerauditeddata".equals(option)) {
+			click(driver, considerAuditedData);
+		} else if ("allsample".equals(option)) {
+			jsClick(allSample);
+		} else if ("all".equals(option)) {
+			click(driver, considerAllocatedData);
+			click(driver, considerAuditedData);
+			click(driver, allSample);
+		} else {
+			throw new IllegalArgumentException("Invalid toggle option: " + toggleOption);
 		}
 
 		return this;
@@ -374,7 +387,7 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	}
 
 	public SamplingPlanAndGenerationPage validationSamplingStatus(String stage, String process, String subProcess,
-																  String subSubProcess) {
+			String subSubProcess) {
 
 		navigateWithinAlchemy(sampleStatus);
 
@@ -405,10 +418,12 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 
 	/**
 	 * Validates the dropdown elements on the Sampling Plan and Generation page.
-	 * This method navigates within the system, validates that each dropdown contains
-	 * the expected options, and selects specific options by their visible text.
+	 * This method navigates within the system, validates that each dropdown
+	 * contains the expected options, and selects specific options by their visible
+	 * text.
 	 *
-	 * @return the current instance of SamplingPlanAndGenerationPage for method chaining.
+	 * @return the current instance of SamplingPlanAndGenerationPage for method
+	 *         chaining.
 	 */
 
 	public SamplingPlanAndGenerationPage validateDropdowns() {
@@ -436,15 +451,18 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	}
 
 	/**
-	 * Validates that a dropdown contains multiple options and that the specified expected option is present.
-	 * The method first checks that the dropdown is not a multi-select dropdown. It then verifies that the
-	 * dropdown has at least one selectable option (besides a placeholder option, if present). Finally, it
+	 * Validates that a dropdown contains multiple options and that the specified
+	 * expected option is present. The method first checks that the dropdown is not
+	 * a multi-select dropdown. It then verifies that the dropdown has at least one
+	 * selectable option (besides a placeholder option, if present). Finally, it
 	 * checks that the specified expected option exists within the dropdown options.
 	 *
 	 * @param dropdownElement the WebElement representing the dropdown to validate.
 	 * @param expectedOption  the option that should be present within the dropdown.
-	 * @return the current instance of SamplingPlanAndGenerationPage for method chaining.
-	 * @throws AssertionError if the dropdown is empty, has only a placeholder, or does not contain the expected option.
+	 * @return the current instance of SamplingPlanAndGenerationPage for method
+	 *         chaining.
+	 * @throws AssertionError if the dropdown is empty, has only a placeholder, or
+	 *                        does not contain the expected option.
 	 */
 
 	public SamplingPlanAndGenerationPage dropdownValidation(WebElement dropdownElement, String expectedOption) {
@@ -488,11 +506,10 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 		return this;
 	}
 
-
 	public SamplingPlanAndGenerationPage validateRecordsPerPage() {
 
 		// Define options to test (10, 20, 50 records per page)
-		int[] optionsToTest = {10, 20, 50};
+		int[] optionsToTest = { 10, 20, 50 };
 
 		for (int option : optionsToTest) {
 			// Re-fetch the dropdown each time before interacting
@@ -505,9 +522,11 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 			// Select the dropdown value
 			select.selectByVisibleText(String.valueOf(option));
 
-			// Wait for the page to load/refresh after selection (use explicit wait instead of sleep)
+			// Wait for the page to load/refresh after selection (use explicit wait instead
+			// of sleep)
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='show_entries m-0 font_13']")));
+			wait.until(
+					ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='show_entries m-0 font_13']")));
 
 			// Fetch the "Showing X to Y of Z" text
 			WebElement showingTextElement = driver.findElement(By.xpath("//p[@class='show_entries m-0 font_13']"));
@@ -543,7 +562,7 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	@FindBy(xpath = "//button[text()='Delete']")
 	WebElement confirmDeleteButton;
 
-	public SamplingPlanAndGenerationPage deleteRecord(String nameToDelete){
+	public SamplingPlanAndGenerationPage deleteRecord(String nameToDelete) {
 
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
@@ -551,20 +570,19 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 
 			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
 
-			if (usernameColumn.getText().contains(nameToDelete) ) {
+			if (usernameColumn.getText().contains(nameToDelete)) {
 
 				WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
 				deleteButton.click();
 				confirmDeleteButton.click();
 				unWait(2);
 				continueButton.click();
-				System.out.println(nameToDelete+"  Successfully Deleted");
+				System.out.println(nameToDelete + "  Successfully Deleted");
 				break;
 			}
 		}
 		return this;
 	}
-
 
 	// Locator for the record count label (e.g., "Showing 1 to 10 of 49")
 	@FindBy(xpath = "//p[@class='show_entries m-0 font_13']") // Replace with actual selector
@@ -582,11 +600,9 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	@FindBy(xpath = "(//img[@alt='left_arrow'])[2]") // Replace with actual selector
 	private WebElement prevButton;
 
-
-
 	/**
-	 * Validates pagination by navigating forward and backward through pages.
-	 * Also counts and verifies the number of records displayed on each page.
+	 * Validates pagination by navigating forward and backward through pages. Also
+	 * counts and verifies the number of records displayed on each page.
 	 */
 
 	public void validatePagination() {
@@ -606,7 +622,8 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 			int recordCount = recordRows.size();
 			System.out.println("Number of records on page " + pageNumber + ": " + recordCount);
 
-			// Check if this is the last page by inspecting the record range text or nextButton state
+			// Check if this is the last page by inspecting the record range text or
+			// nextButton state
 			if (!nextButton.isEnabled() || recordRangeText.contains("of " + recordCount)) {
 				hasNextPage = false;
 				System.out.println("Reached the last page.");
@@ -672,17 +689,15 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 	@FindBy(xpath = "//td[8]")
 	WebElement subSubProcessRecord;
 
-	public SamplingPlanAndGenerationPage sampleValidations(String stage,String process,String subProcess,String subSubProcess){
+	public SamplingPlanAndGenerationPage sampleValidations(String stage, String process, String subProcess,
+			String subSubProcess) {
 		navigateWithinAlchemy(sampleStatus);
-		assertEquals(stageRecord.getText(),stage);
-		assertEquals(processRecord.getText(),process);
-		assertEquals(subProcessRecord.getText(),subProcess);
-		assertEquals(subSubProcessRecord.getText(),subSubProcess);
+		assertEquals(stageRecord.getText(), stage);
+		assertEquals(processRecord.getText(), process);
+		assertEquals(subProcessRecord.getText(), subProcess);
+		assertEquals(subSubProcessRecord.getText(), subSubProcess);
 
 		return this;
 	}
-
-
-
 
 }

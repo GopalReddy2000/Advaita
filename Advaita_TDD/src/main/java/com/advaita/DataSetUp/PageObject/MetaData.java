@@ -101,7 +101,7 @@ public class MetaData extends TestBase {
 	public static WebElement selectSubSubProcessDropDown;
 
 	@FindBy(name = "primary_dataset_1")
-	public static WebElement selectDataSetDropDown;
+	public WebElement selectDataSetDropDown;
 
 	@FindBy(name = "primary_dataset_2")
 	public WebElement selectDataSetDropDown2;
@@ -775,6 +775,7 @@ public class MetaData extends TestBase {
 
 	public MetaData navigateToMetaData() throws Throwable {
 
+		dataSetup.click();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(metaDataTab.isDisplayed(), "metaDataTab is not Displayed");
@@ -796,7 +797,6 @@ public class MetaData extends TestBase {
 		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
 		String dataSetText = PropertieFileUtil.getSingleTextFromPropertiesFile("dataSetName");
 
-
 		click(driver, createMetaDataButton);
 
 		wait.until(ExpectedConditions.visibilityOf(createMetaDataPopup));
@@ -808,7 +808,7 @@ public class MetaData extends TestBase {
 				.subProcessDropDownSelect(selectSubProcessDropDown, subProcess)
 				.subSubProcessDropDownSelect(selectSubSubProcessDropDown, subSubProcess);
 
-		selectDataSet(selectDataSetDropDown, dataSetText);
+		selectDataSet(selectDataSetDropDown, dataSetText.replace(" ", ""));
 
 		return this;
 	}
@@ -905,25 +905,22 @@ public class MetaData extends TestBase {
 		return this;
 	}
 
-
 //	Metadata
 
-
-	public MetaData navToMetadataTable()
-	{
+	public MetaData navToMetadataTable() {
 		dataSetup.click();
 		metaDataTab.click();
 
 		return this;
 	}
 
-	@FindBy(id="metadata_name-error")
+	@FindBy(id = "metadata_name-error")
 	WebElement metaDataError;
-	public MetaData metaDataTextBox(String metaDataName,String errorMessage)
-	{
+
+	public MetaData metaDataTextBox(String metaDataName, String errorMessage) {
 		createMetaDataButton.click();
 		metaDataNameField.sendKeys(metaDataName);
-		selectProcesses("AJP","Sub AJP","Sub Sub AJP");
+		selectProcesses("AJP", "Sub AJP", "Sub Sub AJP");
 
 		jsClick(createMetaDataPopUpButton);
 		unWait(1);
@@ -933,51 +930,42 @@ public class MetaData extends TestBase {
 		return this;
 	}
 
-	public MetaData addColumn(String column)
-	{
+	public MetaData addColumn(String column) {
 		addColumnInputField.sendKeys(column);
 		return this;
 	}
 
-	public MetaData selectProcesses(String processValue,String subProcessValue,String subSubProcessValue)
-	{
-		selectByVisibleText(selectProcessDropDown,processValue);
-		selectByVisibleText(selectSubProcessDropDown,subProcessValue);
-		selectByVisibleText(selectSubSubProcessDropDown,subSubProcessValue);
-
+	public MetaData selectProcesses(String processValue, String subProcessValue, String subSubProcessValue) {
+		selectByVisibleText(selectProcessDropDown, processValue);
+		selectByVisibleText(selectSubProcessDropDown, subProcessValue);
+		selectByVisibleText(selectSubSubProcessDropDown, subSubProcessValue);
 
 		return this;
 	}
 
-
-	public MetaData validateDatasetDropdown(WebElement dropdowns)
-	{
+	public MetaData validateDatasetDropdown(WebElement dropdowns) {
 		navToMetadataTable();
-		metaDataTextBox("","");
+		metaDataTextBox("", "");
 
-
-		assertFalse( isOptionPresent(dropdowns,"JAP"));
-		softAssert.assertTrue( isDropdownEnabled(dropdowns),"isDropdownEnabled failed");
+		assertFalse(isOptionPresent(dropdowns, "JAP"));
+		softAssert.assertTrue(isDropdownEnabled(dropdowns), "isDropdownEnabled failed");
 //		softAssert.assertTrue(isNoOptionSelected(dropdowns),"isNoOptionSelected failed");
-		softAssert.assertFalse(selectOptionByInvalidIndex(dropdowns,90),"selectOptionByInvalidIndex failed");
-		softAssert.assertTrue(selectMultipleOptions(dropdowns),"selectMultipleOptions failed");
+		softAssert.assertFalse(selectOptionByInvalidIndex(dropdowns, 90), "selectOptionByInvalidIndex failed");
+		softAssert.assertTrue(selectMultipleOptions(dropdowns), "selectMultipleOptions failed");
 
 		softAssert.assertAll();
 		return this;
 	}
 
-
-
-
 	// Method to check if an option exists (invalid option test)
-	public boolean isOptionPresent(WebElement dropdownElement,String optionText) {
+	public boolean isOptionPresent(WebElement dropdownElement, String optionText) {
 
 		Select select = new Select(dropdownElement);
 		try {
 			select.selectByVisibleText(optionText);
-			return true;  // Option exists
+			return true; // Option exists
 		} catch (NoSuchElementException e) {
-			return false;  // Option does not exist
+			return false; // Option does not exist
 		}
 	}
 
@@ -994,40 +982,40 @@ public class MetaData extends TestBase {
 		return firstSelectedOption == null || firstSelectedOption.isEmpty();
 	}
 
-
 	// Method to check if an invalid index can be selected
-	public boolean selectOptionByInvalidIndex(WebElement dropdownElement,int index) {
+	public boolean selectOptionByInvalidIndex(WebElement dropdownElement, int index) {
 
 		Select select = new Select(dropdownElement);
 		try {
 			select.selectByIndex(index);
-			return true;  // If no exception, index is valid (which should not happen for invalid index)
+			return true; // If no exception, index is valid (which should not happen for invalid index)
 		} catch (NoSuchElementException | IndexOutOfBoundsException e) {
-			return false;  // Expected result, index is invalid
+			return false; // Expected result, index is invalid
 		}
 	}
 
-	// Method to check if multiple selections are allowed in a single-select dropdown
+	// Method to check if multiple selections are allowed in a single-select
+	// dropdown
 	public boolean selectMultipleOptions(WebElement dropdownElement) {
 
 		Select select = new Select(dropdownElement);
 
 		if (!select.isMultiple()) {
 			try {
-				select.selectByIndex(1);  // Select the first option
-				select.selectByIndex(2);  // Attempt to select another option (should not be possible)
-				return false;  // If no exception, multiple selections are wrongly allowed
+				select.selectByIndex(1); // Select the first option
+				select.selectByIndex(2); // Attempt to select another option (should not be possible)
+				return false; // If no exception, multiple selections are wrongly allowed
 			} catch (Exception e) {
-				return true;  // Exception is expected in case of multiple selections in single-select dropdown
+				return true; // Exception is expected in case of multiple selections in single-select
+								// dropdown
 			}
 		} else {
-			return false;  // Dropdown allows multiple selection, skip this test
+			return false; // Dropdown allows multiple selection, skip this test
 		}
 	}
 
-
 	// Method to check if a disabled option can be selected
-	public boolean selectDisabledOption(String optionText,WebElement dropdownElement) {
+	public boolean selectDisabledOption(String optionText, WebElement dropdownElement) {
 
 		Select select = new Select(dropdownElement);
 		WebElement optionToSelect = null;
@@ -1042,18 +1030,13 @@ public class MetaData extends TestBase {
 		if (optionToSelect != null) {
 			try {
 				select.selectByVisibleText(optionText);
-				return false;  // If selected, it is a failure (disabled option should not be selectable)
+				return false; // If selected, it is a failure (disabled option should not be selectable)
 			} catch (Exception e) {
-				return true;  // Expected, as the option is disabled
+				return true; // Expected, as the option is disabled
 			}
 		}
-		return false;  // Option not found or not disabled
+		return false; // Option not found or not disabled
 	}
-
-
-
-
-
 
 	// Locator for the search box
 	private By searchBox = By.id("searchBox");
@@ -1126,10 +1109,12 @@ public class MetaData extends TestBase {
 		alert.accept(); // You can dismiss it
 	}
 
-	// 10. Validate that input field does not accept more than a specified number of characters
+	// 10. Validate that input field does not accept more than a specified number of
+	// characters
 	public void validateInputFieldLength(int maxLength) {
 		String inputValue = driver.findElement(searchBox).getAttribute("value");
-		Assert.assertTrue(inputValue.length() <= maxLength, "Input field should not accept more than " + maxLength + " characters.");
+		Assert.assertTrue(inputValue.length() <= maxLength,
+				"Input field should not accept more than " + maxLength + " characters.");
 	}
 
 	// 11. Validate invalid SQL injection or script injection input
@@ -1140,7 +1125,8 @@ public class MetaData extends TestBase {
 
 	// 12. Validate missing cookies or session (security check)
 	public void validateMissingSessionCookie() {
-		Assert.assertNull(driver.manage().getCookieNamed("sessionId"), "Session cookie should not exist for unauthorized access.");
+		Assert.assertNull(driver.manage().getCookieNamed("sessionId"),
+				"Session cookie should not exist for unauthorized access.");
 	}
 
 	// 13. Validate that the element is NOT present on the page
@@ -1152,7 +1138,8 @@ public class MetaData extends TestBase {
 	// 14. Validate incorrect form submission
 	public void validateFormNotSubmitted() {
 		String successText = driver.findElement(errorMessage).getText();
-		Assert.assertNotEquals(successText, "Form submitted successfully", "Form should not be submitted with invalid data.");
+		Assert.assertNotEquals(successText, "Form submitted successfully",
+				"Form should not be submitted with invalid data.");
 	}
 
 	// 15. Validate for security vulnerabilities like XSS or SQL injection
@@ -1167,17 +1154,17 @@ public class MetaData extends TestBase {
 	@FindBy(xpath = "//table[@class='w-100']//tr[1]//td[1]")
 	WebElement metaDataRecordName;
 
-	public MetaData metaDataCreate(String metaDataName,String process,String subProcess,String subSubProcess,String dataSetValue){
+	public MetaData metaDataCreate(String metaDataName, String process, String subProcess, String subSubProcess,
+			String dataSetValue) {
 		dataSetup.click();
 		metaDataTab.click();
 		createMetaDataButton.click();
 
-
-		sendKeys(metaDataNameField,metaDataName);
-		selectByVisibleText(selectProcessDropDown,process);
-		selectByVisibleText(selectSubProcessDropDown,subProcess);
-		selectByVisibleText(selectSubSubProcessDropDown,subSubProcess);
-		selectByVisibleText(selectDataSetDropDown,dataSetValue);
+		sendKeys(metaDataNameField, metaDataName);
+		selectByVisibleText(selectProcessDropDown, process);
+		selectByVisibleText(selectSubProcessDropDown, subProcess);
+		selectByVisibleText(selectSubSubProcessDropDown, subSubProcess);
+		selectByVisibleText(selectDataSetDropDown, dataSetValue);
 
 		create.click();
 		unWaitInMilli(1000);
@@ -1193,7 +1180,7 @@ public class MetaData extends TestBase {
 		return this;
 	}
 
-	public MetaData clickOnTransUniqueId(String usernameToDoAction){
+	public MetaData clickOnTransUniqueId(String usernameToDoAction) {
 		List<WebElement> rows = driver.findElements(By.xpath("//tbody[@class='view_all_colmns']//tr"));
 
 		for (WebElement row : rows) {
@@ -1207,20 +1194,18 @@ public class MetaData extends TestBase {
 					System.out.println(usernameToDoAction + " Successfully Clicked");
 					break;
 
-				}else {
-					System.out.println(usernameToDoAction+" Is not Found");
+				} else {
+					System.out.println(usernameToDoAction + " Is not Found");
 				}
-			}catch (NoSuchElementException e)
-			{
+			} catch (NoSuchElementException e) {
 				System.out.println(e.getMessage());
 			}
 		}
 
-
 		return this;
 	}
 
-	public MetaData execute(String usernameToDoAction){
+	public MetaData execute(String usernameToDoAction) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
 		for (WebElement row : rows) {
@@ -1234,11 +1219,10 @@ public class MetaData extends TestBase {
 					System.out.println(usernameToDoAction + " Successfully Clicked");
 					break;
 
-				}else {
-					System.out.println(usernameToDoAction+" Is not Found");
+				} else {
+					System.out.println(usernameToDoAction + " Is not Found");
 				}
-			}catch (NoSuchElementException e)
-			{
+			} catch (NoSuchElementException e) {
 				System.out.println(e.getMessage());
 			}
 		}
@@ -1248,9 +1232,5 @@ public class MetaData extends TestBase {
 
 		return this;
 	}
-
-
-
-
 
 }

@@ -106,7 +106,7 @@ public class ManualAllocationPage extends TestBase {
 
 	public ManualAllocationPage navigateToAlchemyManualAllocation() {
 
-		click(driver, alchemyButton);
+		jsClick(alchemyButton);
 		click(driver, alchemyButton);
 		click(driver, manualAllocationButton);
 		click(driver, createManualAllocationButton);

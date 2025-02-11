@@ -386,4 +386,165 @@ public class DropDown extends TestBase {
 		WebElement labelElement = driver.findElement(By.xpath(labelXPath));
 		assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
 	}
+
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+	// Example dropdown element locator
+	By dropdownLocator = By.id("dropdown"); // Update with actual dropdown ID
+
+	public void testEmptyDropdownOptions() {
+		// Scenario: Dropdown has no options.
+		// Expected: Options list should be empty.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertTrue(select.getOptions().isEmpty(), "Dropdown options are not empty.");
+	}
+
+	public void testSelectInvalidOptionByVisibleText() {
+		// Scenario: Select a non-existent option by visible text.
+		// Expected: Exception should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(Exception.class, () -> select.selectByVisibleText("Invalid Option"));
+	}
+
+	public void testSelectInvalidOptionByValue() {
+		// Scenario: Select a non-existent option by value.
+		// Expected: Exception should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(Exception.class, () -> select.selectByValue("invalid_value"));
+	}
+
+	public void testSelectInvalidOptionByIndex() {
+		// Scenario: Select an option with an out-of-bounds index.
+		// Expected: IndexOutOfBoundsException should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(IndexOutOfBoundsException.class, () -> select.selectByIndex(999));
+	}
+
+	public void testMultipleSelectionNotAllowed() {
+		// Scenario: Attempt multiple selection in a single-select dropdown.
+		// Expected: Dropdown should not allow multiple selections.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertFalse(select.isMultiple(), "Dropdown should not allow multiple selections.");
+	}
+
+	public void testDropdownDisabled() {
+		// Scenario: Dropdown is disabled.
+		// Expected: Dropdown should not be enabled for interaction.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Assert.assertFalse(dropdown.isEnabled(), "Dropdown should be disabled.");
+	}
+
+	public void testDropdownHidden() {
+		// Scenario: Dropdown is not visible on the page.
+		// Expected: Dropdown should not be displayed.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Assert.assertFalse(dropdown.isDisplayed(), "Dropdown should be hidden.");
+	}
+
+	public void testDropdownWithoutDefaultSelection() {
+		// Scenario: Dropdown has no default selection.
+		// Expected: No option should be pre-selected.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertNull(select.getFirstSelectedOption(), "Dropdown has a default selection.");
+	}
+
+	public void testDropdownOptionsMismatch() {
+		// Scenario: Dropdown options do not match the expected list.
+		// Expected: Options list should not match the given values.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		List<WebElement> options = select.getOptions();
+		String[] expectedOptions = { "Option 1", "Option 2", "Option 3" };
+		for (String expected : expectedOptions) {
+			boolean match = options.stream().anyMatch(o -> o.getText().equals(expected));
+			Assert.assertFalse(match, "Unexpected dropdown option found: " + expected);
+		}
+	}
+
+	public void testDropdownOptionsContainNull() {
+		// Scenario: Dropdown options contain null or empty values.
+		// Expected: At least one option should be null or empty.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		boolean containsNull = select.getOptions().stream().anyMatch(o -> o.getText() == null || o.getText().isEmpty());
+		Assert.assertTrue(containsNull, "Dropdown options should contain null or empty values.");
+	}
+
+	public void testDropdownOptionsDuplicateValues() {
+		// Scenario: Dropdown options contain duplicate values.
+		// Expected: No duplicate options should be present.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		List<WebElement> options = select.getOptions();
+		Set<String> optionSet = new HashSet<>();
+		for (WebElement option : options) {
+			Assert.assertTrue(optionSet.add(option.getText()), "Duplicate option found: " + option.getText());
+		}
+	}
+
+	public void testDropdownSelectWithoutOpening() {
+		// Scenario: Attempt to select an option without opening the dropdown.
+		// Expected: Exception should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(Exception.class, () -> select.selectByIndex(1));
+	}
+
+	public void testEmptyOptionSelection() {
+		// Scenario: Attempt to select an empty option.
+		// Expected: Exception should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(Exception.class, () -> select.selectByVisibleText(""));
+	}
+
+	public void testExcessiveDropdownOptions() {
+		// Scenario: Dropdown contains an excessive number of options.
+		// Expected: Options count should not exceed the acceptable limit (e.g., 1000).
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertTrue(select.getOptions().size() <= 1000, "Dropdown has too many options.");
+	}
+
+	public void testDropdownOptionCaseSensitivity() {
+		// Scenario: Select an option with incorrect case sensitivity.
+		// Expected: Exception should be thrown.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		Assert.assertThrows(Exception.class, () -> select.selectByVisibleText("option 1"));
+	}
+
+	public void testDropdownOptionHtmlInjection() {
+		// Scenario: Dropdown options contain HTML injection.
+		// Expected: Options should not contain malicious HTML tags.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		Select select = new Select(dropdown);
+		boolean containsHtml = select.getOptions().stream().anyMatch(o -> o.getText().contains("<script>"));
+		Assert.assertFalse(containsHtml, "Dropdown options should not contain HTML injection.");
+	}
+
+	public void testDropdownWithoutAttributes() {
+		// Scenario: Dropdown element is missing essential attributes (e.g., ID).
+		// Expected: Attributes like ID should not be null.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		String id = dropdown.getAttribute("id");
+		Assert.assertNotNull(id, "Dropdown should have an ID.");
+	}
+
+	public void testDropdownCssMisalignment() {
+		// Scenario: Dropdown CSS is misaligned (e.g., incorrect position or
+		// visibility).
+		// Expected: CSS attributes should match expected values.
+		WebElement dropdown = driver.findElement(dropdownLocator);
+		String cssValue = dropdown.getCssValue("position");
+		Assert.assertEquals(cssValue, "relative", "Dropdown is misaligned.");
+	}
 }

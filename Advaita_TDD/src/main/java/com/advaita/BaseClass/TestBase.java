@@ -1,13 +1,21 @@
 package com.advaita.BaseClass;
 
+import static org.testng.Assert.assertFalse;
+
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.io.File;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-import com.advaita.pageObjects.EmailTemplatePage;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +23,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
+import org.openqa.selenium.devtools.v129.network.Network;
+import org.openqa.selenium.devtools.v129.network.model.RequestId;
+import org.openqa.selenium.devtools.v129.network.model.Response;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -26,9 +37,6 @@ import com.advaita.Login.Home.LoginPage;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 public class TestBase {
 
@@ -42,10 +50,13 @@ public class TestBase {
 	public static Actions actions;
 	public static JavascriptExecutor js;
 	public static Robot robot;
+	public static Properties properties;
 
+  
 	protected static SoftAssert softAssert;
 	public static String mainURl = "https://test.capture.autosherpas.com/";
 //	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
+	
 
 	public static void initialization() throws AWTException {
 		WebDriverManager.chromedriver().setup();
@@ -64,12 +75,12 @@ public class TestBase {
 		Map<String, Object> prefs = new HashMap<>();
 		// Set Chrome preferences to block microphone and camera
 
-		prefs.put("profile.default_content_setting_values.media_stream_mic", 2);  // 1: Allow, 2: Block
-		prefs.put("profile.default_content_setting_values.media_stream_camera", 2);  // Block camera as well
+		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
+		prefs.put("profile.default_content_setting_values.media_stream_camera", 2); // Block camera as well
 		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
 		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
-		if(driver==null) {
+		if (driver == null) {
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().deleteAllCookies();
@@ -77,48 +88,59 @@ public class TestBase {
 			wait = new WebDriverWait(driver, Duration.ofSeconds(25));
 		}
 
-
 //		driver = new ChromeDriver(options);
-
 
 		actions = new Actions(driver);
 		robot = new Robot();
+		properties = new Properties();
 		js = (JavascriptExecutor) driver;
 		softAssert = new SoftAssert();
 
-		// For Get the Error Status
-		// devTools = ((ChromeDriver) driver).getDevTools();
-		// devTools.createSession();
-		// devTools.send(Network.enable(Optional.empty(), Optional.empty(),
-		// Optional.empty()));
-		//
-		// devTools.addListener(Network.requestWillBeSent(), requestConsumer -> {
-		// Request req = requestConsumer.getRequest();
-		//
-		// // System.out.println("Send URL :- "+req.getUrl()+"\n"+"\n");
-		// });
-		//
-		// devTools.addListener(Network.responseReceived(), response -> {
-		// Response res = response.getResponse();
-		//
-		// // System.err.println(res.getStatus() + " :-
-		// "+res.getStatusText()+"\n"+"\n");
-		// if (res.getStatus().toString().startsWith("3") ||
-		// res.getStatus().toString().startsWith("4")
-		// || res.getStatus().toString().startsWith("5")) {
-		// String errorMessage = "Error status received: " + res.getStatus() + " - " +
-		// res.getStatusText()
-		// + "\nError URL: " + res.getUrl();
-		//
-		// System.out.println(errorMessage);
-		// // Hard assertion
-		// Assert.fail(errorMessage);
-		// }
-		// });
+		// Set up DevTools
+		DevTools devTools = ((ChromeDriver) driver).getDevTools();
+		devTools.createSession();
+
+		// Enable network tracking
+		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+
+		// Add a listener to capture response details
+		devTools.addListener(Network.responseReceived(), response -> {
+			RequestId requestId = response.getRequestId();
+			Response responseDetails = response.getResponse();
+
+			// Get the status code and status text
+			int statusCode = responseDetails.getStatus();
+			String statusText = responseDetails.getStatusText();
+
+			// Print details only if the status code starts with 3, 4, or 5
+			if (statusCode >= 300 && statusCode < 600) { // Status codes 3xx, 4xx, 5xx
+				System.out.println("\n"+"URL: " + responseDetails.getUrl());
+				System.out.println("Status Code: " + statusCode);
+				System.out.println("Status Text: " + statusText + "\n");
+			}
+		});
 
 		driver.get(mainURl);
 
 	}
+	
+
+ // Helper method to delete existing files in the folder
+    public static void deleteExistingFiles(File folder) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    boolean deleted = file.delete();
+                    if (deleted) {
+                        System.out.println("Deleted existing file: " + file.getName());
+                    } else {
+                        System.out.println("Failed to delete file: " + file.getName());
+                    }
+                }
+            }
+        }
+    }
 
 	// SendKeys
 
@@ -128,10 +150,9 @@ public class TestBase {
 		webelement.sendKeys(str);
 	}
 
-	volatile String a="James";
-	
+	volatile String a = "James";
 
-	@FindBy(xpath = "(//button[text()='Continue'])[1]")
+	@FindBy(xpath = "(//button[text()='Continue'])[2]")
 	public WebElement continueButton;
 
 	@FindBy(xpath = "//button[text()='Save']")
@@ -148,6 +169,7 @@ public class TestBase {
 	protected void jsDateExecutor(WebElement dateField, String date) {
 		js.executeScript("arguments[0].value = arguments[1];", dateField, date);
 	}
+
 	public static void clickElementMultipleTimes(WebDriver driver, WebElement element, int clickCount) {
 		for (int i = 0; i < clickCount; i++) {
 			jsClick(element);
@@ -162,6 +184,7 @@ public class TestBase {
 	public void scrollToPercentage(int percentage) {
 		js.executeScript("window.scrollTo(0, document.body.scrollHeight * " + (percentage / 100.0) + ");");
 	}
+
 	public void jsWindowsScrollIntoView(WebElement element) {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 	}
@@ -183,7 +206,7 @@ public class TestBase {
 	}
 
 	protected void selectByVisibleText(WebElement dropdownElement, String optionText) {
-		
+
 		wait.until(ExpectedConditions.visibilityOf(dropdownElement));
 		// Create a Select object for the dropdown
 		Select dropdown = new Select(dropdownElement);
@@ -233,8 +256,10 @@ public class TestBase {
 		}
 
 	}
+
 	@FindBy(xpath = "(//a[@id='menulist3'])[2]")
 	WebElement masters;
+
 	public void navigateWithinMasters(WebElement element) {
 		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
@@ -298,11 +323,9 @@ public class TestBase {
 
 	}
 
-
-	public void dropdownUtil(WebElement dropdownElement, String expectedOption)
-	{
-		Select dropdown=new Select(dropdownElement);
-        assertFalse(dropdown.isMultiple());
+	public void dropdownUtil(WebElement dropdownElement, String expectedOption) {
+		Select dropdown = new Select(dropdownElement);
+		assertFalse(dropdown.isMultiple());
 		try {
 			List<WebElement> options = dropdown.getOptions();
 
@@ -317,7 +340,7 @@ public class TestBase {
 			throw new AssertionError("Error validating dropdown options.", e);
 		}
 
-		//		Verify the dropdown contains the expected options.
+		// Verify the dropdown contains the expected options.
 
 		try {
 			// Get all options from the dropdown
@@ -341,9 +364,7 @@ public class TestBase {
 			throw new AssertionError("Error validating dropdown options.", e);
 		}
 
-
 	}
-
 
 	public static void click1(WebDriver driver, WebElement element) {
 		try {

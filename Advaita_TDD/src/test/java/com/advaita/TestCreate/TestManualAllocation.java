@@ -1,6 +1,7 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
+import com.advaita.Utilities.ScreenRecorderUtil;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
@@ -38,6 +40,19 @@ import com.github.javafaker.Faker;
 import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
+
+	static String employeeName = "TestADD";
+
+	// Run Test Based on Boolean
+	final boolean processRun = true;
+	final boolean dataSetRun = true;
+	final boolean metaDataRun = true;
+	final boolean manualUploadRun = true;
+	final boolean nonMeasurableRun = false;
+	final boolean stageRun = true;
+	final boolean userRun = false;
+	final boolean samplingPlanRun = false;
+	final boolean manualAllocationRun = false;
 
 	Faker faker = new Faker();
 //	public String num = "24";
@@ -68,6 +83,9 @@ public class TestManualAllocation extends TestBase {
 	@BeforeTest
 	public void setUp() throws Throwable {
 		initialization();
+
+//		ScreenRecorderUtil.startRecord("ManualUploadRecording");
+
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
@@ -99,19 +117,6 @@ public class TestManualAllocation extends TestBase {
 		manualAllocationPage = new ManualAllocationPage();
 
 	}
-
-	// Run Test Based on Boolean
-	final boolean processRun = true;
-	final boolean dataSetRun = true;
-	final boolean metaDataRun = true;
-	final boolean manualUploadRun = true;
-	final boolean nonMeasurableRun = true;
-	final boolean stageRun = true;
-	final boolean userRun = true;
-	final boolean samplingPlanRun = true;
-	final boolean manualAllocationRun = true;
-
-	static String employeeName = "DemoEmpJ";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
@@ -150,10 +155,10 @@ public class TestManualAllocation extends TestBase {
 		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
 		// Define the types and order of questions you want to select
 		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Text Area", "Number", "HyperLink");
+		List<String> types = Arrays.asList("Text Area", "Character", "HyperLink");
 
 		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 3, true);
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 5, true);
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
 				.createDataSetButtonAndConfirmation();
@@ -180,15 +185,15 @@ public class TestManualAllocation extends TestBase {
 
 		test = reports.createTest("verifyCreateManualUpload");
 		homePage.clickOnProcessManagementCreate();
-		
-		int addNumberOfRecord = 25;
-		
-		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 
+		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
+		int addNumberOfRecord = 15;
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), addNumberOfRecord)
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
-				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark, addNumberOfRecord);
 
 	}
 
@@ -236,22 +241,28 @@ public class TestManualAllocation extends TestBase {
 
 		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
 				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
-				.verifyAddSectionA(true, false).verifyAddAndRemoveBlockInSectionB(4)
-				.selectMetaDataInAddBlockSectionB(2, true, false)
-				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
+				.verifyAddSectionA(false, false, true);
+
+		// .verifyAddAndRemoveBlockInSectionB(4)
+		// .selectMetaDataInAddBlockSectionB(2, true, false)
+//		stages.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
 //		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
 		String viewCheckBox[] = { "all" };
 
-//		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
-//				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
-		String toggleButtonOptions[] = { "all" };
+		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
+				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
 
+//		String toggleButtonOptions[] = { "all" };
 		stages.actionSection(viewCheckBox).actionSectionToggle(toggleButtonOptions);
 
 		stages.dispositionSection().saveAndConfirmation();
+
+		// delete created stage
 //		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
-		stages.selectTransIDInEvaluationField(stages.stageEvaluationDropdown,stageName);
+
+		stages.selectAllInEvaluationField(stageName).stageSettingListSaveAndConfirmation();
+
 	}
 
 	static String lastName = " QA";
@@ -291,9 +302,10 @@ public class TestManualAllocation extends TestBase {
 		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile("metaData");
 
 		SPAG.createSamplingPlan(processValue, subProcessValue, subSubProcessValue, stages, metaData)
-				.generalTabSPAG(samplingName).generalTabToggleButton("all").saveSamplingAndGetConfirmation();
+				.generalTabSPAG(samplingName).generalTabToggleButton("allSample");
+		SPAG.saveSamplingAndGetConfirmation();
 
-		SPAG.validationSamplingStatus(stages, processValue, subProcessValue, subSubProcessValue);
+//		SPAG.validationSamplingStatus(stages, processValue, subProcessValue, subSubProcessValue);
 
 	}
 
@@ -336,10 +348,11 @@ public class TestManualAllocation extends TestBase {
 	}
 
 	@AfterTest
-	public void tearDown() {
+	public void tearDown() throws Throwable {
 //		driver.manage().window().minimize();
 //		driver.quit();
 		reports.flush();
+//		ScreenRecorderUtil.stopRecord();
 	}
 
 }

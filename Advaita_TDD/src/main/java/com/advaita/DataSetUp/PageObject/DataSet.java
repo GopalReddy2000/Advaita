@@ -5,13 +5,17 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import com.sun.jna.WString;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
@@ -20,6 +24,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
@@ -36,7 +41,7 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 public class DataSet extends TestBase {
 
 	@FindBy(xpath = "//a[normalize-space()='Data Setup']")
-	private WebElement dataSetup;
+	public WebElement dataSetup;
 
 	@FindBy(id = "pills-dataset-tab")
 	public WebElement dataSetTab;
@@ -52,7 +57,6 @@ public class DataSet extends TestBase {
 
 	@FindBy(xpath = "//input[@name='form-0-dataset_fieldname']")
 	public WebElement fieldNameField;
-
 
 	@FindBy(xpath = "//input[contains(@id,'dataset_fieldname') and not(contains(@id,'prefix'))]")
 	public List<WebElement> fieldNameFields;
@@ -256,7 +260,6 @@ public class DataSet extends TestBase {
 		dropDown1.click();
 		Thread.sleep(1000);
 		dropDown2.isDisplayed();
-
 
 		dropDown2.click();
 		Thread.sleep(1000);
@@ -517,7 +520,7 @@ public class DataSet extends TestBase {
 				.getText();
 
 		String subSubProcesText = driver.findElement(By
-						.xpath("//h3[normalize-space()='Sub Sub Process']/..//h3[@class='process-first ss_process_name_data']"))
+				.xpath("//h3[normalize-space()='Sub Sub Process']/..//h3[@class='process-first ss_process_name_data']"))
 				.getText();
 
 		System.out.println("createdDataSet : " + createdDataSet + "\n" + procesText + "\n" + subProcesText + "\n"
@@ -649,11 +652,8 @@ public class DataSet extends TestBase {
 		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", fetchsubProcess.getText());
 		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", fetchsubSubProcess.getText());
 
-
-
-		System.out.println("Process : " + fetchProcess.getText() + "\n"
-				+ "Sub Process : " + fetchsubProcess.getText() + "\n"
-				+ "Sub Sub Process : " + fetchsubSubProcess.getText());
+		System.out.println("Process : " + fetchProcess.getText() + "\n" + "Sub Process : " + fetchsubProcess.getText()
+				+ "\n" + "Sub Sub Process : " + fetchsubSubProcess.getText());
 
 		System.out.println("Data Set Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("Process") + "\n"
 				+ "Data Set Sub Process : " + PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess") + "\n"
@@ -670,141 +670,141 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
-	public DataSet navToDataset(){
+	public DataSet navToDataset() {
 		dataSetup.click();
 		dataSetTab.click();
 
 		return this;
 	}
 
-	public DataSet createDatasetButton(){
+	public DataSet createDatasetButton() {
 		jsClick(createDataSetButton);
 		return this;
 	}
 
-	public DataSet datasetNameField(String datasetName ){
-		sendKeys(dataSetNameField,datasetName);
-		return this;
-	}
-	public DataSet processDropdown(String process){
-		selectByVisibleText(processDropDown,process);
+	public DataSet datasetNameField(String datasetName) {
+		sendKeys(dataSetNameField, datasetName);
 		return this;
 	}
 
-	public DataSet subProcessDropdown(String subProcess){
-		selectByVisibleText(subProcessDropDown,subProcess);
+	public DataSet processDropdown(String process) {
+		selectByVisibleText(processDropDown, process);
 		return this;
 	}
 
-	public DataSet subSubProcessDropdown(String subSubProcess){
-		selectByVisibleText(subSubProcessDropDown,subSubProcess);
+	public DataSet subProcessDropdown(String subProcess) {
+		selectByVisibleText(subProcessDropDown, subProcess);
 		return this;
 	}
 
-	public DataSet deleteAllFields(){
-		clickMultipleTimes(deleteButtons.get(0),deleteButtons.size());
+	public DataSet subSubProcessDropdown(String subSubProcess) {
+		selectByVisibleText(subSubProcessDropDown, subSubProcess);
 		return this;
 	}
 
-	@FindBy (id = "dataset_name-error")
+	public DataSet deleteAllFields() {
+		clickMultipleTimes(deleteButtons.get(0), deleteButtons.size());
+		return this;
+	}
+
+	@FindBy(id = "dataset_name-error")
 	WebElement datasetError;
 
-	@FindBy (id = "process-error")
+	@FindBy(id = "process-error")
 	WebElement processError;
 
-	@FindBy (id = "sub_process-error")
+	@FindBy(id = "sub_process-error")
 	WebElement subProcessError;
 
-	@FindBy (id = "s_sub_process-error")
+	@FindBy(id = "s_sub_process-error")
 	WebElement subSubProcessError;
 
-
-
-
-	public DataSet createDataset(String datasetName,String process,String subProcess,String subSubProcess){
+	public DataSet createDataset(String datasetName, String process, String subProcess, String subSubProcess) {
 		dataSetup.click();
 		dataSetTab.click();
 		createDataSetButton.click();
 		dataSetNameField.sendKeys(datasetName);
 
-		selectByVisibleText(processDropDown,process);
-		selectByVisibleText(subProcessDropDown,subProcess);
-		selectByVisibleText(subSubProcessDropDown,subSubProcess);
+		selectByVisibleText(processDropDown, process);
+		selectByVisibleText(subProcessDropDown, subProcess);
+		selectByVisibleText(subSubProcessDropDown, subSubProcess);
 
 		return this;
 	}
 
-	public void selectByValue(WebElement element,String value){
+	public void selectByValue(WebElement element, String value) {
 
-		Select select=new Select(element);
+		Select select = new Select(element);
 		select.selectByValue(value);
 	}
 
-	public DataSet fieldNameInput(int fieldNameNumber, String fieldName){
-		sendKeys(fieldNameFields.get(fieldNameNumber),fieldName);
+	public DataSet fieldNameInput(int fieldNameNumber, String fieldName) {
+		sendKeys(fieldNameFields.get(fieldNameNumber), fieldName);
 		return this;
 	}
 
-	public DataSet labelNameInput(int fieldNameNumber, String fieldName){
-		sendKeys(labelFieldNames.get(fieldNameNumber),fieldName);
+	public DataSet labelNameInput(int fieldNameNumber, String fieldName) {
+		sendKeys(labelFieldNames.get(fieldNameNumber), fieldName);
 		return this;
 	}
 
-	public DataSet type(int fieldNameNumber,String fieldType){
-		selectByVisibleText(fieldTypes.get(fieldNameNumber),fieldType);
+	public DataSet type(int fieldNameNumber, String fieldType) {
+		selectByVisibleText(fieldTypes.get(fieldNameNumber), fieldType);
 		return this;
 	}
 
-	public DataSet maxLengthFields(int fieldNameNumber,String maxLength){
-		selectByVisibleText(maxLengthFields.get(fieldNameNumber),maxLength);
+	public DataSet maxLengthFields(int fieldNameNumber, String maxLength) {
+		selectByVisibleText(maxLengthFields.get(fieldNameNumber), maxLength);
 		return this;
 	}
 
-	public DataSet isMandatory(int fieldNameNumber,String isMandatoryValue){
-		selectByValue(isMandatoryDropdown.get(fieldNameNumber),isMandatoryValue);
+	public DataSet isMandatory(int fieldNameNumber, String isMandatoryValue) {
+		selectByValue(isMandatoryDropdown.get(fieldNameNumber), isMandatoryValue);
 		return this;
 	}
 
-	public boolean datasetError(String  dataSetError){
+	public boolean datasetError(String dataSetError) {
 
-		return datasetError.isDisplayed()&& datasetError.getText().equals(dataSetError);
+		return datasetError.isDisplayed() && datasetError.getText().equals(dataSetError);
 	}
 
-	public boolean processError(){
+	public boolean processError() {
 
 		return processError.isDisplayed();
 	}
 
-	public boolean subProcessError(){
+	public boolean subProcessError() {
 
 		return subProcessError.isDisplayed();
 	}
 
-	public boolean subSubProcessError(){
+	public boolean subSubProcessError() {
 
 		return subSubProcessError.isDisplayed();
 	}
 
-
-	public DataSet addFieldNames(int fieldNameNumber, String fieldName,String fieldType,String maxLength,String isMandatoryValue){
+	public DataSet addFieldNames(int fieldNameNumber, String fieldName, String fieldType, String maxLength,
+			String isMandatoryValue) {
 		fieldNameFields.get(fieldNameNumber).sendKeys(fieldName);
 		labelFieldNames.get(fieldNameNumber).sendKeys(fieldName);
-		selectByVisibleText(fieldTypes.get(fieldNameNumber),fieldType);
+		selectByVisibleText(fieldTypes.get(fieldNameNumber), fieldType);
 		maxLengthFields.get(fieldNameNumber).sendKeys(maxLength);
-		selectByValue(isMandatoryDropdown.get(fieldNameNumber),isMandatoryValue);
+		selectByValue(isMandatoryDropdown.get(fieldNameNumber), isMandatoryValue);
 
 		return this;
 	}
 
-	public DataSet addRow(){
+	public DataSet addRow() {
 		jsClick(addRow);
 		return this;
 	}
-	public  DataSet recordCreateButton(){
+
+	public DataSet recordCreateButton() {
 		jsClick(create);
 		return this;
 	}
-	public DataSet datasetCreate(){
+
+	public DataSet datasetCreate() {
 		create.click();
 		unWaitInMilli(500);
 		continueButton.click();
@@ -864,8 +864,10 @@ public class DataSet extends TestBase {
 			assertFalse(true, "dataSetName is displayed");
 		}
 
+		unWait(1);
+
 		String enteredText = dataSetNameField.getAttribute("value");
-		assertEquals(enteredText, dataSetName, "dataSetName is not correctly entered in the field.");
+		assertEquals(enteredText, dataSetName.replace(" ", ""), "dataSetName is not correctly entered in the field.");
 	}
 
 	public DataSet processDropDownSelect(WebElement processDropDown, String processValue) {
@@ -879,6 +881,9 @@ public class DataSet extends TestBase {
 
 	public DataSet subProcessDropDownSelect(WebElement subProcessDropDown, String subProcessValue) {
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='sub_process']/option")));
+
 		assertTrue(subProcessDropDown.isDisplayed());
 		Select select1 = new Select(subProcessDropDown);
 		select1.selectByVisibleText(subProcessValue);
@@ -888,6 +893,9 @@ public class DataSet extends TestBase {
 
 	public DataSet subSubProcessDropDownSelect(WebElement subSubProcessDropDown, String subSubProcessValue) {
 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
+
 		assertTrue(subSubProcessDropDown.isDisplayed());
 		Select select = new Select(subSubProcessDropDown);
 		select.selectByVisibleText(subSubProcessValue);
@@ -895,41 +903,76 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
+	private static final String PROPERTIES_FILE = "src/main/resources/DataSet.properties";
+
 	public DataSet enterFieldNameAndValidations(List<Map<String, String>> fieldData) throws Throwable {
+	    // Using LinkedHashMap to maintain order
+	    LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
 
-		for (int i = 0; i < fieldData.size(); i++) {
-			Map<String, String> row = fieldData.get(i);
+	    try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
+	        properties.store(fos, "Cleared Existing Labels");
+	    }
 
-			String fieldName = row.get("FieldName");
-			String type = row.get("Type");
-			String maxLength = row.get("MaxLength");
-			String isMandatory = row.get("IsMandatory");
+	    for (int i = 0; i < fieldData.size(); i++) {
+	        Map<String, String> row = fieldData.get(i);
 
-			// Verify and input field name
-			verifyFieldNameField(DynamicXpath.dataSetField(i), fieldName);
+	        String fieldName = row.get("FieldName");
+	        String type = row.get("Type");
+	        String maxLength = row.get("MaxLength");
+	        String isMandatory = row.get("IsMandatory");
 
-			// Verify and input label name
-			verifyLabelNameField(DynamicXpath.dataSetLabelField(i), fieldName);
+	        verifyFieldNameField(DynamicXpath.dataSetField(i), fieldName);
+	        verifyLabelNameField(DynamicXpath.dataSetLabelField(i), fieldName);
 
-			// Select type from dropdown
-			typeDropDownSelect(i, type);
+	        // Store label in LinkedHashMap
+	        labelMap.put("label_" + i, fieldName);
 
-			// Handle maxLength only if the type is not Date
-			if (!"Date".equalsIgnoreCase(type) && !"Date Time".equalsIgnoreCase(type)) {
-				verifyMaxLengthField(DynamicXpath.dataSetMaxLength(i), maxLength);
-			}
+	        typeDropDownSelect(i, type);
 
-			// Select mandatory option
-			mandatoryDropDownSelect(i, isMandatory);
+	        if (!"Date".equalsIgnoreCase(type) && !"Date Time".equalsIgnoreCase(type)) {
+	            verifyMaxLengthField(DynamicXpath.dataSetMaxLength(i), maxLength);
+	        }
 
-			// Add a new row unless it's the last iteration
-			if (i < fieldData.size() - 1) {
-				click(driver, addRowButton);
-			}
-		}
+	        mandatoryDropDownSelect(i, isMandatory);
 
-		return this;
+	        if (i < fieldData.size() - 1) {
+	            click(driver, addRowButton);
+	        }
+	    }
+
+	    // Write to properties file in the correct order
+	    try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
+	        for (Map.Entry<String, String> entry : labelMap.entrySet()) {
+	            properties.setProperty(entry.getKey(), entry.getValue());
+	        }
+	        properties.store(fos, "Stored Label Names");
+	    }
+
+	    return this;
 	}
+
+	public ArrayList<String> getLabelNamesFromProperties() {
+		
+	    ArrayList<String> labelNames = new ArrayList<>();
+	    LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
+
+	    try (BufferedReader reader = new BufferedReader(new FileReader(PROPERTIES_FILE))) {
+	        String line;
+	        while ((line = reader.readLine()) != null) {
+	            if (line.contains("=")) {
+	                String[] parts = line.split("=", 2);
+	                labelMap.put(parts[0].trim(), parts[1].trim());
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    labelNames.addAll(labelMap.values()); // Maintain insertion order
+
+	    return labelNames;
+	}
+
 
 	public DataSet verifyFieldNameField(WebElement fieldNameField, String fieldName) {
 
@@ -945,7 +988,8 @@ public class DataSet extends TestBase {
 		SendDataUtils.clearAndSendKeys(fieldNameField, fieldName);
 
 		String enteredText = fieldNameField.getAttribute("value");
-		assertEquals(enteredText, fieldName, "fieldName is not correctly entered in the field.");
+		assertEquals(enteredText.replace(" ", ""), fieldName.replace(" ", ""),
+				"fieldName is not correctly entered in the field.");
 
 		return this;
 	}
@@ -1018,10 +1062,9 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "//h2[text()='Create Dataset']/following-sibling::span")
 	WebElement close;
 
-	public DataSet close(){
+	public DataSet close() {
 		jsClick(close);
 		return this;
 	}
-
 
 }

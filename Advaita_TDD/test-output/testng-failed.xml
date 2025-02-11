@@ -3,19 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestReAllocationCreate">
+      <class name="com.advaita.TestCreate.TestManualAllocation">
         <methods>
+          <include name="tearDown"/>
           <include name="verifyCreateManualUpload"/>
-          <include name="verifyUserCreateAndUserMapping"/>
+          <include name="getResult"/>
           <include name="setUp"/>
-          <include name="verifynewCreateMetaData"/>
-          <include name="verifyCreateNonMeasurable"/>
-          <include name="verifyStageCreate"/>
-          <include name="verifyReAllocationCreate"/>
-          <include name="verifyManualAllocationCreate"/>
-          <include name="verifyCreateSamplingPlan"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestReAllocationCreate -->
+      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -98,7 +98,7 @@ public class MastersEndToEnd extends TestBase {
 	public void verifyCreateMasterForm() throws Throwable {
 		test = reports.createTest("verifyCreateMasterForm");
 
-//		masterForm.createProcess();
+		masterForm.createProcess();
 		masterForm.navigationToProcessAndFetch();
 		masterForm.navigationToFieldSet2();
 		masterForm.getFieldSetSection1QuestionsForComparision();

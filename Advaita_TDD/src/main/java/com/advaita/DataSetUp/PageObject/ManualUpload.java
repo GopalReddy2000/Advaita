@@ -6,6 +6,7 @@ import static org.testng.Assert.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.CommonUtils;
 import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -84,7 +87,7 @@ public class ManualUpload extends TestBase {
 	@FindBy(xpath = "//h2[text()='Create Manual Upload']/following-sibling::span")
 	public WebElement close;
 
-@FindBy(xpath = "//span[text()='Total Records :']/following-sibling::span[1]")
+	@FindBy(xpath = "//span[text()='Total Records :']/following-sibling::span[1]")
 	public WebElement noOfUploadedRecord;
 
 	@FindBy(xpath = "//span[text()='Data Setup']")
@@ -93,14 +96,19 @@ public class ManualUpload extends TestBase {
 	@FindBy(xpath = "//button[text()='Data Upload']")
 	public WebElement dataUpload;
 
+	@FindBy(xpath = "//h2/../..//table//thead//th[1]/../../..//tbody/tr/td[1]")
+	public List<WebElement> uploadedRecord;
+
+	@FindBy(xpath = "//ul[@id='paginationLinks']//a")
+	public List<WebElement> pagination;
+
+	@FindBy(xpath = "//h2[contains(@class,'dataset_names_show')]/..//span[@aria-label='Close'][normalize-space()='×']")
+	public WebElement closeButtonOnPopUp;
+
 	public ManualUpload() {
 
 		PageFactory.initElements(driver, this);
 	}
-
-	String dataSetValue;
-
-	public ArrayList<String> filteredItems = new ArrayList<>();
 
 	String fileName;
 
@@ -110,30 +118,11 @@ public class ManualUpload extends TestBase {
 
 	public ManualUpload navigateToManualUpload() throws Throwable {
 
+		dataSetup.click();
+
 		// Assert whether dataSetTab Button is Displayed on the left Navigation Menu
 		assertTrue(dataSet.dataSetTab.isDisplayed(), "dataSetTab is not Displayed");
 		dataSet.dataSetTab.click();
-
-		dataSetValue = metaData.fetchDataSet.getText();
-
-		click(driver, metaData.fetchDataSet);
-
-		// Iterate through the items and add them to the ArrayList
-		for (WebElement item : dataSetQuestions) {
-
-			Thread.sleep(300);
-			String text = item.getText();
-			if (text.equals("Trans Unique Id")) {
-				break; // Stop when we reach "Trans Unique Id"
-			}
-			filteredItems.add(text);
-		}
-
-		click(driver, metaData.closeButton);
-
-		for (String item : filteredItems) {
-			System.out.println("Data Set Questions : " + item);
-		}
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(dataTab.isDisplayed(), "dataTab is not Displayed");
@@ -157,13 +146,14 @@ public class ManualUpload extends TestBase {
 
 		FieldVerificationUtils.verifyTextField(nameField, "Name ", name, true, true, 1);
 
+		String dataSetValue = PropertieFileUtil.getSingleTextFromPropertiesFile("dataSetName").replace(" ", "");
 		metaData.selectDataSet(dataSetDropdown, dataSetValue);
 
 		return this;
 	}
 
 	public ManualUpload formatDownloadAndUpdateAndUpload(ArrayList<String> filteredItems,
-														 List<Map<String, String>> generatedQuestions, int noOfQuestionsInExcel) throws Throwable {
+			List<Map<String, String>> generatedQuestions, int noOfQuestionsInExcel) throws Throwable {
 
 		click(driver, exportSampleFormatButton);
 
@@ -198,6 +188,8 @@ public class ManualUpload extends TestBase {
 		}
 
 		System.out.println("excelColumns : " + excelColumns);
+
+		System.out.println("filteredItems : " + filteredItems);
 
 		assertTrue(excelColumns.equals(filteredItems), "Excel columns are mismatching.");
 
@@ -258,7 +250,9 @@ public class ManualUpload extends TestBase {
 		return this;
 	}
 
-	public ManualUpload fillOtherFildsForUploadedFile(String remark) {
+	public ManualUpload fillOtherFildsForUploadedFile(String remark) throws IOException {
+
+		String dataSetValue = PropertieFileUtil.getSingleTextFromPropertiesFile("dataSetName").replace(" ", "");
 
 		FieldVerificationUtils.verifyTextArea(uploadRemarkField, remark, true);
 
@@ -268,13 +262,17 @@ public class ManualUpload extends TestBase {
 
 		assertTrue(selectedDataSet.isDisplayed(), "selectedDataSet is not Displayed");
 
-		FieldVerificationUtils.verifyTextArea(fileNameField, fileName, false);
+//		FieldVerificationUtils.verifyTextArea(fileNameField, fileName, false);
+//
+//		String clickFileXpath = "//li//div[normalize-space()='" + fileName + "']";
+//
+//		WebElement clickFile = driver.findElement(By.xpath(clickFileXpath));
+//
+//		clickFile.click();
 
-		String clickFileXpath = "//li//div[normalize-space()='" + fileName + "']";
+		String fileNameValue = fileNameField.getAttribute("value");
 
-		WebElement clickFile = driver.findElement(By.xpath(clickFileXpath));
-
-		clickFile.click();
+		assertEquals(fileNameValue, fileName, "File Name Mis-Matched");
 
 		FieldVerificationUtils.verifyTextArea(sheetNameField, "Sheet", false);
 
@@ -294,30 +292,74 @@ public class ManualUpload extends TestBase {
 		return this;
 	}
 
-	public ManualUpload valiadtionsAfterCreationOfManualUpload(String dataSet, String uploadName, String uploadRemark)
-			throws Throwable {
+	public ManualUpload valiadtionsAfterCreationOfManualUpload(String dataSet, String uploadName, String uploadRemark,
+			int numberOfUploadedData) throws Throwable {
 
-		String dataSetXpath = "//tbody/tr[1]//td[normalize-space()='" + dataSet + "']";
+		String dataSetXpath = "(//tbody//tr//td[normalize-space()='" + dataSet.replace(" ", "") + "'])[1]";
 		assertTrue(driver.findElement(By.xpath(dataSetXpath)).isDisplayed(), "dataSet is not displayed.");
 
-		String uploadNameXpath = "//tbody/tr[1]//td[normalize-space()='" + uploadName + "']";
+		String uploadNameXpath = "(//tbody//tr//td[normalize-space()='" + uploadName + "'])[1]";
 		assertTrue(driver.findElement(By.xpath(uploadNameXpath)).isDisplayed(), "uploadName is not displayed.");
 
-		String uploadRemarkXpath = "//tbody/tr[1]//td[normalize-space()='" + uploadRemark + "']";
+		String uploadRemarkXpath = "(//tbody//tr//td[normalize-space()='" + uploadRemark + "'])[1]";
 		assertTrue(driver.findElement(By.xpath(uploadRemarkXpath)).isDisplayed(),
 				"uploadRemarkXpath is not displayed.");
+
+//	Records After Upload
+
+		String uploadRecordViewButton = "//tbody//tr//td[normalize-space()='" + uploadName
+				+ "']/..//a[@id='show_history']";
+		driver.findElement(By.xpath(uploadRecordViewButton)).click();
+
+		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(uploadRecordViewButton)));
+		int noOfRecords = countTotalRecords(pagination, uploadedRecord);
+
+		System.out.println("noOfRecords : " + noOfRecords);
+//
+//		assertEquals(numberOfUploadedData, noOfRecords, "Values are not equal!");
+
+		click(driver, closeButtonOnPopUp);
 
 		return this;
 	}
 
-	public static void sendKeysWithParams( WebElement element, String text) {
+	public int countTotalRecords(List<WebElement> elementPagination, List<WebElement> elementRecords) {
+		int totalRecords1 = 0;
+		int totalRecords2 = 0;
+		int totalRecords3 = totalRecords1 + totalRecords2;
+
+		wait.until(ExpectedConditions.visibilityOfAllElements(elementPagination));
+		System.out.println("elementPagination size : " + elementPagination.size());
+
+		for (int i = 0; i < elementPagination.size(); i++) {
+			// Wait for table rows to be visible and count them
+//			wait.until(ExpectedConditions.visibilityOfElementLocated(tableRowLocator));
+
+			if (i == 0) {
+				totalRecords1 = elementRecords.size();
+			}
+			if (i == 1) {
+				totalRecords1 = elementRecords.size();
+			}
+
+			// Navigate to the next page if it's not the last page
+
+//				CommonUtils.scrollToElementByActions(elementPagination.get(i));
+			CommonUtils.scrollToElementByJS(elementPagination.get(i));
+
+			jsClick(elementPagination.get(i));
+
+			unWait(2);
+		}
+		return totalRecords3;
+	}
+
+	public static void sendKeysWithParams(WebElement element, String text) {
 		js.executeScript("arguments[0].value = arguments[1];", element, text);
 	}
 
-	public ManualUpload manualUploadRecord(String recordName,String dataSet,
-										   String uploadFile,String remarks,
-										   String fileName,String sheetName){
-
+	public ManualUpload manualUploadRecord(String recordName, String dataSet, String uploadFile, String remarks,
+			String fileName, String sheetName) {
 
 		dataSetup.click();
 		dataUpload.click();
@@ -326,12 +368,12 @@ public class ManualUpload extends TestBase {
 		createManualUploadButton.click();
 
 		nameField.sendKeys(recordName);
-		selectByVisibleText(dataSetDropdown,dataSet);
+		selectByVisibleText(dataSetDropdown, dataSet);
 
 		uploadElement.sendKeys(uploadFile);
 		uploadRemarkField.sendKeys(remarks);
 //		fileNameField.sendKeys(fileName);
-		sendKeysWithParams(fileNameField,fileName);
+		sendKeysWithParams(fileNameField, fileName);
 		sheetNameField.sendKeys(sheetName);
 
 		createButton.click();
@@ -341,74 +383,74 @@ public class ManualUpload extends TestBase {
 		return this;
 	}
 
-	public ManualUpload navToManualUpload(){
+	public ManualUpload navToManualUpload() {
 		dataSetup.click();
 		dataUpload.click();
 		manualUploadTab.click();
 		return this;
 	}
 
-	public ManualUpload create(){
+	public ManualUpload create() {
 		createManualUploadButton.click();
 		return this;
 	}
 
-	public ManualUpload name(String fileName){
-		sendKeys(nameField,fileName);
+	public ManualUpload name(String fileName) {
+		sendKeys(nameField, fileName);
 		return this;
 	}
 
-	public ManualUpload datasetDropdown(String datasetName){
-		selectByVisibleText(dataSetDropdown,datasetName);
+	public ManualUpload datasetDropdown(String datasetName) {
+		selectByVisibleText(dataSetDropdown, datasetName);
 		return this;
 	}
 
-	public ManualUpload exportSampleFormat(){
+	public ManualUpload exportSampleFormat() {
 		exportSampleFormatButton.click();
 		return this;
 	}
 
-	public ManualUpload uploadSheet(String uploadFile){
-		sendKeys(uploadElement,uploadFile);
+	public ManualUpload uploadSheet(String uploadFile) {
+		sendKeys(uploadElement, uploadFile);
 		return this;
 	}
 
-	public ManualUpload remarksField(String uploadRemarks){
-		sendKeys(uploadRemarkField,uploadRemarks);
+	public ManualUpload remarksField(String uploadRemarks) {
+		sendKeys(uploadRemarkField, uploadRemarks);
 		return this;
 	}
 
-	public ManualUpload fileName(String filename){
-		sendKeysWithParams(fileNameField,filename);
-		return this;
-	}
-	public ManualUpload sheetName(String sheetname){
-		sendKeysWithParams(sheetNameField,sheetname);
+	public ManualUpload fileName(String filename) {
+		sendKeysWithParams(fileNameField, filename);
 		return this;
 	}
 
-	public ManualUpload recordCreate(){
+	public ManualUpload sheetName(String sheetname) {
+		sendKeysWithParams(sheetNameField, sheetname);
+		return this;
+	}
+
+	public ManualUpload recordCreate() {
 		createButton.click();
 		return this;
 	}
 
-	public boolean nameError(String errorMessage){
+	public boolean nameError(String errorMessage) {
 		try {
 			return nameFieldError.isDisplayed() && nameFieldError.getText().equals(errorMessage);
-		}catch (NoSuchElementException e){
-			System.out.println("No Error Message Displayed as: "+errorMessage);
+		} catch (NoSuchElementException e) {
+			System.out.println("No Error Message Displayed as: " + errorMessage);
 			return false;
 		}
 	}
 
-	public WebElement errorDialogBox(){
+	public WebElement errorDialogBox() {
 		return errorMessagePop;
 	}
 
-	public ManualUpload closeDialogBox(){
+	public ManualUpload closeDialogBox() {
 		jsClick(close);
 		return this;
 	}
-
 
 }

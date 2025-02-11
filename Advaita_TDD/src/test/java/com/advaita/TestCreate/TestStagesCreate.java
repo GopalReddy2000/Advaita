@@ -1,13 +1,17 @@
 package com.advaita.TestCreate;
 
-import java.io.IOException;
+import static com.advaita.WorkFlowDesign.PageObject.Stages.isDisplayed;
+import static com.advaita.WorkFlowDesign.PageObject.Stages.stageNameError;
+
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
@@ -17,22 +21,15 @@ import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.QuestionSelector;
-import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 import Advaita_TDD.Advaita_TDD.Questions;
-
-import static com.advaita.WorkFlowDesign.PageObject.Stages.*;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 public class TestStagesCreate extends TestBase {
 
@@ -143,10 +140,14 @@ public class TestStagesCreate extends TestBase {
 		test = reports.createTest("verifyCreateManualUpload");
 		homePage.clickOnProcessManagementCreate();
 
+		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
+		int noOfRecords = 5;
+
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(),
+						noOfRecords)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
-				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark, noOfRecords);
 
 	}
 
@@ -234,7 +235,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 13)
 	public void verifyAddSectionA() throws Throwable {
 		test = reports.createTest("verifyAddSectionA");
-		stages.verifyAddSectionA(true,false);
+		stages.verifyAddSectionA(false, false, true);
 	}
 
 	@Test(priority = 14)
@@ -246,7 +247,7 @@ public class TestStagesCreate extends TestBase {
 	@Test(priority = 15)
 	public void verifySelectMetaDataInAddBlockSectionB() throws Throwable {
 		test = reports.createTest("selectMetaDataInAddBlockSectionB");
-		stages.selectMetaDataInAddBlockSectionB(3,true,false);
+		stages.selectMetaDataInAddBlockSectionB(3, true, false);
 	}
 
 	@Test(priority = 16)
@@ -292,8 +293,9 @@ public class TestStagesCreate extends TestBase {
 
 		test = reports.createTest("verifyStageCreate");
 		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
-				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown().verifyAddSectionA(true,false)
-				.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2,true,false)
+				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
+				.verifyAddSectionA(false, false, true).verifyAddAndRemoveBlockInSectionB(4)
+				.selectMetaDataInAddBlockSectionB(2, true, false)
 				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
 //		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
@@ -309,13 +311,10 @@ public class TestStagesCreate extends TestBase {
 //		stages.verifyStagesTabIsDisplayed(true, false).searchAndDeleteCreatedStage(stageName);
 
 	}
-	@Test(dataProvider ="invalidStageNameProvider" )
-	public void testStageName(String stageName)
-	{
-		stages
-				.Negative1(stageName,"AJP","Sub AJP","Sub Sub AJP")
-				.clickOnSingleSubmit()
-		;
+
+	@Test(dataProvider = "invalidStageNameProvider")
+	public void testStageName(String stageName) {
+		stages.Negative1(stageName, "AJP", "Sub AJP", "Sub Sub AJP").clickOnSingleSubmit();
 		unWaitInMilli(500);
 		assert isDisplayed(stageNameError);
 		continueButton.click();
@@ -323,11 +322,9 @@ public class TestStagesCreate extends TestBase {
 	}
 
 	@Test
-	public void NegTest1(){
+	public void NegTest1() {
 
-		stages.Negative1("Test 2","AJP","Sub AJP","Sub Sub AJP")
-				.NegSectionA("Form Test_metadata")
-				.saveRecord();
+		stages.Negative1("Test 2", "AJP", "Sub AJP", "Sub Sub AJP").NegSectionA("Form Test_metadata").saveRecord();
 		stages.navigateBack();
 		stages.assertNoOptionsInMultiSelect()
 
@@ -335,162 +332,106 @@ public class TestStagesCreate extends TestBase {
 	}
 
 	@Test
-	public void sectionAandB()
-	{
-		stages.navToCreatePage()
-				.sectionAAndB()
-		;
+	public void sectionAandB() {
+		stages.navToCreatePage().sectionAAndB();
 	}
-
-
 
 	@DataProvider(name = "invalidStageNameProvider")
 	public Object[][] invalidStageNameData() {
 		return new Object[][] {
 				// Invalid due to special characters (assuming only alphanumeric allowed)
-				{ "Stage@123" },        // Contains '@'
-				{ "Stage#123" },        // Contains '#'
-				{ "Stage!Name" },       // Contains '!'
-				{ "Stage$Name" },       // Contains '$'
-				{ "Stage%Name" },       // Contains '%'
-				{ "Stage^Name" },       // Contains '^'
-				{ "Stage&Name" },       // Contains '&'
-				{ "Stage*Name" },       // Contains '*'
-				{ "Stage(Name)" },      // Contains parentheses
-				{ "Stage+Name" },       // Contains '+'
-				{ "Stage/Name" },       // Contains '/'
-				{ "Stage\\Name" },      // Contains backslash
-				{ "Stage|Name" },       // Contains '|'
-				{ "Stage=Name" },       // Contains '='
-				{ "Stage<Name>" },      // Contains '<' and '>'
-				{ "Stage~Name" },       // Contains '~'
-				{"TestNeg1"},
+				{ "Stage@123" }, // Contains '@'
+				{ "Stage#123" }, // Contains '#'
+				{ "Stage!Name" }, // Contains '!'
+				{ "Stage$Name" }, // Contains '$'
+				{ "Stage%Name" }, // Contains '%'
+				{ "Stage^Name" }, // Contains '^'
+				{ "Stage&Name" }, // Contains '&'
+				{ "Stage*Name" }, // Contains '*'
+				{ "Stage(Name)" }, // Contains parentheses
+				{ "Stage+Name" }, // Contains '+'
+				{ "Stage/Name" }, // Contains '/'
+				{ "Stage\\Name" }, // Contains backslash
+				{ "Stage|Name" }, // Contains '|'
+				{ "Stage=Name" }, // Contains '='
+				{ "Stage<Name>" }, // Contains '<' and '>'
+				{ "Stage~Name" }, // Contains '~'
+				{ "TestNeg1" },
 				// Invalid due to SQL Injection
-				{ "DROP TABLE stage;" },  // SQL Injection attempt
-				{ "' OR 1=1 --" },        // SQL Injection attempt
-				{ "' OR '1'='1'" },       // SQL Injection attempt
-				{ "1; DROP TABLE users --" },  // SQL Injection attempt
+				{ "DROP TABLE stage;" }, // SQL Injection attempt
+				{ "' OR 1=1 --" }, // SQL Injection attempt
+				{ "' OR '1'='1'" }, // SQL Injection attempt
+				{ "1; DROP TABLE users --" }, // SQL Injection attempt
 
 				// Invalid due to script injection
-				{ "<script>alert('test')</script>" },  // Script injection
+				{ "<script>alert('test')</script>" }, // Script injection
 
 				// Invalid due to whitespaces
-				{ "   " },               // Whitespace only
-				{ " Stage" },            // Leading whitespace
-				{ "Stage " },            // Trailing whitespace
-				{ " Stage " },           // Leading and trailing whitespace
-				{ "Stage\tName" },       // Contains tab
-				{ "Stage\nName" },       // Contains new line
+				{ "   " }, // Whitespace only
+				{ " Stage" }, // Leading whitespace
+				{ "Stage " }, // Trailing whitespace
+				{ " Stage " }, // Leading and trailing whitespace
+				{ "Stage\tName" }, // Contains tab
+				{ "Stage\nName" }, // Contains new line
 
 				// Invalid due to length
-				{ "A".repeat(257) },  // Over maximum length (assuming max length is 100)
+				{ "A".repeat(257) }, // Over maximum length (assuming max length is 100)
 
 				// Invalid due to empty input
-				{ "" }                   // Empty string
+				{ "" } // Empty string
 		};
 	}
-	
-	
+
 	@Test(dataProvider = "invalidTextInput")
-	public void testSectionCTextBox(String invalidData)
-	{
-		stages
-				.navToCreatePage()
-				.sectionCTextbox(invalidData);
-
-
-
+	public void testSectionCTextBox(String invalidData) {
+		stages.navToCreatePage().sectionCTextbox(invalidData);
 
 	}
 
 	@Test(dataProvider = "invalidSearchData")
-	public void testSearchBox(String invalidData,String expectedBehavior)
-	{
-		stages
-				.navToStagesTable()
-				.searchBox(invalidData,expectedBehavior);
+	public void testSearchBox(String invalidData, String expectedBehavior) {
+		stages.navToStagesTable().searchBox(invalidData, expectedBehavior);
 	}
 
 	@DataProvider(name = "invalidSearchData")
 	public Object[][] invalidSearchData() {
-		return new Object[][]{
+		return new Object[][] {
 				// Empty input, expect no error message and page remains the same
-				{"", "none"},
+				{ "", "none" },
 
 				// Invalid Data, expect "No entries found" message
-				{"!@#$%^&*()_+=-`~", "No entries found"},
+				{ "!@#$%^&*()_+=-`~", "No entries found" },
 
 				// SQL Injection Strings, expect "No entries found"
-				{"' OR 1=1;--", "No entries found"},
-				{"' DROP TABLE users;--", "No entries found"},
+				{ "' OR 1=1;--", "No entries found" }, { "' DROP TABLE users;--", "No entries found" },
 				// Unicode Characters, expect database error or error page
-				{"Ā ā Ă ă Ą ą Ć ć Ĉ ĉ Ċ ċ Č č Ď ď ", "database error"}
-		};
+				{ "Ā ā Ă ă Ą ą Ć ć Ĉ ĉ Ċ ċ Č č Ď ď ", "database error" } };
 	}
-
 
 	@DataProvider(name = "sqlInjectionTestData")
 	public Object[][] sqlInjectionTestData() {
-		return new Object[][]{
-				{"' OR '1'='1"},
-				{"' OR '1'='1' --"},
-				{"'; DROP TABLE users --"},
-				{"' UNION SELECT NULL, NULL --"},
-				{"' UNION SELECT username, password FROM users --"},
-				{"'; WAITFOR DELAY '00:00:10' --"},
-				{"1 OR 1=1"},
-				{"' HAVING 1=1"},
-				{"' AND 'x'='x"},
-				{"'; EXEC xp_cmdshell('whoami') --"},
-				{"' ; DELETE FROM users WHERE username = 'admin'; --"},
-				{"' ; INSERT INTO users (username, password) VALUES ('admin', 'password'); --"},
-				{"'; IF (1=1) WAITFOR DELAY '00:00:10'; --"},
-				{"%27%20OR%201%3D1--"},
-				{"0x50 || 0x45 || 0x54"},
-				{"1 UNION SELECT @@version, NULL, NULL --"},
-		};
+		return new Object[][] { { "' OR '1'='1" }, { "' OR '1'='1' --" }, { "'; DROP TABLE users --" },
+				{ "' UNION SELECT NULL, NULL --" }, { "' UNION SELECT username, password FROM users --" },
+				{ "'; WAITFOR DELAY '00:00:10' --" }, { "1 OR 1=1" }, { "' HAVING 1=1" }, { "' AND 'x'='x" },
+				{ "'; EXEC xp_cmdshell('whoami') --" }, { "' ; DELETE FROM users WHERE username = 'admin'; --" },
+				{ "' ; INSERT INTO users (username, password) VALUES ('admin', 'password'); --" },
+				{ "'; IF (1=1) WAITFOR DELAY '00:00:10'; --" }, { "%27%20OR%201%3D1--" }, { "0x50 || 0x45 || 0x54" },
+				{ "1 UNION SELECT @@version, NULL, NULL --" }, };
 	}
 
 	@Test(dataProvider = "invalidDates")
-	public void testDatePicker(String invalidDate)
-	{
-		stages.navToStagesTable()
-				.testInvalidDate(invalidDate);
+	public void testDatePicker(String invalidDate) {
+		stages.navToStagesTable().testInvalidDate(invalidDate);
 	}
-
 
 	@DataProvider(name = "invalidDates")
 	public Object[][] getInvalidDates() {
-		return new Object[][] {
-				{"00-12-2024"},
-				{"32-01-2024"},
-				{"31-04-2024"},
-				{"29-02-2023"},
-				{"31-02-2024"},
-				{"31-06-2024"},
-				{"25-00-2024"},
-				{"10-13-2024"},
-				{"15-15-2024"},
-				{"15-10-99999"},
-				{"15-10-0000"},
-				{"15-10--2024"},
-				{"15-10-23"},
-				{"15/10/2024"},
-				{"15.10.2024"},
-				{"15_10_2024"},
-				{"ab-cd-efgh"},
-				{"12-12-abcd"},
-				{"@@-##-!!!!"},
-				{"--2024"},
-				{"12--2024"},
-				{"--"},
-				{"2024-12-15"},
-				{"31-12-0001"},
-				{"01-01-3000"},
-				{"00-00-2024"},
-				{"00-13-2024"},
-				{"40-02-2024"}
-		};
+		return new Object[][] { { "00-12-2024" }, { "32-01-2024" }, { "31-04-2024" }, { "29-02-2023" },
+				{ "31-02-2024" }, { "31-06-2024" }, { "25-00-2024" }, { "10-13-2024" }, { "15-15-2024" },
+				{ "15-10-99999" }, { "15-10-0000" }, { "15-10--2024" }, { "15-10-23" }, { "15/10/2024" },
+				{ "15.10.2024" }, { "15_10_2024" }, { "ab-cd-efgh" }, { "12-12-abcd" }, { "@@-##-!!!!" }, { "--2024" },
+				{ "12--2024" }, { "--" }, { "2024-12-15" }, { "31-12-0001" }, { "01-01-3000" }, { "00-00-2024" },
+				{ "00-13-2024" }, { "40-02-2024" } };
 	}
 
 //	@AfterMethod

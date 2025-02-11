@@ -1,49 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="8" passed="8" failed="0" skipped="0">
+<testng-results ignored="0" total="5" passed="5" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-10-23T12:45:46 IST" name="Default suite" finished-at="2024-10-23T12:51:54 IST" duration-ms="367985">
+  <suite started-at="2025-02-10T17:48:00 IST" name="Default suite" finished-at="2025-02-10T17:50:20 IST" duration-ms="139326">
     <groups>
     </groups>
-    <test started-at="2024-10-23T12:45:46 IST" name="Default test" finished-at="2024-10-23T12:51:54 IST" duration-ms="367985">
-      <class name="com.advaita.TestCreate.TestReAllocationCreate">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:45:46 IST" name="setUp" finished-at="2024-10-23T12:45:53 IST" duration-ms="6853" status="PASS">
+    <test started-at="2025-02-10T17:48:00 IST" name="Default test" finished-at="2025-02-10T17:50:20 IST" duration-ms="139326">
+      <class name="com.advaita.TestCreate.TestManualAllocation">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:48:00 IST" name="setUp" finished-at="2025-02-10T17:48:10 IST" duration-ms="9741" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:45:53 IST" name="verifynewCreateMetaData" finished-at="2024-10-23T12:46:18 IST" duration-ms="24799" status="PASS">
+        <test-method signature="verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:48:10 IST" name="verifyProcessCreate" finished-at="2025-02-10T17:48:24 IST" duration-ms="13325" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyProcessCreate -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:48:24 IST" name="getResult" finished-at="2025-02-10T17:48:24 IST" duration-ms="660" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyProcessCreate status=SUCCESS method=TestManualAllocation.verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:2, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:48:24 IST" name="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType" finished-at="2025-02-10T17:49:26 IST" duration-ms="61826" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:26 IST" name="getResult" finished-at="2025-02-10T17:49:26 IST" duration-ms="72" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType status=SUCCESS method=TestManualAllocation.verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:2, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:26 IST" name="verifynewCreateMetaData" finished-at="2025-02-10T17:49:39 IST" duration-ms="13229" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifynewCreateMetaData -->
-        <test-method signature="verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:46:18 IST" name="verifyCreateManualUpload" finished-at="2024-10-23T12:46:40 IST" duration-ms="21640" status="PASS">
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:39 IST" name="getResult" finished-at="2025-02-10T17:49:39 IST" duration-ms="41" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifynewCreateMetaData status=SUCCESS method=TestManualAllocation.verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:39 IST" name="verifyCreateManualUpload" finished-at="2025-02-10T17:49:58 IST" duration-ms="18870" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyCreateManualUpload -->
-        <test-method signature="verifyCreateNonMeasurable()[pri:5, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:46:40 IST" name="verifyCreateNonMeasurable" finished-at="2024-10-23T12:47:02 IST" duration-ms="21916" status="PASS">
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:58 IST" name="getResult" finished-at="2025-02-10T17:49:58 IST" duration-ms="56" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyCreateManualUpload status=SUCCESS method=TestManualAllocation.verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07] output={null}]]]>
+              </value>
+            </param>
+          </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyCreateNonMeasurable -->
-        <test-method signature="verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:02 IST" name="verifyStageCreate" finished-at="2024-10-23T12:47:39 IST" duration-ms="37054" status="PASS">
+        </test-method> <!-- getResult -->
+        <test-method signature="verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:49:58 IST" name="verifyStageCreate" finished-at="2025-02-10T17:50:20 IST" duration-ms="21321" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyStageCreate -->
-        <test-method signature="verifyUserCreateAndUserMapping()[pri:7, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:39 IST" name="verifyUserCreateAndUserMapping" finished-at="2024-10-23T12:47:56 IST" duration-ms="17412" status="PASS">
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:50:20 IST" name="getResult" finished-at="2025-02-10T17:50:20 IST" duration-ms="41" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyStageCreate status=SUCCESS method=TestManualAllocation.verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07] output={null}]]]>
+              </value>
+            </param>
+          </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyUserCreateAndUserMapping -->
-        <test-method signature="verifyCreateSamplingPlan()[pri:8, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:47:56 IST" name="verifyCreateSamplingPlan" finished-at="2024-10-23T12:48:18 IST" duration-ms="21774" status="PASS">
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@63fdab07]" started-at="2025-02-10T17:50:20 IST" name="tearDown" finished-at="2025-02-10T17:50:20 IST" duration-ms="20" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyCreateSamplingPlan -->
-        <test-method signature="verifyManualAllocationCreate()[pri:9, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:48:18 IST" name="verifyManualAllocationCreate" finished-at="2024-10-23T12:50:50 IST" duration-ms="152132" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyManualAllocationCreate -->
-        <test-method signature="verifyReAllocationCreate()[pri:10, instance:com.advaita.TestCreate.TestReAllocationCreate@7ac2e39b]" started-at="2024-10-23T12:50:50 IST" name="verifyReAllocationCreate" finished-at="2024-10-23T12:51:54 IST" duration-ms="64331" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyReAllocationCreate -->
-      </class> <!-- com.advaita.TestCreate.TestReAllocationCreate -->
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

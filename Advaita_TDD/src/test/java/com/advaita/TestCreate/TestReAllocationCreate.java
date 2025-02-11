@@ -1,5 +1,6 @@
 package com.advaita.TestCreate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -178,15 +179,16 @@ public class TestReAllocationCreate extends TestBase {
 		test = reports.createTest("verifyCreateManualUpload");
 		homePage.clickOnProcessManagementCreate();
 
+		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 		int addNumberOfRecord = 25;
 
 		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(),
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(),
 						addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
-				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark, addNumberOfRecord);
 
 	}
 
@@ -234,7 +236,7 @@ public class TestReAllocationCreate extends TestBase {
 
 		stages.verifyStagesTabIsDisplayed(false, true).verifyCreateStagesButton().verifyStageNameTextBox(stageName)
 				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
-				.verifyAddSectionA(true, false).verifyAddAndRemoveBlockInSectionB(4)
+				.verifyAddSectionA(false, false, true).verifyAddAndRemoveBlockInSectionB(4)
 				.selectMetaDataInAddBlockSectionB(2, true, false)
 				.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 

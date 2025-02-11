@@ -1,12 +1,14 @@
 package com.advaita.TestCreate;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
@@ -32,6 +34,7 @@ public class TestManualUpload extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
+	DataSet dataset;
 	ManualUpload manualUpload;
 
 	App app;
@@ -64,6 +67,7 @@ public class TestManualUpload extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
+		dataset = new DataSet();
 		manualUpload = new ManualUpload();
 
 		app = new App();
@@ -77,10 +81,12 @@ public class TestManualUpload extends TestBase {
 
 		test = reports.createTest("verifyCreateManualUpload");
 		homePage.clickOnProcessManagementCreate();
+		
+		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 
 		final String manualUploadName = "EmployeeOne Details Upload";
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), 5)
 				.fillOtherFildsForUploadedFile("Test Manual Upload");
 
 	}
