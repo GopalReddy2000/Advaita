@@ -11,12 +11,12 @@ import java.util.Properties;
 
 public class PropertieFileUtil {
 
+	static Properties properties = new Properties();
 	private static final String PROPERTIES_FILE_PATH = "src/main/resources/ProcessText.properties";
 	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	// Method to store a single key-value pair in a properties file
 	public static void storeSingleTextInPropertiesFile(String key, String value) throws IOException {
-	    Properties properties = new Properties();
 
 	    // Load existing properties if they exist
 	    try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
@@ -40,8 +40,9 @@ public class PropertieFileUtil {
 	
 	// Method to refresh and retrieve text from the properties file (case insensitive)
 	public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
-	    Properties properties = new Properties();
-	    Map<String, String> lowerCaseProperties = new HashMap<>();
+	    
+		Properties properties = new Properties();
+		Map<String, String> lowerCaseProperties = new HashMap<>();
 
 	    // Refresh: Load the properties file to ensure it's the latest version
 	    try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
@@ -76,7 +77,6 @@ public class PropertieFileUtil {
 	public static void storeTextInPropertiesFile(String process, String subProcess, String subSubProcess,
 			String metaDataText, boolean fetchMetadata) throws IOException {
 		Properties properties = new Properties();
-
 		// Add the tag texts to the properties object
 		properties.setProperty("process", process);
 		properties.setProperty("subProcess", subProcess);
@@ -94,7 +94,6 @@ public class PropertieFileUtil {
 	}
 
 	public static String getTextFromPropertiesFile(String tagKey) throws IOException {
-	    Properties properties = new Properties();
 
 	    // Load the properties file
 	    try (InputStream input = PropertieFileUtil.class.getClassLoader()
@@ -116,6 +115,87 @@ public class PropertieFileUtil {
 	    System.out.println("Process with key '" + tagKey + "' not found in properties file.");
 	    return null; // Return null if the key is not found
 	}
+	
+//	#################################################################################################
+	
+	static Properties properties1 = new Properties();
+	 private static final String FILE_PATH = "src/test/resources/questions.properties";
+
+//	    public static void saveQuestion(String key, String value) {
+//	    	properties1.setProperty(key, value);
+//	    }
+//
+//	    public static void saveToFile() {
+//	        try (FileOutputStream output = new FileOutputStream(FILE_PATH)) {
+//	        	properties1.store(output, "Stored Questions for Validation");
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//	    
+//	    public static void clearFile() {
+//	        try (FileOutputStream output = new FileOutputStream(FILE_PATH)) {
+//	            new Properties().store(output, "Cleared File");  // Overwrites with empty properties
+//	        } catch (IOException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//	    
+//	    public static Properties loadQuestions() throws IOException {
+//	        Properties properties = new Properties();
+//	        try (FileInputStream input = new FileInputStream(FILE_PATH)) {
+//	            properties.load(input);
+//	        }
+//	        return properties;
+//	    }
+//	    
+	 
+	// Save a question to the properties file (key-value pair)
+	    public static void saveQuestion(String key, String value) {
+	        properties1.setProperty(key, value);
+	        saveToFile();  // Save immediately to prevent data loss
+	    }
+
+	    // Save all stored properties to the file
+	    public static void saveToFile() {
+	        try (FileOutputStream output = new FileOutputStream(FILE_PATH)) {
+	            properties1.store(output, "Stored Questions for Validation");
+	        } catch (IOException e) {
+	            System.err.println("Error saving questions to file: " + e.getMessage());
+	        }
+	    }
+
+	    // Clears the properties file
+	    public static void clearFile() {
+	        try (FileOutputStream output = new FileOutputStream(FILE_PATH)) {
+	            new Properties().store(output, "Cleared File");  // Overwrites with empty properties
+	            properties1.clear();  // Also clear the in-memory properties
+	        } catch (IOException e) {
+	            System.err.println("Error clearing file: " + e.getMessage());
+	        }
+	    }
+
+	    // Load all questions from the properties file
+	    public static Properties loadQuestions() {
+	        Properties properties = new Properties();
+	        try (FileInputStream input = new FileInputStream(FILE_PATH)) {
+	            properties.load(input);
+	        } catch (IOException e) {
+	            System.err.println("Error loading questions from file: " + e.getMessage());
+	        }
+	        return properties;
+	    }
+
+	    // Get all stored questions as a Map
+	    public static java.util.Map<String, String> getAllQuestions() {
+	        Properties properties = loadQuestions();
+	        java.util.Map<String, String> questionsMap = new java.util.HashMap<>();
+	        for (String key : properties.stringPropertyNames()) {
+	            questionsMap.put(key, properties.getProperty(key));
+	        }
+	        return questionsMap;
+	    }
+	    
 
 
 }

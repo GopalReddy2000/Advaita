@@ -5,19 +5,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.CommonUtils;
+import com.advaita.Utilities.DropDown;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -56,8 +53,7 @@ public class MasterMenusPage extends TestBase {
 
 	@FindBy(xpath = "//button[@class='btn-primary'][normalize-space()='Save']")
 	public static WebElement saveButton;
-	
-	
+
 	@FindBy(xpath = "//h3[text()='Success']/..//span[contains(normalize-space(),'Masters Menu has been Created successfully')]")
 	public static WebElement successPopUp;
 
@@ -89,7 +85,7 @@ public class MasterMenusPage extends TestBase {
 		assertEquals(driver.getCurrentUrl(), expectURL);
 	}
 
-	public void verifyCreateMasterMenuButton() {
+	public MasterMenusPage verifyCreateMasterMenuButton() {
 
 		assertTrue(masterMenuCreateButton.isDisplayed() && masterMenuCreateButton.isEnabled(),
 				"masterMenuCreateButton is not displayed and enabled.");
@@ -97,54 +93,20 @@ public class MasterMenusPage extends TestBase {
 
 		wait.until(ExpectedConditions.visibilityOf(masterMenuCreatePopUp));
 		assertTrue(masterMenuCreatePopUp.isDisplayed(), "masterMenuCreatePopUp is not displayed.");
+
+		return this;
 	}
 
-	public void verifyMasterFormDropDown() {
+	public MasterMenusPage verifyMasterFormDropDown(String selectMasterForm,String menuName) throws Throwable {
 
-		Select masterForm = new Select(masterFormDropDown);
+		CommonUtils.validateLastCharIsStar(driver, "//div[@class='form_group']/label");
+		DropDown.validateDropdownWithOutOrder(masterFormDropDown, "Select Master Form", selectMasterForm);
+		menuNameField(menuName);
 
-		assertFalse(masterForm.isMultiple(), "Dropdown allows multiple selections.");
-
-		// Check for empty drop down
-		List<WebElement> options = masterForm.getOptions();
-		assertTrue(options.size() > 0, "Dropdown has no options.");
-		System.out.println("Number of options in the dropdown: " + options.size());
-
-//		Check default selected value
-		WebElement defaultSelectedOption = masterForm.getFirstSelectedOption();
-		String expectedDefaultOption = "Select Master Form"; // Replace with expected default value
-		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
-
-		// Print all options and check for duplicates
-		Set<String> uniqueOptions = new HashSet<>();
-		System.out.println("Dropdown options:");
-		for (WebElement option : options) {
-			String optionText = option.getText();
-			System.out.println(optionText);
-			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
-		}
-
-		// Select each option by index and verify the selection
-		for (int k = 0; k < Math.min(10, options.size()); k++) {
-			masterForm.selectByIndex(k);
-			WebElement selectedOption = masterForm.getFirstSelectedOption();
-			assertEquals(selectedOption.getText(), options.get(k).getText(),
-					"Failed to select the option by index " + k);
-			System.out
-					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
-		}
-
-		System.out.println("fetchMasterFormRecord : " + fetchMasterFormRecord);
-		masterForm.selectByVisibleText(fetchMasterFormRecord);
-
+		return this;
 	}
 
-	public void menuNameField() throws Throwable {
-
-		// Check if the label ends with an asterisk
-//		String text = driver.findElement(By.xpath("//h3[@class='process'][normalize-space()='Form Name*']")).getText();
-//		char lastChar = text.charAt(text.length() - 1);
-//		assertEquals(lastChar, '*', "formNameField label does not end with '*'.");
+	public MasterMenusPage menuNameField(String menuName) {
 
 		// Ensure the role field is enabled
 		assertTrue(menuNameField.isEnabled(), "formNameField is not enabled.");
@@ -165,19 +127,22 @@ public class MasterMenusPage extends TestBase {
 		String enteredText = menuNameField.getAttribute("value");
 		assertEquals(enteredText, menuName, "menuName is not correctly entered in the field.");
 
+		return this;
 	}
 
-	public void masterMenuSaveButton() {
+	public MasterMenusPage masterMenuSaveButton() {
 
-		assertTrue(saveButton.isDisplayed() && saveButton.isEnabled(),
-				"saveButton is not displayed and enabled.");
+		assertTrue(saveButton.isDisplayed() && saveButton.isEnabled(), "saveButton is not displayed and enabled.");
 		click(driver, saveButton);
 
 		assertFalse(masterMenuCreatePopUp.isDisplayed(), "masterMenuCreatePopUp is displayed.");
-		
+
 		confirmationAfterClickOnSaveButton();
 
+		return this;
+
 	}
+
 	public void confirmationAfterClickOnSaveButton() {
 
 		wait.until(ExpectedConditions.visibilityOf(successPopUp));

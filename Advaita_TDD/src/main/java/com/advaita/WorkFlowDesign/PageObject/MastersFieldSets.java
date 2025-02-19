@@ -28,9 +28,9 @@ import org.openqa.selenium.support.ui.Select;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
-import com.advaita.Utilities.CommonUtils;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.Pagination;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
 
 import Advaita_TDD.Advaita_TDD.DynamicXpath;
@@ -1588,6 +1588,92 @@ public class MastersFieldSets extends TestBase {
 
 //	###########################################################################################################
 
+//	public MastersFieldSets addMultipleQuestions(int sectionCount, List<Integer> questionTypes, int numberOfQuestions,
+//			boolean randomizeQuestions) throws Throwable {
+//		
+//		// Loop to handle questions for each section
+//		for (int sectionIndex = 1; sectionIndex <= sectionCount; sectionIndex++) {
+//			
+//			// Add section if it's beyond the default section (first one)
+//			if (sectionIndex > 1) {
+//				addSection(); // Dynamically add new sections starting from section 2
+//			}
+//			
+//			// Shuffle question indices if randomizeQuestions is true
+//			List<Integer> questionOrder = new ArrayList<>();
+//			for (int i = 0; i < numberOfQuestions; i++) {
+//				questionOrder.add(i);
+//			}
+//			
+//			// Optionally shuffle the question order
+//			if (randomizeQuestions) {
+//				Collections.shuffle(questionOrder);
+//			}
+//			
+//			// Loop through each question to add them to the current section
+//			for (int i = 0; i < numberOfQuestions; i++) {
+//				int questionIndex = questionOrder.get(i);
+//				
+//				// For subsequent questions (after the first), click the "Add Question" button
+//				if (i > 0) {
+//					String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+//							+ sectionIndex + "]";
+//					WebElement addQuestionButton = wait
+//							.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
+//					jsClick(addQuestionButton);
+//					Thread.sleep(500); // Small delay to ensure the UI is updated
+//				}
+//				
+//				// Determine the question type for the current question based on cyclic pattern
+//				int questionType = questionTypes.get(questionIndex % questionTypes.size());
+//				
+//				// Generate question and inputs dynamically based on the question type
+//				Map.Entry<String, String[]> questionAndInputs = generateQuestionAndInputs(questionType, questionIndex,
+//						randomizeQuestions);
+//				
+//				String question = questionAndInputs.getKey();
+//				String[] inputs = questionAndInputs.getValue();
+//				
+//				// Construct XPath for the question text field and locate the element
+//				// dynamically
+//				String baseXPath = "//div[h5[contains(text(), 'Question " + (i + 1) + "')]]";
+//				String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + (i + 1)
+//						+ "']";
+//				WebElement questionField = driver.findElement(By.xpath(xpathQuestionTextField));
+//				
+//				
+//				// Send the generated question to the input field
+//				questionField.sendKeys(question);
+//				
+//				PropertieFileUtil.clearFile();
+//				// ✅ Store the question for later validation
+//				
+//				
+//				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1), question);
+//				
+//				// If the question has options (DropDown, MultiChoice, etc.), store them too
+//				if (questionType == DROP_DOWN || questionType == MULTIPLE_CHOICE || questionType == RADIO_BUTTON
+//						|| questionType == RELATIVE_DROP_DOWN || questionType == RELATIVE_MULTISELECT) {
+//					PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_options",
+//							String.join(",", inputs));
+//				}
+//				
+//				// Construct XPath for the question type and click on it
+//				String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+//						+ sectionIndex + "_" + (i + 1) + "']/following-sibling::div[" + questionType + "]//h6";
+//				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+//				
+//				// Handle specific question types
+//				handleQuestionType(sectionIndex, i, questionType, inputs);
+//			}
+//		}
+//		
+//		// ✅ Save all stored questions to file after the loop is complete
+//		PropertieFileUtil.saveToFile();
+//		
+//		return this;
+//	}
+
 	public MastersFieldSets addMultipleQuestions(int sectionCount, List<Integer> questionTypes, int numberOfQuestions,
 			boolean randomizeQuestions) throws Throwable {
 
@@ -1626,6 +1712,7 @@ public class MastersFieldSets extends TestBase {
 
 				// Determine the question type for the current question based on cyclic pattern
 				int questionType = questionTypes.get(questionIndex % questionTypes.size());
+				String questionTypeName = getQuestionTypeName(questionType);
 
 				// Generate question and inputs dynamically based on the question type
 				Map.Entry<String, String[]> questionAndInputs = generateQuestionAndInputs(questionType, questionIndex,
@@ -1644,6 +1731,19 @@ public class MastersFieldSets extends TestBase {
 				// Send the generated question to the input field
 				questionField.sendKeys(question);
 
+				// ✅ Store the question for later validation
+				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1), question);
+
+				// ✅ Store the question type
+				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_type", questionTypeName);
+
+				// If the question has options (DropDown, MultiChoice, etc.), store them too
+				if (questionType == DROP_DOWN || questionType == MULTIPLE_CHOICE || questionType == RADIO_BUTTON
+						|| questionType == RELATIVE_DROP_DOWN || questionType == RELATIVE_MULTISELECT) {
+					PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_options",
+							String.join(",", inputs));
+				}
+
 				// Construct XPath for the question type and click on it
 				String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 						+ sectionIndex + "_" + (i + 1) + "']/following-sibling::div[" + questionType + "]//h6";
@@ -1654,7 +1754,43 @@ public class MastersFieldSets extends TestBase {
 			}
 		}
 
+		// ✅ Save all stored questions to file after the loop is complete
+		PropertieFileUtil.saveToFile();
+		
+		unWait(1);
+		MasterFormPage.loadStoredQuestions();
+
 		return this;
+	}
+
+	// Convert question type int to readable string
+	private String getQuestionTypeName(int questionType) {
+		switch (questionType) {
+		case LABEL:
+			return "LABEL";
+		case DROP_DOWN:
+			return "DROP_DOWN";
+		case DATE:
+			return "DATE";
+		case TIME:
+			return "DATE";
+		case FILE_UPLOAD:
+			return "FILE_UPLOAD";
+		case TEXT_BOX:
+			return "TEXT_BOX";
+		case SHORT_ANSWER:
+			return "SHORT_ANSWER";
+		case MULTIPLE_CHOICE:
+			return "MULTIPLE_CHOICE";
+		case RADIO_BUTTON:
+			return "RADIO_BUTTON";
+		case RELATIVE_DROP_DOWN:
+			return "RELATIVE_DROP_DOWN";
+		case RELATIVE_MULTISELECT:
+			return "RELATIVE_MULTISELECT";
+		default:
+			return "UNKNOWN";
+		}
 	}
 
 	private Map.Entry<String, String[]> generateQuestionAndInputs(int questionType, int questionIndex,
@@ -1946,8 +2082,8 @@ public class MastersFieldSets extends TestBase {
 
 		click(driver, saveButton);
 
-		assertTrue(driver.findElement(By.xpath("//label[@class='error'][normalize-space()='This field is required.']"))
-				.isDisplayed(), "Error Massage is not Displayed.");
+		assertTrue(!driver.findElement(By.xpath("//label[@class='error'][normalize-space()='This field is required.']"))
+				.isDisplayed(), "Error Massage is Displayed.");
 
 //		assertTrue(createMasterFieldSetPage.isDisplayed(), "Create Master Field Set Page is not Displayed.");
 
@@ -1968,8 +2104,7 @@ public class MastersFieldSets extends TestBase {
 		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 				+ sectionIndex + "_" + qNo + "']/following-sibling::div[" + questionType + "]//h6";
 		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
-		
-		
+
 //		CommonUtils.scrollToElementByJS(DynamicXpath.QuestionMaxLength(Integer.parseInt(sectionIndex), Integer.parseInt(qNo)));
 		DynamicXpath.QuestionMaxLength(Integer.parseInt(sectionIndex), Integer.parseInt(qNo)).sendKeys("100");
 		;

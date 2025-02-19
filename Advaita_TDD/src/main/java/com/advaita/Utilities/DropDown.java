@@ -125,6 +125,50 @@ public class DropDown extends TestBase {
 		}
 	}
 
+	public static void validateDropdownWithOutOrder(WebElement element, String expectedDefaultOption, String visibleText) {
+		
+		Select dropdown = new Select(element);
+		
+		// Verify the dropdown is not multi-select
+		assertFalse(dropdown.isMultiple(), "Dropdown allows multiple selections.");
+
+		// Check for empty dropdown
+		List<WebElement> options = dropdown.getOptions();
+		assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+		// Check default selected value
+		WebElement defaultSelectedOption = dropdown.getFirstSelectedOption();
+		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption, "Default selected option is incorrect.");
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (WebElement option : options) {
+			String optionText = option.getText();
+			System.out.println(optionText);
+			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int i = 0; i < options.size(); i++) {
+			dropdown.selectByIndex(i);
+			WebElement selectedOption = dropdown.getFirstSelectedOption();
+			assertEquals(selectedOption.getText(), options.get(i).getText(),
+					"Failed to select the option by index " + i);
+			System.out
+					.println("Option '" + options.get(i).getText() + "' was successfully selected by index " + i + ".");
+		}
+
+		assertNotNull(visibleText, "visibleText is null");
+		dropdown.selectByVisibleText(visibleText);
+
+//		Check selected value
+		WebElement selectedOption = dropdown.getFirstSelectedOption();
+//		String expectedOption = "Select"; // Replace with expected default value
+		assertEquals(selectedOption.getText(), visibleText.trim(), "selected option is incorrect.");
+	}
+
 	public static void jsDropdownWithAllPossibleValidation(WebDriver driver, WebElement element, String defaultValue,
 			String visibleText) throws Throwable {
 

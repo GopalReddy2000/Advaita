@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
@@ -244,6 +245,8 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyFieldSetCreateButton();
 		// Set the question set name
 		String questionSetNameString = "Test Question";
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
