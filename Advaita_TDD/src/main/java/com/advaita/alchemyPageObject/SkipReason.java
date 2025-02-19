@@ -33,7 +33,22 @@ public class SkipReason extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
+	SmsTemplate smsTemplate;
+
 	FakeData fake = new FakeData();
+
+	// UserIds
+	String superAmdin = "Capture_Admin";
+	String superAdminPass = "Qwerty@123";
+
+	String userID = "Abhijit@trasccon";
+	String userPassword = "Qwerty@123";
+
+	String userId1 = "Abhijit_idamta";
+	String password1 = "Qwerty@123";
+
+	// Global Variables
+	// ------------------------------------------->
 	public String FirstCreatedUserName;
 
 	public WebElement driverIninteractable;
@@ -44,17 +59,13 @@ public class SkipReason extends TestBase {
 
 	public String lastCreatedSkipReasonText;
 
-	String superAmdin = "Capture_Admin";
-	String superAdminPass = "Qwerty@123";
+	public String fetchProcesstext;
+	public String fetchSubProcesstext;
+	public String fetchSubsubProcesstext;
 
-	String userID = "Abhijit@trasccon";
-	String userPassword = "Qwerty@123";
-
-	String userId1 = "Abhijit_idamta";
-	String password1 = "Qwerty@123";
+	// ---------------------------------------------------->
 
 	// process , subprocess , Subsubprocess
-
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
 	public WebElement fetchProcess;
 
@@ -246,6 +257,10 @@ public class SkipReason extends TestBase {
 	@FindBy(xpath = "//tbody//tr//td[5]//img[@alt='delete-icon ']")
 	public List<WebElement> deleteButtons;
 
+	// Negative
+	@FindBy(xpath = "//label[@id='process-error']")
+	public WebElement thisFieldisRequiredErrorMessage;
+
 	// Dropdown Utils
 	public void dropdownUtilsALL(WebElement dropdownElement, String selectionType, String selectionValue) {
 		try {
@@ -304,15 +319,15 @@ public class SkipReason extends TestBase {
 
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
-		fetchProcess.getText();
+		fetchProcesstext = fetchProcess.getText();
 		System.out.println("Fetchprocessname :" + fetchProcess.getText());
 
 		fetchProcess.click();
-		FethSubProcess.getText();
+		fetchSubProcesstext = FethSubProcess.getText();
 		System.out.println("FetchSubProcess name : " + FethSubProcess.getText());
 
 		FethSubProcess.click();
-		SubSubProcess.getText();
+		fetchSubsubProcesstext = SubSubProcess.getText();
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 
 	}
@@ -565,7 +580,7 @@ public class SkipReason extends TestBase {
 //	}
 
 	public List<String> elementTexts; // global Variable
-	
+
 	public List<String> getAllTextFromElements(List<WebElement> elements) {
 
 		elementTexts = new ArrayList<>();
@@ -977,7 +992,7 @@ public class SkipReason extends TestBase {
 
 	public void navigateToSkipAudit() {
 
-		callLogSatgeView.naivigateToCallLogStageView();
+		callLogSatgeView.navigateToCallLogStageView();
 
 		dropdownUtilsALL(callLogSatgeView.SearchStages, "text", "Booking Information Stage"); // select Stage
 		callLogSatgeView.searchButton.click();
@@ -1241,7 +1256,6 @@ public class SkipReason extends TestBase {
 
 		// Enter data into reasonName_textfield
 		reasonName_textfield.sendKeys(specailChar);
-
 		saveWithSpecialCharacterUTILITY(createButton_CreteSkipReasonPopup, successfullyCreated_popup,
 				somethingWentWrongErrorMesg);
 
@@ -1250,7 +1264,6 @@ public class SkipReason extends TestBase {
 	String invalidOptionDrpdown = "NonExistingOption";
 
 	public void selectanInvalidOptionFromDropdownUTILITY(WebElement dropdownElement) {
-
 
 		try {
 			// Try selecting an invalid option
@@ -1274,7 +1287,7 @@ public class SkipReason extends TestBase {
 		selectanInvalidOptionFromDropdownUTILITY(SubsubProcessDropdown);
 	}
 
-	public void searchinvalidCreatedNamesInSearchFieldUTILITY(WebElement searchTextfieldElement,
+	public void searchInvalidCreatedNamesInSearchFieldUTILITY(WebElement searchTextfieldElement,
 			WebElement noEntriesFoundElement, WebElement searchButtonElement, WebElement clearallFilterElement) {
 
 		assertTrue(searchTextfieldElement.isDisplayed(), "seachTextfield is not displayed");
@@ -1294,26 +1307,26 @@ public class SkipReason extends TestBase {
 
 	public void searchinvalidCreatedNamesInSearchField() {
 
-		searchinvalidCreatedNamesInSearchFieldUTILITY(searchTextfield, noEntriesFound, searchButton_table,
+		searchInvalidCreatedNamesInSearchFieldUTILITY(searchTextfield, noEntriesFound, searchButton_table,
 				clearAllFilters_table);
 	}
 
 	String emoji = "❤️😂😊";
 
 	public void searchThroughEmojisInSearchTextfieldUTILITY(WebElement seachtextfieldElement, String emoji,
-			WebElement searchButtonTableElement) {
+			WebElement searchButtonTableElement, WebElement noEntriesFoundElement) {
 
-		SendDataUtils.sendKeysWithJSExecutor(seachtextfieldElement, emoji); //use for send "emojis"
+		SendDataUtils.sendKeysWithJSExecutor(seachtextfieldElement, emoji); // use for send "emojis"
 
 		assertTrue(searchButtonTableElement.isDisplayed(), "searchButton_table is not displayed");
 		searchButtonTableElement.click();
-		assertTrue(noEntriesFound.isDisplayed(), "Fail : noEntriesFound found is not displayed");
+		assertTrue(noEntriesFoundElement.isDisplayed(), "Fail : noEntriesFound found is not displayed");
 
 	}
 
 	public void searchThroughEmojisInSearchTextfield() throws Throwable {
 
-		searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchButton_table);
+		searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchButton_table, noEntriesFound);
 
 	}
 
@@ -1339,5 +1352,36 @@ public class SkipReason extends TestBase {
 				"FAil: last Created SkipReason Contain In SkipAudit Dropdown");
 	}
 
-}
+	public void searchThroughProcessAndStagesInSearchTextfieldUTILITY(WebElement searchTextfieldElement,
+			WebElement searchButtonElement, String stagesCreatedProcess1, WebElement noEntriesFoundElement,
+			WebElement clearallElemenet) {
 
+		assertTrue(searchTextfieldElement.isDisplayed(), "searchTextfield is not displayed");
+		searchTextfieldElement.sendKeys(stagesCreatedProcess1);
+		searchButtonElement.click();
+
+		assertTrue(noEntriesFoundElement.isDisplayed(), "noEntriesFoundis not displayed");
+		clearallElemenet.click();
+
+	}
+
+	public void searchThroughProcessesInSearchTextfield() throws Throwable {
+		NavigateToFetchprocess();
+		navigateTo_AlchemyModule();
+		NavigateTo_Skipreason();
+
+		//Search by Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table, fetchProcesstext,
+				noEntriesFound, clearAllFilters_table);
+		
+		//Search By Sub Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table, fetchSubProcesstext,
+				noEntriesFound, clearAllFilters_table);
+		
+		//Search By SubSub Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table,
+				fetchSubsubProcesstext, noEntriesFound, clearAllFilters_table);
+		
+	}
+
+}

@@ -280,7 +280,7 @@ public class TestStagesCreate extends TestBase {
 //	}
 
 	@Test(priority = 19)
-	public void verifyStageCreate() throws Throwable {
+	public void verifyStageCreate() throws Throwable { 	
 
 		String stageName = "Test Emp Stage";
 

@@ -91,6 +91,7 @@ public class TestProcessCreate extends TestBase {
 //		test = reports.createTest("createProcess");
 //		process.createProcess(processName, processDesc, processName, subProcessName, subProcessDesc, subProcessName,
 //				subSubProcessName, subSubProcessDesc);
+
 	}
 
 	@AfterMethod
@@ -101,12 +102,12 @@ public class TestProcessCreate extends TestBase {
 			// Add screenshot to ExtentReports
 			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
 			test.addScreenCaptureFromPath(screenshotPath);
-			
-			// Add logs
-	        test.log(Status.FAIL, "Test failed at " + new Date());
 
-	        // Add custom HTML block
-	        test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
+			// Add logs
+			test.log(Status.FAIL, "Test failed at " + new Date());
+
+			// Add custom HTML block
+			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
 		}
 		// Close ExtentReports
 		reports.flush();

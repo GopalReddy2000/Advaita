@@ -3,18 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestCreate.TestNotificationTemplateCreate">
+      <class name="com.advaita.TestCreate.TestMenusSetupCreate">
         <methods>
-<<<<<<< HEAD
-          <include name="NotificationTemplateCreate"/>
-=======
-          <include name="tearDown"/>
-          <include name="getResult"/>
->>>>>>> 6429eb930248b0961d56ecee6ee5f0ceb9635347
           <include name="setUp"/>
-          <include name="verifyStageCreate"/>
+          <include name="EndToEnDMenuSetupNegative"/>
         </methods>
-      </class> <!-- com.advaita.TestCreate.TestNotificationTemplateCreate -->
+      </class> <!-- com.advaita.TestCreate.TestMenusSetupCreate -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

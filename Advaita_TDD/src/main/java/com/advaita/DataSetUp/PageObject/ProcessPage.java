@@ -1,15 +1,18 @@
 package com.advaita.DataSetUp.PageObject;
 
+import static org.testng.Assert.ARRAY_MISMATCH_TEMPLATE;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.xmlbeans.impl.xb.ltgfmt.TestCase;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -21,13 +24,14 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.Pagination;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
 
 public class ProcessPage extends TestBase {
 
 	// ProcessSetup
+
 	List<String> beforeProcessListText;
 	List<String> statulistTextListsList;
+	//
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
@@ -74,59 +78,86 @@ public class ProcessPage extends TestBase {
 	@FindBy(xpath = "//div[@class='modal-dialog modal-lg detail_form']//div[@class='modal-content']")
 	public static WebElement createDataSetPupup;
 
+	@FindBy(xpath = "//label[text()='Process Name*']")
+	public WebElement processNameLabel;
+
 	@FindBy(id = "process_name")
-	public static WebElement processNameField;
+	public WebElement processNameField;
+
+	@FindBy(xpath = "//label[text()='Process Description']")
+	public WebElement processDescriptionLabel;
 
 	@FindBy(id = "process_desc")
-	public static WebElement processDescField;
+	public WebElement processDescField;
+
+	@FindBy(xpath = "(//label[text()='Status'])[1]")
+	public WebElement processStatusDropdownLabel;
 
 	@FindBy(id = "process_status")
 	public static WebElement processStatusDropDown;
 
 	@FindBy(id = "save_and_continnue")
-	public static WebElement saveandContinueButton;
+	public WebElement saveandContinueButton;
 
 	@FindBy(xpath = "//div[@id='pills-popupprocess']//button[@value='save'][normalize-space()='Save']")
-	public static WebElement saveButton;
+	public WebElement saveButton;
 
 	@FindBy(id = "sub_process")
 	public static WebElement subProcessTab;
 
+	@FindBy(id = "process_dropdown_label")
+	public WebElement selectProcessDropdownLabel;
+
 	@FindBy(xpath = "//select[@id='process_dropdown']")
 	public static WebElement selectProcessDropDown;
 
+	@FindBy(xpath = "//label[text()='Sub Process Name']")
+	public WebElement subProcessNameFieldLabel;
+
 	@FindBy(id = "sub_process_name")
-	public static WebElement subProcessNameField;
+	public WebElement subProcessNameField;
+
+	@FindBy(xpath = "(//label[text()='Description'])[1]")
+	public WebElement subProcessDescriptionFieldLabel;
 
 	@FindBy(id = "sub_process_desc")
-	public static WebElement subProcessDescField;
+	public WebElement subProcessDescField;
 
 	@FindBy(id = "sub_process_status")
 	public static WebElement subProcessStatusDropDown;
 
 	@FindBy(xpath = "(//button[@value='save_and_continnue'][normalize-space()='Save and Continue'])[2]")
-	public static WebElement saveandContinnueButtonInSubProcess;
+	public WebElement saveandContinnueButtonInSubProcess;
 
 	@FindBy(xpath = "//div[@id='pills-popupsubprocess']//button[@value='save'][normalize-space()='Save']")
-	public static WebElement saveButtonInSubProcess;
+	public WebElement saveButtonInSubProcess;
 
 	@FindBy(id = "s_sub_process")
 	public static WebElement subSubProcessTab;
 
-	@FindBy(id = "sub_process_dropdown")
-	public static WebElement selectSubProcessDropDown;
+	@FindBy(id = "sub_process_dropdown_label")
+	public WebElement subProcessDropdownLabel;
+
+	@FindBy(xpath = "//select[@id='sub_process_dropdown']")
+	public WebElement selectSubProcessDropDown;
+
+	@FindBy(xpath = "//label[text()='Sub Sub Process Name']")
+	public WebElement subSubProcessNameFieldLabel;
 
 	@FindBy(id = "s_sub_process_name")
-	public static WebElement subSubProcessNameField;
+	public WebElement subSubProcessNameField;
+
+	@FindBy(xpath = "(//label[text()='Description'])[2]")
+	public WebElement subSubProcessDescFieldLabel;
 
 	@FindBy(id = "s_sub_process_desc")
-	public static WebElement subSubProcessDescField;
+	public WebElement subSubProcessDescField;
 
 	@FindBy(id = "s_sub_process_status")
 	public static WebElement subSubProcessStatusDropDown;
 
 	@FindBy(xpath = "//button[normalize-space()='Save And Update']")
-	public static WebElement save_UpdateButtonInSubsubProcess;
+	public WebElement save_UpdateButtonInSubsubProcess;
 
 	@FindBy(xpath = "//span[@id='change_msg'][text()='Process has been created']")
 	public static WebElement createSuceessMessage;
@@ -135,22 +166,22 @@ public class ProcessPage extends TestBase {
 	public static WebElement continueButton;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td[1]//img[@alt='table_drop_down']")
-	public static WebElement dropDown1;
+	public WebElement dropDown1;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[2]/td[1]//img[@alt='table_drop_down']")
-	public static WebElement dropDown2;
+	public WebElement dropDown2;
 
 	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[1]")
-	public static WebElement editOption1;
+	public WebElement editOption1;
 
 //	@FindBy(xpath = "(//tbody//tr//div[@class='action_width']//img[@alt='table-edit'])[1]")
 //	public static WebElement editoption01;
 
 	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[2]")
-	public static WebElement editOption2;
+	public WebElement editOption2;
 
 	@FindBy(xpath = "(//div[@class='action_width']//img[@alt='table-edit'])[3]")
-	public static WebElement editOption3;
+	public WebElement editOption3;
 
 	@FindBy(xpath = "//button[normalize-space()='Save And Update']")
 	public static WebElement save_UpdateButtonInSubProcess;
@@ -159,7 +190,7 @@ public class ProcessPage extends TestBase {
 	public static WebElement updateProcessSuceessMassgage;
 
 	@FindBy(xpath = "//span[@id='change_msg'][text()='Sub Process has been updated']")
-	public static WebElement updateSubProcessSuceessMassgage;
+	public WebElement updateSubProcessSuceessMassgage;
 
 	@FindBy(xpath = "//span[@id='change_msg'][text()='Sub Sub Process has been updated']")
 	public static WebElement updateSubSubProcessSuceessMassgage;
@@ -190,6 +221,9 @@ public class ProcessPage extends TestBase {
 
 	@FindBy(xpath = "(//table[@class='process_table w-100']//tbody//tr[2]//td[1]//span)[1]")
 	public static WebElement fetchSubProcessName;
+
+	@FindBy(xpath = "(//div[@class='content']//span)[1]")
+	public WebElement fetchSubSubProcessName;
 
 	@FindBy(xpath = "(//div[@class='d-flex align-items-center'])[1]")
 	public static WebElement processRecordDropdown_tablePage;
@@ -257,24 +291,50 @@ public class ProcessPage extends TestBase {
 	public static WebElement searchProcess;
 
 	@FindBy(xpath = "//select[@id='search_sub_process']")
-	public static WebElement searchSubProcess;
+	public WebElement searchSubProcess;
 
 	@FindBy(xpath = "//select[@id='search_s_sub_process']")
-	public static WebElement searchSubSubProcess;
+	public WebElement searchSubSubProcess;
 
 	@FindBy(xpath = "//button[@id='saveButton']")
 	public static WebElement saveButton_processSetup;
 
 	@FindBy(xpath = "//div/img[@alt='success_tick']/..//span[text()='Process Setup has been updated']")
 	public static WebElement conformationMesgofProcessSetupUpdated;
-	
+
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
 	public static WebElement continuButtonProcessSetup;
-	
-	@FindBy(xpath = "//h5/..//span[text()='×']")
+
+	@FindBy(xpath = "(//span[text()='×'])[2]")
+	public static WebElement cancelButtonProcess;
+
+	@FindBy(xpath = "(//span[text()='×'])[1]")
 	public static WebElement cancelButtonProcessSetup;
-	
-	
+
+	@FindBy(xpath = "//label[@class='name-error error']")
+	public WebElement plearEnterNameErrorMessage;
+
+	@FindBy(xpath = "//label[text()='Please Select Process']")
+	public WebElement processDropdownErrorMessage;
+
+	@FindBy(xpath = "//label[text()='Please Select Sub Process']")
+	public WebElement subProcessDropdownErrorMessage;
+
+	@FindBy(xpath = "//label[@id='input_name-error']")
+	public WebElement processNameAlreadyExists;
+
+	@FindBy(xpath = "//td[normalize-space(text())='No Entries Found']")
+	public WebElement noEntriesFound;
+
+	@FindBy(xpath = "//label[@id='search_process-error']")
+	public WebElement errorMessageProceess_ProcessSetup;
+
+	@FindBy(xpath = "//label[@id='search_sub_process-error']")
+	public WebElement errorMessageSubProceess_ProcessSetup;
+
+	@FindBy(id = "search_s_sub_process-error")
+	public WebElement errorMessageSubSubProceess_ProcessSetup;
+
 	FakeData fake = new FakeData();
 
 	public ProcessPage() {
@@ -300,7 +360,7 @@ public class ProcessPage extends TestBase {
 		assertTrue(processStatusDropDown.isDisplayed(), "processStatusDropDown");
 		Select select = new Select(processStatusDropDown);
 		select.selectByVisibleText("Active");
-		
+
 		assertTrue(saveandContinueButton.isDisplayed(), "saveandContinueButton is not displayed");
 		saveandContinueButton.click();
 
@@ -313,7 +373,7 @@ public class ProcessPage extends TestBase {
 //
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
-		
+
 		return this;
 
 	}
@@ -347,7 +407,8 @@ public class ProcessPage extends TestBase {
 		Select select1 = new Select(subProcessStatusDropDown);
 		select1.selectByVisibleText("Active");
 
-		assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(), "saveandContinnueButtonInSubProcess is not displayed.");
+		assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(),
+				"saveandContinnueButtonInSubProcess is not displayed.");
 		saveandContinnueButtonInSubProcess.click();
 //		assertTrue(saveButtonInSubProcess.isDisplayed(), "saveButtonInSubProcess is not displayed");
 //		saveButtonInSubProcess.click();
@@ -358,7 +419,7 @@ public class ProcessPage extends TestBase {
 //
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
-		
+
 		return this;
 
 	}
@@ -394,10 +455,10 @@ public class ProcessPage extends TestBase {
 		assertTrue(subSubProcessDropDown.isDisplayed(), "subSubProcessDropDown is not displayed");
 		Select select2 = new Select(subSubProcessDropDown);
 		select2.selectByVisibleText("Active");
-		
+
 		save_UpdateButtonInSubsubProcess.isDisplayed();
 		save_UpdateButtonInSubsubProcess.click();
-		
+
 		unWait(2);
 		assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
@@ -435,7 +496,7 @@ public class ProcessPage extends TestBase {
 		processNameField.isDisplayed();
 		processNameField.click();
 		processNameField.isSelected();
-		processNameField.sendKeys(processName);
+		processNameField.sendKeys(processName + " Process");
 
 		processDescField.isDisplayed();
 		processDescField.click();
@@ -457,7 +518,7 @@ public class ProcessPage extends TestBase {
 		subProcessNameField.isDisplayed();
 		subProcessNameField.click();
 		subProcessNameField.isSelected();
-		subProcessNameField.sendKeys(subProcessName);
+		subProcessNameField.sendKeys(subProcessName + " SubProcess");
 
 		subProcessDescField.isDisplayed();
 		subProcessDescField.click();
@@ -479,7 +540,7 @@ public class ProcessPage extends TestBase {
 		subSubProcessNameField.isDisplayed();
 		subSubProcessNameField.click();
 		subSubProcessNameField.isSelected();
-		subSubProcessNameField.sendKeys(subSubProcessName);
+		subSubProcessNameField.sendKeys(subSubProcessName + " SubSubProcess");
 
 		subSubProcessDescField.isDisplayed();
 		subSubProcessDescField.click();
@@ -520,8 +581,7 @@ public class ProcessPage extends TestBase {
 		dropDown2.isDisplayed();
 		dropDown2.click();
 		Thread.sleep(1000);
-		
-		
+
 	}
 
 	public static int extractNumber(String input) {
@@ -913,17 +973,15 @@ public class ProcessPage extends TestBase {
 
 	// ProcessSetup
 	// Verify the user is able to do "active" single process only
-	
-	public void allActiveProcesss() 
-	{
+
+	public void allActiveProcesss() {
 		assertTrue(processSetupOption.isDisplayed(), "processSetupOption is not dispalyed");
 		processSetupOption.click();
-		
-		if (!singleProcessToggleButton.isEnabled()) 
-		{
+
+		if (!singleProcessToggleButton.isEnabled()) {
 			System.out.println("singleProcessToggleButton is DISABLE");
 		}
-		
+
 //		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not dispplayed");
 //		saveButton_processSetup.click();
 //		
@@ -933,11 +991,11 @@ public class ProcessPage extends TestBase {
 //		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
 //		continuButtonProcessSetup.click();
 //		
-		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcessSetup));
-		assertTrue(cancelButtonProcessSetup.isDisplayed(), "cancelButtonProcessSetupis not displayed");
-		cancelButtonProcessSetup.click();
-		allActiveValidateStaus() ;
-		
+		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcess));
+		assertTrue(cancelButtonProcess.isDisplayed(), "cancelButtonProcessSetupis not displayed");
+		cancelButtonProcess.click();
+		allActiveValidateStaus();
+
 	}
 
 	public void fetchProcessAndStatus() {
@@ -1051,35 +1109,583 @@ public class ProcessPage extends TestBase {
 
 		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not dispplayed");
 		saveButton_processSetup.click();
-		
+
 		wait.until(ExpectedConditions.visibilityOf(conformationMesgofProcessSetupUpdated));
-		assertTrue(conformationMesgofProcessSetupUpdated.isDisplayed(), "conformationMesgofProcessSetupUpdatedis not displayed");
-		
+		assertTrue(conformationMesgofProcessSetupUpdated.isDisplayed(),
+				"conformationMesgofProcessSetupUpdatedis not displayed");
+
 		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
 		continuButtonProcessSetup.click();
-		
+
 		singleActiveValidateStaus();
 
 	}
 
-	public void singleActiveValidateStaus() 
-	{
+	public void singleActiveValidateStaus() {
 		// Count the number of "Active" statuses
 		long activeCount = statusLists.stream().filter(element -> element.getText().equals("Active")).count();
-		System.out.println("activeCount:"+activeCount);
-		
+		System.out.println("activeCount:" + activeCount);
+
 		// Assert that only one "Active" status is present
 		Assert.assertEquals(activeCount, 1, "Only one 'Active' status should be displayed.");
 	}
-	
-	
-	public void allActiveValidateStaus() 
-	{
+
+	public void allActiveValidateStaus() {
 		// Count the number of "Active" statuses
 		long activeCount = statusLists.stream().filter(element -> element.getText().equals("Inactive")).count();
-		System.out.println("activeCount:"+activeCount);
-		
+		System.out.println("activeCount:" + activeCount);
+
 		// Assert that only one "Active" status is present
-		Assert.assertEquals(activeCount , 0, "Only one 'Active' status should be displayed.");
+		Assert.assertEquals(activeCount, 0, "Only one 'Active' status should be displayed.");
 	}
+	
+////////////////////////////////////// Negative /////////////////////////////////////////////////////////////////////	
+
+	public void checkthroughAsterisk(WebElement elementLabel, boolean isMandatoryCheck) {
+
+		boolean hasAsterisk = elementLabel.getText().contains("*");
+
+		if (isMandatoryCheck) {
+			assertTrue(hasAsterisk, "The field label does not indicate it is mandatory.");
+			System.out.println("The 'status_name' field is mandatory.");
+		} else {
+			System.out.println("Field is not mandatory.");
+		}
+	}
+
+	public void userFilledAllTheDatawithoutclickSaveandUpdateOptionInSubSubProcessTabAndclickOnCancelOption(
+			String ProcessName, String processDesc, String SubProcessName, String SubProcessDesc,
+			String SubSubProcessName, String SubSubProcessDesc) {
+
+		// assertTrue(processTab.isDisplayed(), "processTab is not displayed");
+		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed");
+		createProcessButton.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processNameLabel));
+		checkthroughAsterisk(processNameLabel, true);
+		assertTrue(processNameField.isDisplayed(), "processNameField is not displayed");
+		processNameField.sendKeys(ProcessName);
+		checkthroughAsterisk(processDescriptionLabel, false);
+		assertTrue(processDescField.isDisplayed(), "processDescField is not dispalyed");
+		processDescField.sendKeys(processDesc);
+
+		assertTrue(saveandContinueButton.isDisplayed(), "saveandContinueButton is not displayed");
+		saveandContinueButton.click();
+
+		checkthroughAsterisk(subProcessNameFieldLabel, false);// as of now after implement we wll change
+		wait.until(ExpectedConditions.visibilityOf(subProcessNameField));
+		assertTrue(subProcessNameField.isDisplayed(), "subProcessNameField is not dispalyed");
+		subProcessNameField.sendKeys(SubProcessName);
+		checkthroughAsterisk(subProcessDescriptionFieldLabel, false);
+		assertTrue(subProcessDescField.isDisplayed(), "subProcessDescField is not dispalyed");
+		subProcessDescField.sendKeys(SubProcessDesc);
+
+		wait.until(ExpectedConditions.visibilityOf(saveandContinnueButtonInSubProcess));
+		assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(),
+				"saveandContinnueButtonInSubProcess is not displayed");
+		saveandContinnueButtonInSubProcess.click();
+
+		checkthroughAsterisk(subSubProcessNameFieldLabel, false);// as of now after implement we wll change
+		wait.until(ExpectedConditions.visibilityOf(subSubProcessNameField));
+		assertTrue(subSubProcessNameField.isDisplayed(), "subSubProcessNameField is not dispalyed");
+		subSubProcessNameField.sendKeys(SubSubProcessName);
+		checkthroughAsterisk(subSubProcessDescFieldLabel, false);
+		assertTrue(subSubProcessDescField.isDisplayed(), "subSubProcessDescField is not dispalyed");
+		subSubProcessDescField.sendKeys(SubSubProcessDesc);
+
+		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcess));
+		assertTrue(cancelButtonProcess.isDisplayed(), "cancelButtonProcessSetup is not dispalyed");
+		cancelButtonProcess.click();
+
+//		assertFalse(conformationMesgofCreateProcessElement.isDisplayed(),
+//	            "Test Failed: conformationMesgofCreateProcessElement is displayed. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
+		// need To implement here
+
+		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
+		assertTrue(!conformationMesgofCreateProcessElement.isDisplayed(),
+				"Test Failed: conformationMesgofCreateProcessElement is displayed, but it should not be. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
+
+	}
+
+	public void UserIsAbleTocreateWithoutEnterMandatoryFieldProcesssandSaveUTILITY(WebElement processsNameLabelElement,
+			Boolean Boolean, WebElement processNameFieldElement, String ProcessDescription,
+			WebElement saveandContinueButtonElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(editOption1.isDisplayed(), "editOption1 is not displayed");
+		editOption1.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processsNameLabelElement));
+		assertTrue(processsNameLabelElement.isDisplayed(), "processNameLabel is not displayed");
+		checkthroughAsterisk(processsNameLabelElement, Boolean);
+		processNameFieldElement.clear();
+
+		assertTrue(processDescField.isDisplayed(), "processDescField is not displayed");
+		processDescField.sendKeys(ProcessDescription);
+
+		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not dispalyed");
+		saveandContinueButtonElement.click();
+
+		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
+				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+
+		cancelButtonProcess.click();
+	}
+
+	public void UserIsAbleTocreateWithoutEnterMandatoryFieldsSubProcessandSaveUTILITY(WebElement EditOptionElelemt,
+			WebElement SubprocessNameLabelElement, Boolean Boolean, String SubprocessDescription,
+			WebElement saveandContinueButtonElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+
+		// unWait(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
+		assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
+		EditOptionElelemt.click();
+
+		wait.until(ExpectedConditions.visibilityOf(SubprocessNameLabelElement));
+		assertTrue(SubprocessNameLabelElement.isDisplayed(), "SubprocessNameLabelElement is not displayed");
+		checkthroughAsterisk(SubprocessNameLabelElement, Boolean);
+		subProcessNameField.clear();
+
+		wait.until(ExpectedConditions.visibilityOf(subProcessDescField));
+		assertTrue(subProcessDescField.isDisplayed(), "SubprocessDescFieldElement is not displayed");
+		subProcessDescField.sendKeys(SubprocessDescription);
+
+		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not dispalyed");
+		saveandContinueButtonElement.click();
+
+		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
+				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+
+		cancelButtonProcess.click();
+	}
+
+	public void UserIsAbleTocreateWithoutEnterMandatoryFieldsSubSubProcessandSaveUTILITY(WebElement EditOptionElelemt,
+			WebElement SubSubprocessNameLabelElement, Boolean Boolean, String SubSubProcessDescription,
+			WebElement saveandContinueButtonElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+		unWait(1);
+		dropDown2.click();
+
+		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
+		assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
+		EditOptionElelemt.click();
+
+		wait.until(ExpectedConditions.visibilityOf(SubSubprocessNameLabelElement));
+		assertTrue(SubSubprocessNameLabelElement.isDisplayed(), "SubSubprocessNameLabelElement is not displayed");
+		checkthroughAsterisk(SubSubprocessNameLabelElement, Boolean);
+		subSubProcessNameField.clear();
+
+		wait.until(ExpectedConditions.visibilityOf(subSubProcessDescField));
+		assertTrue(subSubProcessDescField.isDisplayed(), "SubSubprocessDescFieldElement is not displayed");
+		subSubProcessDescField.sendKeys(SubSubProcessDescription);
+
+		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not displayed");
+		saveandContinueButtonElement.click();
+
+		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
+				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+
+		cancelButtonProcess.click();
+	}
+
+	// Special Charcters for Process
+	public void SpecialCharctersForProcessUTILITY(WebElement processsNameLabelElement, Boolean Boolean,
+			String EnterspecialCharctersINProcessName, String ProcessDescription, WebElement SaveButtonProcess) {
+
+		processTab.isDisplayed();
+
+		wait.until(ExpectedConditions.visibilityOf(editOption1));
+		assertTrue(editOption1.isDisplayed(), "editOption1 is not displayed");
+		editOption1.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processsNameLabelElement));
+		assertTrue(processsNameLabelElement.isDisplayed(), "processNameLabel is not displayed");
+		checkthroughAsterisk(processsNameLabelElement, Boolean);
+		processNameField.clear();
+		processNameField.sendKeys(EnterspecialCharctersINProcessName);
+
+		assertTrue(processDescField.isDisplayed(), "processDescField is not displayed");
+		processDescField.clear();
+		processDescField.sendKeys(ProcessDescription);
+
+		assertTrue(SaveButtonProcess.isDisplayed(), "saveandContinueButton is not dispalyed");
+		SaveButtonProcess.click();
+
+		try {
+
+			unWait(1000);
+			// wait.until(ExpectedConditions.visibilityOf(updateProcessSuceessMassgage));
+			if (updateProcessSuceessMassgage.isDisplayed()) {
+
+				assertFalse(true, "Test case failed as 'updateProcessSuccessMessage' is displayed");
+			}
+		} catch (NoSuchElementException e) {
+
+			cancelButtonProcess.click();
+			// Pass the test if the success message is not found
+			System.out.println("Test case passed as 'updateProcessSuccessMessage' is not displayed");
+		}
+
+	}
+
+	// Special Charcters for SubProcess
+	public void SpecialCharctersForSubProcessUTILITY(WebElement EditOptionElelemts,
+			WebElement SubprocessNameLabelElement, Boolean Boolean, String EnterSpecialCharctersInSubProcessName,
+			String SubprocessDescription, WebElement saveButtonSubProcess) {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+
+		// unWait(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemts));
+		assertTrue(EditOptionElelemts.isDisplayed(), "editOption is not displayed");
+		EditOptionElelemts.click();
+
+		wait.until(ExpectedConditions.visibilityOf(SubprocessNameLabelElement));
+		assertTrue(SubprocessNameLabelElement.isDisplayed(), "SubprocessNameLabelElement is not displayed");
+		checkthroughAsterisk(SubprocessNameLabelElement, Boolean);
+		subProcessNameField.clear();
+		subProcessNameField.sendKeys(EnterSpecialCharctersInSubProcessName);
+
+		wait.until(ExpectedConditions.visibilityOf(subProcessDescField));
+		assertTrue(subProcessDescField.isDisplayed(), "SubprocessDescFieldElement is not displayed");
+		subProcessDescField.clear();
+		subProcessDescField.sendKeys(SubprocessDescription);
+
+		assertTrue(saveButtonSubProcess.isDisplayed(), "saveandContinueButton is not dispalyed");
+		saveButtonSubProcess.click();
+
+		try {
+			unWait(1000);
+			// wait.until(ExpectedConditions.visibilityOf(updateSubProcessSuceessMassgage));
+			if (updateSubProcessSuceessMassgage.isDisplayed()) {
+
+				assertFalse(true, "Test case failed as 'updateSubProcessSuceessMassgage' is displayed");
+			}
+		} catch (NoSuchElementException e) {
+
+			cancelButtonProcess.click();
+			// Pass the test if the success message is not found
+			System.out.println("Test case passed as 'updateSubProcessSuceessMassgage' is not displayed");
+		}
+	}
+
+	// Special Charcters for SubSubProcess
+	public void SpecialCharctersForSubSubProcessUTILITY(WebElement EditOptionElelemt,
+			WebElement SubSubprocessNameLabelElement, Boolean Boolean, String EnterSpecialCharctersInSubSubProcessName,
+			String SubSubProcessDescription, WebElement saveAndUpdateButtonElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+		unWait(1);
+		dropDown2.click();
+
+		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
+		assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
+		EditOptionElelemt.click();
+
+		wait.until(ExpectedConditions.visibilityOf(SubSubprocessNameLabelElement));
+		assertTrue(SubSubprocessNameLabelElement.isDisplayed(), "SubSubprocessNameLabelElement is not displayed");
+		checkthroughAsterisk(SubSubprocessNameLabelElement, Boolean);
+		subSubProcessNameField.clear();
+		subSubProcessNameField.sendKeys(EnterSpecialCharctersInSubSubProcessName);
+
+		wait.until(ExpectedConditions.visibilityOf(subSubProcessDescField));
+		subSubProcessDescField.clear();
+		assertTrue(subSubProcessDescField.isDisplayed(), "SubSubprocessDescFieldElement is not displayed");
+		subSubProcessDescField.sendKeys(SubSubProcessDescription);
+
+		assertTrue(save_UpdateButtonInSubsubProcess.isDisplayed(), "save_UpdateButtonInSubsubProcess is not dispalyed");
+		save_UpdateButtonInSubsubProcess.click();
+//
+//		try {
+//				
+//			unWait(2);
+//			//wait.until(ExpectedConditions.visibilityOf(updateSubSubProcessSuceessMassgage));
+//			if (updateSubSubProcessSuceessMassgage.isDisplayed()) {
+//
+//				assertFalse(true, "Test case failed as 'updateSubSubProcessSuceessMassgage' is displayed");
+//			}
+//		} catch (NoSuchElementException e) {
+//			// Pass the test if the success message is not found
+//		System.out.println("Test case passed as 'updateSubSubProcessSuceessMassgage' is not displayed");
+//		}
+
+		try {
+			unWait(2);
+			// wait.until(ExpectedConditions.visibilityOf(updateSubSubProcessSuceessMassgage));
+			if (updateSubSubProcessSuceessMassgage.isDisplayed()) {
+				// Skip the test case by asserting false with soft assert
+				softAssert.assertFalse(true, "Test case failed as 'updateSubSubProcessSuccessMessage' is displayed");
+			}
+		} catch (NoSuchElementException e) {
+
+			cancelButtonProcess.click();
+
+			// Log a message indicating the test passed because the success message was not
+			// displayed
+			System.out.println("Test case passed as 'updateSubSubProcessSuccessMessage' is not displayed");
+		}
+
+		// Check all soft assertions
+		softAssert.assertAll();
+	}
+
+	public void userIsAbleToCheckCharacterForProcessByMoreThanCharacterLimitUTILITY(WebElement EditOptionElelemt,
+			WebElement TextfieldElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(EditOptionElelemt.isDisplayed(), "EditOptionElelemt is not displayed");
+		EditOptionElelemt.click();
+
+		wait.until(ExpectedConditions.visibilityOf(TextfieldElement));
+		assertTrue(TextfieldElement.isDisplayed(), "processNameFieldElement is not displayed");
+		TextfieldElement.clear();
+		TextfieldElement.sendKeys("A".repeat(300));
+
+		wait.until(ExpectedConditions.elementToBeClickable(saveButton));
+		saveButton.click();
+
+
+		try {
+			assertTrue(!updateProcessSuceessMassgage.isDisplayed(),
+					"Test Failed : updateProcessSuceessMassgage is displayed");
+			System.out.println(updateProcessSuceessMassgage + " updateProcessSuceessMassgage");
+		} catch (org.openqa.selenium.NoSuchElementException e) {
+			// If NoSuchElementException is caught, the test case passes
+			System.out.println("NoSuchElementException caught, test case passed as element is not found.");
+		}
+	}
+
+	public void withoutSelectProcessDropdownAndSave() {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+
+		// unWait(2000);
+		wait.until(ExpectedConditions.elementToBeClickable(editOption2));
+		assertTrue(editOption2.isDisplayed(), "editOption is not displayed");
+		editOption2.click();
+
+		wait.until(ExpectedConditions.visibilityOf(selectProcessDropDown));
+		assertTrue(selectProcessDropDown.isDisplayed(), "selectProcessDropDown is not displayed");
+		Select selectProcess = new Select(selectProcessDropDown);
+		selectProcess.selectByVisibleText("Select Process");
+
+		saveButtonInSubProcess.click();
+
+		assertTrue(processDropdownErrorMessage.isDisplayed(), "processDropdownErrorMessage is not displayed");
+
+		cancelButtonProcess.click();
+	}
+
+	public void withoutSelectSubProcessDropdownAndSave() throws Throwable {
+
+		processTab.isDisplayed();
+
+		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+		dropDown1.click();
+		unWait(1);
+		dropDown2.click();
+		// wait.until(ExpectedConditions.elementToBeClickable(editOption3));
+		Thread.sleep(2000);
+		editOption3.click();
+		wait.until(ExpectedConditions.visibilityOfAllElements(selectSubProcessDropDown));
+		assertTrue(selectSubProcessDropDown.isDisplayed(), "selectSubProcessDropDown is not displayed");
+		Select selectSubProcess = new Select(selectSubProcessDropDown);
+		selectSubProcess.selectByVisibleText("Select Sub Process");
+
+		save_UpdateButtonInSubsubProcess.click();
+
+		assertTrue(subProcessDropdownErrorMessage.isDisplayed(), "subProcessDropdownErrorMessage is not displayed");
+
+		cancelButtonProcess.click();
+	}
+
+	public void userIsAbleToCreateWithSameProcessName() {
+
+		String fetchProcesstext = fetchProcessName.getText();
+		System.out.println("fetchProcesstext :" + fetchProcesstext);
+
+		createProcessButton.click();
+
+		wait.until(ExpectedConditions.visibilityOfAllElements(processNameLabel));
+		assertTrue(processNameLabel.isDisplayed(), "processNameLabel is not displayed");
+		checkthroughAsterisk(processNameLabel, true);
+		processNameField.sendKeys(fetchProcesstext);
+		processDescField.sendKeys(FakeData.lastName1() + " Desc");
+
+		saveButton.click();
+
+		assertTrue(processNameAlreadyExists.isDisplayed(),
+				"TestCase Failed: processNameAlreadyExists error messgae is not displayed");
+
+		cancelButtonProcess.click();
+
+	}
+
+	// Search
+	public void userIsAbleToSearchThroughInvalidProcessNames(String invalidCreatedProcess) {
+
+		processTab.isDisplayed();
+
+		assertTrue(searchBar.isDisplayed(), "searchBar is not displayed");
+		searchBar.sendKeys(invalidCreatedProcess);
+		searchButton.click();
+		assertTrue(noEntriesFound.isDisplayed(), "TestCase Failed: noEntriesFound is not displayed");
+
+		clearButton.click();
+	}
+
+	// Negative For ProcessSetUp
+
+	public void withoutSelectingProcesseAndcLickOnSave() {
+
+		processSetupOption.isDisplayed();
+		processSetupOption.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
+
+		if (singleProcessToggleButton.isEnabled()) {
+			System.out.println(" singleProcessToggleButton is ENABLED");
+
+		} else if (!singleProcessToggleButton.isEnabled()) {
+
+			System.out.println("singleProcessToggleButton is DISABLED");
+
+		}
+		singleProcessToggleButton.click();
+
+		assertTrue(processSetup_SaveButton.isDisplayed(), "processSetup_SaveButtonis not displayed");
+		processSetup_SaveButton.click();
+
+		assertTrue(
+				errorMessageProceess_ProcessSetup.isDisplayed() && errorMessageSubProceess_ProcessSetup.isDisplayed()
+						&& errorMessageSubSubProceess_ProcessSetup.isDisplayed(),
+				"Expected all error messages is not displayed.");
+
+		cancelButtonProcessSetup.click();
+
+	}
+
+	public void userSelectingAllTheProcessandWithoutSaveClickOnCancel() {
+
+		processSetupOption.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
+
+		if (singleProcessToggleButton.isEnabled()) {
+			System.out.println(" singleProcessToggleButton is ENABLED");
+
+		} else if (!singleProcessToggleButton.isEnabled()) {
+
+			System.out.println("singleProcessToggleButton is DISABLED");
+
+		}
+		singleProcessToggleButton.click();
+
+		wait.until(ExpectedConditions.visibilityOf(searchProcess));
+		Select ProcessDrodpwon = new Select(searchProcess);
+		ProcessDrodpwon.selectByIndex(1);
+
+		wait.until(ExpectedConditions.elementToBeClickable(searchSubProcess));
+		Select ProcessSubDrodpwon = new Select(searchSubProcess);
+		ProcessSubDrodpwon.selectByIndex(1);
+
+		wait.until(ExpectedConditions.visibilityOf(searchSubSubProcess));
+		Select ProcessSubSubDrodpwon = new Select(searchSubSubProcess);
+		ProcessSubSubDrodpwon.selectByIndex(1);
+
+		cancelButtonProcessSetup.click();
+
+		assertTrue(!saveButton_processSetup.isDisplayed(), "Test failed :saveButton_processSetup is displeyd");
+
+	}
+
+	public void TheUserAfterAddingProcessClickOnSave() {
+
+		processSetupOption.isDisplayed();
+		processSetupOption.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
+
+		if (singleProcessToggleButton.isEnabled()) {
+			System.out.println(" singleProcessToggleButton is ENABLED");
+
+		} else if (!singleProcessToggleButton.isEnabled()) {
+
+			System.out.println("singleProcessToggleButton is DISABLED");
+
+		}
+		singleProcessToggleButton.click();
+
+		wait.until(ExpectedConditions.visibilityOf(searchProcess));
+		Select ProcessDrodpwon = new Select(searchProcess);
+		ProcessDrodpwon.selectByIndex(1);
+		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not displayed  ");
+		saveButton_processSetup.click();
+
+		assertTrue(
+				errorMessageSubProceess_ProcessSetup.isDisplayed()
+						&& errorMessageSubSubProceess_ProcessSetup.isDisplayed(),
+				" errorMessageSubProceess_ProcessSetup and errorMessageSubProceess_ProcessSetup is not displayed ");
+		cancelButtonProcessSetup.click();
+
+	}
+
+	public void TheUserAfterAddingProcessAndSubProcessAndSave() {
+
+		processSetupOption.isDisplayed();
+		processSetupOption.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
+
+		if (singleProcessToggleButton.isEnabled()) {
+			System.out.println(" singleProcessToggleButton is ENABLED");
+
+		} else if (!singleProcessToggleButton.isEnabled()) {
+
+			System.out.println("singleProcessToggleButton is DISABLED");
+
+		}
+		singleProcessToggleButton.click();
+
+		wait.until(ExpectedConditions.visibilityOf(searchProcess));
+		Select ProcessDrodpwon = new Select(searchProcess);
+		ProcessDrodpwon.selectByIndex(1);
+		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not displayed  ");
+
+		wait.until(ExpectedConditions.elementToBeClickable(searchSubProcess));
+		Select ProcessSubDrodpwon = new Select(searchSubProcess);
+		ProcessSubDrodpwon.selectByIndex(1);
+		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not displayed  ");
+		saveButton_processSetup.click();
+
+		assertTrue(errorMessageSubSubProceess_ProcessSetup.isDisplayed(),
+				"Expected all error messages to be displayed.");
+		cancelButtonProcessSetup.click();
+
+	}
+
 }

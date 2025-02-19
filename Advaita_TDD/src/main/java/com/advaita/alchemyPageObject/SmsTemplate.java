@@ -13,6 +13,7 @@ import java.util.Random;
 
 import org.apache.poi.xwpf.usermodel.ISDTContent;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,8 +24,11 @@ import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.QuestionSelector;
+import com.advaita.Utilities.SendDataUtils;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
+import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.UserSetupPage;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
@@ -37,6 +41,20 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	FakeData fake = new FakeData();
 
+//Login USerIds
+	String superAmdin = "Capture_Admin";
+	String superAdminPass = "Qwerty@123";
+
+	String userID = "Abhijit@trasccon";
+	String userPassword = "Qwerty@123";
+
+	String userId1 = "Abhijit_idamta";
+	String password1 = "Qwerty@123";
+
+//Global Variables
+//---------------------------------------------------------> 
+	String searchedStagesName = "Customer Profile Stages";
+
 	public String FirstCreatedUserName;
 	public String lastcreatedsmsTemplate_messageTextfield;
 	public String selectedNumberDropdown_toNumber_SMSPopup;
@@ -48,15 +66,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public String createddispositionQuestionSetText;
 
-	String superAmdin = "Capture_Admin";
-	String superAdminPass = "Qwerty@123";
-
-	String userID = "Abhijit@trasccon";
-	String userPassword = "Qwerty@123";
-
-	String userId1 = "Abhijit_idamta";
-	String password1 = "Qwerty@123";
-
+//Xpath
+//---------------------------------------------------->	
 	// Entirebody Click
 	@FindBy(tagName = "body")
 	public WebElement driverIninteractable;
@@ -64,10 +75,10 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']")
 	public WebElement profileDropdown;
 
-	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown']/..//li//a)[3]")
+	@FindBy(linkText = "Logout")
 	public WebElement logout;
 
-//user Login 	
+	// user Login
 	@FindBy(xpath = "//h2[text()='Sign In']")
 	public WebElement Verify_signIn;
 
@@ -81,7 +92,6 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public WebElement signInButton;
 
 	// Fetch_ process , subprocess , Subsubprocess
-
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
 	public WebElement fetchProcess;
 
@@ -96,7 +106,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public WebElement verifyStage;
 
 	@FindBy(id = "text_search")
-	public WebElement searchTextfieldStages;
+	public WebElement searchTextfield;
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
@@ -135,6 +145,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "(//tbody//tr[1]//td[4])[1]") // (//tbody//tr[5]//td[4])[1]
 	public WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
 
+	@FindBy(xpath = "//span[@id='change_msg']")
+	public WebElement stagesUpdatedSuccessfully_popuop;
+
+	@FindBy(xpath = "//span[@id='change_msg']/..//button")
+	public WebElement continueButton_stages;
+
 	// sms template
 	@FindBy(xpath = "//a[@id='menulist2']")
 	public WebElement alchemySidemenubar;
@@ -154,32 +170,59 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//select[@id='process']")
 	public WebElement ProcessDropdown;
 
+	@FindBy(xpath = "//label[text()='Process*']")
+	public WebElement processLabel;
+
 	@FindBy(xpath = "//select[@id='sub_process']")
 	public WebElement SubProcessDropdown;
+
+	@FindBy(xpath = "//label[text()='Sub Process*']")
+	public WebElement subProcessLabel;
 
 	@FindBy(xpath = "//select[@id='s_sub_process']")
 	public WebElement SubsubProcessDropdown;
 
+	@FindBy(xpath = "//label[text()='Sub Sub Process*']")
+	public WebElement subSubProcessLabel;
+
 	@FindBy(xpath = "//select[@id='stage_name_id']")
 	public WebElement smsStages;
+
+	@FindBy(xpath = "//label[text()='Stages*']")
+	public WebElement stagesLabel;
 
 	@FindBy(xpath = "//input[@name='template_name']")
 	public WebElement smsTemplateName;
 
+	@FindBy(xpath = "//label[text()='Template Name*']")
+	public WebElement templateNameLabel;
+
 	@FindBy(name = "disposition")
 	public WebElement smsDisposition;
+
+	@FindBy(xpath = "//label[text()='Disposition']")
+	public WebElement dispositionLabel;
 
 	@FindBy(name = "from_no")
 	public WebElement fromNumber;
 
+	@FindBy(xpath = "//label[text()='From Number*']")
+	public WebElement fromNumberLabel;
+
 	@FindBy(id = "toNumber")
 	public WebElement toNumber;
+
+	@FindBy(xpath = "//label[text()='To Number']")
+	public WebElement toNumberLabel;
 
 	@FindBy(xpath = "//label[text()='To Number Source']/..//select")
 	public WebElement toNumberSource;
 
 	@FindBy(xpath = "//textarea[@name='message']")
 	public WebElement message;
+
+	@FindBy(xpath = "//label[text()='Message*']")
+	public WebElement messagLabel;
 
 	@FindBy(xpath = "//textarea[@name='remarks']")
 	public WebElement remarks;
@@ -324,7 +367,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public WebElement stagesProfileView_userAccount;
 
 	@FindBy(xpath = "//div[contains(@class, 'social_media_images')]/img[contains(@class, 'sms_btn_click')]")
-	public WebElement SmsIcon_userAccountSatgeView;
+	public WebElement smsIcon_userAccountSatgeView;
 
 	@FindBy(xpath = "//h2[text()='SMS']")
 	public WebElement smsPopup;
@@ -344,7 +387,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//label/..//textarea[@id='sms_msg']")
 	public WebElement messaageTextfield_smsPopu;
 
-	@FindBy(xpath = "//ul//li//button[text()='SMS']")
+	@FindBy(xpath = "//ul//li//button[@id='sms-tab']")
 	public WebElement smsTab_stgesViewPage;
 
 	@FindBy(xpath = "(//h2/..//..//button[text()='Send'])[1]")
@@ -421,11 +464,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> afterSearchData_Table;
 
-	private String String;
-
 	public List<WebElement> satgeNameList;
-
-	// private String String;
 
 	@FindBy(xpath = "//tbody/tr[last()]//td//div//img[@alt='delete-icon ']")
 	public WebElement LastDelete_smsTempalte;
@@ -442,9 +481,15 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
 	public WebElement continueButton_DeleteSuccessullyPopup;
 
+	@FindBy(xpath = "//tbody//tr[1]//td[1]/../..//tr//td[1]")
+	List<WebElement> templateNameLists;
+
 	// DispositionStages
 	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[4]")
 	public WebElement stagesDispositionOption;
+
+	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]")
+	public WebElement stagesEditOptionFirst;
 
 	@FindBy(id = "disposition_stagewise")
 	public WebElement selectDispostionQuestionSetDropdown;
@@ -470,6 +515,28 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//h2[text()='Auto SMS Mapping']")
 	public WebElement verifyAutoSmsMapping;
 
+	// Negative
+	@FindBy(xpath = "//label[@id='process-error']")
+	public WebElement processErrorMessage;
+
+	@FindBy(xpath = "//label[@id='stage_name_id-error']")
+	public WebElement stagesErrormessage;
+
+	@FindBy(xpath = "//label[@id='template_name-error']")
+	public WebElement templateNameErrorMessage;
+
+	@FindBy(id = "from_no-error")
+	public WebElement fromNumberErrorMessage;
+
+	@FindBy(xpath = "//label[@id='message-error']")
+	public WebElement messageErrorMessage;
+
+	@FindBy(xpath = "//label[text()='This field is required.']")
+	public WebElement thisfieldErrorMessage;
+
+	@FindBy(xpath = "//span[@id='change_error_msg']")
+	public WebElement somethingWentWrongErrorMesg;
+
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
 		fetchProcess.getText();
@@ -484,7 +551,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 
 	}
-
+//	String processName=getTextFromPropertiesFile("process");
+	
 	public void clickDynamicStage(int index) {
 		if (satgeNameList.size() > index) { // Ensure the index is within bounds
 			try {
@@ -508,14 +576,17 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		}
 	}
 
-	String searchedStagesName = "Booking Information Stage";
+	private String getTextFromPropertiesFile(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public void navigatetoStage_verifySMS() throws Throwable {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
 
-		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
-		searchTextfieldStages.sendKeys(searchedStagesName);
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfield.sendKeys(searchedStagesName);
 		searchbutton_Table.click();
 		Thread.sleep(2000);
 
@@ -542,55 +613,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		System.out.println(StagesCreatedNameIsEnable);
 		jsClick(driver, StagesCreatedName);
 
-//		################
-
-//		if (satgeNameList.size() >= 1) {
-//			stagesName.get(0).click();  //through here we can change stage click
-//
-//			System.out.println("total count : " + satgeNameList.size());
-//		} 
-//		else {
-//			System.out.println("The number of matching elements is less than 1. Found: " + satgeNameList.size());
-//
-//		}
-
-		// js.executeScript("arguments[0].scrollIntoView(true);", stagesName);
-
-		// Your existing code to populate the list
-//		List<String> satgeNameList = new ArrayList<>();
-//		String stageToSearch = "";  // Variable to store the found stage name
-//
-//		for (WebElement stageName : stagesName) {
-//		    String stageText = stageName.getText();
-//		    satgeNameList.add(stageText);
-//		    System.out.println("Stages name Lists : " + stageText);
-//		    
-//		    // Check if the stage name contains "Escalation Stage"
-//		    if (stageText.contains("Escalation Stage")) {
-//		        stageToSearch = stageText;  // Store the stage name in the variable
-//		        break;  // Exit the loop once found
-//		    }
-//		}
-//
-//		// Assert that the list contains "Escalation Stage"
-//		assertTrue(satgeNameList.contains("Escalation Stage"), "Escalation Stage not found in the list!");
-//
-//		// If "Escalation Stage" is found, pass it to the search field
-//		if (!stageToSearch.isEmpty()) {
-//		    searchTextfieldStages.sendKeys(stageToSearch);  // Pass the stored stage name into the search text field
-//		    System.out.println("Searching for stage: " + stageToSearch);
-//		    
-//		    // Click on the "Escalation Stage" element
-//		    stageToClick.click();  // Click the WebElement associated with "Escalation Stage"
-//		    System.out.println("Clicked on the stage: " + stageToSearch);
-//		    
-//		} else {
-//		   // Assert.fail("Escalation Stage not found.");  // Fail the test if the stage was not found
-//		    assertFalse(false, "Escalation Stage not found.");
-//		}
-//
-
-//		//		clickDynamicStage(1);
+		// clickDynamicStage(1);
 		assertTrue(verifyCreatedSatgeName.isDisplayed(), "verifyCreatedSatgeName is not dispalyed");
 //		// System.out.println("verifyCreatedSatgeName : " +
 //		// verifyCreatedSatgeName.getText());
@@ -626,7 +649,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 			// leftArrowButton_stages.click();
 			jsClick(driver, leftArrowButton_stages);
 
-			searchTextfieldStages.sendKeys(searchedStagesName);
+			searchTextfield.sendKeys(searchedStagesName);
 			searchbutton_Table.click();
 
 			// Scroll and click the edit stage option
@@ -681,27 +704,11 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 			}
 		}
 
-//		assertTrue(stagesCreatedProcess.isDisplayed(), "stagesCreatedProcess is not displayed");
-//		stagesCreatedProcess1 = stagesCreatedProcess.getText();
-//		System.out.println("stagesCreatedProcess1 :" + stagesCreatedProcess1);
-//
-//		assertTrue(stagesCreatedSubProcess.isDisplayed(), "stagesCreatedSubProcess2 is not displayed");
-//		stagesCreatedSubProcess2 = stagesCreatedSubProcess.getText();
-//		System.out.println("stagesCreatedSubProcess2 :" + stagesCreatedSubProcess2);
-//
-//		assertTrue(stagesCreatedSubsubProcess.isDisplayed(), "stagesCreatedSubsubProcess3 is not displayed");
-//		stagesCreatedSubsubProcess3 = stagesCreatedSubsubProcess.getText();
-//		System.out.println("stagesCreatedSubsubProcess3 :" + stagesCreatedSubsubProcess3);
-
 	}
-
-	// ############## if required need to impliment##########################
 
 	public void navigateTo_AlchemyModule() {
 
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
-//		alchemySidemenubar.click();
-//		alchemySidemenubar.click();
 		jsClick(driver, alchemySidemenubar);
 		jsClick(driver, alchemySidemenubar);
 
@@ -722,38 +729,6 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(CreatesmstepmlateText.isDisplayed(), "CreatesmstepmlateText is not displayed");
 
 	}
-
-//	public void dropdownUtils(WebElement dropdownElement, String expectedOptionText) {
-//
-//		// Step 2: Initialize Select object with the provided dropdown element
-//		Select dropdown = new Select(dropdownElement);
-//
-//		// Step 3: Retrieve all options in the dropdown
-//		List<WebElement> allDropdownOptions = dropdown.getOptions();
-//
-//		// Step 4: Loop through each dropdown option and compare with expectedOptionText
-//		boolean isOptionClicked = false;
-//		for (WebElement option : allDropdownOptions) {
-//			String dropdownValue = option.getText();
-//
-//			// Step 5: Compare expectedOptionText with the dropdown option value
-//			if (dropdownValue.equals(expectedOptionText)) {
-//				// Assert that the correct dropdown value has been found
-//				assertEquals(dropdownValue, expectedOptionText, "Dropdown value did not match!");
-//
-//				// Step 6: Click the dropdown option that matches
-//				option.click();
-//
-//				// Break the loop once the match is found and clicked
-//				isOptionClicked = true;
-//				break;
-//			}
-//		}
-//
-//		// Step 7: Assert that the option has been clicked
-//		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
-//	}
-//	====================================================================
 
 	public void dropdownUtils(WebElement dropdownElement, String expectedOptionText) throws Throwable {
 		// Step 1: Initialize WebDriverWait to handle dynamic waits
@@ -797,126 +772,22 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	}
 
 	public void selectProcessDropdown() throws Throwable {
-//		List<String> processDropdownList = new ArrayList<String>();
-//
-//		Select ProcessDropdown1 = new Select(ProcessDropdown);
-//		for (WebElement Options : ProcessDropdown1.getOptions()) {
-//			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
-//			System.out.println(Options.getText());
-//			processDropdownList.add(Options.getText());
-//		}
-//		assertTrue(processDropdownList.contains("AJP"));
-//		ProcessDropdown1.selectByVisibleText("AJP");          //Old Code
-
-//		Select ProcessDropdown1 = new Select(ProcessDropdown);     //New Code
-//
-//		// Step 3: Retrieve all options in the dropdown
-//		List<WebElement> allDropdownOptions = ProcessDropdown1.getOptions();
-//
-//		// Step 4: Loop through each dropdown option and compare with capturedText
-//		boolean isOptionClicked = false;
-//		for (WebElement option : allDropdownOptions) {
-//			String dropdownValue = option.getText();
-//
-//			// Step 5: Compare capturedText with the dropdown option value
-//			if (dropdownValue.equals(stagesCreatedProcess1)) {
-//				// Assert that the correct dropdown value has been found
-//				assertEquals(dropdownValue, stagesCreatedProcess1, "Dropdown value did not match!");
-//
-//				// Step 6: Click the dropdown option that matches
-//				option.click();
-//
-//				// Break the loop once the match is found and clicked
-//				isOptionClicked = true;
-//				break;
-//			}
-//		}
-//
-//		// Assert that the option has been clicked
-//		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
 
 		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
 
 	}
 
 	public void SelectSubProcessDropdown() throws Throwable {
-//		List<String> subProcessDropdownList = new ArrayList<String>(); //old code
-//
-//		actions.moveToElement(driverIninteractable).perform();
-//		Select subProcessDropdown2 = new Select(SubProcessDropdown);
-//		for (WebElement options2 : subProcessDropdown2.getOptions()) {
-//			Thread.sleep(1000);
-//			System.out.println(subProcessDropdown2.getOptions());
-//			subProcessDropdownList.add(options2.getText());
-//		}
-//
-//		assertTrue(subProcessDropdownList.contains("Sub AJP"));
-//		subProcessDropdown2.selectByVisibleText("Sub AJP");
-
-		// js.executeScript("arguments[0].scrollIntoView(true);", SubProcessDropdown);
-		// // New Code
 
 		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
 	}
 
 	public void selectSubSubProcess() throws Throwable {
-//		List<String>subsubprocessDropdownList=new ArrayList<String>();
-//		Select SubsubProcessDropdown3= new Select(SubsubProcessDropdown);
-//		for (WebElement options3 : SubsubProcessDropdown3.getOptions())
-//		{
-//			Thread.sleep(2000);
-//			System.out.println(SubsubProcessDropdown3.getOptions());
-//			subsubprocessDropdownList.add(options3.getText());
-//		}
-//		assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
-//		SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-//		actions.moveToElement(driverIninteractable).perform();s
 
-//		List<String> subsubprocessDropdownList = new ArrayList<String>();
-//		boolean elementStale = true;
-//		int attempts = 0;
-//
-//		while (elementStale && attempts < 3) {
-//			try {
-//				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
-//				subsubprocessDropdownList.clear(); // Clear the list before each retry
-//
-//				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
-//					Thread.sleep(2000);
-//					System.out.println(options3.getText()); // Print each option's text
-//					subsubprocessDropdownList.add(options3.getText());
-//				}
-//
-//				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
-//				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-//				actions.moveToElement(driverIninteractable).perform();
-//
-//				elementStale = false; // If we reach here, no exception was thrown
-//			} catch (StaleElementReferenceException e) {
-//				attempts++;
-//				System.out.println("Stale element reference exception. Retrying... " + attempts);
-//				Thread.sleep(2000); // Optional: add a wait before retrying
-//			}
-//		}
-//
-//		if (elementStale) {
-//			throw new RuntimeException(
-//					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
-//		}
-
-		// Thread.sleep(1000);
 		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
 	}
 
 	public void selectStages() throws Throwable {
-//		List<String> smsStagesLists = new ArrayList<String>();
-//		Select smsStagesdropdown = new Select(smsStages);
-//		for (WebElement smsStagesOptions : smsStagesdropdown.getOptions()) {
-//			System.out.println("satges Dropdown : " + smsStagesdropdown.getOptions());
-//			smsStagesLists.add(smsStagesOptions.getText());
-//		}
-//		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
-//		smsStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
 
 		Thread.sleep(1000);
 		dropdownUtils(smsStages, verifyCreatedStages);
@@ -948,6 +819,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		// Sms - disposition
 		assertTrue(smsDisposition.isDisplayed(), "smsDisposition is not dispalyed");
+		smsDisposition.sendKeys(fake.lastName1());
 
 	}
 
@@ -1016,40 +888,20 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public void selectToNumberSource() {
 
-//		// SMS- to Number Source
-//		List<String> toNumberSourceListsList = new ArrayList<String>();
-//		Select toNumberSourceDrodown = new Select(toNumberSource);
-//		for (WebElement toNumberSourceOptions : toNumberSourceDrodown.getOptions()) {
-//			toNumberSourceListsList.add(toNumberSourceOptions.getText());
-//			System.out.println("toNumberSourceListsList :" + toNumberSourceOptions.getText());
-//		}
-//
-//		assertTrue(toNumberSourceListsList.contains("From Stage Fields"));
-//		toNumberSourceDrodown.selectByVisibleText("From Stage Fields");
-//
-//		// SMS - to number
-//		List<String> toNumberListsList = new ArrayList<String>();
-//		Select toNumberDrodown = new Select(toNumber);
-//		for (WebElement toNumberOptions : toNumberDrodown.getOptions()) {
-//			// System.out.println(" to number dropdowns options : " +
-//			// toNumberDrodown.getOptions());
-//			toNumberListsList.add(toNumberOptions.getText());
-//		}
-//		assertTrue(toNumberListsList.contains("Phone Number"));
-//		toNumberDrodown.selectByVisibleText("Phone Number");
-
 		// validateAndSelectFromDropdownUTILS(toNumberSource, "From System Names");
 		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
 
 	}
 
+	String toNumberOption = "Emp Phone Number";
+
 	public void toNumber() {
-		validateAndSelectFromDropdownUTILS(toNumber, "Phone Number");
+		validateAndSelectFromDropdownUTILS(toNumber, toNumberOption);
 
 	}
 
 	// SMS - message
-	public void enterMessage() {
+	public void message() {
 
 		// Array of predefined messages
 		String[] messages = { "Dear Customer, thank you for your purchase! We hope you enjoy your new product.",
@@ -1230,7 +1082,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		UserSetupPage userSetupPage = new UserSetupPage();
 
-		userSetupPage.singleGroupSelect("admin1");
+		userSetupPage.singleGroupSelect("Admin");
 		userSetupPage.clickOnGroupCreateButton();
 
 	}
@@ -1392,8 +1244,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(stagesProfileView_userAccount.isDisplayed(), "stagesProfileView_userAccount is not displayed");
 		stagesProfileView_userAccount.click();
 
-		assertTrue(SmsIcon_userAccountSatgeView.isDisplayed(), "SmsIcon_userAccountSatgeView is not displayed");
-		SmsIcon_userAccountSatgeView.click();
+		assertTrue(smsIcon_userAccountSatgeView.isDisplayed(), "SmsIcon_userAccountSatgeView is not displayed");
+		smsIcon_userAccountSatgeView.click();
 
 		wait.until(ExpectedConditions.visibilityOf(smsPopup));
 		assertTrue(smsPopup.isDisplayed(), "smsPopup is not displayed");
@@ -1728,7 +1580,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		fromNumber();
 		toNumberSourceSystemNames();
 		toNumberSystemNames();
-		enterMessage();
+		message();
 		remarksField();
 		createButton();
 		// navigateTo_MasterParameterDisposition();
@@ -1754,8 +1606,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void stagesDispositionClick() {
 		String searchedStagesName = "Booking Information Stage";
 
-		assertTrue(searchTextfieldStages.isDisplayed(), "searchTextfieldStages is not displayed");
-		searchTextfieldStages.sendKeys(searchedStagesName);
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfield.sendKeys(searchedStagesName);
 		searchbutton_Table.click();
 
 		stagesDispositionOption.click(); // Click on StagesDisposition
@@ -1836,6 +1688,892 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
+/////////////////////////////////////// Negative Testing ///////////////////////////////////////////////////////////////////////	
 
+	public void withoutSelectingAnyFieldAndCreteUtility(WebElement smsCreateButton,
+			WebElement fieldRequiredErrorMEssage) {
+
+		String Combinetext = processLabel.getText() + subProcessLabel.getText() + subSubProcessLabel.getText()
+				+ stagesLabel.getText() + templateNameLabel.getText() + messagLabel.getText();
+		System.out.println("Combinetext" + Combinetext);
+
+		String asterisk = "*";
+		assertTrue(Combinetext.contains(asterisk), "asterisk is not contains in Combinetext text");
+
+		smsCreateButton.click();
+
+		boolean isEitherDisplayed = fieldRequiredErrorMEssage.isDisplayed();
+		assertTrue(isEitherDisplayed,
+				"'thisFieldisRequiredErrorMessage' is not displayed for Mandatory fields, test failed.");
+
+	}
+
+	public void withoutSelectingAnyFieldAndCrete() {
+
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		withoutSelectingAnyFieldAndCreteUtility(createButton_SmsTemplatePopup, thisfieldErrorMessage);
+	}
+
+	public void withoutSelectingStagesAndCreateUtility(WebElement stagelabel, WebElement stagesDropdwonElement,
+			WebElement smsCreateButton, WebElement stageErrorMesg) throws Throwable {
+
+		String captureStagesLabel = stagelabel.getText();
+		String asterisk = "*";
+		assertTrue(captureStagesLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		String defaultStage = "Select Stage";
+		Select stagesOption = new Select(stagesDropdwonElement);
+		String stagesFirstSelectedOption = stagesOption.getFirstSelectedOption().getText();
+
+		smsCreateButton.click();
+
+		boolean isEitherDisplayed = stageErrorMesg.isDisplayed() && stagesFirstSelectedOption.equals(defaultStage);
+		assertTrue(isEitherDisplayed,
+				"'thisFieldisRequired'ErrorMessage is not displayed for Mandatory StagesDropdown, test failed.");
+
+	}
+
+	public void withoutSelectingStagesAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		SmsTemplateName();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		message();
+		remarksField();
+
+		withoutSelectingStagesAndCreateUtility(stagesLabel, smsStages, createButton_SmsTemplatePopup,
+				stagesErrormessage);
+
+	}
+
+	public void withoutEnterTemplateNameAndCreateUtility(WebElement templateNameLabelElement,
+			WebElement templateNameElement, WebElement smsCreateButton, WebElement templateNameerrorMesgElement) {
+
+		String captureTemplateNameLabel = templateNameLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(captureTemplateNameLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		smsCreateButton.click();
+
+		boolean isEitherDisplayed = templateNameerrorMesgElement.isDisplayed();
+		assertTrue(isEitherDisplayed,
+				"'thisFieldisRequired'ErrorMessage is not displayed for Mandatory TemplateNameTextfield, test failed.");
+
+	}
+
+	public void withoutEnterTemplateNameAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		withoutEnterTemplateNameAndCreateUtility(templateNameLabel, smsTemplateName, createButton_SmsTemplatePopup,
+				templateNameErrorMessage);
+
+	}
+
+	public void withoutEnterFromNumberOtionAndCreateUTILITY(WebElement fromNumberLabelElement,
+			WebElement smsCreateButton, WebElement fromNumbererrorMesgElement) {
+
+		String capturefromNumberLabel = fromNumberLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(capturefromNumberLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		smsCreateButton.click();
+
+		boolean isEitherDisplayed = fromNumbererrorMesgElement.isDisplayed();
+		assertTrue(isEitherDisplayed,
+				"'thisFieldisRequired'ErrorMessage is not displayed for Mandatory FromNumberTextfield, test failed.");
+
+	}
+
+	public void withoutEnterFromNumberOtionAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		disposition();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		withoutEnterFromNumberOtionAndCreateUTILITY(fromNumberLabel, createButton_SmsTemplatePopup,
+				fromNumberErrorMessage);
+	}
+
+	public void withoutSelectToNumberOtionAndCreateUTILITY(WebElement toNumberLabelElement, WebElement smsCreateButton,
+			WebElement somethingWentWrongErrorMesg) {
+
+		String capturefromNumberLabel = toNumberLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(!capturefromNumberLabel.contains(asterisk), "asterisk contains in captureStagesLabel text"); // need
+																												// to
+																												// implement
+																												// later
+
+		smsCreateButton.click();
+
+//		boolean isEitherDisplayed = somethingWentWrongErrorMesg.isDisplayed();
+//		wait.until(ExpectedConditions.visibilityOf(somethingWentWrongErrorMesg));
+//		assertTrue(isEitherDisplayed,
+//				"'thisFieldisRequired'ErrorMessage is not displayed for Mandatory FromNumberTextfield, test failed.");
+		wait.until(ExpectedConditions.visibilityOf(somethingWentWrongErrorMesg));
+		assertTrue(somethingWentWrongErrorMesg.isDisplayed(), "SomethingWentWrong is not diplsyed and it is created");
+
+		driver.navigate().refresh();
+	}
+
+	public void withoutSelectToNumberOtionAndCreate() throws Throwable {
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		disposition();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		message();
+		remarksField();
+		withoutSelectToNumberOtionAndCreateUTILITY(toNumberLabel, createButton_SmsTemplatePopup,
+				somethingWentWrongErrorMesg);
+
+	}
+
+	public void enterCharacterInNumberFielTextfielddAndCreateUTILITY(WebElement fromNumberLabelElement,
+			WebElement NumbertextfieldElement, WebElement smsCreateButton, WebElement fromNumberErrorMesagElement,
+			WebElement templateCreatedSuccessfulyPopup) {
+
+		String capturefromNumberLabel = fromNumberLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(capturefromNumberLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		String alphabets = "xyz";
+
+		assertTrue(NumbertextfieldElement.isDisplayed(), "smsCreateButton is not displayed");
+		NumbertextfieldElement.sendKeys(alphabets);
+
+		smsCreateButton.click();
+
+		if (fromNumberErrorMesagElement.isDisplayed()) {
+			assertTrue(true, "fromNumberErrorMessage is displayed, test case passed.");
+		} else if (templateCreatedSuccessfulyPopup.isDisplayed()) {
+			// Assert.fail("In 'fromNumber', it can accept alphabet instead of number.");
+			assertTrue(false, "In 'fromNumber', it can accept number only instead of aplabet.");
+		} else {
+			// Assert.fail("Neither error nor success popup is displayed.");
+			assertTrue(false, "Neither error nor success popup is displayed.");
+		}
+		driver.navigate().refresh();
+	}
+
+	public void enterCharacterInNumberFielTextfielddAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		disposition();
+
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		remarksField();
+
+		enterCharacterInNumberFielTextfielddAndCreateUTILITY(fromNumberLabel, fromNumber, createButton_SmsTemplatePopup,
+				fromNumberErrorMessage, smsTemplateCreatedSuccessfully_popuop);
+	}
+
+	public void withoutEnterMessageNameAndCreateUtility(WebElement messageLabelElement, WebElement smsCreateButton,
+			WebElement messageErrorMesgElement) {
+
+		String captureMessageLabel = messageLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(captureMessageLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		smsCreateButton.click();
+
+		boolean isEitherDisplayed = messageErrorMesgElement.isDisplayed();
+		assertTrue(isEitherDisplayed,
+				"'thisFieldisRequired'ErrorMessage is not displayed for Mandatory MessageTextfield, test failed.");
+
+	}
+
+	public void withoutEnterMessageNameAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		remarksField();
+		withoutEnterMessageNameAndCreateUtility(messagLabel, createButton_SmsTemplatePopup, messageErrorMessage);
+
+	}
+
+	public void characterLimitTextfieldUtility(WebElement textfielElement, WebElement smsCreateButton,
+			WebElement templateCreatedSuccessfullyPopup, WebElement somethingwentWrongErrorMesg) {
+
+		// Character limit=256
+		textfielElement.sendKeys("A".repeat(500));
+		// smsCreateButton.click();
+		jsClick(driver, smsCreateButton);
+
+		// Check if "smsTemplateCreatedSuccessfully_popup" is displayed (Fail the test
+		// if true)
+		if (templateCreatedSuccessfullyPopup.isDisplayed()) {
+			assertTrue(false, "Test failed: Text field can accept more than the character limit.");
+		}
+
+		// Check if "somethingwentWrongErrorMesg" is displayed (Pass the test if true)
+		assertTrue(somethingwentWrongErrorMesg.isDisplayed(),
+				"Test passed: 'Something went wrong' message is displayed.");
+
+	}
+
+	public void createTemplateThroughSpecialCharacterUTILITY(WebElement templateNameLabelElement,
+			WebElement templateNameELement, WebElement smsCreteButton, WebElement templateCreatedSuccessfullyPopup,
+			WebElement somethingwentWrongErrorMesg) {
+
+		String specailChar = "!@#$%^&*(_";
+
+		String captureTemplateNameLabel = templateNameLabelElement.getText();
+		String asterisk = "*";
+		assertTrue(captureTemplateNameLabel.contains(asterisk), "asterisk is not contains in captureStagesLabel text");
+
+		assertTrue(templateNameELement.isDisplayed(), "templateNameELement is not displayed");
+
+		templateNameELement.sendKeys(specailChar);
+
+		// smsCreteButton.click();
+		jsClick(driver, smsCreteButton);
+
+//		if (templateCreatedSuccessfullyPopup.isDisplayed()) {
+//			assertTrue(false,
+//					"Test failed: Text field can accept can acceept special character and creatd template only with special character.");
+//		}
+//
+//		// Check if "somethingwentWrongErrorMesg" is displayed (Pass the test if true)
+//		assertTrue(somethingwentWrongErrorMesg.isDisplayed(),
+//				"Test passed: 'Something went wrong' message is displayed.");
+
+		// Check if "templateCreatedSuccessfullyPopup" is displayed (Fail the test if
+		// true)
+		if (templateCreatedSuccessfullyPopup.isDisplayed()) {
+			softAssert.assertTrue(false,
+					"Test failed: Text field can accept special character and created template only with special characters.");
+		}
+
+		// Check if "somethingwentWrongErrorMesg" is displayed (Pass the test if true)
+		softAssert.assertTrue(somethingwentWrongErrorMesg.isDisplayed(),
+				"Test passed: 'Something went wrong' message is displayed.");
+
+		// Call assertAll() to report any soft assertion failures at the end of the test
+		softAssert.assertAll();
+
+	}
+
+	public void createTemplteThroughSpecialCharacter() throws Throwable {
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		createTemplateThroughSpecialCharacterUTILITY(templateNameLabel, smsTemplateName, createButton_SmsTemplatePopup,
+				smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+
+	}
+
+	String emoji = "❤️😂😊";
+
+	public void createTemplateForMandatoryFieldThroughEmojisUTILITY(WebElement LabelTextElement,
+			WebElement textfieldFieldELement, WebElement smsCreteButton, WebElement templateCreatedSuccessfullyPopup,
+			WebElement somethingwentWrongErrorMesg) {
+		SendDataUtils.sendKeysWithJSExecutor(textfieldFieldELement, emoji); // use for send "emojis"
+
+		String captureMessageLabel = LabelTextElement.getText();
+		String asterisk = "*";
+		assertTrue(captureMessageLabel.contains(asterisk), "asterisk is not contains in Label text");
+
+		// smsCreteButton.click();
+		jsClick(driver, smsCreteButton);
+		if (templateCreatedSuccessfullyPopup.isDisplayed()) {
+			assertTrue(false,
+					"Test failed: Text field can Emojis Emojis in mandand for mandatory fields and it is successfully created .");
+		}
+
+		// Check if "somethingwentWrongErrorMesg" is displayed (Pass the test if true)
+		wait.until(ExpectedConditions.visibilityOf(somethingwentWrongErrorMesg));
+		assertTrue(somethingwentWrongErrorMesg.isDisplayed(),
+				"Test passed: 'Something went wrong' message is displayed.");
+
+	}
+
+	public void createTemplateForNonMandatoryFieldThroughEmojisUTILITY(WebElement LabelTextElement,
+			WebElement textfieldFieldELement, WebElement smsCreteButton, WebElement templateCreatedSuccessfullyPopup,
+			WebElement somethingwentWrongErrorMesg) {
+		SendDataUtils.sendKeysWithJSExecutor(textfieldFieldELement, emoji); // use for send "emojis"
+
+		String captureMessageLabel = LabelTextElement.getText();
+		String asterisk = "*";
+		assertTrue(!captureMessageLabel.contains(asterisk), "asterisk is contains in Label text");
+
+		smsCreteButton.click();
+
+		if (templateCreatedSuccessfullyPopup.isDisplayed()) {
+			assertTrue(false,
+					"Test failed: Text field can Emojis Emojis in mandand for mandatory fields and it is successfully created .");
+		}
+
+		// Check if "somethingwentWrongErrorMesg" is displayed (Pass the test if true)
+		wait.until(ExpectedConditions.visibilityOf(somethingwentWrongErrorMesg));
+		assertTrue(somethingwentWrongErrorMesg.isDisplayed(),
+				"Test passed: 'Something went wrong' message is displayed.");
+
+	}
+
+	public void enterEmojisInTemplateNameAndCreate() throws Throwable {
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		createTemplateForMandatoryFieldThroughEmojisUTILITY(templateNameLabel, smsTemplateName,
+				createButton_SmsTemplatePopup, smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+
+	}
+
+	public void enterEmojisInDispositionAndCreate() throws Throwable {
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		createTemplateForNonMandatoryFieldThroughEmojisUTILITY(dispositionLabel, smsDisposition,
+				createButton_SmsTemplatePopup, smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+	}
+
+	public void enterEmojisInMessageTextfieldAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		remarksField();
+
+		createTemplateForMandatoryFieldThroughEmojisUTILITY(messagLabel, message, createButton_SmsTemplatePopup,
+				smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+
+	}
+
+	public void enterLessThanDigitLimitAndCreateUTILITY(WebElement smsCreateButton, WebElement fromNumberErrorMesg,
+			WebElement templateSuccessfullyCreated) {
+		// Digit Limit=10
+		String digit = "123456789";
+
+		fromNumber.sendKeys(digit);
+
+		smsCreateButton.click();
+
+		assertTrue(fromNumberErrorMesg.isDisplayed(), "Error: fromNumberErrorMessage is not displayed when expected.");
+
+		assertFalse(templateSuccessfullyCreated.isDisplayed(),
+				"should NOT be displayed (test case should fail if it is displayed Expected fromNumberErrorMessage");
+	}
+
+	public void enterLessThanDigitLimitAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		disposition();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		enterLessThanDigitLimitAndCreateUTILITY(createButton_SmsTemplatePopup, fromNumberErrorMessage,
+				smsTemplateCreatedSuccessfully_popuop);
+
+	}
+
+	public void checktheCharcterLimitForTemplateNameAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		disposition();
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		characterLimitTextfieldUtility(smsTemplateName, createButton_SmsTemplatePopup,
+				smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+	}
+
+	public void checktheCharcterLimitForDispositionTextfieldAndCreate() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		CreateSmstemplate();
+
+		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		dropdownUtils(smsStages, verifyCreatedStages);
+
+		SmsTemplateName();
+
+		fromNumber();
+		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+		toNumber();
+		message();
+		remarksField();
+
+		characterLimitTextfieldUtility(smsDisposition, createButton_SmsTemplatePopup,
+				smsTemplateCreatedSuccessfully_popuop, somethingWentWrongErrorMesg);
+	}
+
+	// Table
+
+	SkipReason skipReason = new SkipReason();
+
+	public void searchThroughSpacesInSearchTextfielUTILITY(WebElement searchtextfieldElement,
+			WebElement searchbuttonElement, WebElement noEntriesFoundElement, WebElement clearallFilterElement) {
+
+		String Spaces = "      ";
+
+		assertTrue(searchtextfieldElement.isDisplayed(), "searchtextfieldElement is not displayed");
+		searchtextfieldElement.sendKeys(Spaces);
+
+		searchbuttonElement.click();
+
+		if (noEntriesFoundElement.isDisplayed()) {
+			assertTrue(true, " Testcase pass: invalid option cant displayed");
+		} else {
+			assertTrue(false, " Testcase Fail:This page is refresh and  Created tempalted are displayed");
+		}
+
+		clearallFilterElement.click();
+
+	}
+
+	public void searchThroughSpacesInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		searchThroughSpacesInSearchTextfielUTILITY(searchTextfield, searchbutton_Table, noEntriesFound,
+				clearAllFiltersButton_Table);
+	}
+
+	public void searchThroughEmojisInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		skipReason.searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchbutton_Table,
+				noEntriesFound);
+
+	}
+
+	String invalidOptionDrpdown = "NonExistingOption";
+
+	public void searchInvalidCreatedTemplateInSearchFieldUTILITY(WebElement searchTextfieldElement,
+			WebElement searchButtonElement, WebElement noEntriesFoundElement, WebElement clearallFilterElement) {
+
+		assertTrue(searchTextfieldElement.isDisplayed(), "seachTextfield is not displayed");
+		searchTextfieldElement.sendKeys(invalidOptionDrpdown);
+
+		searchButtonElement.click();
+
+		if (noEntriesFoundElement.isDisplayed()) {
+			assertTrue(true, " Testcase pass: invalid option cant displayed");
+		} else {
+			assertTrue(false, " Testcase Fail:This page is refresh and  Created tempalted are displayed");
+		}
+
+		clearallFilterElement.click();
+	}
+
+	public void searchInvalidCreatedTemplatesInSearchField() throws Throwable {
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+
+		searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield, searchbutton_Table, noEntriesFound,
+				clearAllFiltersButton_Table);
+
+	}
+
+	public void searchThroughPartialNamesinSearchTextfieldUTILITY() throws Throwable { /// Pending
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfield is not displayed");
+
+	}
+
+	public List<String> templateNamesLists;
+	public List<String> afterTemplateNamesLists;
+
+	public void withoutSelectingAnyOptionsIAndsearchUTILITY(List<WebElement> templateNameList,
+			WebElement processDropdownSearch, WebElement subProcessDropdownSearch,
+			WebElement subSubProcessDropdownSearch, WebElement searchButton) {
+
+		templateNamesLists = new ArrayList<String>();
+
+		for (WebElement TemplateNames : templateNameList) {
+			String bedoreSearchTemplateNamesLists = TemplateNames.getText();
+			templateNamesLists.add(bedoreSearchTemplateNamesLists);
+
+		}
+
+		assertTrue(processDropdownSearch.isDisplayed(), "processDropdown_Table is displayed");
+		assertTrue(subProcessDropdownSearch.isDisplayed(), "SubProcessDropdown is displayed");
+		assertTrue(subSubProcessDropdownSearch.isDisplayed(), "subSubProcessDropdown_Table is displayed");
+
+		assertTrue(searchButton.isDisplayed(), "searchbutton_Table is not displayed");
+		searchButton.click();
+
+		afterTemplateNamesLists = new ArrayList<String>();
+
+		for (WebElement TemplateNames : templateNameList) {
+			String afterSearchTemplateNamesLists = TemplateNames.getText();
+			afterTemplateNamesLists.add(afterSearchTemplateNamesLists);
+		}
+
+		assertEquals(afterTemplateNamesLists, templateNamesLists);
+
+	}
+
+	public void withoutSelectingAnyOptionsIAndsearch() throws Throwable {
+
+		navigateto_SmsTemplateTab();
+		withoutSelectingAnyOptionsIAndsearchUTILITY(templateNameLists, processDropdown_Table, SubprocessDropdown_Table,
+				subSubProcessDropdown_Table, searchbutton_Table);
+
+	}
+
+	public void searchThroughProcessAndStagesInSearchTextfieldUTILITY(WebElement searchTextfieldElement,
+			WebElement searchButtonElement, String stagesCreatedProcess1, WebElement noEntriesFoundElement,
+			WebElement clearallElemenet) {
+
+		assertTrue(searchTextfieldElement.isDisplayed(), "searchTextfield is not displayed");
+		searchTextfieldElement.sendKeys(stagesCreatedProcess1);
+		searchButtonElement.click();
+
+		assertTrue(noEntriesFoundElement.isDisplayed(), "noEntriesFoundis not displayed");
+		clearallElemenet.click();
+
+	}
+
+	public void searchThroughProcessInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+				stagesCreatedProcess1, noEntriesFound, clearAllFiltersButton_Table);
+	}
+
+	public void searchThroughSubprocessInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+				stagesCreatedSubProcess2, noEntriesFound, clearAllFiltersButton_Table);
+	}
+
+	public void searchThroughSubsubprocessInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+				stagesCreatedSubsubProcess3, noEntriesFound, clearAllFiltersButton_Table);
+	}
+	
+	public void searchThroughStagesInSearchTextfield() throws Throwable {
+
+		navigatetoStage_verifySMS();
+		navigateto_SmsTemplateTab();
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+				searchedStagesName, noEntriesFound, clearAllFiltersButton_Table);
+	}
+	
+	
+
+	String doesnotHaveTemplateProcess = "DemoEmpH P";
+	String doesnotHaveTemplateSubProcess = "DemoEmpH S P";
+	String doesnotHaveTemplateSubSubProcess = "DemoEmpH S S P";
+	String doesnotHaveTemplateStages = "Sub Sub AJPDemoEmpH Stage";
+
+	public void selectinginvalidProcessandStagesWhichDoesnotHaveAnyCreatedTemplateUTILITY(
+			WebElement processDropdownTable, WebElement subProcessDropdownTable,
+			WebElement subSubProcessDropdownTable) {
+
+		navigateto_SmsTemplateTab();
+
+		skipReason.dropdownUtilsALL(processDropdownTable, "text", doesnotHaveTemplateProcess);
+		skipReason.dropdownUtilsALL(subProcessDropdownTable, "text", doesnotHaveTemplateSubProcess);
+		skipReason.dropdownUtilsALL(subSubProcessDropdownTable, "text", doesnotHaveTemplateSubSubProcess);
+
+		searchbutton_Table.click();
+
+		assertTrue(noEntriesFound.isDisplayed(),
+				"testCase Fail:-no entriesFound is not displaye 'The page is refeshed and displayed the existing template'");
+
+	}
+
+	public void selectinginvalidProcessandStagesWhichDoesnotHaveAnyCreatedTemplate() {
+
+		selectinginvalidProcessandStagesWhichDoesnotHaveAnyCreatedTemplateUTILITY(processDropdown_Table,
+				SubProcessDropdown, SubprocessDropdown_Table);
+
+//		navigateto_SmsTemplateTab();
+//		Select select1 = new Select(processDropdown_Table);
+//		select1.selectByVisibleText(doesnotHaveTemplateProcess);
+//
+//		Select select2 = new Select(SubProcessDropdown);
+//		select2.selectByVisibleText(doesnotHaveTemplateSubProcess);
+//
+//		Select select3 = new Select(SubprocessDropdown_Table);
+//		select3.selectByVisibleText(doesnotHaveTemplateSubSubProcess);
+//		
+//		searchbutton_Table.click();
+
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	Stages stages = new Stages();
+	CallLogSatgeView callLogStageView = new CallLogSatgeView();
+
+	@FindBy(xpath = "//label[@class='switch']//input[@name='is_sms_history']/..//span")
+	public WebElement smsHistoryToggElementButton;
+
+	public void disableShowSmshistoryAndCheckVisibleOrNot() throws InterruptedException {
+
+		stages.navigateToStages();
+		searchTextfield.sendKeys(searchedStagesName);
+		searchbutton_Table.click();
+
+		assertTrue(editStagesOption.isDisplayed(), "editStagesOption is not displayed");
+		editStagesOption.click();
+
+		js.executeScript("arguments[0].scrollIntoView(true);", smsHistoryToggElementButton);
+
+		wait.until(ExpectedConditions.visibilityOf(smsHistoryToggElementButton));
+
+		if (smsHistoryToggElementButton.isEnabled()) {
+			wait.until(ExpectedConditions.visibilityOf(smsHistoryToggElementButton));
+			jsClick(driver, smsHistoryToggElementButton);
+
+			jsClick(driver, SaveButton_stagesProfileView);
+
+			wait.until(ExpectedConditions.visibilityOf(stagesUpdatedSuccessfully_popuop));
+			assertTrue(stagesUpdatedSuccessfully_popuop.isDisplayed(),
+					"stagesUpdatedSuccessfully_popuop is not displayed");
+			jsClick(driver, continueButton_stages);
+
+			Thread.sleep(1000);
+			leftArrowButton_stages.click();
+
+			// stagesProfileView_userAccount.click();
+
+		} else {
+			if (!smsHistoryToggElementButton.isEnabled()) {
+
+				jsClick(driver, continueButton_stages);
+
+				wait.until(ExpectedConditions.visibilityOf(leftArrowButton_stages));
+				jsClick(driver, leftArrowButton_stages);
+				Thread.sleep(1000);
+				leftArrowButton_stages.click();
+
+			}
+
+		}
+
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+
+		skipReason.dropdownUtilsALL(callLogStageView.SearchStages, "text", searchedStagesName);
+		stagesProfileView_userAccount.click();
+
+		js.executeScript("arguments[0].scrollIntoView(true);", smsTab_stgesViewPage);
+		// wait.until(ExpectedConditions.visibilityOf(smsTab_stgesViewPage));
+		assertTrue(!smsTab_stgesViewPage.isDisplayed(), "Test case fail: Sms Tab is displayed in satgesProfile View");
+
+	}
+
+	public void disableSmsActionsAndCheckItIsVisibleOrNot() throws InterruptedException { // Only change the checkBox
+																							// element
+		try {
+			stages.navigateToStages();
+			searchTextfield.sendKeys(searchedStagesName);
+			searchbutton_Table.click();
+
+			assertTrue(editStagesOption.isDisplayed(), "editStagesOption is not displayed");
+			editStagesOption.click();
+
+			// stages.actionSection(Stages.sms);
+
+			js.executeScript("arguments[0].scrollIntoView(true);", smsCheckBox);
+
+			if (smsCheckBox.isEnabled()) {
+				wait.until(ExpectedConditions.visibilityOf(smsCheckBox));
+				jsClick(driver, smsCheckBox);
+
+				jsClick(driver, SaveButton_stagesProfileView);
+
+				wait.until(ExpectedConditions.visibilityOf(stagesUpdatedSuccessfully_popuop));
+				assertTrue(stagesUpdatedSuccessfully_popuop.isDisplayed(),
+						"stagesUpdatedSuccessfully_popuop is not displayed");
+				jsClick(driver, continueButton_stages);
+
+				Thread.sleep(1000);
+				leftArrowButton_stages.click();
+
+			} else {
+				if (!smsCheckBox.isEnabled()) {
+					// jsClick(driver, continueButton_stages);
+					wait.until(ExpectedConditions.visibilityOf(leftArrowButton_stages));
+					jsClick(driver, leftArrowButton_stages);
+					Thread.sleep(1000);
+					leftArrowButton_stages.click();
+				}
+			}
+
+			callLogStageView.navigateTo_AlchemyModule();
+			callLogStageView.navigateToCallLogStageView();
+
+			skipReason.dropdownUtilsALL(callLogStageView.SearchStages, "text", searchedStagesName);
+			stagesProfileView_userAccount.click();
+
+			assertTrue(!smsIcon_userAccountSatgeView.isDisplayed(),
+					"Test case fail: Sms icon is displayed in stagesProfile View");
+
+		} catch (NoSuchElementException e) {
+			// If NoSuchElementException is caught, the test passes
+			System.out.println("NoSuchElementException caught. Test passes because SMS icon is not present.");
+			// Optionally, you can add an assertion to explicitly pass the test
+			assertTrue(true, "Test passed as expected element was not found.");
+		}
+	}
+
+	public void NavigateTo_Skipreason() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

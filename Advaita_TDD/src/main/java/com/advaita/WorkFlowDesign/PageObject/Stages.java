@@ -582,8 +582,11 @@ public class Stages extends TestBase {
 			assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
 
 			// Verify and fill the section name and weightage fields
-			String sectionName = "TestSec" + i;
-			String sectionWeightage = "TestWeightage" + i;
+			//String sectionName = "TestSec" + i;
+			//String sectionWeightage = "TestWeightage" + i;
+			String sectionName = "Notification" + i;
+			String sectionWeightage = "NotificationWeightage" + i;
+			
 
 			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName, true, false, 1);
 
@@ -628,8 +631,10 @@ public class Stages extends TestBase {
 				clickOnCheckBoxes(allOptionsMeasurable, "all");
 				clickOnCheckBoxes(allOptionsMeasurable, optionNames);
 
+				String employeeName = "notificationALERT";
+				
 				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select",
-						PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
+						employeeName);
 
 			} else {
 				System.out.println("Element not clickable or displayed: " + section.toString());

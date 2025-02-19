@@ -37,8 +37,8 @@ public class TestNotificationTemplateCreate extends TestBase {
 		super();
 
 	}
-	
-	Stages stages  = new Stages();
+
+	Stages stages = new Stages();
 
 	@BeforeTest
 	public void setUp() throws Throwable {
@@ -68,22 +68,31 @@ public class TestNotificationTemplateCreate extends TestBase {
 
 	@Test(priority = 1)
 	public void NotificationTemplateCreate() throws Throwable {
-		
-		notificationTemplate.cretaeDataset();
-		notificationTemplate.createMetadata();
-//		notificationTemplate.NavigateToProcess(); // fetch process
-//		notificationTemplate.FetchMetaData();
-//		notificationTemplate.FetchStages();
-//		notificationTemplate.navigateTo_AlchemyModule();
-//		notificationTemplate.NavigateToNotificationtemplate();
-//		notificationTemplate.CreateAndVerifyNotificationTemplate();
-//		notificationTemplate.logoutFromAdmin();
-//		notificationTemplate.loginAsUserCrediantials();
-//		notificationTemplate.sendNotifcation();
-//		notificationTemplate.TimeSelection();
-//		notificationTemplate.DateSelection();
-//		notificationTemplate.DispostionManualOutsideProcess();
-		// notificationTemplate.DispostionManualWithinProcess();
+
+		notificationTemplate.NavigateToProcess(); // fetch process
+		notificationTemplate.FetchMetaData();
+		notificationTemplate.FetchStages();
+		notificationTemplate.navigateTo_AlchemyModule();
+		notificationTemplate.NavigateToNotificationtemplate();
+		notificationTemplate.createNotification();
+		notificationTemplate.selectProcessFromNotitficationTemplate();
+		notificationTemplate.selectSubProcessFromNotitficationTemplate();
+		notificationTemplate.selectSubsubProcessFromNotitficationTemplate();
+		notificationTemplate.selectStagesFromNotitficationTemplate();
+		notificationTemplate.selectTemplateName();
+		notificationTemplate.selectNotificationDateAndTime();
+		notificationTemplate.messageTextfield();
+		notificationTemplate.remarksTextfield();
+		notificationTemplate.clickONCreateAndVerifyPopUp();
+		notificationTemplate.verifyCreatedNotificationTemplate();
+
+		notificationTemplate.logoutFromAdmin();
+		notificationTemplate.loginAsUserCrediantials();
+		notificationTemplate.sendNotifcation();
+		notificationTemplate.TimeSelection();
+		notificationTemplate.DateSelection();
+		notificationTemplate.DispostionManualOutsideProcess();
+		notificationTemplate.DispostionManualWithinProcess();
 
 //			//Table
 //			notificationTemplate.SearchThroughProcesses();
@@ -117,38 +126,132 @@ public class TestNotificationTemplateCreate extends TestBase {
 	public void NotificationTemplateDelete() {
 		notificationTemplate.EditNotificationTemplate();
 	}
-	
-	
+
 	@Test
 	public void xyz() throws Throwable {
-		//notificationTemplate.NavigateToProcess(); // fetch process
-		
-		notificationTemplate.FetchMetaData();
+//		// notificationTemplate.NavigateToProcess(); // fetch process
+
+//		notificationTemplate.FetchMetaData();
 		notificationTemplate.FetchStages();
-		
-		//notificationTemplate.verifyCreateNonMeasurable();
-		notificationTemplate.verifyForAddedNotificationSectionInStagesEdit();
-		
+
+//		// notificationTemplate.verifyCreateNonMeasurable();
+//		notificationTemplate.verifyForAddedNotificationSectionInStagesEdit();
+
 		notificationTemplate.navigateTo_AlchemyModule();
 		notificationTemplate.NavigateToNotificationtemplate();
-		notificationTemplate.CreateAndVerifyNotificationTemplate();
+		notificationTemplate.createNotification();
 		notificationTemplate.selectProcessFromNotitficationTemplate();
 		notificationTemplate.selectSubProcessFromNotitficationTemplate();
 		notificationTemplate.selectSubsubProcessFromNotitficationTemplate();
 		notificationTemplate.selectStagesFromNotitficationTemplate();
 		notificationTemplate.selectTemplateName();
-		
-		
-		
+		notificationTemplate.selectNotificationDateAndTime();
+		notificationTemplate.messageTextfield();
+		notificationTemplate.remarksTextfield();
+		notificationTemplate.clickONCreateAndVerifyPopUp();
+		notificationTemplate.verifyCreatedNotificationTemplate();
+
+
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CreateDataset,Metadata,manualUpload ,Stage Creation
+
+	@Test
+	public void EntireProcess() throws Throwable {
+
+		notificationTemplate.cretaeDataset();
+		notificationTemplate.createMetadata();
+		notificationTemplate.manualUpload();
+
+		notificationTemplate.verifyCreateNonMeasurable();
+	}
+
+	@Test
+	public void stagesCreation() throws Throwable {
+
+		notificationTemplate.stagesCreation();
+		notificationTemplate.VerifyAddSectionInStages();
+		notificationTemplate.verifyActionSectionStages();
+		notificationTemplate.selectDisplositionStages();
+		notificationTemplate.saveAndContinue();
+
+	}
+/////////////////////////////////// Negative Testing /////////////////////////////////////////////////////////////////////////	
+
+
+	@Test(priority = 5)
+	public void VerifyWithoutDispositionNotificationDate() throws Throwable {
+
+		notificationTemplate.WithoutDispositionNotificationDate();
+
+	}
+
+	@Test
+	public void verifyWithoutSelectingAnyFiledTryToCreateTemplate() throws Throwable {
+
+		notificationTemplate.withoutSelectingAnyFiledTryToCreateTemplate();
+
+	}
+
+	@Test
+	public void VerifywithoutSelectingProcessAndCreate() throws Throwable {
+		notificationTemplate.withoutSelectingProcessAndCreate();
+	}
+
+	@Test
+	public void verifyWithoutselectingStagesMnadatorydropdown() throws Throwable {
+		notificationTemplate.WithoutselectingStagesMnadatorydropdown();
+	}
+
+	@Test
+	public void verifyCreateNotificationWithoutSelectingNonMandatoryFieldsame() throws Throwable {
+
+		notificationTemplate.createNotificationWithoutSelectingNonMandatoryFields();
+
+	}
+
+	@Test
+	public void verifyCreateTemplateNameWithSpecialChracter() throws Throwable {
+		notificationTemplate.saveCreteTemplateWithSpecialChracter();
+	}
+
+	@Test
+	public void verifyCreateTemplateThroughWithEmojis() throws Throwable {
+		notificationTemplate.createTemplateThroughEmojis();
+	}
+
+	@Test
+	public void verifyCharacterLimit() throws Throwable {
+		notificationTemplate.characterLimitTextfield();
+	}
+
+	@Test
+	public void verifySearchInvalidCreatedNamesInSearchField() throws Throwable {
+		notificationTemplate.searchInvalidCreatedNamesInSearchField();
+	}
+
+	@Test
+	public void VrifysearchThroughEmojiInSearchField() throws Throwable {
+		notificationTemplate.searchThroughEmojiInSearchField();
+	}
+	
+	@Test
+	public void verifyTheUserSearchThroughSpacesInSearchTextfield() throws Throwable { // Nedd to implement after Fixed
+		notificationTemplate.searchThroughSpacesInSearchTextfield();
+	}
+	
+	@Test
+	public void verifySelectInvalidProcessesAndSearch() throws Throwable {
+		notificationTemplate.selectInvalidProcessesAndSearch();
+	}
+	
+	@Test
+	public void searchThroughProcessInSearchTextfield() throws Throwable {
+		notificationTemplate.searchThroughProcessInSearchTextfield();
 		
 	}
 
-	
-	
-	
-	
-	
-	//@AfterTest
+	// @AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();

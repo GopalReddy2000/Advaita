@@ -1,8 +1,10 @@
 package com.advaita.alchemyPageObject;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.security.PublicKey;
 import java.text.SimpleDateFormat;
@@ -16,7 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,15 +32,18 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
+import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
+import com.advaita.Utilities.SendDataUtils;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.StagePage;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import Advaita_TDD.Advaita_TDD.Questions;
 
 public class NotificationTemplate extends TestBase {
 
@@ -73,6 +81,9 @@ public class NotificationTemplate extends TestBase {
 	// EntireBodyClick
 	@FindBy(tagName = "body")
 	public WebElement driverIninteractable;
+
+	@FindBy(xpath = "//body[text()='Invalid request method']")
+	public WebElement invalidRequestMethod;
 
 	// user account
 	@FindBy(xpath = "//div[@class='hide_on_mobile_view']//h1[text()='  Call Log Tab View ']")
@@ -141,7 +152,6 @@ public class NotificationTemplate extends TestBase {
 	public WebElement transUniqueId_stageProfileView;
 
 	// Fetch_ process , subprocess , Subsubprocess
-
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
 	public WebElement fetchProcess;
 
@@ -221,7 +231,6 @@ public class NotificationTemplate extends TestBase {
 	List<WebElement> selectQuestionTypElements;
 
 	// Notification Template
-
 	@FindBy(xpath = "//a[@id='menulist2']")
 	public WebElement alchemySidemenubar;
 
@@ -249,20 +258,38 @@ public class NotificationTemplate extends TestBase {
 	@FindBy(xpath = "//select[@id='stage_name_id']")
 	public WebElement notificationStagesDropdown;
 
+	@FindBy(xpath = "//label[text()='Stage *']")
+	public WebElement stagesLabel;
+
 	@FindBy(xpath = "//input[@name='template_name']")
 	public WebElement notificationTemplateName;
 
+	@FindBy(xpath = "//label[text()='Template Name*']")
+	public WebElement templateNameLabel;
+
 	@FindBy(xpath = "//select[@name='notification_date']")
-	public WebElement notificationDate;
+	public WebElement notificationDateDropdown;
+
+	@FindBy(xpath = "//label[text()='Notification Date']")
+	public WebElement notificationDateLabel;
 
 	@FindBy(xpath = "//select[@name='notification_time']")
-	public WebElement notificationTime;
+	public WebElement notificationTimeDropdown;
+
+	@FindBy(xpath = "//label[text()='Notification Time']")
+	public WebElement notificationTimeLabel;
 
 	@FindBy(xpath = "//textarea[@name='message']")
 	public WebElement message;
 
+	@FindBy(xpath = "//label[text()='Message*']")
+	public WebElement messagLabel;
+
 	@FindBy(xpath = "//textarea[@name='remarks']")
 	public WebElement remarks;
+
+	@FindBy(xpath = "//label[text()='Remarks']")
+	public WebElement remarksLabel;
 
 	@FindBy(xpath = "//input[@name='temp_variable_name_1']")
 	public WebElement templateVariableName;
@@ -287,6 +314,18 @@ public class NotificationTemplate extends TestBase {
 
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> beforeSearchData_Table;
+
+	@FindBy(xpath = "//span[@id='change_error_msg']")
+	public WebElement somethingWentWrongErrorMesg;
+
+	@FindBy(xpath = "//label[text()='This field is required.']")
+	public WebElement thisFieldIsRequireErrorMesg;
+
+	@FindBy(xpath = "//select[@id='sub_process']/..//label[@id='sub_process-error']")
+	public WebElement errorMesgSubProcess;
+
+	@FindBy(xpath = "//select[@id='s_sub_process']/..//label[@id='s_sub_process-error']")
+	public WebElement errorMesgSubSubProcess;
 
 	// notificationTemplate Table
 
@@ -325,6 +364,9 @@ public class NotificationTemplate extends TestBase {
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
 	public WebElement continueButton_DeleteSuccessullyPopup;
+
+	@FindBy(xpath = "//td[normalize-space(text())='No Entries Found']")
+	public WebElement noEntriesFound;
 
 	// EDIT
 
@@ -370,26 +412,34 @@ public class NotificationTemplate extends TestBase {
 	DataSet dataSet = new DataSet();
 
 	public void cretaeDataset() throws Throwable {
-		
-		String dataset="EmployeeDetail";
+
+		String dataset = "Customer Profile";
 		dataSet.navigateToDataSetup();
 		dataSet.createNewDataSet(dataset);
 
 		// Data for multiple rows
 		List<Map<String, String>> fieldData = List.of(
-				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
-				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
-				Map.of("FieldName", " Emp Phone Number ?", "Type", "Number", "MaxLength", "14", "IsMandatory", "No"));
+				Map.of("FieldName", "Employee Name ", "Type", "Text Area", "MaxLength", "20", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ", "Type", "Number", "MaxLength", "6", "IsMandatory", "Yes"),
+				Map.of("FieldName", " Emp Phone Number ", "Type", "Number", "MaxLength", "10", "IsMandatory", "No"),
+				Map.of("FieldName", " Email Id ", "Type", "Character", "MaxLength", "50", "IsMandatory", "No"),
+				Map.of("FieldName", " WhatsApp Number ", "Type", "Number", "MaxLength", "10", "IsMandatory", "No"));
+
 		dataSet.enterFieldNameAndValidations(fieldData);
 		dataSet.createDataSetButtonAndConfirmation();
-		
+
 		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataset);
 
 	}
 
-	String employeeName1 = "EmployeeOne";
-	final String metaDataName = employeeName1 + " Details MetaData";
+	String employeeName1 = "Customer Profile";
+	final String metaDataName = employeeName1 + " MetaData";
+
 	MetaData metaData = new MetaData();
+
+	final String manualUploadName = employeeName1 + "  Upload";
+	final String dataSetName = employeeName1 + " DataSet";
+	final String remark = "Customer Profile ";
 
 	public void createMetadata() throws Throwable {
 		metaData.navigateToMetaData();
@@ -400,13 +450,77 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
+	ManualUpload manualUpload = new ManualUpload();
+
+	public void manualUpload() throws Throwable {
+		manualUpload.navigateToManualUpload();
+		manualUpload.createNewManualUpload(manualUploadName);
+		manualUpload.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(),
+				5);
+		manualUpload.fillOtherFildsForUploadedFile(remark);
+		manualUpload.createButtonAndConfirmation();
+
+	}
+
+	final String stageName = employeeName1 + "Stages";
+	Stages stages1 = new Stages();
+
+	public void stagesCreation() throws Throwable {
+		stages1.navigateToStages();
+		stages1.verifyCreateStagesButton();
+		stages1.verifyStageNameTextBox(stageName);
+		stages1.verifyStageSelectProcessDropDown();
+		stages1.verifyStageSelectSubProcessDropDown();
+		stages1.verifyStageSelectSubSubProcessDropDown();
+		stages1.verifyAddSectionA(true, false);
+
+	}
+
+	public final static String callLogStageView = "Call Log Stage View";
+	public final static String agencyValidation = "Agency Validation";
+	public final static String rejectedAuditForm = "Rejected Audit Form";
+	public final static String auditTheAuditor = "Audit the Auditor";
+	public final static String validationStatusReport = "Validation Status Report";
+
+	String[] allOptionsMeasurable = { callLogStageView, agencyValidation, rejectedAuditForm, auditTheAuditor,
+			validationStatusReport };
+
+	public void VerifyAddSectionInStages() throws Throwable {
+
+		boolean measurableRadio = false;
+		boolean nonMeasurableRadio = true;
+		String viewCheckBox[] = { Stages.callLogStageView, Stages.agencyValidation };
+		stages1.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBox);
+	}
+
+	public void verifyActionSectionStages() {
+		String viewCheckBox[] = { Stages.voiceCall, Stages.whatsAppCall, Stages.sms, };
+		// String viewCheckBox[] = { "all" };
+		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
+				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
+//		String toggleButtonOptions[] = {"all"};
+		stages1.actionSection(viewCheckBox).actionSectionToggle(toggleButtonOptions);
+
+	}
+
+	public void selectDisplositionStages() {
+
+		stages1.dispositionSection();
+
+		stages1.saveAndConfirmation();
+	}
+
+	public void saveAndContinue() {
+		stages1.saveAndConfirmation();
+	}
+
 	@FindBy(xpath = "//input[@id='text_search']")
 	public WebElement searchTextfield_table;
 
 	@FindBy(xpath = "//button[@class='filter_search_blk cursor-pointer d-flex align-items-center justify-content-center white_bg']")
 	public WebElement searchButton_table;
 
-	public String CreatedMetadata = "EmployeeAB Details MetaData";
+	public String CreatedMetadata = "Customer Profile MetaData";
 
 	public void FetchMetaData() throws Throwable {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
@@ -469,7 +583,8 @@ public class NotificationTemplate extends TestBase {
 	public String stagesCreatedSubsubProcess3;
 	public String verifyCreatedStages;
 
-	String searchedStagesName = "Booking Information Stage";
+//	String searchedStagesName = "Booking Information Stage";
+	String searchedStagesName = "Customer Profile Stages";
 
 	@FindBy(id = "text_search")
 	public WebElement searchTextfieldStages;
@@ -484,19 +599,6 @@ public class NotificationTemplate extends TestBase {
 	public WebElement stagesCreatedSubsubProcess; // Stages Createdwith Which SubProceess
 
 	public void FetchStages() throws Throwable {
-//		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
-//
-//		assertTrue(verifyStage.isDisplayed(), "verifyStageis not displayed");
-//		System.out.println("verifyStage text : " + verifyStage.getText());
-//
-//		List<String> satgeNameList = new ArrayList<String>();
-//		for (WebElement stageName : stagesName) {
-//			satgeNameList.add(stageName.getText());
-//			System.out.println("Stages name Lists : " + stageName.getText());
-//
-//		}
-//		assertTrue(satgeNameList.containsAll(satgeNameList));
-//		assertTrue(satgeNameList.contains("CutomerdetailsZZZ Stage"));
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
@@ -570,7 +672,7 @@ public class NotificationTemplate extends TestBase {
 	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]")
 	public WebElement editStagesOption;
 
-	String notification = "notificationreminder";
+	String notification = "notification Reminder";
 	String notification1 = "Reminder message";
 
 	public void verifyForAddedNotificationSectionInStagesEdit() {
@@ -613,8 +715,8 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	//////////// //////
-	//////////// MeasurableSet////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////// MeasurableSet
+	///////////////////////////////////// ////////////////////////////////////////////////////////////////
 
 	public void navigateTo_AlchemyModule() {
 
@@ -640,7 +742,7 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	public void CreateAndVerifyNotificationTemplate() throws Throwable {
+	public void createNotification() throws Throwable {
 
 		assertTrue(createButtonNotificationTemplate.isDisplayed(), "createButtonNotificationTemplate is displayed");
 		createButtonNotificationTemplate.click();
@@ -704,54 +806,12 @@ public class NotificationTemplate extends TestBase {
 
 	public void selectProcessFromNotitficationTemplate() throws Throwable {
 
-		// Process
-//		List<String> processDropdownList = new ArrayList<String>();
-//		Select ProcessDropdown1 = new Select(ProcessDropdown);
-//		for (WebElement Options : ProcessDropdown1.getOptions()) {
-//			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
-//			System.out.println(Options.getText());
-//			processDropdownList.add(Options.getText());
-//		}
-//		assertTrue(processDropdownList.contains("AJP"));
-//
-//		beforeSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
-//		System.out.println("beforeSelectProcessdropdown1Options: " + beforeSelectProcessdropdown1Options);
-//
-//		ProcessDropdown1.selectByVisibleText("AJP");
-//
-//		afterSelectProcessdropdown1Options = ProcessDropdown1.getFirstSelectedOption().getText();
-//		System.out.println("afterSelectProcessdropdown1Options:" + afterSelectProcessdropdown1Options);
-//
-//		assertNotEquals(beforeSelectProcessdropdown1Options, afterSelectProcessdropdown1Options);
-
 		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
 		// dropdownUtils1(ProcessDropdown, stagesCreatedProcess1, wait);
 
 	}
 
 	public void selectSubProcessFromNotitficationTemplate() throws Throwable {
-
-		// Subprocess
-//		List<String> subProcessDropdownList = new ArrayList<String>();
-//
-//		actions.moveToElement(driverIninteractable).perform();
-//		Select subProcessDropdown2 = new Select(SubProcessDropdown);
-//		for (WebElement options2 : subProcessDropdown2.getOptions()) {
-//			// Thread.sleep(1000);
-//			System.out.println(subProcessDropdown2.getOptions());
-//			subProcessDropdownList.add(options2.getText());
-//		}
-//
-//		assertTrue(subProcessDropdownList.contains("Sub AJP"));
-//
-//		beforeSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
-//		System.out.println("beforeSelectSubProcessdropdown2Options: " + beforeSelectSubProcessdropdown2Options);
-//
-//		subProcessDropdown2.selectByVisibleText("Sub AJP");
-//		// subProcessDropdown2.selectByIndex(1);
-//
-//		afterSelectSubProcessdropdown2Options = subProcessDropdown2.getFirstSelectedOption().getText();
-//		System.out.println("afterSelectSubProcessdropdown2Options:" + afterSelectSubProcessdropdown2Options);
 
 		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
 		// dropdownUtils1(SubProcessDropdown, stagesCreatedSubProcess2, wait);
@@ -760,74 +820,12 @@ public class NotificationTemplate extends TestBase {
 
 	public void selectSubsubProcessFromNotitficationTemplate() throws Throwable {
 
-		// SubSubprocess
-//		List<String> subsubprocessDropdownList = new ArrayList<String>();
-//		boolean elementStale = true;
-//		int attempts = 0;
-//
-//		while (elementStale && attempts < 3) {
-//			try {
-//				Select SubsubProcessDropdown3 = new Select(SubsubProcessDropdown);
-//				subsubprocessDropdownList.clear(); // Clear the list before each retry
-//
-//				for (WebElement options3 : SubsubProcessDropdown3.getOptions()) {
-//					Thread.sleep(2000);
-//					System.out.println(options3.getText()); // Print each option's text
-//					subsubprocessDropdownList.add(options3.getText());
-//				}
-//
-//				assertTrue(subsubprocessDropdownList.contains("Sub Sub AJP"));
-//
-//				beforeSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
-//				System.out.println(
-//						"beforeSelectSubSubProcessdropdown3Options: " + beforeSelectSubSubProcessdropdown3Options);
-//
-//				SubsubProcessDropdown3.selectByVisibleText("Sub Sub AJP");
-//				// SubsubProcessDropdown3.selectByIndex(1);
-//				actions.moveToElement(driverIninteractable).perform();
-//
-//				afterSelectSubSubProcessdropdown3Options = SubsubProcessDropdown3.getFirstSelectedOption().getText();
-//				System.out.println(
-//						"afterSelectSubSubProcessdropdown3Options:" + afterSelectSubSubProcessdropdown3Options);
-//
-//				elementStale = false; // If we reach here, no exception was thrown
-//			} catch (StaleElementReferenceException e) {
-//				attempts++;
-//				System.out.println("Stale element reference exception. Retrying... " + attempts);
-//				Thread.sleep(2000); // Optional: add a wait before retrying
-//			}
-//		}
-//
-//		if (elementStale) {
-//			throw new RuntimeException(
-//					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
-//		}
-
 		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
 		// dropdownUtils1(SubSubProcess, stagesCreatedSubsubProcess3, wait);
 
 	}
 
 	public void selectStagesFromNotitficationTemplate() throws Throwable {
-
-		// select Satges
-//		List<String> smsStagesLists = new ArrayList<String>();
-//		Select NotifationStagesdropdown = new Select(notificationStagesDropdown);
-//		for (WebElement smsStagesOptions : NotifationStagesdropdown.getOptions()) {
-//			System.out.println("satges Dropdown : " + NotifationStagesdropdown.getOptions());
-//			smsStagesLists.add(smsStagesOptions.getText());
-//		}
-//		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
-//
-//		String beforeSelectStagesDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
-//		System.out.println("beforeSelectStagesDPOption: " + beforeSelectStagesDPOption);
-//
-//		NotifationStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
-//
-//		String afterSelectNotificationDPOption = NotifationStagesdropdown.getFirstSelectedOption().getText();
-//		System.out.println("afterSelectNotificationDPOption:" + afterSelectNotificationDPOption);
-//
-//		assertNotEquals(beforeSelectStagesDPOption, afterSelectNotificationDPOption);
 
 		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);
 
@@ -871,12 +869,15 @@ public class NotificationTemplate extends TestBase {
 
 	}
 
-	public void selectNotificationDate() throws InterruptedException {
+	String notificationDate = "When did you last go on a trip?";
+	String notificationTime = "What time did you last have a phone call with a friend?";
+
+	public void selectNotificationDateAndTime() throws InterruptedException {
 
 		// NotificationDate Dropdwon
 
 		List<String> notificationDateLists = new ArrayList<String>();
-		Select notifationDatedropdown = new Select(notificationDate);
+		Select notifationDatedropdown = new Select(notificationDateDropdown);
 		for (WebElement notificationDateDropdowOptions : notifationDatedropdown.getOptions()) {
 			System.out.println("notificationDateDropdowOptions : " + notificationDateDropdowOptions.getText());
 			notificationDateLists.add(notificationDateDropdowOptions.getText());
@@ -885,13 +886,13 @@ public class NotificationTemplate extends TestBase {
 		// assertTrue(notificationDateLists.contains(metaDataLists), " metadata text not
 		// displayed"); //need to implement "metadata list" equal to "notifaceDate
 		// Dropdown"
-		assertTrue(notificationDateLists.contains("Notification Date"));
+		assertTrue(notificationDateLists.contains(notificationDate));
 
 		String beforeSelectNotificateDateOption = notifationDatedropdown.getFirstSelectedOption().getText();
 		System.out.println("beforeSelectNotificateDateOption: " + beforeSelectNotificateDateOption);
 
 		Thread.sleep(1000);
-		notifationDatedropdown.selectByVisibleText("Notification Date");
+		notifationDatedropdown.selectByVisibleText(notificationDate);
 		// NotifationStagesdropdown.selectByValue("Notification Date");
 
 		String afterSelectNotificateDateOption = notifationDatedropdown.getFirstSelectedOption().getText();
@@ -902,7 +903,7 @@ public class NotificationTemplate extends TestBase {
 		// Notification Time
 
 		List<String> notificationTimeLists = new ArrayList<String>();
-		Select notifationTimedropdown = new Select(notificationTime);
+		Select notifationTimedropdown = new Select(notificationTimeDropdown);
 		for (WebElement notificationTimeDropdowOptions : notifationTimedropdown.getOptions()) {
 			System.out.println("notificationTimeDropdowOptions : " + notificationTimeDropdowOptions.getText());
 			notificationTimeLists.add(notificationTimeDropdowOptions.getText());
@@ -910,27 +911,36 @@ public class NotificationTemplate extends TestBase {
 		// assertTrue(notificationTimeLists.containsAll(metaDataLists), " metadata text
 		// not displayed"); //need to implement "metadata list" equal to "notifaceTime
 		// Dropdown"
-		assertTrue(notificationTimeLists.contains("Notification Time"));
+		assertTrue(notificationTimeLists.contains(notificationTime));
 
 		String beforeSelectNotificateTimeOption = notifationTimedropdown.getFirstSelectedOption().getText();
 		System.out.println("beforeSelectNotificateTimeOption: " + beforeSelectNotificateTimeOption);
 
-		notifationTimedropdown.selectByVisibleText("Notification Time");
+		notifationTimedropdown.selectByVisibleText(notificationTime);
 
 		String afterSelectNotificateTimeOption = notifationTimedropdown.getFirstSelectedOption().getText();
 		System.out.println("afterSelectNotificateTimeOption:" + afterSelectNotificateTimeOption);
 
 		assertNotEquals(beforeSelectNotificateTimeOption, afterSelectNotificateTimeOption);
+	}
 
-		// MesagTextfield
+	public void messageTextfield() {
+
 		assertTrue(message.isDisplayed(), "message is not displayed");
 		message.sendKeys(fake.lastName1());
 
 		MessageTextStringValue = message.getAttribute("value"); // 1st way "Global variable"
 		System.out.println("MessageTextStringValue: " + MessageTextStringValue);
 
+	}
+
+	public void remarksTextfield() {
+
 		assertTrue(remarks.isDisplayed(), "remarksis not displayed");
 		remarks.sendKeys(fake.lastName1());
+	}
+
+	public void clickONCreateAndVerifyPopUp() {
 
 		assertTrue(createButton_NotificatioTemplatePopup.isDisplayed(),
 				"createButton_NotificatioTemplatePopupis not displayed");
@@ -942,6 +952,9 @@ public class NotificationTemplate extends TestBase {
 
 		assertTrue(continueButton_create.isDisplayed(), "continueButton_createis not displayed");
 		continueButton_create.click();
+	}
+
+	public void verifyCreatedNotificationTemplate() {
 
 		driver.getCurrentUrl();
 
@@ -1317,5 +1330,272 @@ public class NotificationTemplate extends TestBase {
 		assertNotEquals(beforeSearchDataLists_Table, afterSearchDataLists_Table); // not equal with before text and
 																					// after text
 	}
+
+/////////////////////////////////////////   Negative /////////////////////////////////////////////////////////////////////////
+
+	CallLogSatgeView callCallLogSatgeView = new CallLogSatgeView();
+
+	// WithouyDisposition Notification date
+	public void WithoutDispositionNotificationDate() throws Throwable { // Pending
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		callCallLogSatgeView.navigateToCallLogStageView();
+		smsTemplate.dropdownUtils(callCallLogSatgeView.SearchStages, searchedStagesName);
+
+		assertTrue(callCallLogSatgeView.noEntriesFoundd.isDisplayed(), "already displosition happen in this stages");
+
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);// select SubProcess
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);// select SubSub process
+		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);// selectStage
+
+		selectTemplateName();
+
+	}
+
+	String specailChar = "!@#$%^&*(_";
+
+	SkipReason skipReason = new SkipReason();
+
+	public void saveCreteTemplateWithSpecialChracter() throws Throwable {
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);// select SubProcess
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);// select SubSub process
+		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);// selectStage
+
+		notificationTemplateName.sendKeys(specailChar);
+		messageTextfield();
+		remarksTextfield();
+
+		skipReason.dropdownUtilsALL(notificationDateDropdown, "text", notificationDate);
+		skipReason.dropdownUtilsALL(notificationTimeDropdown, "text", notificationTime);
+
+		testCreateButtonNotificationTemplate();
+
+	}
+
+	public void testCreateButtonNotificationTemplate() {
+
+		try {
+
+			createButton_NotificatioTemplatePopup.click();
+			createButton_NotificatioTemplatePopup.isDisplayed();
+			System.out.println("Template name accepts special characters. TEST FAILED");
+			assertTrue(false, "Button is displayed, it accepts special characters. TEST FAILED");
+
+		} catch (NoSuchElementException e) {
+			// Handle the case where the button is disabled or not clickable
+			System.out.println("Create button is disabled; it does not allow special characters. TEST PASSED");
+			// Pass the test
+			assertTrue(true, "Button is disabled, special characters not allowed. TEST PASSED");
+		}
+
+	}
+
+	public void withoutSelectingAnyFiledTryToCreateTemplate() throws Throwable {
+
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		String Combinetext = skipReason.processLabel.getText() + skipReason.subProcessLabel.getText()
+				+ skipReason.subSubProcessLabel.getText() + stagesLabel.getText() + templateNameLabel.getText()
+				+ messagLabel.getText();
+
+		String asterisk = "*";
+		assertTrue(Combinetext.contains(asterisk), "asterisk is not contains in Combinetext text");
+
+		createButton_NotificatioTemplatePopup.click();
+
+		boolean isEitherDisplayed = invalidRequestMethod.isDisplayed() || somethingWentWrongErrorMesg.isDisplayed();
+		assertTrue(isEitherDisplayed, "'invalidRequestMethod' or 'validRequestMethod' is not displayed, test failed.");
+		// driver.navigate().back();
+
+	}
+
+	public void withoutSelectingProcessAndCreate() throws Throwable {
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		String combineText = skipReason.processLabel.getText() + skipReason.subProcessLabel.getText()
+				+ skipReason.subSubProcessLabel.getText();
+
+		String asterisk = "*";
+		assertTrue(combineText.contains(asterisk), "asterisk is not contains in Combinetext text");
+
+//		String combineValue = skipReason.processLabel.getAttribute("id") + skipReason.subProcessLabel.getAttribute("id")
+//		+ skipReason.subSubProcessLabel.getAttribute("id");
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+
+		// selectNotificationDateAndTime();
+		selectTemplateName();
+		messageTextfield();
+		remarksTextfield();
+
+		createButton_NotificatioTemplatePopup.click();
+
+		wait.until(ExpectedConditions.visibilityOf(invalidRequestMethod));
+		assertTrue(
+				invalidRequestMethod.isDisplayed()
+						|| errorMesgSubProcess.isDisplayed() && errorMesgSubSubProcess.isDisplayed(),
+				"Without selecting subprocess or sub sub processs template is created");
+
+	}
+
+	public void WithoutselectingStagesMnadatorydropdown() throws Throwable {
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);// select SubProcess
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);// select SubSub process
+
+		String Combinetext = skipReason.processLabel.getText() + skipReason.subProcessLabel.getText()
+				+ skipReason.subSubProcessLabel.getText() + stagesLabel.getText() + templateNameLabel.getText()
+				+ messagLabel.getText();
+
+		assertTrue(stagesLabel.isDisplayed(), "stagesLabel is noyt enabled");
+
+		String asterisk = "*";
+		assertTrue(Combinetext.contains(asterisk), "asterisk is not contains in Combinetext text");
+
+		createButton_NotificatioTemplatePopup.click();
+
+		boolean isEitherDisplayed = invalidRequestMethod.isDisplayed() || somethingWentWrongErrorMesg.isDisplayed();
+		assertTrue(isEitherDisplayed, "'invalidRequestMethod' or 'validRequestMethod' is not displayed, test failed.");
+		// driver.navigate().back();
+
+	}
+
+	public void characterLimitTextfield() throws Throwable {
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		notificationTemplateName.sendKeys("A".repeat(300));
+		createButton_NotificatioTemplatePopup.click();
+
+		boolean isEitherDisplayed = invalidRequestMethod.isDisplayed() || somethingWentWrongErrorMesg.isDisplayed();
+		assertTrue(isEitherDisplayed, "'invalidRequestMethod' or 'validRequestMethod' is not displayed, test failed.");
+		// driver.navigate().back();
+		// assertTrue(false, "error message should displayed Character limit is 256");
+	}
+
+	public void searchInvalidCreatedNamesInSearchField() throws Throwable {
+
+		NavigateToNotificationtemplate();
+		skipReason.searchInvalidCreatedNamesInSearchFieldUTILITY(searchbutton_Table, noEntriesFound, searchbutton_Table,
+				clearAllFiltersButton_Table);
+	}
+
+	public void createNotificationWithoutSelectingNonMandatoryFields() throws Throwable {
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);// select SubProcess
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);// select SubSub process
+		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);// selectStage
+
+		notificationTemplateName.sendKeys(specailChar);
+
+		skipReason.nonMandatoryTextfieldUTILITY(notificationDateLabel, notificationDateDropdown,
+				createButton_NotificatioTemplatePopup, notificationTemplateCreatedSuccessfully_popuop);
+//		skipReason.nonMandatoryTextfieldUTILITY(notificationTimeLabel, notificationTime, createButton_NotificatioTemplatePopup,  notificationTemplateCreatedSuccessfully_popuop);
+//		skipReason.nonMandatoryTextfieldUTILITY(remarksLabel, remarks, createButton_NotificatioTemplatePopup,  notificationTemplateCreatedSuccessfully_popuop);
+	}
+
+	String emoji = "❤️😂😊";
+
+	public void createTemplateThroughEmojis() throws Throwable {
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		createNotification();
+
+		smsTemplate.dropdownUtils(ProcessDropdown, stagesCreatedProcess1); // select Process
+		smsTemplate.dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);// select SubProcess
+		smsTemplate.dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);// select SubSub process
+		smsTemplate.dropdownUtils(notificationStagesDropdown, searchedStagesName);// selectStage
+
+		SendDataUtils.sendKeysWithJSExecutor(notificationTemplateName, emoji);
+		remarksTextfield();
+
+		createButton_NotificatioTemplatePopup.click();
+
+		boolean isEitherDisplayed = invalidRequestMethod.isDisplayed() || somethingWentWrongErrorMesg.isDisplayed();
+		assertTrue(isEitherDisplayed, "'invalidRequestMethod' or 'validRequestMethod' is not displayed, test failed.");
+
+		// driver.navigate().back();
+
+	}
+
+	public void searchThroughEmojiInSearchField() throws Throwable {
+
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+
+//		searchTextfield_table.sendKeys("A".repeat(300)); //Standard-256
+		skipReason.searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield_table, emoji, searchButton_table,noEntriesFound);
+//		SendDataUtils.sendKeysWithJSExecutor(searchTextfield_table, emoji);
+		searchbutton_Table.click();
+
+		assertTrue(invalidRequestMethod.isDisplayed(), "'invalidRequestMethod' message is not displayed, test failed.");
+
+		System.out.println("'invalidRequestMethod' message is displayed, test passed.");
+	}
+	
+	public void searchThroughSpacesInSearchTextfield() throws Throwable {
+		FetchStages();
+		navigateTo_AlchemyModule();
+		NavigateToNotificationtemplate();
+		smsTemplate.searchThroughSpacesInSearchTextfielUTILITY(searchTextfield_table, searchButton_table, noEntriesFound, clearAllFiltersButton_Table);
+
+		
+	}
+
+	String invalidProcess = "DemoEmp P";
+	String invalidSubProcess = "DemoEmp S P";
+	String invalidSubsubProcess = "DemoEmp S S P";
+
+	public void selectInvalidProcessesAndSearch() throws Throwable {
+
+		NavigateToNotificationtemplate();
+		
+		skipReason.dropdownUtilsALL(ProcessDropdown_table, "text", invalidProcess);
+		skipReason.dropdownUtilsALL(SubProcessDropdown_table, "text", invalidSubProcess);
+		skipReason.dropdownUtilsALL(subSubProcessDropdown_table, "text", invalidSubsubProcess);
+		
+		searchbutton_Table.click();
+		assertTrue(noEntriesFound.isDisplayed(), "template is created with this Proceess and it is displayed");
+	}
+	
+	public void searchThroughProcessInSearchTextfield() throws Throwable {
+		
+		NavigateToNotificationtemplate();
+		//smsTemplate.searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield_table, searchbutton_Table, , noEntriesFound, clearAllFiltersButton_Table);
+		
+	}
+	
+	
 
 }

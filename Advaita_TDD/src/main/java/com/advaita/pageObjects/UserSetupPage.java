@@ -16,6 +16,8 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
+
+import org.apache.poi.hssf.record.PageBreakRecord.Break;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
@@ -473,7 +475,8 @@ public static WebElement AddRow;
 	}
 	public UserSetupPage navToUserCreatePage()
 	{
-		//		userSetup.click();
+				//userSetup.click();
+				jsClick(driver, userSetup);
 		click(driver,userManagement);
 		userManagementCreateButton.click();
 		return this;
@@ -962,7 +965,8 @@ public static WebElement AddRow;
 
 		UMSaveButton.click();
 		unWait(1);
-		continueButton.click();
+		//unWait(1000);
+		//continueButton.click();
 
 		return this;
 	}
