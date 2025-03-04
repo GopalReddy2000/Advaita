@@ -5,10 +5,10 @@
     <classes>
       <class name="com.advaita.EndtoEnd.run.test.MastersEndToEnd">
         <methods>
+          <include name="verifyCreateMastersAdd"/>
           <include name="tearDown"/>
           <include name="setUp"/>
           <include name="getResult"/>
-          <include name="verifyCreateMasterForm"/>
         </methods>
       </class> <!-- com.advaita.EndtoEnd.run.test.MastersEndToEnd -->
     </classes>

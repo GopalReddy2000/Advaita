@@ -7,6 +7,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -15,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
@@ -125,10 +127,11 @@ public class DropDown extends TestBase {
 		}
 	}
 
-	public static void validateDropdownWithOutOrder(WebElement element, String expectedDefaultOption, String visibleText) {
-		
+	public static void validateDropdownWithOutOrder(WebElement element, String expectedDefaultOption,
+			String visibleText) {
+
 		Select dropdown = new Select(element);
-		
+
 		// Verify the dropdown is not multi-select
 		assertFalse(dropdown.isMultiple(), "Dropdown allows multiple selections.");
 
@@ -147,7 +150,7 @@ public class DropDown extends TestBase {
 		for (WebElement option : options) {
 			String optionText = option.getText();
 			System.out.println(optionText);
-			assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+			softAssert.assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
 		}
 
 		// Select each option by index and verify the selection
@@ -591,4 +594,92 @@ public class DropDown extends TestBase {
 		String cssValue = dropdown.getCssValue("position");
 		Assert.assertEquals(cssValue, "relative", "Dropdown is misaligned.");
 	}
+	
+	
+	/**
+     * Selects multiple options randomly (one, more than one, or all) from a Select2 multi-select dropdown.
+     * @param driver The WebDriver instance.
+     * @param questionContainer The WebElement containing the Select2 dropdown.
+     * @param random The Random instance for random selection.
+     */
+	public static void selectMultipleOptionsWithCustomSelection(WebDriver driver, WebElement questionContainer, Random random, int selectionType) {
+	    
+
+	    // Find the Select2 input or trigger
+	    WebElement select2Trigger = questionContainer.findElement(By.className("select2-selection"));
+	    if (select2Trigger == null) {
+	        throw new RuntimeException("Select2 trigger not found in question container.");
+	    }
+
+	    // Click the trigger to open the dropdown
+	    select2Trigger.click();
+
+	    // Wait for the dropdown to be visible
+	    WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	            By.className("select2-dropdown")));
+
+	    // Find all options in the dropdown
+	    List<WebElement> options = dropdown.findElements(By.className("select2-results__option"));
+	    if (options.isEmpty()) {
+	        System.out.println("No options found in Select2 dropdown for question: " + questionContainer.getText());
+	        return;
+	    }
+
+	    int totalOptions = options.size();
+	    System.out.println("Total options available: " + totalOptions);
+
+	    // Decide how many options to select based on the custom selectionType
+	    int optionsToSelect;
+	    switch (selectionType) {
+	        case 0: // Select exactly one option
+	            optionsToSelect = 1;
+	            System.out.println("Selecting exactly 1 option.");
+	            break;
+	        case 1: // Select more than one option (up to totalOptions)
+	            optionsToSelect = random.nextInt(totalOptions - 1) + 2; // Ensures at least 2 options
+	            System.out.println("Selecting " + optionsToSelect + " options (more than one).");
+	            break;
+	        case 2: // Select all options
+	            optionsToSelect = totalOptions;
+	            System.out.println("Selecting all " + totalOptions + " options.");
+	            break;
+	        default:
+	            throw new IllegalArgumentException("Invalid selectionType. Use 0 (one), 1 (more than one), or 2 (all).");
+	    }
+
+	    // Ensure optionsToSelect doesn’t exceed totalOptions
+	    optionsToSelect = Math.min(optionsToSelect, totalOptions);
+
+	    // Shuffle the options to select randomly
+	    java.util.Collections.shuffle(options);
+
+	    // Select the specified number of options
+	    int selectedCount = 0;
+	    for (WebElement option : options) {
+	        if (selectedCount >= optionsToSelect) {
+	            break;
+	        }
+	        String optionText = option.getText();
+
+	        // Check if the option is already selected (aria-selected="true")
+	        boolean isSelected = "true".equals(option.getAttribute("aria-selected"));
+	        if (!isSelected) {
+	            actions.moveToElement(option).click().perform();
+	            System.out.println("Selected option: " + optionText);
+	            selectedCount++;
+	        } else {
+	            System.out.println("Option already selected: " + optionText);
+	        }
+	    }
+	    
+	    select2Trigger.click();
+	    
+//	    driver.findElement(By.xpath("//div[@class='page_body']")).click();
+
+	    // Optionally, close the dropdown
+	    // select2Trigger.click(); // Uncomment if closing is required
+	}
+
+
+
 }

@@ -29,7 +29,7 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class MastersEndToEnd extends TestBase {
 
-	final String index = "H";
+	final String index = "K";
 	final boolean fieldSetCreate = false;
 	final boolean masterFormCreate = false;
 	final boolean masterMenuCreate = false;
@@ -68,7 +68,7 @@ public class MastersEndToEnd extends TestBase {
 		reports.setSystemInfo("Browser", "Chrome");
 
 		// Configuration to change look and feel
-		htmlReporter.config().setDocumentTitle("Extent Report for Masters");
+		htmlReporter.config().setDocumentTitle("Extent Report for MastersEndToEnd");
 		htmlReporter.config().setReportName("TEST Advaita");
 		htmlReporter.config().setTheme(Theme.STANDARD);
 		htmlReporter.config().setTimelineEnabled(true);
@@ -93,7 +93,8 @@ public class MastersEndToEnd extends TestBase {
 		String questionSetNameString = "TestQueSet" + index;
 		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
-		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer = 3)
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
+		// 3)
 
 		int sectionCount = 1;
 		int numberOfQuestion = 8;
@@ -106,7 +107,7 @@ public class MastersEndToEnd extends TestBase {
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
 				defineQuestionRandom);
 		masterFieldSet.verifySaveInCreateFieldSet();
-		
+
 	}
 
 	@Test(priority = 2, enabled = masterFormCreate)
@@ -147,9 +148,9 @@ public class MastersEndToEnd extends TestBase {
 	@Test(priority = 4, enabled = createMastersAdd)
 	public void verifyCreateMastersAdd() throws Throwable {
 		test = reports.createTest("verifyCreateMastersAdd");
-
+		MastersAdd.loadStoredQuestions();// Load the questions from the properties file
 		String formMenu = PropertieFileUtil.getSingleTextFromPropertiesFile("formMenu");
-		mastersAdd.navigateToMastersAdd(formMenu);
+		mastersAdd.navigateToMastersAdd(formMenu).validateAndInteractAddForm(); // Validate and interact with the form
 
 	}
 

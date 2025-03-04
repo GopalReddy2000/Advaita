@@ -1773,7 +1773,7 @@ public class MastersFieldSets extends TestBase {
 		case DATE:
 			return "DATE";
 		case TIME:
-			return "DATE";
+			return "TIME";
 		case FILE_UPLOAD:
 			return "FILE_UPLOAD";
 		case TEXT_BOX:
@@ -1793,7 +1793,7 @@ public class MastersFieldSets extends TestBase {
 		}
 	}
 
-	private Map.Entry<String, String[]> generateQuestionAndInputs(int questionType, int questionIndex,
+	public static Map.Entry<String, String[]> generateQuestionAndInputs(int questionType, int questionIndex,
 			boolean randomizeQuestions) {
 
 		switch (questionType) {
@@ -1949,7 +1949,7 @@ public class MastersFieldSets extends TestBase {
 
 		}
 		actions.sendKeys(Keys.ENTER).build().perform();
-		;
+		
 
 	}
 

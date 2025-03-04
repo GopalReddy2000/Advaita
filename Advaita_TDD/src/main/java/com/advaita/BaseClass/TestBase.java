@@ -97,28 +97,28 @@ public class TestBase {
 		softAssert = new SoftAssert();
 
 		// Set up DevTools
-		DevTools devTools = ((ChromeDriver) driver).getDevTools();
-		devTools.createSession();
-
-		// Enable network tracking
-		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-
-		// Add a listener to capture response details
-		devTools.addListener(Network.responseReceived(), response -> {
-			RequestId requestId = response.getRequestId();
-			Response responseDetails = response.getResponse();
-
-			// Get the status code and status text
-			int statusCode = responseDetails.getStatus();
-			String statusText = responseDetails.getStatusText();
-
-			// Print details only if the status code starts with 3, 4, or 5
-			if (statusCode >= 300 && statusCode < 600) { // Status codes 3xx, 4xx, 5xx
-				System.out.println("\n"+"URL: " + responseDetails.getUrl());
-				System.out.println("Status Code: " + statusCode);
-				System.out.println("Status Text: " + statusText + "\n");
-			}
-		});
+//		DevTools devTools = ((ChromeDriver) driver).getDevTools();
+//		devTools.createSession();
+//
+//		// Enable network tracking
+//		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+//
+//		// Add a listener to capture response details
+//		devTools.addListener(Network.responseReceived(), response -> {
+//			RequestId requestId = response.getRequestId();
+//			Response responseDetails = response.getResponse();
+//
+//			// Get the status code and status text
+//			int statusCode = responseDetails.getStatus();
+//			String statusText = responseDetails.getStatusText();
+//
+//			// Print details only if the status code starts with 3, 4, or 5
+//			if (statusCode >= 300 && statusCode < 600) { // Status codes 3xx, 4xx, 5xx
+//				System.out.println("\n"+"URL: " + responseDetails.getUrl());
+//				System.out.println("Status Code: " + statusCode);
+//				System.out.println("Status Text: " + statusText + "\n");
+//			}
+//		});
 
 		driver.get(mainURl);
 
@@ -244,6 +244,7 @@ public class TestBase {
 	}
 
 	@FindBy(id = "menulist2")
+	public
 	WebElement alchemy;
 
 	public void navigateWithinAlchemy(WebElement element) {

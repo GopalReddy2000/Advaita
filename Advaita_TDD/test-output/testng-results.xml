@@ -1,77 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-02-19T16:07:06 IST" name="Default suite" finished-at="2025-02-19T16:08:20 IST" duration-ms="73671">
+  <suite started-at="2025-02-26T13:39:49 IST" name="Default suite" finished-at="2025-02-26T13:40:07 IST" duration-ms="17744">
     <groups>
     </groups>
-    <test started-at="2025-02-19T16:07:06 IST" name="Default test" finished-at="2025-02-19T16:08:20 IST" duration-ms="73671">
+    <test started-at="2025-02-26T13:39:49 IST" name="Default test" finished-at="2025-02-26T13:40:07 IST" duration-ms="17744">
       <class name="com.advaita.EndtoEnd.run.test.MastersEndToEnd">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:07:06 IST" name="setUp" finished-at="2025-02-19T16:07:17 IST" duration-ms="10990" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@362045c0]" started-at="2025-02-26T13:39:49 IST" name="setUp" finished-at="2025-02-26T13:39:59 IST" duration-ms="9541" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyAddMultipleFieldSetQuestions()[pri:1, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:07:17 IST" name="verifyAddMultipleFieldSetQuestions" finished-at="2025-02-19T16:07:54 IST" duration-ms="36997" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyAddMultipleFieldSetQuestions -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:07:54 IST" name="getResult" finished-at="2025-02-19T16:07:55 IST" duration-ms="370" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyAddMultipleFieldSetQuestions status=SUCCESS method=MastersEndToEnd.verifyAddMultipleFieldSetQuestions()[pri:1, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateMasterForm()[pri:2, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:07:55 IST" name="verifyCreateMasterForm" finished-at="2025-02-19T16:08:14 IST" duration-ms="19414" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyCreateMasterForm -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:14 IST" name="getResult" finished-at="2025-02-19T16:08:14 IST" duration-ms="16" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateMasterForm status=SUCCESS method=MastersEndToEnd.verifyCreateMasterForm()[pri:2, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateMasterMenu()[pri:3, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:14 IST" name="verifyCreateMasterMenu" finished-at="2025-02-19T16:08:19 IST" duration-ms="4915" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyCreateMasterMenu -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:19 IST" name="getResult" finished-at="2025-02-19T16:08:19 IST" duration-ms="2" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateMasterMenu status=SUCCESS method=MastersEndToEnd.verifyCreateMasterMenu()[pri:3, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateMastersAdd()[pri:4, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:19 IST" name="verifyCreateMastersAdd" finished-at="2025-02-19T16:08:20 IST" duration-ms="836" status="PASS">
+        <test-method signature="verifyCreateMastersAdd()[pri:4, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@362045c0]" started-at="2025-02-26T13:39:59 IST" name="verifyCreateMastersAdd" finished-at="2025-02-26T13:40:06 IST" duration-ms="7478" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyCreateMastersAdd -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:20 IST" name="getResult" finished-at="2025-02-19T16:08:20 IST" duration-ms="30" status="PASS">
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@362045c0]" started-at="2025-02-26T13:40:06 IST" name="getResult" finished-at="2025-02-26T13:40:07 IST" duration-ms="624" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyCreateMastersAdd status=SUCCESS method=MastersEndToEnd.verifyCreateMastersAdd()[pri:4, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6] output={null}]]]>
+                <![CDATA[[TestResult name=verifyCreateMastersAdd status=SUCCESS method=MastersEndToEnd.verifyCreateMastersAdd()[pri:4, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@362045c0] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@59252cb6]" started-at="2025-02-19T16:08:20 IST" name="tearDown" finished-at="2025-02-19T16:08:20 IST" duration-ms="17" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.EndtoEnd.run.test.MastersEndToEnd@362045c0]" started-at="2025-02-26T13:40:07 IST" name="tearDown" finished-at="2025-02-26T13:40:07 IST" duration-ms="17" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
