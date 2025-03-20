@@ -30,11 +30,11 @@ import com.advaita.alchemyPageObject.SmsTemplate;
 import Advaita_TDD.Advaita_TDD.FakeData;
 import net.bytebuddy.asm.Advice.Enter;
 
-public class UserStatus extends TestBase {
+public class userStatus extends TestBase {
 
 	private static final String Random = null;
 
-	public UserStatus() {
+	public userStatus() {
 		PageFactory.initElements(driver, this);
 	}
 

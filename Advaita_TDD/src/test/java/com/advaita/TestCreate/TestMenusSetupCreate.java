@@ -7,8 +7,6 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.MenuSetup.pageObject.Menusetup;
-import com.advaita.UserStatus.pageobject.UserStatus;
-import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;

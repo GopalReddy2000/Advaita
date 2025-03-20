@@ -2,7 +2,6 @@ package com.advaita.TestCreate;
 
 import java.util.Random;
 
-import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -10,7 +9,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.UserStatus.pageobject.UserStatus;
+import com.advaita.UserStatus.pageobject.userStatus;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
@@ -21,7 +20,7 @@ import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class TestUserStatusCreate extends TestBase {
+public class TestuserStatusCreate extends TestBase {
 	Faker faker = new Faker();
 	FakeData fake = new FakeData();
 	public String metaDataName = "Test " + faker.name().firstName();
@@ -33,10 +32,10 @@ public class TestUserStatusCreate extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	UserStatus userStatus1;
+	userStatus userStatus1;
 	UserSetupPage userSetupPage;
 
-	public TestUserStatusCreate() throws Exception {
+	public TestuserStatusCreate() throws Exception {
 		super();
 
 	}
@@ -66,7 +65,7 @@ public class TestUserStatusCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		userStatus1 = new UserStatus(); // object creation with referenac of class
+		userStatus1 = new userStatus(); // object creation with referenac of class
 
 	}
 
@@ -87,13 +86,13 @@ public class TestUserStatusCreate extends TestBase {
 	}
 
 	// @Test(priority = 3)
-	public void navigateToUserStatus() throws Throwable {
-		userStatus1.NavigateToUserStatus();
+	public void navigateTouserStatus() throws Throwable {
+		userStatus1.createUserStatus();
 
 	}
 
 	// @Test(priority = 4)
-	public void createUserStatus() {
+	public void createuserStatus() {
 		userStatus1.createUserStatus();
 		// userStatus1.statusNameInputField();
 		userStatus1.descriptionField();
@@ -112,7 +111,7 @@ public class TestUserStatusCreate extends TestBase {
 	public void createHideStatus() throws Throwable {
 		userStatus1.navigateToMenuSetup();
 		userStatus1.callLogatTabViewClick();
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 		userStatus1.createUserStatus();
 		userStatus1.statusNameInputField("Trainee Employee1");
 		userStatus1.descriptionField();
@@ -129,7 +128,7 @@ public class TestUserStatusCreate extends TestBase {
 	public void userStatusTable() throws Throwable {
 		userStatus1.navigateToMenuSetup();
 		userStatus1.callLogatTabViewClick();
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 
 		userStatus1.searchStatus();
 		userStatus1.clearallFiltes();
@@ -138,11 +137,11 @@ public class TestUserStatusCreate extends TestBase {
 
 	// Edit
 	@Test(priority = 7)
-	public void UserStatusEdit() throws Throwable {
+	public void userStatusEdit() throws Throwable {
 
 		userStatus1.navigateToMenuSetup();
 		userStatus1.callLogatTabViewClick();
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 
 		userStatus1.EditStatus(); // Edit mandatory field name
 		userStatus1.EditDescriptnField();
@@ -153,7 +152,7 @@ public class TestUserStatusCreate extends TestBase {
 	public void navigateToAmdinProfile() throws Throwable {
 		userStatus1.navigateToMenuSetup();
 		userStatus1.callLogatTabViewClick();
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 
 		// userStatus1.navigateToaAdmin();
 
@@ -165,45 +164,45 @@ public class TestUserStatusCreate extends TestBase {
 	public void searchmenusInSearchtextfield() throws Throwable {
 		userStatus1.navigateToMenuSetup();
 		userStatus1.callLogatTabViewClick();
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 
 		userStatus1.searchmenusInSearchtextfield();
 	}
 
-	// <================= Negative Script for UserStatus
+	// <================= Negative Script for userStatus
 
 	@Test(priority = 8)
-	public void verifyWithoutSelectingAnyFieldAndCreateUserstatus() {
+	public void verifyWithoutSelectingAnyFieldAndCreateuserStatus() {
 
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 		userStatus1.withoutSelectingAnyFieldAndCreateUserstatus();
 	}
 
 	@Test(priority = 9)
-	public void verifyTheUsercreateUserStatusThroughSpecialCharacters() { // need to implemennt after fix
+	public void verifyTheUsercreateuserStatusThroughSpecialCharacters() { // need to implemennt after fix
 
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 		userStatus1.createUserStatusThroughSpecialCharacters();
 	}
 
 	@Test(priority = 10) // need to update after fixed
-	public void verifyCreateUserStatusThrougByenteringNonEnglishCharacterInStatusNameField() {
+	public void verifyCreateuserStatusThrougByenteringNonEnglishCharacterInStatusNameField() {
 
-		userStatus1.NavigateToUserStatus();
-		userStatus1.createUserStatusThrougByenteringNonEnglishCahracterInStatusNameTextfield();
+		userStatus1.createUserStatus();
+		userStatus1.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
 
 	}
 
 	@Test(priority = 10) // need to update after fixed
-	public void verifyCreateUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield() {
+	public void verifyCreateuserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield() {
 
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 		userStatus1.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
 
 	}
 
 	@Test(priority = 11)
-	public void verifyTheUsercreateUserStatusThroughEmojis() { // need to implemennt after fix
+	public void verifyTheUsercreateuserStatusThroughEmojis() { // need to implemennt after fix
 		userStatus1.userCreateUserStatusThroughEmojis();
 
 	}
@@ -212,36 +211,36 @@ public class TestUserStatusCreate extends TestBase {
 	public void verifyCreateUserByByEnteringMoreThanCharacterLimitInStatusNameTetxfield() { // Need To update after
 																							// fixed
 
-		userStatus1.NavigateToUserStatus();
+		userStatus1.createUserStatus();
 		userStatus1.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
 	}
 
 	@Test(priority = 13)
-	public void VerifycreateUserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield() {
+	public void VerifycreateuserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield() {
 
-		userStatus1.NavigateToUserStatus();
-		userStatus1.createUserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield();
+		userStatus1.createUserStatus();
+		userStatus1.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
 	}
 
 	@Test(priority = 14)
-	public void verifyCreateUserStatusThroughOnlyNumericValue() { // need to Update After fix
+	public void verifyCreateuserStatusThroughOnlyNumericValue() { // need to Update After fix
 		userStatus1.createUserStatusThroughOnlyNumericValue();
 
 	}
 
 	@Test(priority = 15)
-	public void verifyCreateUserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault() {
+	public void verifyCreateuserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault() {
 		userStatus1.createUserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault();
 	}
 
 	@Test(priority = 16)
-	public void verifyUserCreateUserStatuswithoutSelectingActiveStausAndIsDefault() { // implement in Create User status
+	public void verifyUserCreateuserStatuswithoutSelectingActiveStausAndIsDefault() { // implement in Create User status
 
 		userStatus1.userCreateUserStatuswithoutSelectingActiveStausAndIsDefault();
 	}
 
 	@Test(priority = 17)
-	public void verifySearchInvalidCharacterInSearchTextfieldInUserStatusPage() {
+	public void verifySearchInvalidCharacterInSearchTextfieldInuserStatusPage() {
 		userStatus1.searchInvalidCharacterInSearchTextfieldInUserStatusPage();
 
 	}
@@ -262,7 +261,7 @@ public class TestUserStatusCreate extends TestBase {
 	}
 
 	@Test(priority = 21)
-	public void verufyTheUserfilledAlldataInCreateUserStatusPageAndClickONCancel() {
+	public void verufyTheUserfilledAlldataInCreateuserStatusPageAndClickONCancel() {
 		userStatus1.filledAlldataInCreateUserStatusPageAndClickONCancel();
 	}
 
@@ -273,7 +272,7 @@ public class TestUserStatusCreate extends TestBase {
 	}
 
 	// @Test(priority = 23)
-	public void TheUserAbleTodeleteAllUserStatus() {
+	public void TheUserAbleTodeleteAlluserStatus() {
 		userStatus1.TheUserAbleTodeleteAllUserStatus();
 
 	}
@@ -318,7 +317,7 @@ public class TestUserStatusCreate extends TestBase {
 	}
 
 	@Test
-	public void endToEndUserStatus() {
+	public void endToEnduserStatus() {
 
 		userSetupPage.navToUserCreatePage();
 		userSetupPage.userCreationFields("das", "Abhijit@wyzminz.com", "Qwerty@123"); // need to change as per

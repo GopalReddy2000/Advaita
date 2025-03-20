@@ -17,7 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.UserStatus.pageobject.UserStatus;
+import com.advaita.UserStatus.pageobject.userStatus;
 import com.advaita.Utilities.SendDataUtils;
 import com.advaita.alchemyPageObject.SkipReason;
 import com.advaita.alchemyPageObject.SmsTemplate;
@@ -244,7 +244,7 @@ public class Menusetup extends TestBase {
 
 	public void searchByFormName() {
 
-		UserStatus menuSetup = new UserStatus();
+		userStatus menuSetup = new userStatus();
 
 		List<String> formnNameList = new ArrayList<String>();
 
@@ -441,7 +441,7 @@ public class Menusetup extends TestBase {
 
 		// Form name
 		// Check if the formNameEdit element is displayed
-		UserStatus menusSetup = new UserStatus();
+		userStatus menusSetup = new userStatus();
 		menusSetup.inputFieldIsDisplayed(formNameEdit);
 		menusSetup.checkthroughAsterisk(formNameEdit, false);
 
@@ -469,7 +469,7 @@ public class Menusetup extends TestBase {
 	public void defautNameEdit() {
 		// Default name
 		// Check if the DefaultEdit element is displayed
-		UserStatus menusSetup1 = new UserStatus();
+		userStatus menusSetup1 = new userStatus();
 
 		menusSetup1.inputFieldIsDisplayed(defaultNameEdit);
 		menusSetup1.checkthroughAsterisk(defaultNameEdit, false);
@@ -498,7 +498,7 @@ public class Menusetup extends TestBase {
 	public void displayNameEdit(String textToEnter) {
 		// Dislay name
 		// Check if the displayEdit element is displayed
-		UserStatus menusSetup2 = new UserStatus();
+		userStatus menusSetup2 = new userStatus();
 
 		menusSetup2.inputFieldIsDisplayed(displayNameEdit);
 		menusSetup2.checkthroughAsterisk(displayNameEdit, false);
@@ -581,7 +581,7 @@ public class Menusetup extends TestBase {
 
 	/////////////////////////////////////////////////// Negative///////////////////////////////////////////////////////
 
-	UserStatus userStatus = new UserStatus();
+	userStatus userStatus = new userStatus();
 	SmsTemplate smsTemplate = new SmsTemplate();
 
 	public void theUserwithoutEnteringMandatoryFieldandclickOnUpdate() {
