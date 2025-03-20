@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static com.advaita.pageObjects.NonMeasurableSetPage.successfullyNonMeasurableUpdatedMassage;
 import static org.testng.Assert.*;
 
 public class MeasurableSetPage extends TestBase {
@@ -841,14 +842,17 @@ public class MeasurableSetPage extends TestBase {
 		saveRecord();
 
 	}
-	public void saveRecord1()
+	public void saveRecordAndBack()
 	{
 		//		Saving the record
-		click(driver, saveButtonOfCreateQuestionSet);
-		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		System.out.println(successfullymeasurableUpdatedMassage.getText());
-		assertTrue(successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullymeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
-		click(driver, questionSaveContinueButton);
+		jsClick(saveButtonOfCreateQuestionSet);
+		unWaitInMilli(1000);
+
+		System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
+		assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Measurable Set has been updated successfully") );
+		jsClick(questionSaveContinueButton);
+
+		jsClick(backButton);
 	}
 	public void questionTypeRelativeDropdown()
 	{
@@ -879,7 +883,7 @@ public class MeasurableSetPage extends TestBase {
 			optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
 		}
 		//		Saving the record
-		saveRecord1();
+		saveRecordAndBack();
 
 
 	}
@@ -896,7 +900,7 @@ public class MeasurableSetPage extends TestBase {
 		click(driver, questionTypeFileUpload);
 		assertTrue(fileUploadBrowse.isEnabled());
 		click(driver, fileUploadSetting);
-		jsClick(driver, allowedFormatDropdown);
+		jsClick(allowedFormatDropdown);
 
 
 		String[] fileFormats = {
@@ -931,7 +935,7 @@ public class MeasurableSetPage extends TestBase {
 
 		}
 
-		saveRecord1();
+		saveRecordAndBack();
 		click(driver, fileUploadSetting);
 		Select allowedFormat=new Select(allowedFormatDropdown);
 		List<String> listOfFileFormats = new ArrayList<String>();
@@ -954,7 +958,8 @@ public class MeasurableSetPage extends TestBase {
 
 	public MeasurableSetPage deleteRecordByName( String nameToDelete)
 	{
-		workFlowDesign.click();
+
+		click(driver, workFlowDesign);
 		click(driver, masterParameterTab);
 		click(driver, measurableTab);
 
@@ -1050,13 +1055,13 @@ public class MeasurableSetPage extends TestBase {
 
 		stagesTab.click();
 		editButtons.get(0).click();
-		jsClick(driver, addNonSectionButton);
+		jsClick(addNonSectionButton);
 		sectionInputField.sendKeys("Test");
 		unWait(2);
-		jsClick(driver,sectionAddButton);
+		jsClick(sectionAddButton);
 
-		jsClick(driver, sectionButton);
-		jsClick(driver, MeasurableSetRadioBtn);
+		jsClick(sectionButton);
+		jsClick(MeasurableSetRadioBtn);
 
 		Select nonMeasurSelectQuestionType=new Select(selectQuestiontypeDropdown);
 
@@ -1095,7 +1100,7 @@ public class MeasurableSetPage extends TestBase {
 				}
 				break;
 			case "no":
-				jsClick(driver,deleteOptions(section,question));
+				jsClick(deleteOptions(section,question));
 				break;
 
 		}
@@ -1122,7 +1127,7 @@ public class MeasurableSetPage extends TestBase {
 		selectByVisibleText(textBoxValueType(section,question),valueType);
 		if(allowSpecialChar.equals("no"))
 		{
-			jsClick(driver,textBoxAllowSpecialChar(section,question));
+			jsClick(textBoxAllowSpecialChar(section,question));
 		}
 
 		return this;
@@ -1156,7 +1161,7 @@ public class MeasurableSetPage extends TestBase {
 		selectByVisibleText(shortAnsValueType(section,question),valueType);
 		if(allowSpecialChar.equals("no"))
 		{
-			jsClick(driver,shortAnsAllowSpecialChar(section,question));
+			jsClick(shortAnsAllowSpecialChar(section,question));
 		}
 
 		return this;
@@ -1184,24 +1189,24 @@ public class MeasurableSetPage extends TestBase {
 		ToggleButton(required(section,question),requiredStatus);
 
 		ToggleButton(escalationToggle(section,question),EscalatedStatus);
-		jsClick(driver,fileUploadSettings(section,question));
+		jsClick(fileUploadSettings(section,question));
 		try {
 			selectByVisibleText(allowedFormats(section, question), addFileFormats);
 		}catch (Exception e)
 		{
 			addAdditionalFormats(section,question).click();
 			sendKeys(additionalFormatInput(section,question),addFileFormats);
-			jsClick(driver,addFormat(section,question));
+			jsClick(addFormat(section,question));
 			unWait(1);
 			continueButton.click();
 			selectByVisibleText(allowedFormats(section, question), addFileFormats);
 		}
 		if(doYouNeedMultipleUpload.equals("no")) {
-			jsClick(driver,uploadMultipleFiles(section, question));
+			jsClick(uploadMultipleFiles(section, question));
 		}
 		if(allowDelete.equals("no"))
 		{
-			jsClick(driver,allowDelete(section,question));
+			jsClick(allowDelete(section,question));
 		}
 		sendKeys(maxSizeInput(section,question),fileSize);
 		selectByVisibleText(maxSizeDropdown(section,question),sizeType);
@@ -1321,24 +1326,24 @@ public class MeasurableSetPage extends TestBase {
 
 	public void ToggleButton( WebElement toggleButton,String Action) {
 		if(Action.equals("yes")) {
-			jsClick(driver, toggleButton);
+			jsClick(toggleButton);
 		}
 	}
 
 	public MeasurableSetPage addQuestion(int section)
 	{
 		String xpath= "//div[@data-info='question-"+section+"-1']//following-sibling::div//a[not(text()='Add Option')]";
-		jsClick(driver,driver.findElement(By.xpath(xpath)));
+		jsClick(driver.findElement(By.xpath(xpath)));
 		return this;
 	}
 	public MeasurableSetPage addSection()
 	{
-		jsClick(driver,addSectionButton);
+		jsClick(addSectionButton);
 		return this;
 	}
 
 	public MeasurableSetPage createQuestionSetName(String questionSetFieldName) {
-		jsClick(driver, addMeasurableSetButton);
+		jsClick(addMeasurableSetButton);
 		sendKeys(questionSetNameField,questionSetFieldName);
 
 		return this;
@@ -1347,8 +1352,8 @@ public class MeasurableSetPage extends TestBase {
 	public MeasurableSetPage NavToMeasurableTablePage()
 	{
 		workFlowDesign.click();
-		jsClick(driver, masterParameterTab);
-		jsClick(driver, measurableTab);
+		jsClick(masterParameterTab);
+		jsClick(measurableTab);
 
 		return this;
 	}
@@ -1367,10 +1372,10 @@ public class MeasurableSetPage extends TestBase {
 			{
 				System.out.println( usernameColumn.getText());
 				switch (uploadType){
-					case "1":   jsClick(driver,row.findElement(By.xpath("./td//a[1]//img")));
+					case "1":   jsClick(row.findElement(By.xpath("./td//a[1]//img")));
 						break;
 
-					case "2":jsClick(driver,row.findElement(By.xpath("./td//a[2]//img")));
+					case "2":jsClick(row.findElement(By.xpath("./td//a[2]//img")));
 						break;
 
 				}
@@ -1411,13 +1416,13 @@ public class MeasurableSetPage extends TestBase {
 		stagesTab.click();
 		editButtons.get(0).click();
 		js.executeScript("window.scrollTo(0, 700);");
-		jsClick(driver,addSection);
+		jsClick(addSection);
 		sectionName.sendKeys(sectionCName);
 		unWait(1);
-		jsClick(driver,add);
+		jsClick(add);
 
-		jsClick(driver,sectionCTabs(sectionCName));;
-		jsClick(driver,measurableRadioButton(sectionCName));
+		jsClick(sectionCTabs(sectionCName));;
+		jsClick(measurableRadioButton(sectionCName));
 		selectByVisibleText(measurableDropdownQuestionDropdown(sectionCName),DropdownToSelect);
 		//Should Add Validations
 
@@ -1468,7 +1473,7 @@ public class MeasurableSetPage extends TestBase {
 
 	public MeasurableSetPage saveRecord2()
 	{
-		jsClick(driver,save);
+		jsClick(save);
 		unWait(1);
 		continueButton.click();
 		return this;
@@ -1565,7 +1570,7 @@ public class MeasurableSetPage extends TestBase {
 	WebElement smsTemplate;
 	public void smsTemp()
 	{
-		jsClick(driver, smsTemplate);
+		jsClick(smsTemplate);
 	}
 
 

@@ -1,23 +1,16 @@
 package com.advaita.TestCreate;
 
-import java.io.IOException;
-import java.util.Date;
-
-import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
@@ -37,23 +30,26 @@ public class TestMetaDataCreate extends TestBase {
 
 	LoginPage loginPage;
 	HomePage homePage;
-
+	HomePage hp;
 	MetaData metaData;
 
 	public TestMetaDataCreate() {
 		super();
 	}
 
-	@BeforeTest
+	@BeforeMethod
 	public void setUp() throws Throwable {
 		initialization();
 		loginPage = new LoginPage();
 		homePage = loginPage.login("Capture_admin", "Qwerty@123");
 
+		metaData = new MetaData();
+
 		htmlReporter = new ExtentSparkReporter(System.getProperty("user.dir") + "/Reports/MetaDataCreate.html");
 		reports = new ExtentReports();
 		reports.attachReporter(htmlReporter);
 
+//		hp = new HomePage();
 		// add environment details
 		reports.setSystemInfo("Machine", "Testpc1");
 		reports.setSystemInfo("OS", "Windows 11");
@@ -67,11 +63,11 @@ public class TestMetaDataCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		metaData = new MetaData();
+
 
 	}
 	
-	HomePage hp = new HomePage();
+
 
 	@Test(priority = 1)
 	public void verifyCreateMetaData() throws Throwable {
@@ -92,11 +88,53 @@ public class TestMetaDataCreate extends TestBase {
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation();
 
 	}
-	
-	
 
-	@AfterMethod
-	public void getResult(ITestResult result) throws IOException, Throwable {
+	@Test
+	public void testEmptyDropdown()
+	{
+		metaData.validateDatasetDropdown(metaData.selectProcessDropDown);
+
+	}
+
+	@DataProvider(name="metaDataDropdowns")
+	public Object[][] dropdowns()
+	{
+		return new Object[][]{
+				{metaData.selectProcessDropDown},
+				{metaData.selectSubProcessDropDown},
+				{metaData.selectSubSubProcessDropDown},
+				{metaData.selectDataSetDropDown}
+		};
+	}
+
+	@Test(dataProvider = "invalidRecordNameData")
+	public void setMetaDataName(String metaDataName,String errorMessage)
+	{
+		metaData. navToMetadataTable()
+		.metaDataTextBox(metaDataName,errorMessage);
+	}
+
+
+
+	@DataProvider(name = "invalidRecordNameData")
+	public Object[][] invalidRecordNameData() {
+		return new Object[][] {
+				{"", "This field is required."},
+				{"   ", "Record name cannot be just spaces."},
+				{"a".repeat(258), "Record name cannot exceed 255 characters."},
+				{"ƀ Ɓ Ƃ ƃ Ƅ ƅ Ɔ Ƈ ƈ Ɖ Ɗ Ƌ", "Record name cannot contain Unicode characters."},
+				{"#Record$", "Record name cannot contain special characters."},
+				{"123456", "Record name cannot be numeric only."},
+				{"!!!@@@", "Record name cannot be only special characters."},
+				{"SELECT * FROM records", "Invalid input detected."},
+				{"<record>Test</record>", "Invalid input detected."},
+				{"record    name", "Record name cannot contain consecutive spaces."},
+				{"DemoEmpJ Details MetaData", "Metadata Name Already Exists"}
+		};
+	}
+
+
+	/*public void getResult(ITestResult result) throws IOException, Throwable {
 		if (result.getStatus() == ITestResult.FAILURE) {
 			// Mark the test as failed in the ExtentReports
 			test.fail(result.getThrowable());
@@ -112,12 +150,12 @@ public class TestMetaDataCreate extends TestBase {
 		}
 		// Close ExtentReports
 		reports.flush();
-	}
+	}*/
 
-	@AfterTest
+	@AfterMethod
 	public void tearDown() {
 //		driver.manage().window().minimize();
-//		driver.quit();
+		driver.quit();
 		reports.flush();
 	}
 

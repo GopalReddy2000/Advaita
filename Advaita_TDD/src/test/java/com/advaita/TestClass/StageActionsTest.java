@@ -3,19 +3,21 @@ package com.advaita.TestClass;
 import com.advaita.BaseClass.TestBase ;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.pageObjects.StagesActions;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
 public class StageActionsTest extends TestBase {
     LoginPage loginPage;
     HomePage homePage;
     StagesActions stagesActions;
-    StageActionsTest()
-    {
+    StageActionsTest() throws IOException {
         super();
     }
     @BeforeTest
@@ -44,14 +46,16 @@ public class StageActionsTest extends TestBase {
 //                .clickOnStageHistoryField("Insurance Stage",HistoryFileds)  ;
         stagesActions.stageHistoryFields();
     }
+  List<String> sectionBCheckBoxes= List.of("Name of the Customer","Phone Number","Email","Location");
 
+    String stageName= PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
     @Test
     public void evaluationFilterTest()
     {
         stagesActions
                 .navtoStages()
-                .clickOnStageHistoryField("Insurance Stage",evaluationFilter)  ;
-        stagesActions.evaluationFilter();
+                .clickOnStageHistoryField(stageName,evaluationFilter)  ;
+        stagesActions.evaluationFilter(sectionBCheckBoxes,stageName);
     }
 
 

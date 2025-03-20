@@ -2,6 +2,7 @@ package com.advaita.EndtoEnd.run.test;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
@@ -12,10 +13,13 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
+import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MasterFormPage;
 import com.advaita.WorkFlowDesign.PageObject.MasterMenusPage;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
+import com.advaita.sideMasters.MastersAdd;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
@@ -24,6 +28,12 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class MastersEndToEnd extends TestBase {
+
+	final String index = "H";
+	final boolean fieldSetCreate = false;
+	final boolean masterFormCreate = false;
+	final boolean masterMenuCreate = false;
+	final boolean createMastersAdd = true;
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -35,7 +45,7 @@ public class MastersEndToEnd extends TestBase {
 	MastersFieldSets masterFieldSet;
 	MasterMenusPage masterMenusPage;
 	MasterFormPage masterForm;
-	
+	MastersAdd mastersAdd;
 
 	public MastersEndToEnd() {
 		super();
@@ -64,84 +74,84 @@ public class MastersEndToEnd extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		
 		masterForm = new MasterFormPage();
 		masterMenusPage = new MasterMenusPage();
 		masterFieldSet = new MastersFieldSets();
+		mastersAdd = new MastersAdd();
+
+	}
+
+	@Test(priority = 1, enabled = fieldSetCreate)
+	public void verifyAddMultipleFieldSetQuestions() throws Throwable {
+
+		// Create the test in ExtentReports
+		test = reports.createTest("verifyAddMultipleFieldSetQuestions");
+		// Perform necessary UI steps for creating the field set
+		masterFieldSet.verifyTabsForFieldSetCreate();
+		masterFieldSet.verifyFieldSetCreateButton();
+		// Set the question set name
+		String questionSetNameString = "TestQueSet" + index;
+		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
+		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer = 3)
+
+		int sectionCount = 1;
+		int numberOfQuestion = 8;
+		boolean fieldSetQuestionRandom = true;
+		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
+				numberOfQuestion, MastersFieldSets.TEXT_BOX, MastersFieldSets.DROP_DOWN, MastersFieldSets.DATE,
+				MastersFieldSets.TIME, MastersFieldSets.MULTIPLE_CHOICE);
+		// Now, add multiple questions to section 1 based on the selected types
+		boolean defineQuestionRandom = true;
+		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
+				defineQuestionRandom);
+		masterFieldSet.verifySaveInCreateFieldSet();
 		
 	}
 
-	@Test(priority = 1)
-	public void verifyFieldSetCreate() throws Throwable {
-		test = reports.createTest("verifyFieldSetCreate");
-		
-		homePage.clickOnworkflowDesign();
-		masterFieldSet.verifyTabsForFieldSetCreate();
-		masterFieldSet.verifyBeforeFieldSetCreatedCount();
-		masterFieldSet.verifyFieldSetCreateButton();
-		masterFieldSet.verifyQuestionSetNameField();
-		masterFieldSet.verifyDefaultSection1andAddingQuestion();
-		masterFieldSet.verifyByAddingQuestionsTypeInSection1();
-		masterFieldSet.verifyDefaultSection2();
-		masterFieldSet.verifyByAddingQuestionsAndQuestionsTypeInSection2();
-//		
-//		
-//		
-		masterFieldSet.createFieldSetTabularView();
-		masterFieldSet.verifySaveInCreateFieldSet();
-		masterFieldSet.verifyAfterFieldSetCreatedCount();
-//		
-		
-	}
-	
-	@Test(priority = 2)
+	@Test(priority = 2, enabled = masterFormCreate)
 	public void verifyCreateMasterForm() throws Throwable {
 		test = reports.createTest("verifyCreateMasterForm");
 
-//		masterForm.createProcess();
-		masterForm.navigationToProcessAndFetch();
-		masterForm.navigationToFieldSet2();
-		masterForm.getFieldSetSection1QuestionsForComparision();
-		masterForm.getFieldSetSection2QuestionsForComparision();
-		masterForm.getFieldSetSection3TableQuestionsForComparision();
-		masterForm.getFieldSetSection1QuestionsType();
-		masterForm.getFieldSetSection2QuestionsType();
-		masterForm.getFieldSetSection3QuestionsType();
-//		
-		masterForm.navigateToMasterForm();
-//		masterForm.masterFormsFirstRecoredDelete();
+		String formName = "TestMF" + index;
+		String secName = "TestSec";
+
+		String fieldSetName = PropertieFileUtil.getSingleTextFromPropertiesFile("fieldSetName");
+
+		masterForm.navigateToMasterForm2();
 		masterForm.createButtonMasterForm();
-		masterForm.formNameField();
-		masterForm.procesDropdown();
-		masterForm.subProcesDropdown();
-		masterForm.subSubProcesDropdown();
-		masterForm.primarySection();
-		masterForm.primarySectionFormFill();
-		masterForm.primarySection2FormFill();
-		masterForm.primarySection3FormFill();
-//		
-		masterForm.saveButton();
-		masterForm.finalizeMasterFormInEditPage();
-		masterForm.dataSetValidationAfterCreationOfMasterForm();
-		masterForm.metaDataValidationAfterCreationOfMasterForm();
-		masterForm.masterFieldsAfterCreationOfMasterForm();
-		masterForm.masterFilterAfterCreationOfMasterFields();
-		masterForm.validationsAfterMasterFilterAndMasterFields();
-		
+		masterForm.formNameField(formName).processSelection().addPrimarySectionsDynamically(secName, fieldSetName)
+				.validateMasterFormQuestions();
+		PropertieFileUtil.storeSingleTextInPropertiesFile("formName", formName);
+
+//		List<String> sections = Arrays.asList("TestA", "TestB");
+//		masterForm.addMultipleSectionsDynamically(sections, fieldSetName); 
+		masterForm.saveButton(false).finalizeMasterFormPage();
+
 	}
-	
-//	@Test(priority = 3)
-//	public void verifyCreateMasterMenu() throws Throwable {
-//		test = reports.createTest("verifyCreateMasterMenu");
-//		
-//		masterMenusPage.navigateToMasterMenus();
-//		masterMenusPage.verifyCreateMasterMenuButton();
-//		masterMenusPage.verifyMasterFormDropDown();
-//		masterMenusPage.menuNameField();
-//		masterMenusPage.masterMenuSaveButton();
-//		
-//	}
-	
+
+	@Test(priority = 3, enabled = masterMenuCreate)
+	public void verifyCreateMasterMenu() throws Throwable {
+		test = reports.createTest("verifyCreateMasterMenu");
+
+		String formMenu = "TestMM" + index;
+		String formName = PropertieFileUtil.getSingleTextFromPropertiesFile("formName");
+
+		masterMenusPage.navigateToMasterMenus();
+		masterMenusPage.verifyCreateMasterMenuButton().verifyMasterFormDropDown(formName, formMenu)
+				.masterMenuSaveButton();
+		PropertieFileUtil.storeSingleTextInPropertiesFile("formMenu", formMenu);
+
+	}
+
+	@Test(priority = 4, enabled = createMastersAdd)
+	public void verifyCreateMastersAdd() throws Throwable {
+		test = reports.createTest("verifyCreateMastersAdd");
+
+		String formMenu = PropertieFileUtil.getSingleTextFromPropertiesFile("formMenu");
+		mastersAdd.navigateToMastersAdd(formMenu);
+
+	}
 
 	@AfterMethod
 	public void getResult(ITestResult result) throws IOException, Throwable {
@@ -164,8 +174,8 @@ public class MastersEndToEnd extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 	}
 

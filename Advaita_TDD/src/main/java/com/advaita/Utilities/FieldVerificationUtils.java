@@ -85,4 +85,178 @@ public class FieldVerificationUtils extends TestBase {
 		String enteredText = field.getAttribute("value");
 		assertEquals(enteredText, fieldValue, "field is not correctly entered in the field.");
 	}
+
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+//  1
+	public static void testEmptyInput(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("");
+
+	}
+
+//  2
+	public static void testExceedMaxCharacterLimit(WebElement textField, int limit) {
+		String longInput = "A".repeat(limit); // Input exceeding max limit
+		textField.clear();
+		textField.sendKeys(longInput);
+	}
+
+//	3
+	public static void testInvalidCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("@#$%^&*"); // Invalid characters
+	}
+
+//	4
+	public static void testSQLInjectionAttempt(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("' OR 1=1; --"); // Common SQL Injection attempt
+	}
+
+//  5
+	public static void testScriptInjectionAttempt(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("<script>alert('Test')</script>"); // XSS Injection attempt
+	}
+
+//  6
+	public static void testOnlyWhitespaceInput(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("   "); // Input with only whitespaces
+	}
+
+//  7
+	public static void testNumericInputOnly(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("1234567890"); // Numeric input only
+	}
+
+//  8
+	public static void testSpecialCharactersAndNumericInput(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("1234@#$%"); // Numeric and special character input
+	}
+
+//	9
+	public static void testLeadingAndTrailingSpaces(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("   Test Input   "); // Input with leading and trailing spaces
+	}
+
+//	10
+	public static void testEmptyAfterTypingAndClearing(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("SomeInput");
+		textField.clear();
+	}
+
+//	11
+	public static void testInputWithHTMLTags(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("<h1>Header</h1>"); // HTML tags input
+	}
+
+//	12
+	public static void testInputWithSpacesBetweenCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("T e s t"); // Input with spaces between characters
+	}
+
+//	13
+	public static void testUnicodeInput(WebElement textField) {
+
+		String text = "こんにちは";// Input with non-ASCII characters (Japanese)
+		textField.clear();
+		js.executeScript("arguments[0].value='" + text + "';", textField);
+	}
+
+//	14
+	public static void testInputWithNewlineCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("Test\nInput"); // Input with newline characters
+	}
+
+//  15
+	public static void testInputWithTabCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("Test\tInput"); // Input with tab characters
+	}
+
+//	16
+	public static void testInputWithEmojiCharacters(WebElement textField) {
+
+		String text = "😊🚀🌟💕💕";
+		textField.clear();
+		js.executeScript("arguments[0].value='" + text + "';", textField);
+	}
+
+//	17
+	public static void testInputWithSingleCharacter(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("A"); // Single character input
+	}
+
+//	18
+	public static void testInputWithSpecialCharacterAtStart(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("@TestInput"); // Input starting with special character
+	}
+
+//	19
+	public static void testInputWithSpecialCharacterAtEnd(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("TestInput@"); // Input ending with special character
+	}
+
+//	20
+	public static void testInputWithDuplicateCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("aaaaaa"); // Repeated identical characters
+	}
+
+//	21
+	public static void testInputWithMixedCase(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("TeStInPuT"); // Input with mixed uppercase and lowercase
+	}
+
+//	22
+	public static void testInputWithMultipleSpaces(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("Test    Input"); // Input with multiple spaces in between
+	}
+
+//	23
+	public static void testInputWithZero(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("0"); // Input with zero only
+	}
+
+//	24
+	public static void testInputWithEscapeCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("\\n\\t\\b\\r"); // Escape characters input
+	}
+
+//	25
+	public static void testInputWithHTMLComment(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("<!-- This is a comment -->"); // Input with HTML comment tags
+	}
+
+//	26
+	public static void testInputWithMultipleSpecialCharacters(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("~!@#$%^&*()_+=-`{}[]|\\:;\"'<>,.?/"); // Input with multiple special characters
+	}
+
+//	27
+	public static void testInputWithExtremelyLargeNumber(WebElement textField) {
+		textField.clear();
+		textField.sendKeys("999999999999999999999999"); // Extremely large numeric value
+	}
+
 }

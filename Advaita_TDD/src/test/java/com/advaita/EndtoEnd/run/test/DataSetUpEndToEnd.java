@@ -1,6 +1,7 @@
 package com.advaita.EndtoEnd.run.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
@@ -75,14 +77,14 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	}
 
-	String employeeName = "EmployeeSeven";
 	
+	String employeeName = "EmployeeC";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
 	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
-	
+
 	HomePage hp = new HomePage();
 
 //	@Test(priority = 1)
@@ -124,8 +126,9 @@ public class DataSetUpEndToEnd extends TestBase {
 	public void verifynewCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifynewCreateMetaData");
-		hp.clickOnProcessManagementCreate();
+//		HomePage.clickOnProcessManagementCreate();
 
+		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
 				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
 				.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
@@ -136,12 +139,16 @@ public class DataSetUpEndToEnd extends TestBase {
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		hp.clickOnProcessManagementCreate();
+		homePage.clickOnProcessManagementCreate();
 
+		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
+		int addNumberOfRecord = 15;
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(manualUpload.filteredItems, Questions.generateEmployeeQuestions(), 5)
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
-				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark);
+				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark, addNumberOfRecord);
 
 	}
 

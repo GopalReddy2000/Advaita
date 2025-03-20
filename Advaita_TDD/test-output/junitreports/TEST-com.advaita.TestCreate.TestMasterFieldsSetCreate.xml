@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <testsuite hostname="BLLWYZABHIJITH" failures="0" tests="2" name="com.advaita.TestCreate.TestMasterFieldsSetCreate" time="2.418" errors="2" timestamp="2024-09-12T16:30:07 IST" skipped="0">
   <testcase classname="com.advaita.TestCreate.TestMasterFieldsSetCreate" name="getResult" time="0.042">
     <error message="no such window: target window already closed
@@ -28,12 +29,38 @@ at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(Nati
 at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
 at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
 at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
+=======
+<testsuite hostname="BLLTESTGOPAL" failures="0" tests="1" name="com.advaita.TestCreate.TestMasterFieldsSetCreate" time="27.329" errors="1" timestamp="2025-01-21T10:24:58 IST" skipped="0">
+  <testcase classname="com.advaita.TestCreate.TestMasterFieldsSetCreate" name="verifyQuestionField" time="27.329">
+    <error message="no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//label[@class=&#039;error&#039;][normalize-space()=&#039;This field is required.&#039;]&quot;}
+  (Session info: chrome=131.0.6778.265)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Build info: version: &#039;4.25.0&#039;, revision: &#039;8a8aea2337&#039;
+System info: os.name: &#039;Windows 11&#039;, os.arch: &#039;amd64&#039;, os.version: &#039;10.0&#039;, java.version: &#039;23&#039;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [e277648180d0fe804cab9829a5838164, findElement {using=xpath, value=//label[@class=&#039;error&#039;][normalize-space()=&#039;This field is required.&#039;]}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 131.0.6778.265, chrome: {chromedriverVersion: 131.0.6778.264 (2d05e315153..., userDataDir: C:\Users\w2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:60543}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:60543/devtoo..., se:cdpVersion: 131.0.6778.265, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e277648180d0fe804cab9829a5838164" type="org.openqa.selenium.NoSuchElementException">
+      <![CDATA[org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//label[@class='error'][normalize-space()='This field is required.']"}
+  (Session info: chrome=131.0.6778.265)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+Build info: version: '4.25.0', revision: '8a8aea2337'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '23'
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [e277648180d0fe804cab9829a5838164, findElement {using=xpath, value=//label[@class='error'][normalize-space()='This field is required.']}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 131.0.6778.265, chrome: {chromedriverVersion: 131.0.6778.264 (2d05e315153..., userDataDir: C:\Users\w2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:60543}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:60543/devtoo..., se:cdpVersion: 131.0.6778.265, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: e277648180d0fe804cab9829a5838164
+at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:501)
+at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:485)
+>>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
 at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
 at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
 at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
 at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:190)
 at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
 at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
+<<<<<<< HEAD
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:527)
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:604)
@@ -120,6 +147,17 @@ at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+=======
+at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:545)
+at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
+at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:368)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
+at com.advaita.WorkFlowDesign.PageObject.MastersFieldSets.saveMasterFieldSet(MastersFieldSets.java:1949)
+at com.advaita.TestCreate.TestMasterFieldsSetCreate.verifyQuestionField(TestMasterFieldsSetCreate.java:287)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+>>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
 at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:686)
 at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
@@ -128,7 +166,11 @@ at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInv
 at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
 at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
 at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
+<<<<<<< HEAD
 at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+=======
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+>>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
 at org.testng.TestRunner.privateRun(TestRunner.java:739)
 at org.testng.TestRunner.run(TestRunner.java:614)
 at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
@@ -146,6 +188,7 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 ]]>
     </error>
+<<<<<<< HEAD
   </testcase> <!-- verifyAddFormFieldSetInCreateFieldSet -->
 =======
 <testsuite hostname="BLLGOPALREDDY" failures="0" tests="1" name="com.advaita.TestCreate.TestMasterFieldsSetCreate" time="24.659" errors="0" timestamp="2024-09-18T23:49:52 IST" skipped="0">
@@ -159,4 +202,7 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 <testsuite hostname="BLLTESTGOPAL" failures="0" tests="1" name="com.advaita.TestCreate.TestMasterFieldsSetCreate" time="7.344" errors="0" timestamp="2024-10-04T14:45:01 IST" skipped="0">
   <testcase classname="com.advaita.TestCreate.TestMasterFieldsSetCreate" name="verifyAddMultipleFieldSetQuestions" time="7.344"/>
 >>>>>>> 6429eb930248b0961d56ecee6ee5f0ceb9635347
+=======
+  </testcase> <!-- verifyQuestionField -->
+>>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
 </testsuite> <!-- com.advaita.TestCreate.TestMasterFieldsSetCreate -->

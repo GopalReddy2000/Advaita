@@ -8,8 +8,6 @@ import static org.testng.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.compress.harmony.pack200.NewAttribute;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresProblem.Evaluation;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -18,14 +16,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.DropDown;
-import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import io.github.bonigarcia.wdm.docker.DockerHubTags;
 
 public class CallLogSatgeView extends TestBase // Create_Class and extend base class
 {

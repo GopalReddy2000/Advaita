@@ -216,7 +216,7 @@ public class TestMasterFormsCreate extends TestBase {
 	public void verifySaveButton() throws Throwable {
 
 		test = reports.createTest("saveButton");
-		masterForm.saveButton();
+		masterForm.saveButton(true);
 	}
 
 	@Test(priority = 23)

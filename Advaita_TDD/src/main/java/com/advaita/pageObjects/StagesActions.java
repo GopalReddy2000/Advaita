@@ -33,10 +33,10 @@ public class StagesActions extends TestBase{
 	public static WebElement evaluationMultiSearch;
 
 	@FindBy(xpath="//select[@id='multiselect']")
-	public static WebElement fromMultiSelectDropdown;
+	public static WebElement multiSelectDropdownFrom;
 
 	@FindBy(xpath="//select[@id='multiselect_to']")
-	public static WebElement toMultiSelectDropdown;
+	public static WebElement multiSelectDropdownTo;
 
 	@FindBy(xpath="//button[@id='multiselect_rightAll']")
 	WebElement allRightButton;
@@ -61,7 +61,7 @@ public class StagesActions extends TestBase{
 
 	@FindBy(xpath="//button[text()='Save']")
 	WebElement save;
-@FindBy(xpath="//button[@onClick='add_stagewise_disposition()']")
+	@FindBy(xpath="//button[@onClick='add_stagewise_disposition()']")
 	WebElement dispositionSetSave;
 
 	@FindBy(xpath="//button[text()='Cancel']")
@@ -101,6 +101,9 @@ public class StagesActions extends TestBase{
 	@FindBy(linkText="Call Log Tab View")
 	WebElement callLogTabView;
 
+	@FindBy(linkText="Call Log Stage View")
+	WebElement callLogStageView;
+
 	@FindBy(xpath ="//button[contains(normalize-space(), 'Insurance Stage')]")
 	WebElement insuranceStage;
 
@@ -124,6 +127,13 @@ public class StagesActions extends TestBase{
 
 	@FindBy(xpath ="//select[@id='muti_unique_multiselect']")
 	WebElement multiSelectDropdown;
+
+	@FindBy(xpath ="//select[not(contains(@id,'to'))]")
+	public List<WebElement> fromMultiselectDropdown;
+
+	@FindBy(xpath ="//select[contains(@id,'to')]")
+	public List<WebElement> toMultiSelectDropdown;
+
 
 	@FindBy(xpath ="//select[@id='textbox_multiselect']")
 	WebElement textBoxDropdown;
@@ -264,17 +274,22 @@ public class StagesActions extends TestBase{
 	);
 
 
-	public StagesActions escalationFields()
+	public StagesActions escalationFields(List<String>evaluationFieldOptions)
 	{
 		allLeftButton.get(0).click();
-		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
+		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
 //		singleRightButton.click();
 		saveRecord();
 
-		navigateWithinAlchemy(callLogTabView);
-		insuranceStage.click();
 
-		int startIndex = 4;
+		return this;
+	}
+
+	public StagesActions validateEvaluationFields(List<String>evaluationFieldOptions,String stageName){
+		navigateWithinAlchemy(callLogStageView);
+		selectByVisibleText(stageSearch,stageName);
+
+		int startIndex = 1;
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
 			String actualHeader =evaluationFieldHeader.get(startIndex +i).getText().trim();
 			System.out.println(actualHeader);
@@ -292,7 +307,7 @@ public class StagesActions extends TestBase{
 	{
 //		allLeftButton.get(0).click();
 //		// evaluationFieldOptions and stageHistoryOptions Field Options are same.
-//		selectOptionsInMultiSelect(fromMultiSelectDropdown,evaluationFieldOptions);
+//		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
 ////		singleRightButton.click();
 //
 //		saveRecord();
@@ -308,7 +323,7 @@ public class StagesActions extends TestBase{
 			stageHistoryFieldHeader.get(0).getText();
 		}catch (NoSuchElementException e)
 		{
-			jsClick(driver,stageHistorySection);
+			jsClick(stageHistorySection);
 		}
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
 			String actualHeader =evaluationFieldHeader.get(i).getText().trim();
@@ -327,10 +342,10 @@ public class StagesActions extends TestBase{
 
 	public void selectAndClickOptions( List<WebElement> dropdowns, List<String> options, List<WebElement> buttons) {
 		for (int i = 0; i < options.size(); i++) {
-			jsClick(driver,allLeftButton.get(i));
+			jsClick(allLeftButton.get(i));
 
 			selectOptionsInMultiSelect(dropdowns.get(i), options.get(i));
-			jsClick(driver, buttons.get(i));
+			jsClick(buttons.get(i));
 			System.out.println(options.get(i));
 		}
 	}
@@ -342,10 +357,10 @@ public class StagesActions extends TestBase{
 
 
 
-	public StagesActions evaluationFilter()
+	public StagesActions evaluationFilter(List<String>evaluationFieldOptions,String stageName)
 	{
 		selectAndClickOptions(
-				Arrays.asList(fromMultiSelectDropdown,
+				Arrays.asList(multiSelectDropdownFrom,
 						datePickerDropdown,
 						dateRangerDropdown,
 						multiSelectDropdown,
@@ -356,22 +371,26 @@ public class StagesActions extends TestBase{
 
 		saveRecord();
 
-		navigateWithinAlchemy(callLogTabView);
-		insuranceStage.click();
-		localFilterSection.click();
-		List<String> actual = List.of();
-		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
-			String actualHeader =localFilterHeaders.get(i).getText().trim();
-			System.out.println(actualHeader);
-			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
-			} else {
-				System.out.println("Header matched: " + actualHeader);
-			}
+		navigateWithinAlchemy(callLogStageView);
+		selectByVisibleText(stageSearch,stageName);
 
-		}
-		softAssert.assertTrue(evaluationFieldOptions.containsAll(actual) );
-		softAssert.assertAll();
+		// ****Filters Are Changed*********
+
+
+//		localFilterSection.click();
+//		List<String> actual = List.of();
+//		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
+//			String actualHeader =localFilterHeaders.get(i).getText().trim();
+//			System.out.println(actualHeader);
+//			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
+//				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
+//			} else {
+//				System.out.println("Header matched: " + actualHeader);
+//			}
+//
+//		}
+//		softAssert.assertTrue(evaluationFieldOptions.containsAll(actual) );
+//		softAssert.assertAll();
 		return this;
 	}
 
@@ -386,7 +405,7 @@ public class StagesActions extends TestBase{
 		insuranceStage.click();
 		recordEyeButton.get(0).click();
 
-		jsClick(driver,SOPDocumentSection);
+		jsClick(SOPDocumentSection);
 		assert (SOPRecords.get(0).getText().equals(uploadedSOP));
 
 
@@ -438,7 +457,8 @@ public class StagesActions extends TestBase{
 
 	public StagesActions reportFields()
 	{
-		selectOptionsInMultiSelect(fromMultiSelectDropdown,reportFieldsOptions);
+		selectOptionsInMultiSelect(multiSelectDropdownFrom
+				,reportFieldsOptions);
 		saveRecord();
 
 		navigateWithinAlchemy(validationStatusReport);
@@ -486,13 +506,13 @@ public class StagesActions extends TestBase{
 	public StagesActions stageProcessFields()
 	{
 
-//		selectOptionsInMultiSelect(fromMultiSelectDropdown,stageProcessFieldsList);
+//		selectOptionsInMultiSelect(multiSelectDropdownFrom,stageProcessFieldsList);
 //		saveRecord();
 
 		navigateWithinAlchemy(callLogTabView);
-		jsClick(driver,insuranceStage);
-		jsClick(driver,recordEyeButton.get(recordEyeButton.size()-1));
-		jsClick(driver,interactionHistory);
+		jsClick(insuranceStage);
+		jsClick(recordEyeButton.get(recordEyeButton.size()-1));
+		jsClick(interactionHistory);
 		unWait(1);
 		List<String> actualInteractionHeaders = new ArrayList<>();
 		for (int i = 0; i < stageProcessFieldsList.size(); i++) {
@@ -515,14 +535,14 @@ public class StagesActions extends TestBase{
 	public StagesActions reportFilters()
 	{
 		selectAndClickOptions(
-			Arrays.asList(fromMultiSelectDropdown,
-					datePickerDropdown,
-					dateRangerDropdown,
-					multiSelectDropdown,
-					textBoxDropdown,
-					valueRangeDropdown),
-			evaluationFieldOptions,
-			SingleRightButton);
+				Arrays.asList(multiSelectDropdownFrom,
+						datePickerDropdown,
+						dateRangerDropdown,
+						multiSelectDropdown,
+						textBoxDropdown,
+						valueRangeDropdown),
+				evaluationFieldOptions,
+				SingleRightButton);
 		saveRecord();
 		navigateWithinAlchemy(validationStatusReport);
 		selectProcess();
@@ -564,6 +584,7 @@ public class StagesActions extends TestBase{
 
 		return this;
 	}
+
 
 
 

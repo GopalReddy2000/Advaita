@@ -16,18 +16,18 @@
 
 <dependencies>
 
-<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+	<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
 	<dependency>
 		<groupId>org.seleniumhq.selenium</groupId>
 		<artifactId>selenium-java</artifactId>
-		<version>4.23.0</version>
+		<version>4.25.0</version>
 	</dependency>
 
 
 
 
 
-<!--	&lt;!&ndash; https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver &ndash;&gt;-->
+	<!--	&lt;!&ndash; https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver &ndash;&gt;-->
 <!--	<dependency>-->
 <!--	    <groupId>org.seleniumhq.selenium</groupId>-->
 <!--	    <artifactId>selenium-chrome-driver</artifactId>-->
@@ -143,6 +143,14 @@
 		<version>7.10.1</version>
 		<scope>compile</scope>
 	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/com.github.stephenc.monte/monte-screen-recorder -->
+<dependency>
+    <groupId>com.github.stephenc.monte</groupId>
+    <artifactId>monte-screen-recorder</artifactId>
+    <version>0.7.7.0</version>
+</dependency>
+
 
 
 </dependencies>

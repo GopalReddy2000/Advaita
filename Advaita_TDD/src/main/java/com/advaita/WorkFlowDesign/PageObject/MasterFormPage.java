@@ -5,13 +5,19 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.FileInputStream;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -20,17 +26,23 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.CommonUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.UploadFile;
 
 import Advaita_TDD.Advaita_TDD.DynamicXpath;
 import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class MasterFormPage extends TestBase {
+
+	public static final String masterURL = "https://test.capture.autosherpas.com/en/masters/masters_question_sets/";
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
@@ -171,13 +183,16 @@ public class MasterFormPage extends TestBase {
 	@FindBy(xpath = "//label[text()='Section Name*']/..//input[@name='section_name']")
 	public static WebElement addSectionFieldName;
 
+	@FindBy(xpath = "//h1[text()='Add Section']/..//span[@aria-label='Close']")
+	public static WebElement closePopUp;
+
 	@FindBy(xpath = "//input[@name='master_section_type']/..//a[text()='Add ']")
 	public static WebElement addSectionAddButton;
 
 	@FindBy(xpath = "//li[@role='treeitem']")
 	public static List<WebElement> checkOptions;
 
-	@FindBy(xpath = "//button[@id='submt_single'][normalize-space()='Save']")
+	@FindBy(xpath = "//div[@class='last-section-button']//button[@class='btn-primary'][normalize-space()='Save']")
 	public static WebElement saveButton;
 
 	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Master Form has been created successfully']")
@@ -285,6 +300,7 @@ public class MasterFormPage extends TestBase {
 	public MasterFormPage() {
 
 		PageFactory.initElements(driver, this);
+		loadStoredQuestions();
 	}
 
 	HomePage hp = new HomePage();
@@ -741,6 +757,19 @@ public class MasterFormPage extends TestBase {
 		click(driver, masterFormsTab);
 	}
 
+	public void navigateToMasterForm2() throws Throwable {
+		click(driver, hp.workflowDesign);
+
+		assertTrue(masterTabElement.isDisplayed(), "masterTabElement is not displayed.");
+		click(driver, masterTabElement);
+
+		System.out.println(driver.getCurrentUrl());
+
+		assertEquals(driver.getCurrentUrl(), masterURL, "masterURL mismatch.");
+
+		click(driver, masterFormTabElement);
+	}
+
 //	##############################################################################################################################
 
 	final static List<String> section1fieldSetSectionQues2 = new ArrayList<>();
@@ -811,7 +840,7 @@ public class MasterFormPage extends TestBase {
 
 	}
 
-	public void createButtonMasterForm() throws Throwable {
+	public MasterFormPage createButtonMasterForm() throws Throwable {
 
 		assertTrue(masterFormCreateButton.isDisplayed() && masterFormCreateButton.isEnabled(),
 				"masterFormCreateButton is not displayed and enabled.");
@@ -819,9 +848,11 @@ public class MasterFormPage extends TestBase {
 
 //		assertTrue(stagesCreateFormElement.isDisplayed(), "stagesCreateFormElement is not displayed.");
 		assertEquals(driver.getCurrentUrl(), createPageUrl);
+
+		return this;
 	}
 
-	public void formNameField() throws Throwable {
+	public MasterFormPage formNameField() throws Throwable {
 
 		// Check if the label ends with an asterisk
 		String text = driver.findElement(By.xpath("//h3[@class='process'][normalize-space()='Form Name*']")).getText();
@@ -852,6 +883,41 @@ public class MasterFormPage extends TestBase {
 		String enteredText = formNameField.getAttribute("value");
 		assertEquals(enteredText, formName, "Role name is not correctly entered in the field.");
 
+		return this;
+	}
+
+	public MasterFormPage formNameField(String formName) throws Throwable {
+
+		// Check if the label ends with an asterisk
+		String text = driver.findElement(By.xpath("//h3[@class='process'][normalize-space()='Form Name*']")).getText();
+		char lastChar = text.charAt(text.length() - 1);
+		assertEquals(lastChar, '*', "formNameField label does not end with '*'.");
+
+		// Ensure the role field is enabled
+		assertTrue(formNameField.isEnabled(), "formNameField is not enabled.");
+
+		// Check if the role field is empty before entering the role name
+		String existingText = formNameField.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "formNameField is not empty before entering text.");
+
+		// Validate the role name (example: not empty and no special characters)
+		assertNotNull(formName, "formName is null.");
+		assertFalse(formName.trim().isEmpty(), "Role name is empty.");
+		assertTrue(formName.matches("^[a-zA-Z0-9 ]+$"), "Role name contains special characters.");
+
+		// Optionally, check if the role name already exists (pseudo-code, depends on
+		// the application)
+		// boolean roleExists = checkRoleExists(roleName);
+		// assertFalse(roleExists, "Role name already exists.");
+
+		// Enter the role name into the role field
+		formNameField.sendKeys(formName);
+
+		// Verify if the role name is correctly entered (optional)
+		String enteredText = formNameField.getAttribute("value");
+		assertEquals(enteredText, formName, "Role name is not correctly entered in the field.");
+
+		return this;
 	}
 
 	public void procesDropdown() throws Throwable {
@@ -1021,6 +1087,39 @@ public class MasterFormPage extends TestBase {
 
 	}
 
+	public static void primarySectionAddSectionNameField(String fieldName) throws Throwable {
+
+		// Check if the label ends with an asterisk
+//		String text = driver.findElement(By.xpath("//label[text()='Section Name*']")).getText();
+//		char lastChar = text.charAt(text.length() - 1);
+//		assertEquals(lastChar, '*', "AddSectionNameField label does not end with '*'.");
+
+		// Ensure the role field is enabled
+		assertTrue(addSectionFieldName.isEnabled(), "addSectionFieldName is not enabled.");
+
+		// Check if the role field is empty before entering the role name
+		String existingText = addSectionFieldName.getAttribute("value");
+		assertTrue(existingText.isEmpty(), "addSectionFieldName is not empty before entering text.");
+
+		// Validate the role name (example: not empty and no special characters)
+		assertNotNull(fieldName, "sectionFieldName is null.");
+		assertFalse(fieldName.trim().isEmpty(), "sectionFieldName is empty.");
+		assertTrue(fieldName.matches("^[a-zA-Z0-9 ]+$"), "sectionFieldName contains special characters.");
+
+		// Optionally, check if the role name already exists (pseudo-code, depends on
+		// the application)
+		// boolean roleExists = checkRoleExists(roleName);
+		// assertFalse(roleExists, "Role name already exists.");
+
+		// Enter the role name into the role field
+		addSectionFieldName.sendKeys(fieldName);
+
+		// Verify if the role name is correctly entered (optional)
+		String enteredText = addSectionFieldName.getAttribute("value");
+		assertEquals(enteredText, fieldName, "sectionFieldName is not correctly entered in the field.");
+
+	}
+
 	public static void selectQuestionSetInDropdown() throws Throwable {
 
 		String name = "sectionval_Mesaurable_value_" + FieldName1.replaceAll("\\s", "");
@@ -1034,12 +1133,6 @@ public class MasterFormPage extends TestBase {
 		List<WebElement> options = selectQuestionSetDropDown.getOptions();
 		assertTrue(options.size() > 0, "Dropdown has no options.");
 		System.out.println("Number of options in the dropdown: " + options.size());
-
-//		Check default selected value
-//		WebElement defaultSelectedOption = process.getFirstSelectedOption();
-//		String expectedDefaultOption = "MB"; // Replace with expected default value
-//		assertEquals(defaultSelectedOption.getText(), expectedDefaultOption,
-//				"Default selected option is incorrect.");
 
 		// Print all options and check for duplicates
 		Set<String> uniqueOptions = new HashSet<>();
@@ -1065,6 +1158,58 @@ public class MasterFormPage extends TestBase {
 		selectQuestionSetDropDown.selectByVisibleText(fetchFieldSetRecord);
 		Thread.sleep(2000);
 
+	}
+
+	public static void selectQuestionSetInDropdown(String fieldName, String fieldSetName) throws Throwable {
+
+		String name = "sectionval_Mesaurable_value_" + fieldName.replaceAll("\\s", "");
+		WebElement selectQuestionSet = driver.findElement(By.name(name));
+
+		Select selectQuestionSetDropDown = new Select(selectQuestionSet);
+
+		assertFalse(selectQuestionSetDropDown.isMultiple(), "Dropdown allows multiple selections.");
+
+		// Check for empty drop down
+		List<WebElement> options = selectQuestionSetDropDown.getOptions();
+		assertTrue(options.size() > 0, "Dropdown has no options.");
+		System.out.println("Number of options in the dropdown: " + options.size());
+
+		// Print all options and check for duplicates
+		Set<String> uniqueOptions = new HashSet<>();
+		System.out.println("Dropdown options:");
+		for (WebElement option : options) {
+			String optionText = option.getText();
+			System.out.println(optionText);
+			softAssert.assertTrue(uniqueOptions.add(optionText), "Duplicate option found: " + optionText);
+		}
+
+		// Select each option by index and verify the selection
+		for (int k = 0; k < Math.min(10, options.size()); k++) {
+			selectQuestionSetDropDown.selectByIndex(k);
+			WebElement selectedOption = selectQuestionSetDropDown.getFirstSelectedOption();
+			assertEquals(selectedOption.getText(), options.get(k).getText(),
+					"Failed to select the option by index " + k);
+			System.out
+					.println("Option '" + options.get(k).getText() + "' was successfully selected by index " + k + ".");
+		}
+
+		// Wait for a short time before making the final selection
+		Thread.sleep(1000);
+
+		// If fieldSetName is provided, select it by visible text
+		if (fieldSetName != null && !fieldSetName.isEmpty()) {
+			selectQuestionSetDropDown.selectByVisibleText(fieldSetName);
+			System.out.println("Option '" + fieldSetName + "' selected from dropdown.");
+		} else {
+			// If no fieldSetName provided, select a random option
+			Random rand = new Random();
+			int randomIndex = rand.nextInt(options.size());
+			selectQuestionSetDropDown.selectByIndex(randomIndex);
+			System.out.println("Random option selected: " + options.get(randomIndex).getText());
+		}
+
+		// Wait a bit for the dropdown to update after selection
+		Thread.sleep(2000);
 	}
 
 	final static List<String> MasterFormQues1 = new ArrayList<>();
@@ -1630,16 +1775,17 @@ public class MasterFormPage extends TestBase {
 
 	}
 
-	public void saveButton() {
+	public MasterFormPage saveButton(boolean clickLeftArrow) throws Throwable {
 
 		assertTrue(saveButton.isDisplayed() && saveButton.isEnabled(), "saveButton is not displayed and enabled.");
 		click(driver, saveButton);
 
-		confirmationAfterClickOnSaveButton();
+		confirmationAfterClickOnSaveButton(clickLeftArrow);
 
+		return this;
 	}
 
-	public static void confirmationAfterClickOnSaveButton() {
+	public static void confirmationAfterClickOnSaveButton(boolean clickLeftArrow) throws Throwable {
 
 		wait.until(ExpectedConditions.visibilityOf(successPopUp));
 		assertTrue(successPopUp.isDisplayed(), "successPopUp is not displayed.");
@@ -1648,8 +1794,12 @@ public class MasterFormPage extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(afterClickContinueButton));
 		assertTrue(afterClickContinueButton.isDisplayed(), "afterClickContinueButton is not displayed.");
 
-		click(driver, leftArrowButton);
-
+		// Conditionally click the left arrow button based on the parameter
+		if (clickLeftArrow) {
+			click(driver, leftArrowButton);
+		} else {
+			System.out.println("Left arrow button not clicked as per the provided condition.");
+		}
 	}
 
 //	##########################################################################################################################
@@ -2017,6 +2167,222 @@ public class MasterFormPage extends TestBase {
 		ClickUtilities.clickWithRetry(leftArrowButton, 2);
 
 		Thread.sleep(1000);
+
+	}
+
+//	####################################### Updated Code ########################################
+//	####################################### Updated Code ########################################
+//	####################################### Updated Code ########################################
+//	####################################### Updated Code ########################################
+//	####################################### Updated Code ########################################
+
+	public MasterFormPage processSelection() throws Throwable {
+
+		processDropDownSelect(processDropDown, PropertieFileUtil.getSingleTextFromPropertiesFile("Process"))
+				.subProcessDropDownSelect(subProcessDropDown,
+						PropertieFileUtil.getSingleTextFromPropertiesFile("Subprocess"))
+				.subSubProcessDropDownSelect(subSubProcessDropDown,
+						PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess"));
+		return this;
+	}
+
+	public MasterFormPage processDropDownSelect(WebElement processDropDown, String processValue) {
+
+		assertTrue(processDropDown.isDisplayed());
+		Select select = new Select(processDropDown);
+		select.selectByVisibleText(processValue);
+
+		return this;
+	}
+
+	public MasterFormPage subProcessDropDownSelect(WebElement subProcessDropDown, String subProcessValue) {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='sub_process']/option")));
+
+		unWait(1);
+		assertTrue(subProcessDropDown.isDisplayed());
+		Select select1 = new Select(subProcessDropDown);
+		select1.selectByVisibleText(subProcessValue);
+
+		return this;
+	}
+
+	public MasterFormPage subSubProcessDropDownSelect(WebElement subSubProcessDropDown, String subSubProcessValue) {
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
+
+		unWait(1);
+		assertTrue(subSubProcessDropDown.isDisplayed());
+		Select select = new Select(subSubProcessDropDown);
+		select.selectByVisibleText(subSubProcessValue);
+
+		return this;
+	}
+
+	public MasterFormPage addPrimarySectionsDynamically(String secName, String fieldSetName) throws Throwable {
+
+		click(driver, primarySectioAddButton);
+
+		primarySectionAddSectionNameField(secName);
+
+		unWait(1);
+		click(driver, addSectionAddButton);
+		unWait(1);
+
+		String xpath = "(//button[normalize-space()='" + secName + "'])[1]";
+
+		WebElement addedSectionInPrimarySection = driver.findElement(By.xpath(xpath));
+		click(driver, addedSectionInPrimarySection);
+
+		selectQuestionSetInDropdown(secName, fieldSetName);
+
+		return this;
+	}
+
+	public MasterFormPage addMultipleSectionsDynamically(List<String> sectionNames, String fieldSetName)
+			throws Throwable {
+		for (int i = 0; i < sectionNames.size(); i++) {
+			// Click the "Add Section" button to open the pop-up on the first iteration
+			WebElement addSectionButton;
+			if (i == 0) {
+				addSectionButton = wait.until(ExpectedConditions.elementToBeClickable(
+						By.xpath("//div[contains(@class,'first-section empty_section_c_area')]//a")));
+			} else {
+				// For subsequent iterations, click another XPath
+				addSectionButton = wait.until(ExpectedConditions.elementToBeClickable(
+						By.xpath("//div[contains(@class,'tb_c')]//a[contains(@onclick,'Secondary')]")));
+			}
+
+			CommonUtils.scrollToElementByActions(addSectionButton);
+			addSectionButton.click();
+
+			// Wait for the pop-up to appear and locate the section name input field
+
+			addSectionFieldName.clear();
+			addSectionFieldName.sendKeys(sectionNames.get(i)); // Enter the section name
+
+			unWait(1);
+			// Click the "Add" button in the pop-up
+			addSectionAddButton.click();
+
+			String xpath = "(//button[normalize-space()='" + sectionNames.get(i) + "'])[1]";
+
+			WebElement addedSectionInPrimarySection = driver.findElement(By.xpath(xpath));
+			click(driver, addedSectionInPrimarySection);
+
+			selectQuestionSetInDropdown(sectionNames.get(i), fieldSetName);
+
+			wait.until(ExpectedConditions.invisibilityOf(addSectionAddButton));
+			// Small delay to ensure the UI updates before adding the next section
+			unWait(1);
+		}
+
+		return this;
+	}
+
+//	Usage : 
+//	List<String> sections = Arrays.asList("Test");
+//	addSectionsDynamically(sections);
+
+	private static LinkedHashMap<String, String> storedQuestions = new LinkedHashMap<>();
+	private static LinkedHashMap<String, String[]> storedOptions = new LinkedHashMap<>();
+
+	public static void loadStoredQuestions() {
+
+		unWait(2);
+	    try (FileInputStream fileInputStream = new FileInputStream("src/test/resources/questions.properties")) {
+	        Properties properties = new Properties();
+	        properties.load(fileInputStream);
+
+	        // Store questions in insertion order
+	        properties.stringPropertyNames().stream()
+	            .filter(key -> !key.endsWith("_type") && !key.endsWith("_options"))
+	            .sorted()
+	            .forEach(key -> storedQuestions.put(key, properties.getProperty(key)));
+
+	        // Store options separately
+	        properties.stringPropertyNames().stream()
+	            .filter(key -> key.endsWith("_options"))
+	            .forEach(key -> storedOptions.put(key.replace("_options", ""), properties.getProperty(key).split(",")));
+
+	        System.out.println("Properties file reloaded successfully!");
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Failed to load stored questions from properties file.");
+	    }
+	}
+
+
+    public void validateMasterFormQuestions() {
+        List<WebElement> questionContainers = driver.findElements(By.xpath("//div[@class='row']//div[contains(@class, 'custom-select')]"));
+
+        // Ensure the number of questions match
+        assertEquals(questionContainers.size(), storedQuestions.size(), "Mismatch in the number of questions!");
+
+        int index = 0;
+        for (Map.Entry<String, String> entry : storedQuestions.entrySet()) {
+            String expectedQuestion = entry.getValue();
+            WebElement questionContainer = questionContainers.get(index);
+            WebElement questionLabel = questionContainer.findElement(By.tagName("label"));
+            String actualQuestion = questionLabel.getText().trim();
+
+            System.out.println("Validating Question " + (index + 1) + ": " + actualQuestion);
+            assertEquals(actualQuestion, expectedQuestion, "Question order mismatch at index " + index);
+
+            // Validate options if applicable
+            validateOptionsIfExist(questionContainer, entry.getKey());
+
+            index++;
+        }
+    }
+
+    private void validateOptionsIfExist(WebElement questionContainer, String questionKey) {
+        if (storedOptions.containsKey(questionKey)) {
+            WebElement selectElement;
+            try {
+                // Locate the select element inside the same container
+                selectElement = questionContainer.findElement(By.tagName("select"));
+            } catch (Exception e) {
+                System.out.println("No dropdown found for: " + questionContainer.getText());
+                return;
+            }
+
+            List<WebElement> optionElements = selectElement.findElements(By.tagName("option"));
+            List<String> actualOptions = optionElements.stream()
+                .map(WebElement::getText)
+                .filter(option -> !option.equalsIgnoreCase("Select")) // Ignore default "Select" option
+                .collect(Collectors.toList());
+
+            List<String> expectedOptions = Arrays.asList(storedOptions.get(questionKey));
+
+            // Print expected and actual options
+            System.out.println("Validating options for: " + questionContainer.findElement(By.tagName("label")).getText());
+            System.out.println("Expected Options: " + expectedOptions);
+            System.out.println("Actual Options: " + actualOptions);
+
+            assertEquals(actualOptions, expectedOptions, "Options mismatch for question: " + questionContainer.findElement(By.tagName("label")).getText());
+        }
+    }
+
+
+	public void finalizeMasterFormPage() throws Throwable {
+
+		click(driver, finalizeButtton);
+
+		wait.until(ExpectedConditions.visibilityOf(finalizePopUpText1));
+		String finalizePopupText = "Are you sure you want to finalize ?";
+
+		assertEquals(finalizePopupText, finalizePopUpText1.getText());
+
+		click(driver, finalizeButttonInPopUp);
+
+		wait.until(ExpectedConditions.visibilityOf(finalizeSuccessPopUp));
+		assertTrue(finalizeSuccessPopUp.isDisplayed(), "finalizeSuccessPopUp is not displayed.");
+
+		click(driver, finalizeSuccessPopUpContinueButton);
 
 	}
 

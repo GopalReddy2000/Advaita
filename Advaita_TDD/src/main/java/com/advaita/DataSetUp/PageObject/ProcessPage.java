@@ -1,6 +1,5 @@
 package com.advaita.DataSetUp.PageObject;
 
-import static org.testng.Assert.ARRAY_MISMATCH_TEMPLATE;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
@@ -424,6 +423,12 @@ public class ProcessPage extends TestBase {
 
 	}
 
+	public ProcessPage navToProcess(){
+		DataSetUpButton.click();
+		processTab.click();
+		return this;
+	}
+
 	public ProcessPage createSubSubProcess(String SubsubProcessName, String subSubProcessDesc) throws Throwable {
 
 		Thread.sleep(2000);
@@ -513,7 +518,7 @@ public class ProcessPage extends TestBase {
 		subProcessTab.isDisplayed();
 
 		Select select1 = new Select(selectProcessDropDown);
-		select1.selectByVisibleText(visibleText);
+		select1.selectByVisibleText(processName);
 
 		subProcessNameField.isDisplayed();
 		subProcessNameField.click();
@@ -535,7 +540,7 @@ public class ProcessPage extends TestBase {
 		subSubProcessTab.isDisplayed();
 
 		Select select3 = new Select(selectSubProcessDropDown);
-		select3.selectByVisibleText(subVisibleText);
+		select3.selectByVisibleText(subProcessName);
 
 		subSubProcessNameField.isDisplayed();
 		subSubProcessNameField.click();
@@ -555,16 +560,16 @@ public class ProcessPage extends TestBase {
 		save_UpdateButtonInSubsubProcess.click();
 
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		unWait(2);
+		unWaitInMilli(500);
 		Assert.assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
 
 		driver.navigate().refresh();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 
 		String afterCreateRecords = driver.findElement(By.xpath("(//span[@class='d-block text_default font_12'])[1]"))
 				.getText();

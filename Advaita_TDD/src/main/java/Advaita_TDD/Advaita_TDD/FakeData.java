@@ -21,7 +21,7 @@ public class FakeData {
 
 //		System.out.println(LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 //		System.out.println(faker.bool().bool());
-		System.out.println(getDate(1,1));
+		System.out.println(getDate(1, 1));
 
 //		// Generate a fake drop-down question
 //        String question = "What is your favorite " + faker.food().ingredient() + "?";
@@ -322,11 +322,12 @@ public class FakeData {
 	 * @param endDate   The end date of the range.
 	 * @return A random date within the specified range.
 	 */
-	/*private static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
-		long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
-		long randomDay = random.nextLong(daysBetween + 1);
-		return startDate.plusDays(randomDay);
-	}*/
+	/*
+	 * private static LocalDate getRandomDate(LocalDate startDate, LocalDate
+	 * endDate) { long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+	 * long randomDay = random.nextLong(daysBetween + 1); return
+	 * startDate.plusDays(randomDay); }
+	 */
 
 	private static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
 		long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
@@ -336,7 +337,6 @@ public class FakeData {
 
 		return startDate.plusDays(randomDay);
 	}
-
 
 	/**
 	 * Formats a LocalDate object to a string in the format dd-MM-yyyy.

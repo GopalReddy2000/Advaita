@@ -10,7 +10,7 @@ import static org.testng.Assert.assertTrue;
 public class HomePage extends TestBase {
 
 
-	@FindBy(xpath = "//span[normalize-space()='Data Setup']")
+	@FindBy(xpath = "//a[normalize-space()='Data Setup']")
 	public WebElement DataSetUpButton;
 
 	@FindBy(xpath = "//h1[normalize-space()='Process Management']")
@@ -50,7 +50,8 @@ public class HomePage extends TestBase {
 
 	public void clickOnProcessManagementCreate() {
 
-		click(driver, DataSetUpButton);
+//		click(driver, DataSetUpButton);
+		DataSetUpButton.click();
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");
 	}
 

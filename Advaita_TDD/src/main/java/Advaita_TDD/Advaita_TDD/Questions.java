@@ -46,9 +46,9 @@ public class Questions extends TestBase {
 		questions.add(Map.of("FieldName", "Salary Type", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"));
 
 		// Additional HyperLink questions
-		questions.add(Map.of("FieldName", "Website", "Type", "HyperLink", "MaxLength", "100", "IsMandatory", "No"));
+		questions.add(Map.of("FieldName", "Website", "Type", "HyperLink", "MaxLength", "400", "IsMandatory", "No"));
 		questions.add(
-				Map.of("FieldName", "LinkedIn Profile", "Type", "HyperLink", "MaxLength", "100", "IsMandatory", "No"));
+				Map.of("FieldName", "LinkedIn Profile", "Type", "HyperLink", "MaxLength", "400", "IsMandatory", "No"));
 
 		// Additional boolean type questions
 		questions.add(Map.of("FieldName", "Stock Options", "Type", "Boolean", "MaxLength", "10", "IsMandatory", "No"));

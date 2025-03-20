@@ -5,6 +5,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.pageObjects.NonMeasurableSetPage;
+import com.advaita.reports.ExtentManager;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -371,10 +372,10 @@ public class NonMeasurableSetTest extends TestBase {
 	@AfterMethod
 	public void tearDown() {
 
-//		driver.manage().window().minimize();
-//		driver.quit();
-//		ExtentManager.unload();
-//		reports.flush();
+		driver.manage().window().minimize();
+		driver.quit();
+		ExtentManager.unload();
+		reports.flush();
 	}
 
 

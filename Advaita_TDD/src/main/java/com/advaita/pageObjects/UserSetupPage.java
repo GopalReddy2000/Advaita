@@ -4,434 +4,446 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.time.Duration;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Random;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ExcelUtils;
-import com.advaita.Utilities.ExcelWrite;
-
-import org.apache.poi.hssf.record.PageBreakRecord.Break;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ExcelUtils;
+import com.advaita.Utilities.ExcelWrite;
+
+import Advaita_TDD.Advaita_TDD.FakeData;
+
 
 
 public class UserSetupPage extends TestBase {
 
 
-	@FindBy(xpath  = "//span[text()='Data Setup']")
-	WebElement dataSetup;
-
-	@FindBy(linkText  = "+ Create")
-	WebElement createButton;
-
-	@FindBy(xpath  = "//tbody//img[@alt='table-edit']")
-	WebElement processEditButton;
-
-	@FindBy(xpath  = "//div[@class='content pl_9']")
-	List<WebElement> processRecords;
-
-	@FindBy(xpath  = "//tbody//td[contains(@class,'second_tree')]//img")
-	WebElement processSecondEditButton;
-
-	@FindBy(id  = "pills-dataset-tab")
-	WebElement dataSetTab;
-
-	@FindBy(linkText  = "+ Create")
-	WebElement dataSetCreateButton;
-
-	@FindBy(xpath  = "//table[@class='w-100']//tbody//td[1]")
-	WebElement dataSetRecords;
-
-	@FindBy(xpath  = "//img[@id='id_delete']")
-	WebElement dataSetDeleteButton;
-
-	@FindBy(xpath  = "//img[@alt='table-edit']")
-	WebElement dataSetEditButton;
-
-	@FindBy(id  = "pills-metadata-tab")
-	WebElement metaDataTab;
-
-	@FindBy(xpath  = "//table[@class='w-100']//tbody//td[1]")
-	WebElement metaDataRecords;
-
-	@FindBy(linkText  = "+ Create")
-	WebElement metaDataCreateButton;
-
-	@FindBy(xpath  = "//img[@alt='delete-icon ']")
-	WebElement metaDataDeleteButton;
-
-	@FindBy(xpath  = "//tr//img[@alt='table-edit']")
-	WebElement metaDataEditButton;
-
-	@FindBy(xpath  = "//span[text()='Workflow Design']")
-	WebElement workFlowDesign;
-
-
-	@FindBy(id  = "pills-MasterParameter-tab")
-	WebElement masterParameterTab;
-
-	@FindBy(id  = "pills-MeasurableSet-tab")
-	WebElement measurableSetTab;
-
-	@FindBy(linkText  = "+ Add Measurable Set")
-	WebElement measurableCreateButton;
-
-	@FindBy(xpath  = "//img[@alt='delete-icon ']")
-	List<WebElement> measurableDeleteButton;
-
-	@FindBy(xpath  = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
-	List<WebElement> measurableEditButton;
-
-	@FindBy(xpath  = "//a//img[@alt='table-edit' and contains(@class,'delete-dataset')]")
-	List <WebElement> measurableUpload1Button;
-
-	@FindBy(xpath  = "//img[@alt='table-edit' and not(contains(@class,'delete-dataset'))and @data-info]")
-	List <WebElement> measurableUpload2Button;
-
-	@FindBy(xpath  = "//img[contains(@class,'copy_question')]")
-	List <WebElement> measurableDuplicateButton;
-
-	@FindBy(id  = "pills-NonMeasurableSet-tab")
-	WebElement nonMeasurableTab;
-
-	@FindBy(linkText  = "+ Add Non Measurable Set")
-	WebElement nonMeasurableCreateButton;
-
-	@FindBy(xpath  = "//img[@alt='delete-icon ']")
-	List<WebElement> nonMeasurableDeleteButton;
-
-	@FindBy(xpath  = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
-	List<WebElement> nonMeasurableEditButton;
-
-	@FindBy(xpath  = "//a//img[@alt='table-edit' and contains(@class,'delete-dataset')]")
-	List <WebElement> nonMeasurableUpload1Button;
-
-	@FindBy(xpath  = "//img[@alt='table-edit' and not(contains(@class,'delete-dataset'))and @data-info]")
-	List <WebElement> nonMeasurableUpload2Button;
-
-	@FindBy(xpath  = "//img[contains(@class,'copy_question')]")
-	List <WebElement> nonMeasurableDuplicateButton;
-
-	@FindBy(id  = "pills-Disposition-tab")
-	WebElement dispositionTab;
-
-	@FindBy(linkText  = "+ Add Disposition")
-	WebElement dispositionCreateButton;
-
-	@FindBy(xpath  = "//img[@alt='delete-icon ']")
-	List<WebElement> dispositionDeleteButton;
-
-	@FindBy(xpath  = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
-	List<WebElement> dispositionEditButton;
-
-
-
-	@FindBy(id = "menulist1")
-	WebElement userSetup;
-
-	@FindBy(linkText = "User Management")
-	WebElement userManagement;
-
-	@FindBy(linkText = "Role & Permissions")
-	WebElement roleAndPermissions;
-
-	@FindBy(linkText = "+ Create")
-	WebElement roleAndPermissionsCreate;
-
 	@FindBy(xpath = "//select[@id='multiselect']")
-	WebElement rolePermissionDropdown;
+	public static WebElement rolePermissionDropdown;
 
 	@FindBy(css = "table.w-100 tbody")
-	WebElement formsTableBody;
+	public static WebElement formsTableBody;
 
 	@FindBy(linkText = "System Names")
-	WebElement systemNames;
+	public static WebElement systemNames;
 
 	@FindBy(xpath = "//button[text()='System mapping ']")
-	WebElement systemMappingTab;
+	public static WebElement systemMappingTab;
 
 	@FindBy(id = "exampleInputPassword1")
-	WebElement searchBox;
+	public static WebElement searchBox;
 
 	@FindBy(xpath = "//select[@id='selected_role']")
-	WebElement roleDropdown;
+	public static WebElement roleDropdown;
 
 	@FindBy(xpath = "//select[@id='from_user']")
-	WebElement superiorDropdown;
+	public static WebElement superiorDropdown;
 
 	@FindBy(xpath = "//select[@name='status']")
-	WebElement statusDropdown;
+	public static WebElement statusDropdown;
 
 	@FindBy(xpath = "//button[contains(@class,'filter_search')]")
-	WebElement searchButton;
+	public static WebElement searchButton;
 
 	@FindBy(xpath = "//h6[text()='Clear All Filters']")
-	WebElement clearAllFilter;
+	public static WebElement clearAllFilter;
+
+	@FindBy(id = "stages_filter")
+	public static WebElement stageDropdown;
+
+	@FindBy(linkText = "Export")
+	public static WebElement export;
 
 	@FindBy(linkText = "+ Create User")
-	WebElement userManagementCreateButton;
+	public static WebElement userManagementCreateButton;
 
 	@FindBy(xpath = "//a[@id='uploadBtn']")
-	WebElement userManagementCreateCloudUpload;
+	public static WebElement userManagementCreateCloudUpload;
 
 	@FindBy(xpath = "//select[@id='stage_search']")
-	WebElement userManagementUploadStagesDropdown;
+	public static WebElement userManagementUploadStagesDropdown;
 
 	@FindBy(id = "downloadBtn")
-	WebElement userManagementFilterDownload;
+	public static WebElement userManagementFilterDownload;
 
 	@FindBy(xpath = "//select[@id='process_search']")
-	WebElement searchProcessDropdown;
+	public static WebElement searchProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='sub_process_search']")
-	WebElement searchSubProcessDropdown;
+	public static WebElement searchSubProcessDropdown;
 
 	@FindBy(xpath = "//select[@id='s_sub_process_search']")
-	WebElement searchSubSubProcessDropdown;
+	public static WebElement searchSubSubProcessDropdown;
 
 	@FindBy(xpath = "//table[@class='w-100']")
-	WebElement rolesTable;
+	public static WebElement rolesTable;
 
 	@FindBy(xpath = "//input[@id='user_name']")
-	WebElement inputUserName;
+	public static WebElement inputUserName;
 
 	@FindBy(xpath = "//input[@id='first_name']")
-	WebElement inputFirstName;
+	public static WebElement inputFirstName;
 
 	@FindBy(xpath = "//input[@id='last_name']")
-	WebElement inputLastName;
+	public static WebElement inputLastName;
 
 	@FindBy(xpath = "//input[@id='email']")
-	WebElement inputEmail;
+	public static WebElement inputEmail;
 
 	@FindBy(xpath = "//input[@id='password']")
-	WebElement inputPassword;
+	public static WebElement inputPassword;
 
 	@FindBy(xpath = "//input[@id='confirm_password']")
-	WebElement inputConfirmPassword;
+	public static WebElement inputConfirmPassword;
+
+	@FindBy(xpath = "//span[text()='Data Setup']")
+	public static WebElement dataSetup;
+
+	@FindBy(linkText = "+ Create")
+	public static WebElement createButton;
+
+	@FindBy(xpath = "//tbody//img[@alt='table-edit']")
+	public static WebElement processEditButton;
+
+	@FindBy(xpath = "//div[@class='content pl_9']")
+	List<WebElement> processRecords;
+
+	@FindBy(xpath = "//tbody//td[contains(@class,'second_tree')]//img")
+	public static WebElement processSecondEditButton;
+
+	@FindBy(id = "pills-dataset-tab")
+	public static WebElement dataSetTab;
+
+	@FindBy(linkText = "+ Create")
+	public static WebElement dataSetCreateButton;
+	@FindBy(xpath = "//table[@class='w-100']//tbody//td[1]")
+	public static WebElement dataSetRecords;
+
+	@FindBy(xpath = "//img[@id='id_delete']")
+	public static WebElement dataSetDeleteButton;
+
+	@FindBy(xpath = "//img[@alt='table-edit']")
+	public static WebElement dataSetEditButton;
+
+	@FindBy(id = "pills-metadata-tab")
+	public static WebElement metaDataTab;
+
+	@FindBy(xpath = "//table[@class='w-100']//tbody//td[1]")
+	public static WebElement metaDataRecords;
+
+	@FindBy(linkText = "+ Create")
+	public static WebElement metaDataCreateButton;
+
+	@FindBy(xpath = "//img[@alt='delete-icon ']")
+	public static WebElement metaDataDeleteButton;
+
+	@FindBy(xpath = "//tr//img[@alt='table-edit']")
+	public static WebElement metaDataEditButton;
+
+	@FindBy(xpath = "//span[text()='Workflow Design']")
+	public static WebElement workFlowDesign;
+
+	@FindBy(id = "pills-MasterParameter-tab")
+	public static WebElement masterParameterTab;
+
+	@FindBy(id = "pills-MeasurableSet-tab")
+	public static WebElement measurableSetTab;
+
+	@FindBy(linkText = "+ Add Measurable Set")
+	public static WebElement measurableCreateButton;
+
+	@FindBy(xpath = "//img[@alt='delete-icon ']")
+	public static List<WebElement> measurableDeleteButton;
+
+	@FindBy(xpath = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
+	public static List<WebElement> measurableEditButton;
+
+	@FindBy(xpath = "//a//img[@alt='table-edit' and contains(@class,'delete-dataset')]")
+	public static List<WebElement> measurableUpload1Button;
+
+	@FindBy(xpath = "//img[@alt='table-edit' and not(contains(@class,'delete-dataset'))and @data-info]")
+	public static List<WebElement> measurableUpload2Button;
+
+	@FindBy(xpath = "//img[contains(@class,'copy_question')]")
+	public static List<WebElement> measurableDuplicateButton;
+
+	@FindBy(id = "pills-NonMeasurableSet-tab")
+	public static WebElement nonMeasurableTab;
+
+	@FindBy(linkText = "+ Add Non Measurable Set")
+	public static WebElement nonMeasurableCreateButton;
+
+	@FindBy(xpath = "//img[@alt='delete-icon ']")
+	public static List<WebElement> nonMeasurableDeleteButton;
+
+	@FindBy(xpath = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
+	public static List<WebElement> nonMeasurableEditButton;
+
+	@FindBy(xpath = "//a//img[@alt='table-edit' and contains(@class,'delete-dataset')]")
+	public static List<WebElement> nonMeasurableUpload1Button;
+
+	@FindBy(xpath = "//img[@alt='table-edit' and not(contains(@class,'delete-dataset'))and @data-info]")
+	public static List<WebElement> nonMeasurableUpload2Button;
+
+	@FindBy(xpath = "//img[contains(@class,'copy_question')]")
+	public static List<WebElement> nonMeasurableDuplicateButton;
+
+	@FindBy(id = "pills-Disposition-tab")
+	public static WebElement dispositionTab;
+
+	@FindBy(linkText = "+ Add Disposition")
+	public static WebElement dispositionCreateButton;
+
+	@FindBy(xpath = "//img[@alt='delete-icon ']")
+	public static List<WebElement> dispositionDeleteButton;
+
+	@FindBy(xpath = "//img[@alt='table-edit' and contains(@class,'edit-measurable')]")
+	public static List<WebElement> dispositionEditButton;
+
+	@FindBy(id = "menulist1")
+	public static WebElement userSetup;
+
+	@FindBy(linkText = "User Management")
+	public static WebElement userManagement;
+
+	@FindBy(linkText = "Role & Permissions")
+	public static WebElement roleAndPermissions;
+
+	@FindBy(linkText = "+ Create")
+	public static WebElement roleAndPermissionsCreate;
 
 	@FindBy(xpath = "//input[@name='user_active']")
-	WebElement activeCheckBox;
+	public static WebElement activeCheckBox;
 
 	@FindBy(xpath = "(//input[@name='q'])[1]")
-	WebElement groupsSearchField;
+	public static WebElement groupsSearchField;
 
 	@FindBy(xpath = "//select[@id='multiselect_group']")
-	WebElement groupsMultiSelectDropdown;
+	public static WebElement groupsMultiSelectDropdown;
 
 	@FindBy(xpath = "//select[@id='multiselect_group_to']")
-	WebElement groupsMultiSelectToDropdown;
+	public static WebElement groupsMultiSelectToDropdown;
 
 	@FindBy(xpath = "//button[normalize-space()='Update']")
-	WebElement userUpdate;
+	public static WebElement userUpdate;
 
-	// ----Roles And Permissions-----------
+// ----Roles And Permissions-----------
 
 	@FindBy(xpath = "//tbody//td[1]")
-	public List<WebElement> roleTableNames;
+	public static List<WebElement> roleTableNames;
 
 	@FindBy(id = "group_name")
-	WebElement inputGroupName;
+	public static WebElement inputGroupName;
 
 	@FindBy(xpath = "//button[normalize-space()='Create'] ")
-	WebElement roleCreateButton;
+	public static WebElement roleCreateButton;
 
 	@FindBy(id = "group_name-error")
-	WebElement groupNameError;
+	public static WebElement groupNameError;
 
 	@FindBy(xpath = "//button[text()='Cancel']")
-	WebElement roleCancelButton;
+	public static WebElement roleCancelButton;
 
 	@FindBy(xpath = "(//button[text()='Continue'])[1]")
-	WebElement roleContinueButton;
+	public static WebElement roleContinueButton;
 
 	@FindBy(xpath = "//select[@name='permission_id']")
-	WebElement permissionsMultiSelectDropdown;
+	public static WebElement permissionsMultiSelectDropdown;
 
 	@FindBy(xpath = "//select[@name='permission_select']")
-	WebElement permissionsMultiSelectToDropdown;
+	public static WebElement permissionsMultiSelectToDropdown;
 
 	@FindBy(xpath = "(//input[@name='q'])[2]")
-	WebElement permissionsSearchField;
+	public static WebElement permissionsSearchField;
 
 	@FindBy(id = "multiselect_group_rightAll")
-	WebElement groupsAllRight;
+	public static WebElement groupsAllRight;
 
 	@FindBy(id = "multiselect_group_rightSelected")
-	WebElement groupsSingleRight;
+	public static WebElement groupsSingleRight;
 
 	@FindBy(id = "multiselect_group_leftSelected")
-	WebElement groupsSingleLeft;
+	public static WebElement groupsSingleLeft;
 
 	@FindBy(id = "multiselect_group_leftAll")
-	WebElement groupsAllLeft;
+	public static WebElement groupsAllLeft;
 
 	@FindBy(id = "multiselect_rightAll")
-	WebElement permissionsAllRight;
+	public static WebElement permissionsAllRight;
 
 	@FindBy(id = "multiselect_rightSelected")
-	WebElement permissionsSingleRight;
+	public static WebElement permissionsSingleRight;
 
 	@FindBy(id = "multiselect_leftSelected")
-	WebElement permissionsSingleLeft;
+	public static WebElement permissionsSingleLeft;
 
 	@FindBy(id = "multiselect_leftAll")
-	WebElement permissionsAllLeft;
+	public static WebElement permissionsAllLeft;
 
 	@FindBy(xpath = "//button[normalize-space()='Create']")
-	WebElement userAccountCreateButton;
+	public static WebElement userAccountCreateButton;
 
 	@FindBy(xpath = "//button[normalize-space()='Cancel']")
-	WebElement userAccountCancelButton;
+	public static WebElement userAccountCancelButton;
 
 	@FindBy(xpath = "//button[text()='Delete']")
-	WebElement roleTableDelete;
-
+	public static WebElement roleTableDelete;
 
 	// User Mapping
-	@FindBy(css="img[title='User Mapping']")
-	WebElement userMappingbutton;
+	@FindBy(css = "img[title='User Mapping']")
+	public static WebElement userMappingbutton;
 
-	@FindBy(xpath="//button[text()='User Documents']")
-	WebElement userDocuments;
+	@FindBy(xpath = "//button[text()='User Documents']")
+	public static WebElement userDocuments;
 
-	@FindBy(xpath="//select[not(contains(@id,'prefix'))]")
-	List<WebElement> userDocumentsDropdown;
+	@FindBy(xpath = "//select[not(contains(@id,'prefix'))]")
+	public static List<WebElement> userDocumentsDropdown;
 
-	@FindBy(xpath="//button[normalize-space()='Admin Process']")
-	WebElement uMAdminProcessTab;
+	@FindBy(xpath = "//button[normalize-space()='Admin Process']")
+	public static WebElement uMAdminProcessTab;
 
-	@FindBy(xpath="//button[normalize-space()='Process']")
-	WebElement uMProcessTab;
+	@FindBy(xpath = "//button[normalize-space()='Process']")
+	public static WebElement uMProcessTab;
 
-	@FindBy(xpath="//button[normalize-space()='User superior mapping']")
-	WebElement uMUserSuperiorMappingTab;
+	@FindBy(xpath = "//button[normalize-space()='User superior mapping']")
+	public static WebElement uMUserSuperiorMappingTab;
 
-	@FindBy(xpath="//button[normalize-space()='System mapping']")
-	WebElement uMUserSystemMappingTab;
+	@FindBy(xpath = "//button[normalize-space()='System mapping']")
+	public static WebElement uMUserSystemMappingTab;
 
 	@FindBy(linkText = "+ Add Row")
 public static WebElement AddRow;
 
 	@FindBy(xpath = "//tbody//tr//td[1]//select[not(contains(@name,'__prefix__'))]")
-	List<WebElement> UMProcessNameDropdown;
+	public static List<WebElement> UMProcessNameDropdown;
 
 	@FindBy(xpath = "//td[2]//select[not(contains(@id,'__prefix__'))]")
-	List<WebElement> UMSubProcessNameDropdown;
+	public static List<WebElement> UMSubProcessNameDropdown;
 
 	@FindBy(xpath = "//td[3]//select[not(contains(@id,'__prefix__'))]")
-	List<WebElement> UMSubSubProcessNameDropdown;
+	public static List<WebElement> UMSubSubProcessNameDropdown;
 
 	@FindBy(xpath = "//td[4]//select[not(contains(@id,'__prefix__'))]")
-	List<WebElement> UMStageNameDropdown;
+	public static List<WebElement> UMStageNameDropdown;
 
 	@FindBy(xpath = "//tr[not(@id='empty_form')]//div//img")
-	List<WebElement> UMProcessDelete;
+	public static List<WebElement> UMProcessDelete;
 
 	@FindBy(xpath = "//button[text()='Save']")
-	WebElement UMSaveButton;
+	public static WebElement UMSaveButton;
 
-	@FindBy(xpath =  "//button[text()='User superior mapping ']")
-	WebElement UserSuperiorMappingTab;
+	@FindBy(xpath = "//button[text()='User superior mapping ']")
+	public static WebElement UserSuperiorMappingTab;
 
-	@FindBy(xpath =  "//td[1]//select[not(contains(@name,'prefix'))]")
-	List<WebElement> USMStagesDropdown;
+	@FindBy(xpath = "//td[1]//select[not(contains(@name,'prefix'))]")
+	public static List<WebElement> USMStagesDropdown;
 
-	@FindBy(xpath =  "//td[2]//select[not(contains(@name,'__prefix__'))]")
-	List<WebElement> USMRoleDropdown;
+	@FindBy(xpath = "//td[2]//select[not(contains(@name,'__prefix__'))]")
+	public static List<WebElement> USMRoleDropdown;
 
-	@FindBy(xpath =  "//td[3]//select[not(contains(@name,'__prefix__'))]")
-	List<WebElement> USMNameDropdown;
+	@FindBy(xpath = "//td[3]//select[not(contains(@name,'__prefix__'))]")
+	public static List<WebElement> USMNameDropdown;
 
-	@FindBy(xpath =  "//td[4]//input[not(contains(@name,'__prefix__'))]")
-	WebElement USMFromDate;
+	@FindBy(xpath = "//td[4]//input[not(contains(@name,'__prefix__'))]")
+	public static WebElement USMFromDate;
 
-	@FindBy(xpath =  "//td[5]//input[not(contains(@name,'__prefix__'))]")
-	WebElement USMToDate;
+	@FindBy(xpath = "//td[5]//input[not(contains(@name,'__prefix__'))]")
+	public static WebElement USMToDate;
 
-	@FindBy(xpath =  "//tr[not(@id='empty_form')]//img[not(contains(@class,'edit_delete '))]")
-	WebElement deleteButton;
+	@FindBy(xpath = "//tr[not(@id='empty_form')]//img[not(contains(@class,'edit_delete '))]")
+	public static WebElement deleteButton;
 
-	@FindBy(xpath =  "(//button[text()='Continue'])[1]")
-	WebElement continueButton;
+	@FindBy(xpath = "(//button[text()='Continue'])[1]")
+	public static WebElement continueButton;
 
-	@FindBy(xpath =  "//tbody//td//select[not(contains(@name,'__prefix__'))]")
-	WebElement SMSystemName;
+	@FindBy(xpath = "//tbody//td//select[not(contains(@name,'__prefix__'))]")
+	public static WebElement SMSystemName;
 
-	@FindBy(xpath =  "//input[@type='text' and not(contains(@id,'prefix'))]")
-	WebElement SMSystemValue;
+	@FindBy(xpath = "//input[@type='text' and not(contains(@id,'prefix'))]")
+	public static WebElement SMSystemValue;
 
-	@FindBy(id =  "group_name")
-	WebElement systemNameInputField;
+	@FindBy(id = "group_name")
+	public static WebElement systemNameInputField;
 
-	@FindBy(xpath =  "//button[text()='Create']")
-	WebElement systemNameSaveButton;
+	@FindBy(xpath = "//button[text()='Create']")
+	public static WebElement systemNameSaveButton;
 
-	@FindBy(xpath =  "//button[text()='Cancel']")
-	WebElement systemNameCancelButton;
+	@FindBy(xpath = "//button[text()='Cancel']")
+	public static WebElement systemNameCancelButton;
 
+	@FindBy(xpath = "//img[@alt='rgt_arrow']")
+	public static WebElement paginationRightButton;
 
-	@FindBy(xpath =  "//img[@alt='rgt_arrow']")
-	WebElement paginationRightButton;
+	@FindBy(xpath = "//a[@id='uploadBtn']")
+	public static WebElement userCreateUploadButton;
 
+	@FindBy(xpath = "(//input[@class='select2-search__field'])[1]")
+	public static WebElement uploadStagesButton;
 
-	@FindBy(xpath =  "//a[@id='uploadBtn']")
-	WebElement userCreateUploadButton;
+	@FindBy(xpath = "//li[@class='select2-results__option']")
+	public static List<WebElement> uploadStagesOptions;
 
-	@FindBy(xpath =  "(//input[@class='select2-search__field'])[1]")
-	WebElement uploadStagesButton;
+	@FindBy(xpath = "//input[@id='newOption']")
+	public static WebElement uploadNewButton;
 
-	@FindBy(xpath =  "//li[@class='select2-results__option']")
-	List<WebElement> uploadStagesOptions;
+	@FindBy(xpath = "//input[@id='updateOption']")
+	public static WebElement uploadUpdateButton;
 
-	@FindBy(xpath =  "//input[@id='newOption']")
-	WebElement uploadNewButton;
+	@FindBy(xpath = "//input[@id='Browse']")
+	public static WebElement uploadFileColumn;
 
-	@FindBy(xpath =  "//input[@id='updateOption']")
-	WebElement uploadUpdateButton;
+	@FindBy(xpath = "//button[text()='Upload']")
+	public static WebElement fileUploadButton;
 
-	@FindBy(xpath =  "//input[@id='Browse']")
-	WebElement uploadFileColumn;
+	@FindBy(xpath = "//div[@class='alert alert-success']")
+	public static WebElement fileUploadSuccess;
 
-	@FindBy(xpath =  "//button[text()='Upload']")
-	WebElement fileUploadButton;
+	@FindBy(xpath = "//img[contains(@class,'edit_userdata')]")
+	public static List<WebElement> userEdit;
 
-	@FindBy(xpath =  "//div[@class='alert alert-success']")
-	WebElement fileUploadSuccess;
+	@FindBy(xpath = "//td[1]")
+	public static List<WebElement> userName;
 
-	@FindBy(xpath =  "//img[contains(@class,'edit_userdata')]")
-	List<WebElement> userEdit;
+	@FindBy(xpath = "//td[5]")
+	public static List<WebElement> userStatus;
 
-	@FindBy(xpath =  "//td[1]")
-	List<WebElement> userName;
+	@FindBy(linkText = "Call Log Stage View")
+	public static WebElement callLogStageView;
 
-	@FindBy(xpath =  "//td[5]")
-	List<WebElement> userStatus;
+	@FindBy(xpath = "//button[text()='+ Upload System Mapping']")
+	public static WebElement uploadSystemMapping;
 
-	@FindBy(linkText =  "Call Log Stage View")
-	WebElement callLogStageView;
+	@FindBy(xpath = "//select[@id='sys_mapping_search']")
+	public static WebElement systemMappingDropdown;
 
-	@FindBy(xpath =  "//button[text()='+ Upload System Mapping']")
-	WebElement uploadSystemMapping;
+	@FindBy(xpath = "//button[text()='Upload' and @onclick='uploadSysMapFile()']")
+	public static WebElement systemMappingUploadButton;
 
-	@FindBy(xpath =  "//select[@id='sys_mapping_search']")
-	WebElement systemMappingDropdown;
+	@FindBy(id = "downloadButton")
+	public static WebElement stageFilters;
 
-	@FindBy(xpath =  "//button[text()='Upload' and @onclick='uploadSysMapFile()']")
-	WebElement systemMappingUploadButton;
 
 
 
@@ -457,13 +469,14 @@ public static WebElement AddRow;
 
 	}
 
+
 	String firstName;
 	String lastName;
 	String password;
 	String UserName;
-	String permissionsfilePath= System.getProperty("user.dir")+"\\ExcelFiles\\PermissionsToSelect.xlsx";
-	String userManagementSheetName="User Management";
-	List<String> userCreated=new ArrayList<String>();;
+	String permissionsfilePath = System.getProperty("user.dir") + "\\ExcelFiles\\PermissionsToSelect.xlsx";
+	String userManagementSheetName = "User Management";
+	List<String> userCreated = new ArrayList<String>();;
 
 	public ExcelUtils excelToUploadModulePermissions = new ExcelUtils(permissionsfilePath, "Individual Permissions");
 	public ExcelUtils excelToUploadViewPermissions = new ExcelUtils(permissionsfilePath, "View Permissions");
@@ -517,12 +530,11 @@ public static WebElement AddRow;
 
 	}
 
-	public  UserSetupPage userCreationFields(String fName, String lName, String pass)
-	{
-		firstName=fName;
-		lastName=lName;
-		password=pass;
-		UserName= firstName+" "+lastName;
+	public UserSetupPage userCreationFields(String fName, String lName, String pass) {
+		firstName = fName;
+		lastName = lName;
+		password = pass;
+		UserName = firstName + " " + lastName;
 		inputUserName.sendKeys(UserName);
 		inputFirstName.sendKeys(firstName);
 		inputLastName.sendKeys(lastName);
@@ -541,64 +553,59 @@ public static WebElement AddRow;
 
 		userCreated.add(UserName);
 
-		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userCreated), permissionsfilePath, userManagementSheetName);
+		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userCreated), permissionsfilePath,
+				userManagementSheetName);
 
 		return this;
 
 	}
 
-	public UserSetupPage singleGroupSelect(String selectGroup)
-	{
-		Select singleGroup=new Select(groupsMultiSelectDropdown);
+	public UserSetupPage singleGroupSelect(String selectGroup) {
+		Select singleGroup = new Select(groupsMultiSelectDropdown);
 		singleGroup.selectByVisibleText(selectGroup);
 		click(driver, groupsSingleRight);
 		return this;
 	}
 
-	public UserSetupPage clickOnGroupCreateButton()
-	{
-		jsClick(driver,userAccountCreateButton);
+	public UserSetupPage clickOnGroupCreateButton() {
+		jsClick(userAccountCreateButton);
 		unWait(1);
 		roleContinueButton.click();
 		return this;
 	}
 
-	public UserSetupPage navToRoleAndPerTable()
-	{
-		try{
+	public UserSetupPage navToRoleAndPerTable() {
+		try {
 			userSetup.click();
-		}catch (NoSuchElementException e)
-		{
+		} catch (NoSuchElementException e) {
 			userSetup.click();
 			userManagement.click();
 		}
 		return this;
 	}
 
-	public UserSetupPage navToRoleAndPerCreate()
-	{
-		try
-		{
-			roleAndPermissions.click();
-			roleAndPermissionsCreate.click();
-
-		} catch (Exception e)
-		{
-			userSetup.click();
-			roleAndPermissions.click();
-			roleAndPermissionsCreate.click();
-
-		}
+	public UserSetupPage navToRoleAndPerCreate() {
+		navigateWithinUserSetup(roleAndPermissions);
+		roleAndPermissionsCreate.click();
+//		try {
+//			roleAndPermissions.click();
+//			roleAndPermissionsCreate.click();
+//
+//		} catch (NoSuchElementException e) {
+//			userSetup.click();
+//			roleAndPermissions.click();
+//			roleAndPermissionsCreate.click();
+//
+//		}
 		return this;
 	}
 
-	public UserSetupPage createRoles(String inputgroupname, String getGroupNameFromExcel, ExcelUtils utils)
-	{
-		sendKeys(inputGroupName,inputgroupname);
+	public UserSetupPage createRoles(String inputgroupname, String getGroupNameFromExcel, ExcelUtils utils) {
+		sendKeys(inputGroupName, inputgroupname);
 
 		Select fromGroupsDrp = new Select(permissionsMultiSelectDropdown);
 
-		List<String> groupsToSelect= utils.getColumnDataByName(getGroupNameFromExcel);
+		List<String> groupsToSelect = utils.getColumnDataByName(getGroupNameFromExcel);
 
 		for (String options : groupsToSelect) {
 			fromGroupsDrp.selectByVisibleText(options);
@@ -612,7 +619,7 @@ public static WebElement AddRow;
 		RolesCreated.add(inputgroupname);
 		ExcelWrite.updateExcelWithData(Map.of("Roles", RolesCreated), permissionsfilePath, userManagementSheetName);
 
-		//		deleteFormByName(inputgroupname);
+		// deleteFormByName(inputgroupname);
 		System.out.println(RolesCreated);
 
 		return this;
@@ -646,12 +653,11 @@ public static WebElement AddRow;
 		return this;
 	}
 
-	public UserSetupPage navToUserManagement()
-	{
-		try{
+	public UserSetupPage navToUserManagement() {
+		actions.moveByOffset(100,200).click().perform();
+		try {
 			userManagement.click();
-		}catch (NoSuchElementException e)
-		{
+		} catch (NoSuchElementException e) {
 			userSetup.click();
 			userManagement.click();
 
@@ -660,11 +666,11 @@ public static WebElement AddRow;
 	}
 
 	/**
-	 * @param usernameToDoAction Enter the record name to do the actions, Example to Click on edit ot delete, below method is for Delete
+	 * @param usernameToDoAction Enter the record name to do the actions, Example to
+	 *                           Click on edit ot delete, below method is for Delete
 	 * @return for Method Chaining
 	 */
-	public  UserSetupPage userAccountDelete(String usernameToDoAction)
-	{
+	public UserSetupPage userAccountDelete(String usernameToDoAction) {
 
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
@@ -672,14 +678,14 @@ public static WebElement AddRow;
 
 			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
 
-			if (usernameToDoAction.equals(usernameColumn.getText()) ) {
+			if (usernameToDoAction.equals(usernameColumn.getText())) {
 
 				WebElement deleteButton = row.findElement(By.xpath("//td//div//img[@alt='delete-icon ']"));
 				deleteButton.click();
 				roleTableDelete.click();
 				unWait(2);
 				roleContinueButton.click();
-				System.out.println(usernameToDoAction+" User Account Successfully Deleted");
+				System.out.println(usernameToDoAction + " User Account Successfully Deleted");
 				break;
 			}
 		}
@@ -688,6 +694,7 @@ public static WebElement AddRow;
 	}
 
 	List<String> recordNames = new ArrayList<>();
+
 	public List<String> fetchRecordNames() {
 
 		userSetup.click();
@@ -701,10 +708,8 @@ public static WebElement AddRow;
 		return recordNames;
 	}
 
-	public UserSetupPage print()
-	{
-		for(String str:recordNames)
-		{
+	public UserSetupPage print() {
+		for (String str : recordNames) {
 			System.out.println(str);
 		}
 		return this;
@@ -714,23 +719,22 @@ public static WebElement AddRow;
 	public UserSetupPage deleteRoleByName(String nameToDelete) {
 		navigateWithinUserSetup(roleAndPermissions);
 
-
 		// Find all rows within the table
 		List<WebElement> rows = formsTableBody.findElements(By.tagName("tr"));
 
-		boolean roleFound = false;  // Flag to check if the role is found
+		boolean roleFound = false; // Flag to check if the role is found
 
 		try {
 			for (WebElement row : rows) {
-				if (row.getText().contains(nameToDelete)) {  // Use 'contains' for partial match
+				if (row.getText().contains(nameToDelete)) { // Use 'contains' for partial match
 					// Perform the delete operation
 					click(driver, row.findElement(By.cssSelector("img.delete-dataset")));
 					roleTableDelete.click();
-					unWait(1);  // Wait if needed
+					unWait(1); // Wait if needed
 					roleContinueButton.click();
 
 					System.out.println(nameToDelete + " Role Record Successfully Deleted");
-					roleFound = true;  // Mark as found
+					roleFound = true; // Mark as found
 					break;
 				}
 			}
@@ -743,52 +747,40 @@ public static WebElement AddRow;
 		} catch (NoSuchElementException e) {
 			// Handle case where the delete icon or element is not found
 			System.out.println("No such element found for role: " + nameToDelete);
-			e.printStackTrace();  // Optional: Log the exception stack trace
+			e.printStackTrace(); // Optional: Log the exception stack trace
 		}
 
-		return this;  // Return the current page object for method chaining
+		return this; // Return the current page object for method chaining
 	}
-	/*public UserSetupPage deleteRoleByName( String nameToDelete)
-	{
-		roleAndPermissions.click();
-		// Find all rows within the table
-		List<WebElement> rows = formsTableBody.findElements(By.tagName("tr"));
 
-		for (WebElement row:rows)
-		{
-			if(row.getText().equals(nameToDelete))
-			{
-				click(driver,row.findElement(By.cssSelector("img.delete-dataset")));
-				roleTableDelete.click();
-				unWait(2);
-				roleContinueButton.click();
-				System.out.println(nameToDelete+" Role Record Successfully Deleted");
-				break;
-			} else {
-
-			}
-		}
-		return this;
-	}
-*/
-	public void getRolesName()
-	{
+	/*
+	 * public UserSetupPage deleteRoleByName( String nameToDelete) {
+	 * roleAndPermissions.click(); // Find all rows within the table
+	 * List<WebElement> rows = formsTableBody.findElements(By.tagName("tr"));
+	 *
+	 * for (WebElement row:rows) { if(row.getText().equals(nameToDelete)) {
+	 * click(driver,row.findElement(By.cssSelector("img.delete-dataset")));
+	 * roleTableDelete.click(); unWait(2); roleContinueButton.click();
+	 * System.out.println(nameToDelete+" Role Record Successfully Deleted"); break;
+	 * } else {
+	 *
+	 * } } return this; }
+	 */
+	public void getRolesName() {
 		roleAndPermissions.click();
-		List <WebElement> roleNames=driver.findElements(By.xpath("//tr//td[1]"));
-		for(WebElement roleName:roleNames)
-		{
+		List<WebElement> roleNames = driver.findElements(By.xpath("//tr//td[1]"));
+		for (WebElement roleName : roleNames) {
 			System.out.println(roleName.getText());
 		}
 	}
 
 	// Method to get the list of entered record names
-	public static  List<String> getRoles() {
+	public static List<String> getRoles() {
 
 		return RolesCreated;
 	}
 
-	public UserSetupPage userLogin(String UserName,String password)
-	{
+	public UserSetupPage userLogin(String UserName, String password) {
 
 		driver.get(TestBase.mainURl);
 		LoginPage.usernameField.sendKeys(UserName);
@@ -798,44 +790,42 @@ public static WebElement AddRow;
 
 	}
 
-	public UserSetupPage assertDataset()
-	{
+	public UserSetupPage assertDataset() {
 		dataSetup.click();
 
-		isElementVisible(createButton,"Process Create Button is Displayed");
-		isElementVisible(processEditButton,"Process Edit Button is Displayed");
+		isElementVisible(createButton, "Process Create Button is Displayed");
+		isElementVisible(processEditButton, "Process Edit Button is Displayed");
 
-		jsClick(driver, processRecords.get(0));
-		isElementVisible(processSecondEditButton,"Process Second Process Edit Button is Displayed");
+		jsClick(processRecords.get(0));
+		isElementVisible(processSecondEditButton, "Process Second Process Edit Button is Displayed");
 
 		dataSetTab.click();
-		isElementVisible(dataSetCreateButton,"DataSet Create Button is Displayed and Enabled");
-		isElementVisible(dataSetEditButton,"DataSet Edit Buttons is Displayed and Enabled");
-		isElementVisible(dataSetDeleteButton,"DataSet Delete Buttons is Displayed and Enabled");
+		isElementVisible(dataSetCreateButton, "DataSet Create Button is Displayed and Enabled");
+		isElementVisible(dataSetEditButton, "DataSet Edit Buttons is Displayed and Enabled");
+		isElementVisible(dataSetDeleteButton, "DataSet Delete Buttons is Displayed and Enabled");
 
 		metaDataTab.click();
-		isElementVisible(metaDataCreateButton,"MetaData Create Button is Displayed and Enabled");
-		isElementVisible(metaDataDeleteButton,"MetaData Delete Buttons is Displayed and Enabled");
-		isElementVisible(metaDataEditButton,"MetaData Edit Buttons is Displayed and Enabled");
+		isElementVisible(metaDataCreateButton, "MetaData Create Button is Displayed and Enabled");
+		isElementVisible(metaDataDeleteButton, "MetaData Delete Buttons is Displayed and Enabled");
+		isElementVisible(metaDataEditButton, "MetaData Edit Buttons is Displayed and Enabled");
 
 		softAssert.assertAll();
 		return this;
 
 	}
 
-	private boolean isElementVisible(WebElement element,String ErrorMessage) {
+	private boolean isElementVisible(WebElement element, String ErrorMessage) {
 		try {
 
-			softAssert.assertFalse(element.isDisplayed(),ErrorMessage);
-			softAssert.assertFalse(element.isEnabled(),ErrorMessage);
+			softAssert.assertFalse(element.isDisplayed(), ErrorMessage);
+			softAssert.assertFalse(element.isEnabled(), ErrorMessage);
 			return true;
 		} catch (org.openqa.selenium.NoSuchElementException | ElementNotInteractableException e) {
 			return false;
 		}
 	}
 
-	public void assertWorkflowDesignPositive()
-	{
+	public void assertWorkflowDesignPositive() {
 		workFlowDesign.click();
 		assertTrue(masterParameterTab.isDisplayed());
 		assertTrue(measurableSetTab.isDisplayed());
@@ -843,19 +833,18 @@ public static WebElement AddRow;
 		assertTrue(dispositionTab.isDisplayed());
 
 		measurableSetTab.click();
-		//		MeasurableSetPage.createNormalView();
-		//		NonMeasurableSetPage.createNormalView();
-		//		Disposition.createNormalView();
+		// MeasurableSetPage.createNormalView();
+		// NonMeasurableSetPage.createNormalView();
+		// Disposition.createNormalView();
 
 	}
 
-	public void dropdownValidation(WebElement Dropdown)
-	{
-		Select process=new Select(Dropdown);
+	public void dropdownValidation(WebElement Dropdown) {
+		Select process = new Select(Dropdown);
 
-		System.out.println("Default Selected Option: "+process.getAllSelectedOptions().get(0).getText());
+		System.out.println("Default Selected Option: " + process.getAllSelectedOptions().get(0).getText());
 
-		assertTrue(process.getOptions().size()>0);
+		assertTrue(process.getOptions().size() > 0);
 
 		System.out.println("Dropdown is Validated");
 	}
@@ -866,8 +855,7 @@ public static WebElement AddRow;
 //		process.selectByVisibleText(VisibleText);
 //	}
 
-	public UserSetupPage userMappingNav()
-	{
+	public UserSetupPage userMappingNav() {
 
 		try {
 			userManagement.click();
@@ -877,20 +865,19 @@ public static WebElement AddRow;
 			userManagement.click();
 		}
 
-
 		return this;
 	}
-	public UserSetupPage userMappingRecord(String usernameToDoAction)
-	{
+
+	public UserSetupPage userMappingRecord(String usernameToDoAction) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
 		for (WebElement row : rows) {
 
 			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
 
-			if (usernameToDoAction.equals(usernameColumn.getText()) ) {
-				System.out.println( usernameColumn.getText());
-				WebElement UserMappingBtn= row.findElement(By.cssSelector("img[title='User Mapping']"));
+			if (usernameToDoAction.equals(usernameColumn.getText())) {
+				System.out.println(usernameColumn.getText());
+				WebElement UserMappingBtn = row.findElement(By.cssSelector("img[title='User Mapping']"));
 				UserMappingBtn.click();
 				break;
 			}
@@ -898,17 +885,19 @@ public static WebElement AddRow;
 		}
 		return this;
 	}
-	@FindBy(xpath="//button[text()='Process ']")
+
+	@FindBy(xpath = "//button[text()='Process ']")
 	WebElement UserMappingProcess;
-	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName,String SubSubProcess,String Stages)
-	{
+
+	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName, String SubSubProcess,
+											String Stages) {
 		// Adjust timeout as needed
 		UserMappingProcess.click();
-		jsClick(driver,AddRow);
-		selectByVisibleText(UMProcessNameDropdown.get(UMProcessNameDropdown.size()-1), ProcessName);
-		selectByVisibleText(UMSubProcessNameDropdown.get(UMSubProcessNameDropdown.size()-1), SubProcessName);
-		selectByVisibleText(UMSubSubProcessNameDropdown.get(UMSubSubProcessNameDropdown.size()-1), SubSubProcess);
-		selectByVisibleText(UMStageNameDropdown.get(UMStageNameDropdown.size()-1), Stages);
+		jsClick(AddRow);
+		selectByVisibleText(UMProcessNameDropdown.get(UMProcessNameDropdown.size() - 1), ProcessName);
+		selectByVisibleText(UMSubProcessNameDropdown.get(UMSubProcessNameDropdown.size() - 1), SubProcessName);
+		selectByVisibleText(UMSubSubProcessNameDropdown.get(UMSubSubProcessNameDropdown.size() - 1), SubSubProcess);
+		selectByVisibleText(UMStageNameDropdown.get(UMStageNameDropdown.size() - 1), Stages);
 
 	/*	try {
 
@@ -941,20 +930,10 @@ public static WebElement AddRow;
 		selectByVisibleText(UMStageNameDropdown, Stages);
 
 		UMSaveButton.click();
-		unWait(1);
-		continueButton.click();
 
-		return this;
-	}
-
-	public UserSetupPage userMappingUserSuperior(String Stages,String role,String name)
-	{
 		try {
-=======
->>>>>>> 113c4e248eaefbff61444a63f35824325884da76
-			if (!deleteButton.isDisplayed()) {
-				System.out.println("Rows are already added.");
-			}
+			unWait(1);
+			continueButton.click();
 		} catch (Exception e) {
 
 			AddRow.click();// Handle other exceptions if necessary
@@ -970,32 +949,30 @@ public static WebElement AddRow;
 
 		return this;
 	}
+
 	@FindBy(xpath = "//button[text()='User superior mapping ']")
 	WebElement userSuperiorMappingTab;
-	public UserSetupPage userMappingUserSuperior(String Stages,String role,String name)
-	{
-		userSuperiorMappingTab.click();
-		jsClick(driver,AddRow);
 
-		/*try {
-			if (!deleteButton.isDisplayed()) {
-				System.out.println("Rows are already added.");
-			}
-		} catch (Exception e) {
+	public UserSetupPage userMappingUserSuperior(String Stages, String role, String name) {
+		jsClick(userSuperiorMappingTab);
+		jsClick(AddRow);
 
-			AddRow.click();// Handle other exceptions if necessary
-			e.printStackTrace();
-		}*/
+		/*
+		 * try { if (!deleteButton.isDisplayed()) {
+		 * System.out.println("Rows are already added."); } } catch (Exception e) {
+		 *
+		 * AddRow.click();// Handle other exceptions if necessary e.printStackTrace(); }
+		 */
 
 //		UserSuperiorMappingTab.click();
 //		dropdownValidation(USMStagesDropdown);
-		selectByVisibleText(USMStagesDropdown.get(USMStagesDropdown.size()-1),Stages);
+		selectByVisibleText(USMStagesDropdown.get(USMStagesDropdown.size() - 1), Stages);
 
 //		dropdownValidation(USMRoleDropdown);
-		selectByVisibleText(USMRoleDropdown.get(USMRoleDropdown.size()-1),role);
+		selectByVisibleText(USMRoleDropdown.get(USMRoleDropdown.size() - 1), role);
 
 //		dropdownValidation(USMNameDropdown);
-		selectByVisibleText(USMNameDropdown.get(USMNameDropdown.size()-1),name);
+		selectByVisibleText(USMNameDropdown.get(USMNameDropdown.size() - 1), name);
 
 //		USMFromDate.sendKeys("02-07-2024");
 //		sendKeys(USMFromDate, "02-07-2024");
@@ -1003,15 +980,18 @@ public static WebElement AddRow;
 //		sendKeys(USMToDate, "06-07-2024");
 
 		UMSaveButton.click();
-		unWait(1);
-		continueButton.click();
+		try {
+			unWait(1);
+			continueButton.click();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 		return this;
 	}
 
-	public UserSetupPage systemMapping(String visibleText,String value)
-	{
+	public UserSetupPage systemMapping(String visibleText, String value) {
 		systemMappingTab.click();
-		selectByVisibleText(SMSystemName,visibleText);
+		selectByVisibleText(SMSystemName, visibleText);
 		SMSystemValue.sendKeys(value);
 		saveRecord();
 		return this;
@@ -1019,9 +999,8 @@ public static WebElement AddRow;
 //	@FindBy(xpath = "//button[text()='System mapping ']")
 //	WebElement systemMappingTab;
 
-	public UserSetupPage navToSysNames()
-	{
-		try{
+	public UserSetupPage navToSysNames() {
+		try {
 			systemNames.click();
 		}catch (org.openqa.selenium.NoSuchElementException e)
 		{
@@ -1032,9 +1011,8 @@ public static WebElement AddRow;
 		return this;
 	}
 
-	//	--------System Names-------------
-	public UserSetupPage systemNames(String systemName)
-	{
+	// --------System Names-------------
+	public UserSetupPage systemNames(String systemName) {
 		createButton.click();
 		systemNameInputField.sendKeys(systemName);
 		systemNameSaveButton.click();
@@ -1044,42 +1022,38 @@ public static WebElement AddRow;
 		return this;
 
 	}
-	public UserSetupPage deleteSystemNames(String systemNames)
-	{
-		List<WebElement> rows=driver.findElements(By.xpath("//tbody//tr"));
-		for(WebElement row:rows)
-		{
-			if(row.getText().equals(systemNames))
-			{
-				click(driver,row.findElement(By.cssSelector("img.delete-dataset")));
+
+	public UserSetupPage deleteSystemNames(String systemNames) {
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody//tr"));
+		for (WebElement row : rows) {
+			if (row.getText().equals(systemNames)) {
+				click(driver, row.findElement(By.cssSelector("img.delete-dataset")));
 				roleTableDelete.click();
 				unWait(2);
 				roleContinueButton.click();
-				System.out.println(systemNames+"  Record Successfully Deleted");
+				System.out.println(systemNames + "  Record Successfully Deleted");
 
 				break;
 			}
 		}
-
 		return this;
 	}
 
-	//	Reading WebTables And Adding in 
-	List<String> userAcount=new ArrayList<String>();
-	List<String> role=new ArrayList<>();
-	public void getUserAccounts()
-	{
+	// Reading WebTables And Adding in
+	List<String> userAcount = new ArrayList<String>();
+	List<String> role = new ArrayList<>();
+
+	public void getUserAccounts() {
 		userSetup.click();
 		userManagement.click();
 		do {
-			List<WebElement>records=driver.findElements(By.xpath("//td[1]"));
-			for(WebElement record:records)
-			{
+			List<WebElement> records = driver.findElements(By.xpath("//td[1]"));
+			for (WebElement record : records) {
 				userAcount.add(record.getText());
 
 			}
 
-			jsClick(driver,paginationRightButton);
+			jsClick(paginationRightButton);
 //		roleAndPermissions.click();
 //
 //		List<WebElement>roles=driver.findElements(By.xpath("//td[1]"));
@@ -1089,19 +1063,19 @@ public static WebElement AddRow;
 //
 //		}
 //		ExcelWrite.updateExcelWithData(Map.of("Roles",role), permissionsfilePath, "Already Existing Records");
-		}
-		while(paginationRightButton.isEnabled());
+		} while (paginationRightButton.isEnabled());
 		{
 
 		}
-		ExcelWrite.updateExcelWithData(Map.of("User Accounts",userAcount), permissionsfilePath, "Already Existing Records");
+		ExcelWrite.updateExcelWithData(Map.of("User Accounts", userAcount), permissionsfilePath,
+				"Already Existing Records");
 
 	}
 
-	String user_data=System.getProperty("user.dir")+"\\Upload Files\\user_data.xlsx";
-	public ExcelUtils uploadToCreateUser=new ExcelUtils(user_data, "Users");
-	public UserSetupPage userUpload()
-	{
+	String user_data = System.getProperty("user.dir") + "\\Upload Files\\user_data.xlsx";
+	public ExcelUtils uploadToCreateUser = new ExcelUtils(user_data, "Users");
+
+	public UserSetupPage userUpload() {
 		userCreateUploadButton.click();
 		uploadStagesButton.click();
 		uploadStagesOptions.get(0).click();
@@ -1110,8 +1084,8 @@ public static WebElement AddRow;
 		uploadFileColumn.sendKeys(user_data);
 
 		fileUploadButton.click();
-		List<String> userNames=uploadToCreateUser.getColumnDataByName("User Name");
-		for(String userName:userNames) {
+		List<String> userNames = uploadToCreateUser.getColumnDataByName("User Name");
+		for (String userName : userNames) {
 			System.out.println(userName);
 		}
 
@@ -1120,48 +1094,36 @@ public static WebElement AddRow;
 		return this;
 	}
 
-
-	public void endToEnd()
-	{
-		navToUserManagement()
-				.userMappingRecord("James@wyzmindz.com")
-				.userMappingProcess("AJP","Sub AJP","Sub Sub AJP","Stage James")
-				.userMappingUserSuperior("Stage James","QA","James@wyzmindz.com")
-				.systemMapping("James","Paul");
+	public void endToEnd() {
+		navToUserManagement().userMappingRecord("James@wyzmindz.com")
+				.userMappingProcess("AJP", "Sub AJP", "Sub Sub AJP", "Stage James")
+				.userMappingUserSuperior("Stage James", "QA", "James@wyzmindz.com").systemMapping("James", "Paul");
 	}
 
-
-	public UserSetupPage cloudSystemMapping()
-	{
+	public UserSetupPage cloudSystemMapping() {
 		navigateWithinUserSetup(userManagement);
 		uploadSystemMapping.click();
-		selectByVisibleText(systemMappingDropdown,"");
-
+		selectByVisibleText(systemMappingDropdown, "");
 
 		return this;
 	}
 
-
 //**********User Management Negative Test Script****************
 
-
-
-	@FindBy(id="user_name-error")
+	@FindBy(id = "user_name-error")
 	WebElement userNameError;
 
-	@FindBy(id="password-error")
+	@FindBy(id = "password-error")
 	WebElement passwordError;
 
-	@FindBy(xpath="//label[@id='confirm_password-error']")
+	@FindBy(xpath = "//label[@id='confirm_password-error']")
 	WebElement confirmPasswordError;
 
-
-
-	@FindBy(id="email-error")
+	@FindBy(id = "email-error")
 	WebElement emailError;
 
-	public void userCreationFieldsNeg(String userName,String firstName,String lastname,String email,String password)
-	{
+	public void userCreationFieldsNeg(String userName, String firstName, String lastname, String email,
+									  String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1182,7 +1144,6 @@ public static WebElement AddRow;
 		softAssert.assertTrue(isElementDisplayed(confirmPasswordError));
 		softAssert.assertAll();
 
-
 	}
 
 	private boolean isElementDisplayed(WebElement element) {
@@ -1198,7 +1159,8 @@ public static WebElement AddRow;
 
 	}
 
-	public UserSetupPage userWithOutPermission(String userName,String firstName,String lastname,String email,String password){
+	public UserSetupPage userWithOutPermission(String userName, String firstName, String lastname, String email,
+											   String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1208,13 +1170,13 @@ public static WebElement AddRow;
 		inputEmail.sendKeys(email);
 		inputPassword.sendKeys(password);
 		inputConfirmPassword.sendKeys(password);
-		jsClick(driver,roleCreateButton);
+		jsClick(roleCreateButton);
 		unWaitInMilli(500);
 		continueButton.click();
 
 		driver.get(mainURl);
 
-		userLogin(userName,password);
+		userLogin(userName, password);
 		assert isElementDisplayed(LoginPage.signInButton);
 
 		return this;
@@ -1223,11 +1185,10 @@ public static WebElement AddRow;
 	@FindBy(xpath = "//div[@class='alert alert-danger']")
 	WebElement errorMessage;
 
-	public UserSetupPage cloudUpload(String selectStage,String uploadFile)
-	{
+	public UserSetupPage cloudUpload(String selectStage, String uploadFile) {
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateCloudUpload.click();
-		selectByVisibleText(userManagementUploadStagesDropdown,selectStage);
+		selectByVisibleText(userManagementUploadStagesDropdown, selectStage);
 		uploadNewButton.click();
 		uploadFileColumn.sendKeys(uploadFile);
 		fileUploadButton.click();
@@ -1235,92 +1196,81 @@ public static WebElement AddRow;
 		assertFalse(isElementDisplayed(fileUploadSuccess));
 //		Should put Validation for Error Message, the is not throwing any error message, its just Buffering
 
-
 		return this;
 	}
 
-	public UserSetupPage Inactivate(String password)
-	{
+	public UserSetupPage Inactivate(String password) {
 		navigateWithinUserSetup(userManagement);
-		String UserName=userName.get(0).getText();
-		String status=userStatus.get(0).getText();
+		String UserName = userName.get(0).getText();
+		String status = userStatus.get(0).getText();
 
-
-		try{
-			if (status.equals("Active")){
+		try {
+			if (status.equals("Active")) {
 				userEdit.get(0).click();
-				sendKeys(inputPassword,password);
-				sendKeys(inputConfirmPassword,password);
+				sendKeys(inputPassword, password);
+				sendKeys(inputConfirmPassword, password);
 				activeCheckBox.click();
-				jsClick(driver,userUpdate);
-				userLogin(UserName,password);
+				jsClick(userUpdate);
+				userLogin(UserName, password);
 				assertTrue(LoginPage.signInButton.isDisplayed());
-			}
-			else {
-				userLogin(UserName,password);
+			} else {
+				userLogin(UserName, password);
 				assertTrue(LoginPage.signInButton.isDisplayed());
 			}
 
-		}catch (NoSuchElementException e)
-		{
+		} catch (NoSuchElementException e) {
 
 		}
 		return this;
 	}
 
-
-	public UserSetupPage noPermissionEdit(String password)
-	{
+	public UserSetupPage noPermissionEdit(String password) {
 		navigateWithinUserSetup(userManagement);
-		String UserName=userName.get(0).getText();
-		String status=userStatus.get(0).getText();
+		String UserName = userName.get(0).getText();
+		String status = userStatus.get(0).getText();
 		userEdit.get(0).click();
 
-		sendKeys(inputPassword,password);
-		sendKeys(inputConfirmPassword,password);
+		sendKeys(inputPassword, password);
+		sendKeys(inputConfirmPassword, password);
 
-		if(status.equals("Inactive")){
+		if (status.equals("Inactive")) {
 			activeCheckBox.click();
 		}
-		jsClick(driver,groupsAllLeft);
-		jsClick(driver,userUpdate);
+		jsClick(groupsAllLeft);
+		jsClick(userUpdate);
 
-		userLogin(UserName,password);
+		userLogin(UserName, password);
 		assert LoginPage.signInButton.isDisplayed();
 
-
 		return this;
 	}
 
-	public UserSetupPage negativeRole(String password,String role)
-	{
+	public UserSetupPage negativeRole(String password, String role) {
 		navigateWithinUserSetup(userManagement);
-		String UserName=userName.get(0).getText();
-		String status=userStatus.get(0).getText();
+		String UserName = userName.get(0).getText();
+		String status = userStatus.get(0).getText();
 		userEdit.get(0).click();
 
-		sendKeys(inputPassword,password);
-		sendKeys(inputConfirmPassword,password);
+		sendKeys(inputPassword, password);
+		sendKeys(inputConfirmPassword, password);
 
-		if(status.equals("Inactive")){
+		if (status.equals("Inactive")) {
 			activeCheckBox.click();
 		}
 
-		jsClick(driver,groupsAllLeft);
-
+		jsClick(groupsAllLeft);
 
 		singleGroupSelect(role);
-		jsClick(driver,userUpdate);
+		jsClick(userUpdate);
 
-		userLogin(UserName,password);
+		userLogin(UserName, password);
 		assert callLogStageView.isDisplayed();
 		assertFalse(validateUserSetupElements());
 
 		return this;
 	}
 
-	private boolean validateUserSetupElements()
-	{
+	private boolean validateUserSetupElements() {
 		try {
 			userSetup.isDisplayed();
 			return true;
@@ -1332,60 +1282,241 @@ public static WebElement AddRow;
 
 	}
 
-	public UserSetupPage roleCreate(String groupName)
-	{
+	public UserSetupPage roleCreate(String groupName) {
 		navigateWithinUserSetup(roleAndPermissions);
 		createButton.click();
 		inputGroupName.sendKeys(groupName);
-		jsClick(driver,roleCreateButton);
+		jsClick(roleCreateButton);
 		assert groupNameError.isDisplayed();
 		return this;
 	}
 
-	public UserSetupPage createInvalidSystemNames(String SystemNames)
-	{
+	public UserSetupPage createInvalidSystemNames(String SystemNames) {
 		navigateWithinUserSetup(systemNames);
 		createButton.click();
 		systemNameInputField.sendKeys(SystemNames);
 		roleCreateButton.click();
 		unWait(1);
 		assertFalse(continueButton.isDisplayed());
-		if(continueButton.isDisplayed()){
-			jsClick(driver,continueButton);
+		if (continueButton.isDisplayed()) {
+			jsClick(continueButton);
 		}
 		return this;
 	}
-	public UserSetupPage editSystemNames(String systemNames)
-	{
-		List<WebElement> rows=driver.findElements(By.xpath("//tbody//tr"));
-		for(WebElement row:rows)
-		{
-			if(row.getText().equals(systemNames))
-			{
-				click(driver,row.findElement(By.xpath(".//img[contains(@class,'edit_systemdata')]")));
 
-				System.out.println(systemNames+"  Record Successfully Click ");
+	public UserSetupPage editSystemNames(String systemNames) {
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody//tr"));
+		for (WebElement row : rows) {
+			if (row.getText().equals(systemNames)) {
+				click(driver, row.findElement(By.xpath(".//img[contains(@class,'edit_systemdata')]")));
+
+				System.out.println(systemNames + "  Record Successfully Click ");
 
 				break;
 			}
 		}
-
 		return this;
 	}
 
-	public UserSetupPage editSystemNameWithInvalidInputs(String systemNamesRecord,String editSystemNames)
-	{
+	public UserSetupPage editSystemNameWithInvalidInputs(String systemNamesRecord, String editSystemNames) {
 		navigateWithinUserSetup(systemNames);
 		editSystemNames(systemNamesRecord);
-		sendKeys(systemNameInputField,editSystemNames);
+		sendKeys(systemNameInputField, editSystemNames);
 		userUpdate.click();
 		unWait(1);
 		assertFalse(continueButton.isDisplayed());
-		if(continueButton.isDisplayed()){
-			jsClick(driver,continueButton);
+		if (continueButton.isDisplayed()) {
+			jsClick(continueButton);
 		}
 		return this;
 	}
+
+	@FindBy(xpath = "//td[1]")
+	WebElement stageFilterUserName;
+	public UserSetupPage StagesFilter(String userName){
+		jsClick(stageFilters);
+		searchBox.sendKeys(userName);
+		searchButton.click();
+		assert stageFilterUserName.getText().equals(userName);
+
+		return this;
+	}
+
+	@FindBy(xpath = "//td[10]")
+	List<WebElement> roles;
+	public UserSetupPage searchRole(String role){
+		jsClick(stageFilters);
+		selectByVisibleText(roleDropdown,role);
+		searchButton.click();
+		assert roles.get(0).getText().equals(role);
+		return this;
+	}
+
+	@FindBy(xpath = "//td[11]")
+	List<WebElement> superiorName;
+	public UserSetupPage superiorName(String role){
+
+		selectByVisibleText(superiorDropdown,role);
+		searchButton.click();
+		assertEquals(role, superiorName.get(0).getText() );
+		return this;
+	}
+
+	@FindBy(xpath = "//td[5]")
+	List<WebElement> status;
+	public UserSetupPage status(String role){
+		jsClick(stageFilters);
+		selectByVisibleText(statusDropdown,role);
+		searchButton.click();
+		assertEquals(role, status.get(0).getText() );
+		return this;
+	}
+
+	public UserSetupPage dropdownSearch(String role,String superiorRole,String statusRole){
+		jsClick(stageFilters);
+		selectByVisibleText(roleDropdown,role);
+		selectByVisibleText(superiorDropdown,superiorRole);
+		selectByVisibleText(statusDropdown,statusRole);
+
+		searchButton.click();
+
+		softAssert.assertEquals(role, roles.get(0).getText());
+		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
+		softAssert.assertEquals(statusRole, status.get(0).getText() );
+		softAssert.assertAll();
+		return this;
+	}
+
+	@FindBy(xpath = "//td[9]")
+	WebElement stageName;
+
+	@FindBy(xpath = "//td[8]")
+	WebElement subSubProcess;
+
+	@FindBy(xpath = "//td[7]")
+	WebElement subProcess;
+
+	@FindBy(xpath = "//td[6]")
+	WebElement process;
+
+	public UserSetupPage searchProcess(String processValue,String subProcessValue,String subSubProcessValue,String stageValue){
+
+		jsClick(stageFilters);
+
+		selectByVisibleText(searchProcessDropdown,processValue);
+		selectByVisibleText(searchSubProcessDropdown,subProcessValue);
+		selectByVisibleText(searchSubSubProcessDropdown,subSubProcessValue);
+		selectByVisibleText(stageDropdown,stageValue);
+
+		searchButton.click();
+
+		softAssert.assertEquals(process.getText(),processValue);
+		softAssert.assertEquals(subProcess.getText(),subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(),stageValue);
+
+
+		softAssert.assertAll();
+		return this;
+	}
+
+	public UserSetupPage stageWithFilters(String userName,String superiorRole,
+										  String statusRole,String processValue,String subProcessValue,
+										  String subSubProcessValue,String stageValue){
+		navigateWithinUserSetup(userManagement);
+		jsClick(stageFilters);
+
+
+		softAssert.assertEquals(userName, stageFilterUserName.getText());
+
+		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
+		softAssert.assertEquals(statusRole, status.get(0).getText() );
+
+		softAssert.assertEquals(process.getText(),processValue);
+		softAssert.assertEquals(subProcess.getText(),subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(),stageValue);
+
+
+		softAssert.assertAll();
+
+		return this;
+	}
+
+
+
+	@FindBy(xpath = "//a[text()='Export']")
+	WebElement exportButton;
+
+	public UserSetupPage testExport(String userName) {
+		jsClick(stageFilters);
+		searchBox.sendKeys(userName);
+		searchButton.click();
+
+		// Click the export button to download the Excel file
+		exportButton.click();
+
+		// Locate the most recent Excel file in the Downloads folder
+		File downloadedFile = waitForDownloadedFile("xlsx");
+
+		// Retrieve all records from CRM table
+		List<List<String>> crmData = new ArrayList<>();
+		List<WebElement> rows = driver.findElements(By.xpath("//table//tr")); // Locate rows within table
+		for (WebElement row : rows) {
+			List<String> rowData = new ArrayList<>();
+			List<WebElement> cells = row.findElements(By.xpath(".//td")); // Locate cells within each row
+			for (WebElement cell : cells) {
+				rowData.add(cell.getText());
+			}
+			crmData.add(rowData);
+		}
+
+		// Read Excel file and compare data
+		try (FileInputStream fis = new FileInputStream(downloadedFile);
+			 Workbook workbook = WorkbookFactory.create(fis)) {
+
+			Sheet sheet = workbook.getSheetAt(0);
+			List<List<String>> excelData = new ArrayList<>();
+
+			for (Row row : sheet) {
+				List<String> rowData = new ArrayList<>();
+				row.forEach(cell -> rowData.add(cell.toString()));
+				excelData.add(rowData);
+			}
+
+			// Compare CRM data and Excel data
+			assert crmData.equals(excelData) : "Data mismatch between CRM table and exported Excel file!";
+			System.out.println("All records match between CRM and Excel file.");
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to read Excel file", e);
+		}
+		return this;
+	}
+
+	// Method to get the most recently downloaded .xlsx file in the Downloads folder
+	private static File waitForDownloadedFile(String extension) {
+		String downloadPath = Paths.get(System.getProperty("user.home"), "Downloads").toString();
+		File dir = new File(downloadPath);
+
+		// Wait until file is downloaded
+		File[] files;
+		do {
+			files = dir.listFiles((d, name) -> name.toLowerCase().endsWith("." + extension));
+			if (files != null && files.length > 0) {
+				Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+				return files[0]; // Return the most recently modified file
+			}
+			try {
+				Thread.sleep(1000); // Pause to allow file to complete download
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw new RuntimeException("File download interrupted", e);
+			}
+		} while (files == null || files.length == 0);
+
+		throw new RuntimeException("Downloaded file not found.");
+	}
+
 
 
 

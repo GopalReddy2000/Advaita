@@ -339,8 +339,8 @@ public class SkipReason extends TestBase {
 		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
 //		alchemySidemenubar.click();
 //		alchemySidemenubar.click();
-		jsClick(driver, alchemySidemenubar);
-		jsClick(driver, alchemySidemenubar);
+		jsClick(alchemySidemenubar);
+		jsClick(alchemySidemenubar);
 
 	}
 
@@ -560,7 +560,7 @@ public class SkipReason extends TestBase {
 
 		assertEquals(lastCreatedSkipReasonText, reasonNameTextfieldAttributeValue,
 				"reasontextvield value not equal with created skipreasons");
-		jsClick(driver, lastCreated_skipReason);
+		jsClick(lastCreated_skipReason);
 
 	}
 
@@ -858,7 +858,7 @@ public class SkipReason extends TestBase {
 
 		assertTrue(lastEdit_skipReason.isDisplayed(), "lastEdit_skipReason is not displayed");
 		// lastEdit_skipReason.click();
-		jsClick(driver, lastEdit_skipReason);
+		jsClick(lastEdit_skipReason);
 
 		wait.until(ExpectedConditions.visibilityOf(verify_EditSkipReason));
 		assertTrue(verify_EditSkipReason.isDisplayed(), "verify_EditSkipReason is not displayed");
@@ -937,7 +937,7 @@ public class SkipReason extends TestBase {
 		// Cancel Edit page
 		assertTrue(lastEdit_skipReason.isDisplayed(), "lastEdit_skipReason is not displayed");
 		// lastEdit_skipReason.click();
-		jsClick(driver, lastEdit_skipReason);
+		jsClick(lastEdit_skipReason);
 
 		wait.until(ExpectedConditions.visibilityOf(verify_EditSkipReason));
 		assertTrue(verify_EditSkipReason.isDisplayed(), "verify_EditSkipReason is not displayed");
@@ -959,7 +959,7 @@ public class SkipReason extends TestBase {
 
 		assertTrue(lastDleteButton_SkipReasonTable.isDisplayed(), "lastDleteButton_SkipReasonTable is not displayed");
 		// lastDleteButton_SkipReasonTable.click();
-		jsClick(driver, lastDleteButton_SkipReasonTable);
+		jsClick(lastDleteButton_SkipReasonTable);
 
 		wait.until(ExpectedConditions.visibilityOf(deletePopup));
 		assertTrue(deletePopup.isDisplayed(), "deletePopup is not displayed");
@@ -972,7 +972,7 @@ public class SkipReason extends TestBase {
 	public void Delete_SkipReasons() {
 		assertTrue(lastDleteButton_SkipReasonTable.isDisplayed(), "lastDleteButton_SkipReasonTable is not displayed");
 		// lastDleteButton_SkipReasonTable.click();
-		jsClick(driver, lastDleteButton_SkipReasonTable);
+		jsClick(lastDleteButton_SkipReasonTable);
 
 		assertTrue(deletePopup.isDisplayed(), "deletePopup is not displayed");
 		assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete i snot displayed");

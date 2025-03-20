@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -28,6 +30,7 @@ import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.Pagination;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
 
 import Advaita_TDD.Advaita_TDD.DynamicXpath;
@@ -44,6 +47,12 @@ public class MastersFieldSets extends TestBase {
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
+
+	@FindBy(xpath = "//button[normalize-space()='Cancel']")
+	public static WebElement cancelButton;
+
+	@FindBy(xpath = "//button[normalize-space()='Save']")
+	public static WebElement saveButton;
 
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
 	public WebElement masterTabElement;
@@ -354,9 +363,9 @@ public class MastersFieldSets extends TestBase {
 				assertTrue(typeElement.isDisplayed());
 				ClickUtilities.jsClick(driver, typeElement);
 
-				jsClick(driver, requiredToggleButton);
+				jsClick(requiredToggleButton);
 
-				jsClick(driver, escalatedFieldToggleButton);
+				jsClick(escalatedFieldToggleButton);
 
 				Select dropDownSelect = new Select(measurableParameterDropDown);
 
@@ -379,7 +388,7 @@ public class MastersFieldSets extends TestBase {
 //				#####################################################################################################################################
 
 //				assertTrue(driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")).isDisplayed());
-				jsClick(driver, driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")));
+				jsClick(driver.findElement(By.xpath("(//input[@name='ans_option_1_1_1'])[1]")));
 
 				assertTrue(minLengthField.isDisplayed(), "minLengthField is not displayed.");
 				minLengthField.clear();
@@ -441,7 +450,7 @@ public class MastersFieldSets extends TestBase {
 //				
 //				 assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedBeforeToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 
-				jsClick(driver, allowSpCharToggleButton);
+				jsClick(allowSpCharToggleButton);
 //				// Expected toggled background color
 //		        String expectedToggledBackgroundColor = "rgba(43, 197, 84, 1)"; // #28C554 in RGBA
 
@@ -452,7 +461,7 @@ public class MastersFieldSets extends TestBase {
 ////		        // Verify the CSS properties have changed
 //		        assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 ////				
-				jsClick(driver, allowSpCharToggleButton);
+				jsClick(allowSpCharToggleButton);
 
 				Thread.sleep(200);
 				System.out.println(
@@ -527,9 +536,9 @@ public class MastersFieldSets extends TestBase {
 				valueTypeDropDown.selectByVisibleText("All");
 //				valueTypeDropDown.selectByVisibleText("Only Number");
 
-				jsClick(driver, shortAnswerAllowSpCharToggleButton);
+				jsClick(shortAnswerAllowSpCharToggleButton);
 				Thread.sleep(500);
-				jsClick(driver, shortAnswerAllowSpCharToggleButton);
+				jsClick(shortAnswerAllowSpCharToggleButton);
 
 			}
 			if (i == 3) {
@@ -986,7 +995,7 @@ public class MastersFieldSets extends TestBase {
 //		 assertEquals(allowSpCharToggleButton.getCssValue("background-color"), expectedBeforeToggledBackgroundColor, "The background color did not change to the expected toggled state.");
 
 		Thread.sleep(200);
-		jsClick(driver, isConditionalToggleButton);
+		jsClick(isConditionalToggleButton);
 
 	}
 
@@ -1437,7 +1446,7 @@ public class MastersFieldSets extends TestBase {
 						+ "/following::div[@class='addquestion-padding add_option_btn question_add_option']/a[contains(@class, 'add-text')])[1]";
 //				ClickUtilities.clickWithRetry(driver.findElement(By.xpath(xpathAdd)), 3);
 				js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathAdd)));
-				jsClick(driver, driver.findElement(By.xpath(xpathAdd)));
+				jsClick(driver.findElement(By.xpath(xpathAdd)));
 			}
 
 			// Input the option text
@@ -1572,7 +1581,7 @@ public class MastersFieldSets extends TestBase {
 	public MastersFieldSets addSection() throws Throwable {
 
 		js.executeScript("arguments[0].scrollIntoView(true);", addSectionButton);
-		jsClick(driver, addSectionButton);
+		jsClick(addSectionButton);
 
 		return this;
 	}
@@ -1584,106 +1593,89 @@ public class MastersFieldSets extends TestBase {
 
 //	###########################################################################################################
 
-//	public MastersFieldSets addMultipleQuestions(int sectionIndex, List<Integer> questionTypes, int numberOfQuestions,
+//	public MastersFieldSets addMultipleQuestions(int sectionCount, List<Integer> questionTypes, int numberOfQuestions,
 //			boolean randomizeQuestions) throws Throwable {
-//
-//		// Shuffle question indices if randomizeOrder is true
-//		List<Integer> questionOrder = new ArrayList<>();
-//		for (int i = 0; i < numberOfQuestions; i++) {
-//			questionOrder.add(i);
-//		}
-//
-//		// Loop through each question up to the specified number of questions
-//		for (int i = 0; i < numberOfQuestions; i++) {
-//			int questionIndex = questionOrder.get(i);
-//
-//			// For subsequent questions (after the first), click the "Add Question" button
-//			if (i > 0) {
-//				String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
-//						+ sectionIndex + "]";
-//				WebElement addQuestionButton = wait
-//						.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
-//				jsClick(driver, addQuestionButton);
-//				Thread.sleep(500); // Adding a small delay to ensure the UI is updated
+//		
+//		// Loop to handle questions for each section
+//		for (int sectionIndex = 1; sectionIndex <= sectionCount; sectionIndex++) {
+//			
+//			// Add section if it's beyond the default section (first one)
+//			if (sectionIndex > 1) {
+//				addSection(); // Dynamically add new sections starting from section 2
 //			}
-//
-//			// Determine the question type for the current question based on cyclic pattern
-//			int questionType = questionTypes.get(questionIndex % questionTypes.size());
-//
-//			// Generate question and inputs dynamically based on the question type
-//			Map.Entry<String, String[]> questionAndInputs;
-//			if (questionType == TEXT_BOX) {
-//				questionAndInputs = Questions.generateGenuineTextBoxQuestionAndInputs(questionIndex,
-//						randomizeQuestions);
-//
-//			} else if (questionType == SHORT_ANSWER) {
-//				questionAndInputs = Questions.generateGenuineShortAnswerQuestionAndInputs(questionIndex,
-//						randomizeQuestions);
-//
-//			} else if (questionType == DATE) {
-//				questionAndInputs = Questions.generateGenuineDateQuestion(questionIndex, randomizeQuestions);
-//			} else if (questionType == TIME) {
-//				questionAndInputs = Questions.generateGenuineTimeQuestion(questionIndex, randomizeQuestions);
-//			} else if (questionType == LABEL) {
-//				questionAndInputs = Questions.generateGenuineLabelQuestion(questionIndex, randomizeQuestions);
-//
-//			} else if (questionType == DROP_DOWN || questionType == RELATIVE_DROP_DOWN || questionType == RADIO_BUTTON
-//					|| questionType == RELATIVE_MULTISELECT) {
-//				// Generate genuine drop-down question and options
-//				Map.Entry<String, List<String>> questionAndOptions = Questions
-//						.generateGenuineQuestionAndOptionsForDropDown(questionIndex, randomizeQuestions);
-//				questionAndInputs = new AbstractMap.SimpleEntry<>(questionAndOptions.getKey(),
-//						questionAndOptions.getValue().toArray(new String[0]));
-//			} else {
-//				throw new IllegalArgumentException("Unexpected question type: " + questionType);
+//			
+//			// Shuffle question indices if randomizeQuestions is true
+//			List<Integer> questionOrder = new ArrayList<>();
+//			for (int i = 0; i < numberOfQuestions; i++) {
+//				questionOrder.add(i);
 //			}
-//
-//			String question = questionAndInputs.getKey();
-//			String[] inputs = questionAndInputs.getValue();
-//
-//			// Construct XPath for the question text field and locate the element
-//			String baseXPath = "//div[h5[contains(text(), 'Question " + (i + 1) + "')]]";
-//			String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + (i + 1)
-//					+ "']";
-//			WebElement questionFields = driver.findElement(By.xpath(xpathQuestionTextField));
-//
-//			// Send the generated question to the input field
-//			questionFields.sendKeys(question);
-//
-//			// Construct XPath for the question type and click on it
-//			String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
-//					+ sectionIndex + "_" + (i + 1) + "']/following-sibling::div[" + questionType + "]//h6";
-//			ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
-//
-//			// Handle specific question types
-//			switch (questionType) {
-//			case TEXT_BOX:
-//				handleTextBoxQuestion(sectionIndex, i, questionType, inputs[0], inputs[1], inputs[2],
-//						new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
-//				break;
-//			case SHORT_ANSWER:
-//				handleShortAnswerQuestion(sectionIndex, i, questionType, inputs[0], inputs[1], inputs[2],
-//						new String[] { "All", "Only Text", "Only Number" }, inputs[3]);
-//				break;
-//			case DATE:
-//			case TIME:
-//			case LABEL:
-//				handleLabel_Date_TimeQuestion(sectionIndex, i, "100");
-//				break;
-//			case DROP_DOWN:
-//			case RELATIVE_DROP_DOWN:
-//			case RADIO_BUTTON:
-//				List<String> optionsRADIO_BUTTON = Arrays.asList(inputs); // Use genuine options
-//				addOptionsToRadioButton(sectionIndex, i, optionsRADIO_BUTTON);
-//				break;
-//			case MULTIPLE_CHOICE:
-//				List<String> options = Arrays.asList(inputs); // Use genuine options
-//				addOptionsToDropdown(sectionIndex, i, options);
-//				break;
-//			default:
-//				throw new IllegalArgumentException("Unexpected question type: " + questionType);
+//			
+//			// Optionally shuffle the question order
+//			if (randomizeQuestions) {
+//				Collections.shuffle(questionOrder);
+//			}
+//			
+//			// Loop through each question to add them to the current section
+//			for (int i = 0; i < numberOfQuestions; i++) {
+//				int questionIndex = questionOrder.get(i);
+//				
+//				// For subsequent questions (after the first), click the "Add Question" button
+//				if (i > 0) {
+//					String addQuestionXpath = "(//img[@alt='plusicon']/..//a[@class='add-text'][normalize-space()='Add Question'])["
+//							+ sectionIndex + "]";
+//					WebElement addQuestionButton = wait
+//							.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
+//					jsClick(addQuestionButton);
+//					Thread.sleep(500); // Small delay to ensure the UI is updated
+//				}
+//				
+//				// Determine the question type for the current question based on cyclic pattern
+//				int questionType = questionTypes.get(questionIndex % questionTypes.size());
+//				
+//				// Generate question and inputs dynamically based on the question type
+//				Map.Entry<String, String[]> questionAndInputs = generateQuestionAndInputs(questionType, questionIndex,
+//						randomizeQuestions);
+//				
+//				String question = questionAndInputs.getKey();
+//				String[] inputs = questionAndInputs.getValue();
+//				
+//				// Construct XPath for the question text field and locate the element
+//				// dynamically
+//				String baseXPath = "//div[h5[contains(text(), 'Question " + (i + 1) + "')]]";
+//				String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + (i + 1)
+//						+ "']";
+//				WebElement questionField = driver.findElement(By.xpath(xpathQuestionTextField));
+//				
+//				
+//				// Send the generated question to the input field
+//				questionField.sendKeys(question);
+//				
+//				PropertieFileUtil.clearFile();
+//				// ✅ Store the question for later validation
+//				
+//				
+//				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1), question);
+//				
+//				// If the question has options (DropDown, MultiChoice, etc.), store them too
+//				if (questionType == DROP_DOWN || questionType == MULTIPLE_CHOICE || questionType == RADIO_BUTTON
+//						|| questionType == RELATIVE_DROP_DOWN || questionType == RELATIVE_MULTISELECT) {
+//					PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_options",
+//							String.join(",", inputs));
+//				}
+//				
+//				// Construct XPath for the question type and click on it
+//				String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+//						+ sectionIndex + "_" + (i + 1) + "']/following-sibling::div[" + questionType + "]//h6";
+//				ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+//				
+//				// Handle specific question types
+//				handleQuestionType(sectionIndex, i, questionType, inputs);
 //			}
 //		}
+//		
+//		// ✅ Save all stored questions to file after the loop is complete
+//		PropertieFileUtil.saveToFile();
+//		
 //		return this;
 //	}
 
@@ -1719,12 +1711,13 @@ public class MastersFieldSets extends TestBase {
 							+ sectionIndex + "]";
 					WebElement addQuestionButton = wait
 							.until(ExpectedConditions.elementToBeClickable(By.xpath(addQuestionXpath)));
-					jsClick(driver, addQuestionButton);
+					jsClick(addQuestionButton);
 					Thread.sleep(500); // Small delay to ensure the UI is updated
 				}
 
 				// Determine the question type for the current question based on cyclic pattern
 				int questionType = questionTypes.get(questionIndex % questionTypes.size());
+				String questionTypeName = getQuestionTypeName(questionType);
 
 				// Generate question and inputs dynamically based on the question type
 				Map.Entry<String, String[]> questionAndInputs = generateQuestionAndInputs(questionType, questionIndex,
@@ -1743,6 +1736,19 @@ public class MastersFieldSets extends TestBase {
 				// Send the generated question to the input field
 				questionField.sendKeys(question);
 
+				// ✅ Store the question for later validation
+				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1), question);
+
+				// ✅ Store the question type
+				PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_type", questionTypeName);
+
+				// If the question has options (DropDown, MultiChoice, etc.), store them too
+				if (questionType == DROP_DOWN || questionType == MULTIPLE_CHOICE || questionType == RADIO_BUTTON
+						|| questionType == RELATIVE_DROP_DOWN || questionType == RELATIVE_MULTISELECT) {
+					PropertieFileUtil.saveQuestion("question_" + sectionIndex + "_" + (i + 1) + "_options",
+							String.join(",", inputs));
+				}
+
 				// Construct XPath for the question type and click on it
 				String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
 						+ sectionIndex + "_" + (i + 1) + "']/following-sibling::div[" + questionType + "]//h6";
@@ -1753,7 +1759,43 @@ public class MastersFieldSets extends TestBase {
 			}
 		}
 
+		// ✅ Save all stored questions to file after the loop is complete
+		PropertieFileUtil.saveToFile();
+		
+		unWait(1);
+		MasterFormPage.loadStoredQuestions();
+
 		return this;
+	}
+
+	// Convert question type int to readable string
+	private String getQuestionTypeName(int questionType) {
+		switch (questionType) {
+		case LABEL:
+			return "LABEL";
+		case DROP_DOWN:
+			return "DROP_DOWN";
+		case DATE:
+			return "DATE";
+		case TIME:
+			return "DATE";
+		case FILE_UPLOAD:
+			return "FILE_UPLOAD";
+		case TEXT_BOX:
+			return "TEXT_BOX";
+		case SHORT_ANSWER:
+			return "SHORT_ANSWER";
+		case MULTIPLE_CHOICE:
+			return "MULTIPLE_CHOICE";
+		case RADIO_BUTTON:
+			return "RADIO_BUTTON";
+		case RELATIVE_DROP_DOWN:
+			return "RELATIVE_DROP_DOWN";
+		case RELATIVE_MULTISELECT:
+			return "RELATIVE_MULTISELECT";
+		default:
+			return "UNKNOWN";
+		}
 	}
 
 	private Map.Entry<String, String[]> generateQuestionAndInputs(int questionType, int questionIndex,
@@ -1808,13 +1850,13 @@ public class MastersFieldSets extends TestBase {
 			handleFileUploadQuestion(sectionIndex, questionIndex);
 			break;
 
-		case RELATIVE_DROP_DOWN:
 		case RADIO_BUTTON:
 			List<String> optionsRadioButton = Arrays.asList(inputs);
 			addOptionsToRadioButton(sectionIndex, questionIndex, optionsRadioButton);
 			break;
 		case MULTIPLE_CHOICE:
 		case DROP_DOWN:
+		case RELATIVE_DROP_DOWN:
 			List<String> MCoptions = Arrays.asList(inputs);
 			addOptionsToDropdown(sectionIndex, questionIndex, MCoptions);
 			break;
@@ -1838,7 +1880,7 @@ public class MastersFieldSets extends TestBase {
 
 		wait.until(ExpectedConditions
 				.elementToBeClickable(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1)));
-		jsClick(driver, DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1));
+		jsClick(DynamicXpath.questionTypeOptions(sectionIndex, questionIndex + 1, 1));
 
 		// Set minLength and maxLength for Text Box
 		SendDataUtils.clearAndSendKeys(DynamicXpath.minLength(sectionIndex, questionIndex + 1), minLength);
@@ -2004,6 +2046,82 @@ public class MastersFieldSets extends TestBase {
 		}
 		
 		
+	}
+
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+	public static boolean isElementNotVisible(WebDriver driver, WebElement element) {
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+		try {
+			return !element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			// Element is not present in the DOM
+			return true;
+		}
+	}
+
+	public MastersFieldSets checkCancelButton() throws Throwable {
+
+		assertTrue(createMasterFieldSetPage.isDisplayed(), "Create Master Field Set is not displayed.");
+
+		ClickUtilities.clickWithDisplayedOrNot(cancelButton);
+
+		isElementNotVisible(driver, createMasterFieldSetPage);
+
+		return this;
+	}
+
+	public MastersFieldSets questionSetFieldTest(String questionSet) throws Throwable {
+
+		// Set the question set name
+		String questionSetNameString1 = questionSet;
+		verifyEnterQuestionSetName(questionSetNameString1);
+
+		click(driver, saveButton);
+
+		assertTrue(driver.findElement(By.xpath("//label[@class='error'][normalize-space()='This field is required.']"))
+				.isDisplayed(), "Error Massage is not Displayed.");
+
+		assertTrue(createMasterFieldSetPage.isDisplayed(), "Create Master Field Set Page is not Displayed.");
+
+		return this;
+	}
+
+	public MastersFieldSets saveMasterFieldSet() {
+
+		click(driver, saveButton);
+
+		assertTrue(!driver.findElement(By.xpath("//label[@class='error'][normalize-space()='This field is required.']"))
+				.isDisplayed(), "Error Massage is Displayed.");
+
+//		assertTrue(createMasterFieldSetPage.isDisplayed(), "Create Master Field Set Page is not Displayed.");
+
+		return this;
+	}
+
+	public MastersFieldSets questionField(String sectionIndex, String qNo, String question, String questionType) {
+
+		// dynamically
+		String baseXPath = "//div[h5[contains(text(), 'Question " + qNo + "')]]";
+		String xpathQuestionTextField = baseXPath + "//input[@name='question_" + sectionIndex + "_" + qNo + "']";
+		WebElement questionField = driver.findElement(By.xpath(xpathQuestionTextField));
+
+		// Send the generated question to the input field
+		questionField.sendKeys(question);
+
+		// Construct XPath for the question type and click on it
+		String xpathForQuestionType = "//label[normalize-space()='SELECT QUESTION TYPE']/..//input[@name='question_type_"
+				+ sectionIndex + "_" + qNo + "']/following-sibling::div[" + questionType + "]//h6";
+		ClickUtilities.jsClick(driver, driver.findElement(By.xpath(xpathForQuestionType)));
+
+//		CommonUtils.scrollToElementByJS(DynamicXpath.QuestionMaxLength(Integer.parseInt(sectionIndex), Integer.parseInt(qNo)));
+		DynamicXpath.QuestionMaxLength(Integer.parseInt(sectionIndex), Integer.parseInt(qNo)).sendKeys("100");
+		;
+
+		return this;
 	}
 
 }

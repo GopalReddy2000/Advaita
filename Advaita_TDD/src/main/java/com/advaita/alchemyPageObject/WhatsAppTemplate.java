@@ -586,7 +586,7 @@ public class WhatsAppTemplate extends TestBase // Create_Class and extend base c
 	public void navigateto_WhatsAppTemplateTab() {
 
 		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/whatsapp_template_listing/");
-		jsClick(driver, whatsAppTemplate_Tab);
+		jsClick(whatsAppTemplate_Tab);
 		assertTrue(whatsAppTemplateText.isDisplayed(), " whatsApp TemplateText is not displayed");
 	}
 

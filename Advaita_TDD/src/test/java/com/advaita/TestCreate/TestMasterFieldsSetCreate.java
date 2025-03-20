@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
@@ -23,7 +24,6 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.dockerjava.core.command.CreateContainerCmdImpl.NetworkingConfig;
 import com.github.javafaker.Faker;
 
 public class TestMasterFieldsSetCreate extends TestBase {
@@ -72,7 +72,7 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet = new MastersFieldSets();
 
 	}
-	
+
 	HomePage hp = new HomePage();
 
 	@Test(priority = 1)
@@ -245,19 +245,61 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyFieldSetCreateButton();
 		// Set the question set name
 		String questionSetNameString = "Test Question";
+		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
 
-		int sectionCount = 1;
-		int numberOfQuestion = 2;
+		int sectionCount = 3;
+		int numberOfQuestion = 4;
 		boolean fieldSetQuestionRandom = true;
 		List<Integer> selectedQuestionTypes = QuestionSelector.selectQuestionTypes(fieldSetQuestionRandom,
-				numberOfQuestion, MastersFieldSets.DATE,MastersFieldSets.TIME);
+				numberOfQuestion, MastersFieldSets.RELATIVE_DROP_DOWN, MastersFieldSets.TIME);
 		// Now, add multiple questions to section 1 based on the selected types
 		boolean defineQuestionRandom = true;
 		masterFieldSet.addMultipleQuestions(sectionCount, selectedQuestionTypes, numberOfQuestion,
 				defineQuestionRandom);
+	}
+
+//	############################## Negative Scripts ###################################
+
+	@Test(priority = 18)
+	public void verifyquestionSetFieldFieldSetQuestions() throws Throwable {
+
+		// Create the test in ExtentReports
+		test = reports.createTest("verifyAddMultipleFieldSetQuestions");
+
+		verifyTabsForFieldSetCreate();
+		verifyFieldSetCreateButton();
+		masterFieldSet.checkCancelButton();
+		verifyFieldSetCreateButton();
+		masterFieldSet.questionSetFieldTest(" ");
+
+	}
+
+	@Test(priority = 19)
+	public void verifyQuestionField() throws Throwable {
+
+		// Create the test in ExtentReports
+		test = reports.createTest("verifyQuestionField");
+
+		verifyTabsForFieldSetCreate();
+		verifyFieldSetCreateButton();
+		masterFieldSet.questionSetFieldTest(" ");
+		masterFieldSet.questionField("1", "1", "Test Question", "10").saveMasterFieldSet();
+
+	}
+	@Test(priority = 20)
+	public void verifySections() throws Throwable {
+		
+		// Create the test in ExtentReports
+		test = reports.createTest("verifySections");
+		
+		verifyTabsForFieldSetCreate();
+		verifyFieldSetCreateButton();
+		masterFieldSet.questionSetFieldTest(" ");
+		
 	}
 
 	@AfterMethod

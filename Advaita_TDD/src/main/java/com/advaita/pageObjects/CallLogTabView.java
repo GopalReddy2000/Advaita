@@ -38,7 +38,7 @@ public class CallLogTabView extends TestBase {
         insuranceStage.click();
 
         try{
-            jsClick(driver,recordEyeButton.get(recordEyeButton.size() -1));
+            jsClick(recordEyeButton.get(recordEyeButton.size() -1));
             backButton.click();
 
         }catch (NoSuchElementException e)

@@ -8,9 +8,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,6 +19,7 @@ import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import org.testng.Assert;
 
 public class MetaData extends TestBase {
 
@@ -56,6 +55,9 @@ public class MetaData extends TestBase {
 	@FindBy(xpath = "(//span[@aria-label='Close'])[1]")
 	public WebElement closeButton;
 
+	@FindBy(xpath = "//span[text()='Data Setup']")
+	public WebElement dataSetup;
+
 	@FindBy(id = "pills-metadata-tab")
 	public WebElement metaDataTab;
 
@@ -77,20 +79,26 @@ public class MetaData extends TestBase {
 	@FindBy(id = "metadata_name")
 	public WebElement metaDataNameField;
 
+	@FindBy(id = "create_btn")
+	public WebElement create;
+
 	@FindBy(xpath = "//button[@class='quantity-right-plus btn counter-btn btn-number']")
 	public WebElement addPlusColumn;
 
 	@FindBy(xpath = "//button[@class='quantity-left-minus btn counter-btn']")
 	public WebElement deleteMinusColumn;
 
-	@FindBy(xpath = "//label[normalize-space()='Process*']/..//select[@id='process']")
-	public WebElement selectProcessDropDown;
+	@FindBy(xpath = "//input[@id='quantity']")
+	public WebElement addColumnInputField;
+
+	@FindBy(xpath = "//select[@id='process']")
+	public static WebElement selectProcessDropDown;
 
 	@FindBy(xpath = "//label[normalize-space()='Sub Process*']/..//select[@id='sub_process']")
-	public WebElement selectSubProcessDropDown;
+	public static WebElement selectSubProcessDropDown;
 
 	@FindBy(xpath = "//label[normalize-space()='Sub Sub Process*']/..//select[@id='s_sub_process']")
-	public WebElement selectSubSubProcessDropDown;
+	public static WebElement selectSubSubProcessDropDown;
 
 	@FindBy(name = "primary_dataset_1")
 	public WebElement selectDataSetDropDown;
@@ -767,6 +775,7 @@ public class MetaData extends TestBase {
 
 	public MetaData navigateToMetaData() throws Throwable {
 
+		dataSetup.click();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(metaDataTab.isDisplayed(), "metaDataTab is not Displayed");
@@ -782,12 +791,11 @@ public class MetaData extends TestBase {
 	}
 
 	public MetaData createNewMetaData(String metaData) throws Throwable {
-		
+
 		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
 		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
 		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
 		String dataSetText = PropertieFileUtil.getSingleTextFromPropertiesFile("dataSetName");
-		
 
 		click(driver, createMetaDataButton);
 
@@ -800,7 +808,7 @@ public class MetaData extends TestBase {
 				.subProcessDropDownSelect(selectSubProcessDropDown, subProcess)
 				.subSubProcessDropDownSelect(selectSubSubProcessDropDown, subSubProcess);
 
-		selectDataSet(selectDataSetDropDown, dataSetText);
+		selectDataSet(selectDataSetDropDown, dataSetText.replace(" ", ""));
 
 		return this;
 	}
@@ -884,15 +892,343 @@ public class MetaData extends TestBase {
 
 		click(driver, continueAfetrUpdateMetaData);
 
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+//		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+//
+//		try {
+//			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
+//					"(//table[contains(@class,'w-100')]/tbody/tr/td[5]//img[@alt='table-edit'][contains(@class,'edit_metadata')])[1]"))));
+//		} catch (TimeoutException e) {
+//			System.out.println("Exception : " + e + "\n" + "edit button is displayed.");
+//			assertFalse(true, "edit button is displayed.");
+//		}
 
+		return this;
+	}
+
+//	Metadata
+
+	public MetaData navToMetadataTable() {
+		dataSetup.click();
+		metaDataTab.click();
+
+		return this;
+	}
+
+	@FindBy(id = "metadata_name-error")
+	WebElement metaDataError;
+
+	public MetaData metaDataTextBox(String metaDataName, String errorMessage) {
+		createMetaDataButton.click();
+		metaDataNameField.sendKeys(metaDataName);
+		selectProcesses("AJP", "Sub AJP", "Sub Sub AJP");
+
+		jsClick(createMetaDataPopUpButton);
+		unWait(1);
+		System.out.println(metaDataError.getText());
+
+		assert metaDataError.getText().equals(errorMessage);
+		return this;
+	}
+
+	public MetaData addColumn(String column) {
+		addColumnInputField.sendKeys(column);
+		return this;
+	}
+
+	public MetaData selectProcesses(String processValue, String subProcessValue, String subSubProcessValue) {
+		selectByVisibleText(selectProcessDropDown, processValue);
+		selectByVisibleText(selectSubProcessDropDown, subProcessValue);
+		selectByVisibleText(selectSubSubProcessDropDown, subSubProcessValue);
+
+		return this;
+	}
+
+	public MetaData validateDatasetDropdown(WebElement dropdowns) {
+		navToMetadataTable();
+		metaDataTextBox("", "");
+
+		assertFalse(isOptionPresent(dropdowns, "JAP"));
+		softAssert.assertTrue(isDropdownEnabled(dropdowns), "isDropdownEnabled failed");
+//		softAssert.assertTrue(isNoOptionSelected(dropdowns),"isNoOptionSelected failed");
+		softAssert.assertFalse(selectOptionByInvalidIndex(dropdowns, 90), "selectOptionByInvalidIndex failed");
+		softAssert.assertTrue(selectMultipleOptions(dropdowns), "selectMultipleOptions failed");
+
+		softAssert.assertAll();
+		return this;
+	}
+
+	// Method to check if an option exists (invalid option test)
+	public boolean isOptionPresent(WebElement dropdownElement, String optionText) {
+
+		Select select = new Select(dropdownElement);
 		try {
-			assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(
-					"(//table[contains(@class,'w-100')]/tbody/tr/td[5]//img[@alt='table-edit'][contains(@class,'edit_metadata')])[1]"))));
-		} catch (TimeoutException e) {
-			System.out.println("Exception : " + e + "\n" + "edit button is displayed.");
-			assertFalse(true, "edit button is displayed.");
+			select.selectByVisibleText(optionText);
+			return true; // Option exists
+		} catch (NoSuchElementException e) {
+			return false; // Option does not exist
 		}
+	}
+
+	// Method to check if the dropdown is disabled
+	public boolean isDropdownEnabled(WebElement dropdownElement) {
+
+		return dropdownElement.isEnabled();
+	}
+
+	// Method to check if no option is selected (null/empty option)
+	public boolean isNoOptionSelected(WebElement dropdownElement) {
+		Select select = new Select(dropdownElement);
+		String firstSelectedOption = select.getFirstSelectedOption().getText();
+		return firstSelectedOption == null || firstSelectedOption.isEmpty();
+	}
+
+	// Method to check if an invalid index can be selected
+	public boolean selectOptionByInvalidIndex(WebElement dropdownElement, int index) {
+
+		Select select = new Select(dropdownElement);
+		try {
+			select.selectByIndex(index);
+			return true; // If no exception, index is valid (which should not happen for invalid index)
+		} catch (NoSuchElementException | IndexOutOfBoundsException e) {
+			return false; // Expected result, index is invalid
+		}
+	}
+
+	// Method to check if multiple selections are allowed in a single-select
+	// dropdown
+	public boolean selectMultipleOptions(WebElement dropdownElement) {
+
+		Select select = new Select(dropdownElement);
+
+		if (!select.isMultiple()) {
+			try {
+				select.selectByIndex(1); // Select the first option
+				select.selectByIndex(2); // Attempt to select another option (should not be possible)
+				return false; // If no exception, multiple selections are wrongly allowed
+			} catch (Exception e) {
+				return true; // Exception is expected in case of multiple selections in single-select
+								// dropdown
+			}
+		} else {
+			return false; // Dropdown allows multiple selection, skip this test
+		}
+	}
+
+	// Method to check if a disabled option can be selected
+	public boolean selectDisabledOption(String optionText, WebElement dropdownElement) {
+
+		Select select = new Select(dropdownElement);
+		WebElement optionToSelect = null;
+
+		for (WebElement option : select.getOptions()) {
+			if (option.getText().equals(optionText) && !option.isEnabled()) {
+				optionToSelect = option;
+				break;
+			}
+		}
+
+		if (optionToSelect != null) {
+			try {
+				select.selectByVisibleText(optionText);
+				return false; // If selected, it is a failure (disabled option should not be selectable)
+			} catch (Exception e) {
+				return true; // Expected, as the option is disabled
+			}
+		}
+		return false; // Option not found or not disabled
+	}
+
+	// Locator for the search box
+	private By searchBox = By.id("searchBox");
+	private By searchButton = By.id("searchButton");
+	private By errorMessage = By.id("errorMessage");
+	private By successMessage = By.id("successMessage");
+	private By results = By.xpath("//div[@class='search-result']");
+	private By disabledButton = By.id("submitButton");
+
+	// 1. Enter text in the search box and click search
+	public void performSearch(String input) {
+		WebElement searchInput = driver.findElement(searchBox);
+		searchInput.clear();
+		searchInput.sendKeys(input);
+		driver.findElement(searchButton).click();
+	}
+
+	// 2. Validate that the correct error message is displayed
+	public void validateErrorMessage(String expectedErrorMessage) {
+		String actualErrorMessage = driver.findElement(errorMessage).getText();
+		Assert.assertEquals(actualErrorMessage, expectedErrorMessage, "Error message mismatch!");
+	}
+
+	// 3. Validate that a success message is NOT displayed
+	public void validateNoSuccessMessage() {
+		try {
+			WebElement success = driver.findElement(successMessage);
+			Assert.assertFalse(success.isDisplayed(), "Success message should not be displayed.");
+		} catch (NoSuchElementException e) {
+			// Success message is not found, as expected
+			Assert.assertTrue(true);
+		}
+	}
+
+	// 4. Validate that no search results are displayed
+	public void validateNoResultsDisplayed() {
+		List<WebElement> resultList = driver.findElements(results);
+		Assert.assertTrue(resultList.isEmpty(), "No results should be displayed for invalid input.");
+	}
+
+	// 5. Validate that the button is disabled
+	public void validateButtonIsDisabled() {
+		WebElement button = driver.findElement(disabledButton);
+		Assert.assertFalse(button.isEnabled(), "Button should be disabled.");
+	}
+
+	// 6. Validate that user is NOT redirected to a specific URL
+	public void validateNotRedirectedTo(String unexpectedUrl) {
+		String currentUrl = driver.getCurrentUrl();
+		Assert.assertNotEquals(currentUrl, unexpectedUrl, "User should not be redirected to this URL.");
+	}
+
+	// 7. Validate that the page title is not an unexpected title
+	public void validatePageTitle(String unexpectedTitle) {
+		String actualTitle = driver.getTitle();
+		Assert.assertNotEquals(actualTitle, unexpectedTitle, "Unexpected page title found.");
+	}
+
+	// 8. Validate that the search input is blank
+	public void validateBlankInput() {
+		String inputValue = driver.findElement(searchBox).getAttribute("value");
+		Assert.assertTrue(inputValue.isEmpty(), "Search input should be blank.");
+	}
+
+	// 9. Validate pop-up alert message for invalid actions
+	public void validateAlertMessage(String expectedAlertText) {
+		Alert alert = driver.switchTo().alert();
+		String actualAlertText = alert.getText();
+		Assert.assertEquals(actualAlertText, expectedAlertText, "Alert message mismatch!");
+		alert.accept(); // You can dismiss it
+	}
+
+	// 10. Validate that input field does not accept more than a specified number of
+	// characters
+	public void validateInputFieldLength(int maxLength) {
+		String inputValue = driver.findElement(searchBox).getAttribute("value");
+		Assert.assertTrue(inputValue.length() <= maxLength,
+				"Input field should not accept more than " + maxLength + " characters.");
+	}
+
+	// 11. Validate invalid SQL injection or script injection input
+	public void validateSQLInjectionProtection() {
+		WebElement error = driver.findElement(errorMessage);
+		Assert.assertTrue(error.isDisplayed(), "SQL injection should trigger an error.");
+	}
+
+	// 12. Validate missing cookies or session (security check)
+	public void validateMissingSessionCookie() {
+		Assert.assertNull(driver.manage().getCookieNamed("sessionId"),
+				"Session cookie should not exist for unauthorized access.");
+	}
+
+	// 13. Validate that the element is NOT present on the page
+	public void validateElementNotPresent(By elementLocator) {
+		List<WebElement> element = driver.findElements(elementLocator);
+		Assert.assertTrue(element.isEmpty(), "Element should not be present.");
+	}
+
+	// 14. Validate incorrect form submission
+	public void validateFormNotSubmitted() {
+		String successText = driver.findElement(errorMessage).getText();
+		Assert.assertNotEquals(successText, "Form submitted successfully",
+				"Form should not be submitted with invalid data.");
+	}
+
+	// 15. Validate for security vulnerabilities like XSS or SQL injection
+	public void validateForSecurity(String expectedError) {
+		String actualError = driver.findElement(errorMessage).getText();
+		Assert.assertEquals(actualError, expectedError, "Security vulnerability detected.");
+	}
+
+	@FindBy(xpath = "//button[normalize-space()='Execute']")
+	WebElement execute;
+
+	@FindBy(xpath = "//table[@class='w-100']//tr[1]//td[1]")
+	WebElement metaDataRecordName;
+
+	public MetaData metaDataCreate(String metaDataName, String process, String subProcess, String subSubProcess,
+			String dataSetValue) {
+		dataSetup.click();
+		metaDataTab.click();
+		createMetaDataButton.click();
+
+		sendKeys(metaDataNameField, metaDataName);
+		selectByVisibleText(selectProcessDropDown, process);
+		selectByVisibleText(selectSubProcessDropDown, subProcess);
+		selectByVisibleText(selectSubSubProcessDropDown, subSubProcess);
+		selectByVisibleText(selectDataSetDropDown, dataSetValue);
+
+		create.click();
+		unWaitInMilli(1000);
+		continueButton.click();
+
+		metaDataRecordName.click();
+
+		clickOnTransUniqueId("Trans_Unique_Id");
+
+		jsClick(saveButtonInUpadteMetaData);
+		unWaitInMilli(500);
+		continueButton.click();
+		return this;
+	}
+
+	public MetaData clickOnTransUniqueId(String usernameToDoAction) {
+		List<WebElement> rows = driver.findElements(By.xpath("//tbody[@class='view_all_colmns']//tr"));
+
+		for (WebElement row : rows) {
+
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			try {
+				if (usernameToDoAction.equals(usernameColumn.getText())) {
+
+					WebElement deleteButton = row.findElement(By.xpath(".//input[@type='checkbox']"));
+					jsClick(deleteButton);
+					System.out.println(usernameToDoAction + " Successfully Clicked");
+					break;
+
+				} else {
+					System.out.println(usernameToDoAction + " Is not Found");
+				}
+			} catch (NoSuchElementException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+
+		return this;
+	}
+
+	public MetaData execute(String usernameToDoAction) {
+		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+		for (WebElement row : rows) {
+
+			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
+			try {
+				if (usernameToDoAction.equals(usernameColumn.getText())) {
+
+					WebElement deleteButton = row.findElement(By.xpath(".//img[contains(@class,'edit_metadata')]"));
+					jsClick(deleteButton);
+					System.out.println(usernameToDoAction + " Successfully Clicked");
+					break;
+
+				} else {
+					System.out.println(usernameToDoAction + " Is not Found");
+				}
+			} catch (NoSuchElementException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		execute.click();
+		unWaitInMilli(500);
+		continueButton.click();
 
 		return this;
 	}

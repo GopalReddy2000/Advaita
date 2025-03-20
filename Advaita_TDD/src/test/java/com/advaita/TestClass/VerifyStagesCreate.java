@@ -159,7 +159,7 @@ public class VerifyStagesCreate extends TestBase {
 	@Test(priority = 13)
 	public void verifyAddSectionA() throws Throwable {
 		test = reports.createTest("verifyAddSectionA");
-		stages.verifyAddSectionA(true,false);
+		stages.verifyAddSectionA(false, false,true);
 	}
 
 	@AfterMethod

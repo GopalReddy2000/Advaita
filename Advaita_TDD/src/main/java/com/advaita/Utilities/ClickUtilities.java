@@ -55,7 +55,7 @@ public class ClickUtilities extends TestBase {
 
 //	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void normalClick(WebElement element) throws Throwable {
-		
+
 		assertTrue(element.isDisplayed(), "element is not displayed.");
 		element.click();
 
@@ -134,7 +134,7 @@ public class ClickUtilities extends TestBase {
 
 //	ElementUtils.clickWithRetry(submitButton, 3);
 	public static void clickWithRetry(WebElement element, int maxAttempts) throws Throwable {
-		
+
 		wait.until(ExpectedConditions.elementToBeClickable(element));
 		assertTrue(element.isDisplayed());
 		int attempts = 0;
@@ -229,11 +229,17 @@ public class ClickUtilities extends TestBase {
 		}
 		js.executeScript("arguments[0].style.backgroundColor = '';", element); // Remove highlight
 	}
-	
+
+	public static void clickWithDisplayedOrNot(WebElement element) {
+
+		assertTrue(element.isDisplayed(), "element is not displayed.");
+		element.click();
+	}
+
 	public static void scrollToViewElement(WebElement element) {
 //		
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
-		
+
 	}
 
 }

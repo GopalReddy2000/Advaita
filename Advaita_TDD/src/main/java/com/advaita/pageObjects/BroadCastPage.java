@@ -11,7 +11,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.asserts.Assertion;
 
 import com.advaita.BaseClass.TestBase;
 
@@ -86,13 +85,10 @@ public class BroadCastPage extends TestBase{
 	@FindBy(xpath = "//button[text()='Delete']")
 	public WebElement confirmDeleteButton;
 
-
-
-
-
 	public BroadCastPage(){	
 		PageFactory.initElements(driver, this);
 	}
+
 
 	public BroadCastPage navigation()
 	{
@@ -100,13 +96,13 @@ public class BroadCastPage extends TestBase{
 			if (!BroadcastTemplate.isDisplayed()) {
 				alchemy.click();
 			}
-			jsClick(driver, BroadcastTemplate);
+			jsClick(BroadcastTemplate);
 		} catch (NoSuchElementException e) {
 			// Handle the case where the element is not found
 			System.out.println("Element not found: " + e.getMessage());
 			// Optionally, attempt to click the BroadcastTemplate again if needed
 			alchemy.click();
-			jsClick(driver, BroadcastTemplate);
+			jsClick(BroadcastTemplate);
 		} catch (Exception e) {
 			// Handle any other unexpected exceptions
 			System.out.println("An unexpected error occurred: " + e.getMessage());

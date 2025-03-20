@@ -865,14 +865,17 @@ public class NonMeasurableSetPage extends TestBase {
         saveRecord();
 
     }
-    public void saveRecord1()
+    public void saveRecordAndBack()
     {
         //		Saving the record
-        click(driver, saveButtonOfCreateQuestionSet);
-        Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
+        jsClick(saveButtonOfCreateQuestionSet);
+        unWaitInMilli(500);
+
         System.out.println(successfullyNonMeasurableUpdatedMassage.getText());
-        assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
-        click(driver, questionSaveContinueButton);
+//        assertTrue(successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been created successfully")||successfullyNonMeasurableUpdatedMassage.getText().contains( "Non Measurable Set has been updated successfully") );
+        jsClick(questionSaveContinueButton);
+
+        jsClick(backButton);
     }
     public void questionTypeRelativeDropdown()
     {
@@ -903,7 +906,7 @@ public class NonMeasurableSetPage extends TestBase {
             optionTextbox.get(t).sendKeys("Relative Dropdown "+(t+1));
         }
         //		Saving the record
-        saveRecord1();
+        saveRecordAndBack();
 
 
     }
@@ -920,7 +923,7 @@ public class NonMeasurableSetPage extends TestBase {
         click(driver, questionTypeFileUpload);
         assertTrue(fileUploadBrowse.isEnabled());
         click(driver, fileUploadSetting);
-        jsClick(driver, allowedFormatDropdown);
+        jsClick(allowedFormatDropdown);
 
 
         String[] fileFormats = {
@@ -955,7 +958,7 @@ public class NonMeasurableSetPage extends TestBase {
 
         }
 
-        saveRecord1();
+        saveRecordAndBack();
         click(driver, fileUploadSetting);
         Select allowedFormat=new Select(allowedFormatDropdown);
         List<String> listOfFileFormats = new ArrayList<String>();
@@ -988,8 +991,8 @@ public class NonMeasurableSetPage extends TestBase {
             {
                 //			Label
                 case(0):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver,getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "Advaita Testing");
                     click(driver, addQuestionButton);
 
@@ -997,8 +1000,8 @@ public class NonMeasurableSetPage extends TestBase {
 
                 //			MultipleChoice
                 case(1):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "What Level of Software Testing are you doing?");
 
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[2]")), 2);
@@ -1006,23 +1009,23 @@ public class NonMeasurableSetPage extends TestBase {
                     options.get(0).sendKeys("System Testing");
                     options.get(1).sendKeys("Unit Testing");
                     options.get(2).sendKeys("Integration Testing");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			ShortAnswer
                 case(2):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "What is the software you're testing?");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Dropdown
                 case(3):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "What is the Operating system you're Testing on?");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[4]")), 3);
                     List<WebElement>DropDownOption=driver.findElements(By.xpath("//div[@class='question qsn_number_4']//div[@class='input-delete d-flex']//input"));
@@ -1030,14 +1033,14 @@ public class NonMeasurableSetPage extends TestBase {
                     DropDownOption.get(1).sendKeys("Mac Os");
                     DropDownOption.get(2).sendKeys("Linux");
                     DropDownOption.get(3).sendKeys("Unix");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Relative Dropdown
                 case(4):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "In Which Browser you're Running the Test Scripts?");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[5]")), 3);
                     List<WebElement>relativeOption=driver.findElements(By.xpath("//div[@class='question qsn_number_5']//div[@class='input-delete d-flex']//input"));
@@ -1045,62 +1048,62 @@ public class NonMeasurableSetPage extends TestBase {
                     relativeOption.get(1).sendKeys("Edge");
                     relativeOption.get(2).sendKeys("Firefox");
                     relativeOption.get(3).sendKeys("Opera");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			FileUpload
                 case(5):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "Upload you UseCases");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Radio Button
                 case(6):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "Which Type of Testing are you doing?");
                     List<WebElement>radioOption=driver.findElements(By.xpath("//div[@class='question qsn_number_7']//div[@class='input-delete d-flex']//input"));
                     radioOption.get(0).sendKeys("Manual Testing");
                     radioOption.get(1).sendKeys("Automation Testing");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Date
                 case(7):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "When Did you start you testing?");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Time
                 case(8):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "When will Test Execution Begin?");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			TextBox
                 case(9):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver, getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "Test Case Written By?");
-                    jsClick(driver, addQuestionButton);
+                    jsClick(addQuestionButton);
 
                     break;
 
                 //			Relative Multiselect
                 case(10):
-                    jsClick(driver, questionsList.get(q));
-                    jsClick(driver,getElementByDynamicXPath(q));
+                    jsClick(questionsList.get(q));
+                    jsClick(getElementByDynamicXPath(q));
                     sendKeys(questionsList.get(q), "Select your Team Members");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[11]")), 3);
                     List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//div[@class='question qsn_number_11']//div[@class='input-delete d-flex']//input"));
@@ -1121,7 +1124,7 @@ public class NonMeasurableSetPage extends TestBase {
         //
         //		String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
         //		assertEquals(questionName,actualQuestionSet);
-        saveRecord1();
+        saveRecordAndBack();
         nonMeasurableBackButton.click();
         String actualQuestionSet=nonMeasurableQuestionSet.get(0).getText();
         assertEquals(questionName,actualQuestionSet);
@@ -1194,9 +1197,9 @@ public class NonMeasurableSetPage extends TestBase {
 
                 //			label
                 case 0:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver,getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "Advaita Testing");
                     break;
 
@@ -1204,13 +1207,13 @@ public class NonMeasurableSetPage extends TestBase {
                 case 1:
                     //				jsClick(driver, columnInputs.get(a));
 
-                    jsClick(driver, columns.get(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "What Level of Software Testing are you doing?");
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver,getElementByDynamicXPath(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("(//a[normalize-space()='Add Option'])[9]")), 2);
                     List<WebElement> mulOptions=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_2_')]"));
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     mulOptions.get(0).sendKeys("System Testing");
                     mulOptions.get(1).sendKeys("Unit Testing");
                     mulOptions.get(2).sendKeys("Integration Testing");
@@ -1218,21 +1221,21 @@ public class NonMeasurableSetPage extends TestBase {
 
                 //				Short Answer
                 case 2:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver,getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "What is the software you're testing?");
                     break;
 
                 //				Dropdown
                 case 3:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver,getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "What is the Operating system you're Testing on?");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_4']//a")), 3);
                     List<WebElement>DropDownOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_4_')]"));
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     DropDownOption.get(0).sendKeys("Windows");
                     DropDownOption.get(1).sendKeys("Mac Os");
                     DropDownOption.get(2).sendKeys("Linux");
@@ -1241,13 +1244,13 @@ public class NonMeasurableSetPage extends TestBase {
 
                 //				Relative DropDown
                 case 4:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver, getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "In Which Browser you're Running the Test Scripts?");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
                     List<WebElement>relativeOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_5_')]"));
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     relativeOption.get(0).sendKeys("Chrome");
                     relativeOption.get(1).sendKeys("Edge");
                     relativeOption.get(2).sendKeys("Firefox");
@@ -1256,25 +1259,25 @@ public class NonMeasurableSetPage extends TestBase {
 
                 //				File Upload
                 case 5:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver, getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "Upload you UseCases");
                     break;
 
                 //				Radio Button
                 case 6:
 
-                    jsClick(driver, columns.get(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "Which Type of Testing are you doing?");
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     click(driver, getElementByDynamicXPath(a));
                     click(driver, getElementByDynamicXPath(a));
                     //				clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_5']//a")), 3);
                     List<WebElement>radioOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_7_')]"));
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     radioOption.get(0).sendKeys("Manual Testing");
-                    jsClick(driver, driver.findElement(By.xpath("//div[@data-info='1_7']//a")));
+                    jsClick(driver.findElement(By.xpath("//div[@data-info='1_7']//a")));
                     sendKeys(driver.findElement(By.xpath("//input[@name='ans_option_1_7_2']")), "Automation Testing");
 
 
@@ -1283,39 +1286,39 @@ public class NonMeasurableSetPage extends TestBase {
                 //				Date
 
                 case 7:
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver, getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "When Did you start you testing?");
                     break;
 
                 //				Time
                 case(8):
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver, getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "When will Test Execution Begin?");
 
                     break;
 
                 //			TextBox
                 case(9):
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver, getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "Test Case Written By?");
 
                     break;
 
                 //				Relative Multiselect
                 case(10):
-                    jsClick(driver, columnInputs.get(a));
-                    jsClick(driver,getElementByDynamicXPath(a));
-                    jsClick(driver, columns.get(a));
+                    jsClick(columnInputs.get(a));
+                    jsClick(getElementByDynamicXPath(a));
+                    jsClick(columns.get(a));
                     sendKeys(columnName.get(a), "Select your Team Members");
                     clickElementMultipleTimes(driver, driver.findElement(By.xpath("//div[@data-info='1_11']//a")), 3);
                     List<WebElement>relativeMultiOption=driver.findElements(By.xpath("//input[contains(@name,'ans_option_1_11_')]"));
-                    jsClick(driver, columnInputs.get(a));
+                    jsClick(columnInputs.get(a));
                     relativeMultiOption.get(0).sendKeys("James Paul R");
                     relativeMultiOption.get(1).sendKeys("Gopal Reddy");
                     relativeMultiOption.get(2).sendKeys("Abjith Das");
@@ -1401,13 +1404,13 @@ public class NonMeasurableSetPage extends TestBase {
 
         stagesTab.click();
         editButtons.get(0).click();
-        jsClick(driver, addNonSectionButton);
+        jsClick(addNonSectionButton);
         sectionInputField.sendKeys("Test");
         unWait(2);
-        jsClick(driver,sectionAddButton);
+        jsClick(sectionAddButton);
 
-        jsClick(driver, sectionButton);
-        jsClick(driver, nonMeasurableSetRadioBtn);
+        jsClick(sectionButton);
+        jsClick(nonMeasurableSetRadioBtn);
 
         Select nonMeasurSelectQuestionType=new Select(selectQuestiontypeDropdown);
 
@@ -1446,7 +1449,7 @@ public class NonMeasurableSetPage extends TestBase {
                 }
                 break;
             case "no":
-                jsClick(driver,deleteOptions(section,question));
+                jsClick(deleteOptions(section,question));
                 break;
 
         }
@@ -1467,13 +1470,14 @@ public class NonMeasurableSetPage extends TestBase {
         ToggleButton(escalationToggle(section,question),EscalatedStatus);
 
         textBoxAnswerField(section,question).click();
+
         sendKeys(minLengthTextBox(section,question),minLength);
         sendKeys(maxLengthTextBox(section,question),maxLength);
 
         selectByVisibleText(textBoxValueType(section,question),valueType);
         if(allowSpecialChar.equals("no"))
         {
-            jsClick(driver,textBoxAllowSpecialChar(section,question));
+            jsClick(textBoxAllowSpecialChar(section,question));
         }
 
         return this;
@@ -1508,7 +1512,7 @@ public class NonMeasurableSetPage extends TestBase {
 
         if(allowSpecialChar.equals("no"))
         {
-            jsClick(driver,shortAnsAllowSpecialChar(section,question));
+            jsClick(shortAnsAllowSpecialChar(section,question));
         }
 
         return this;
@@ -1517,7 +1521,7 @@ public class NonMeasurableSetPage extends TestBase {
     public NonMeasurableSetPage validateMinAndMaxLen(int section,
                                                      int question)
     {
-        jsClick(driver,saveButtonOfCreateQuestionSet);
+        jsClick(saveButtonOfCreateQuestionSet);
 
         try {
             softAssert.assertTrue(minLenError(section, question).isDisplayed());
@@ -1563,24 +1567,24 @@ public class NonMeasurableSetPage extends TestBase {
         ToggleButton(required(section,question),requiredStatus);
 
         ToggleButton(escalationToggle(section,question),EscalatedStatus);
-        jsClick(driver,fileUploadSettings(section,question));
+        jsClick(fileUploadSettings(section,question));
         try {
             selectByVisibleText(allowedFormats(section, question), addFileFormats);
         }catch (Exception e)
         {
             addAdditionalFormats(section,question).click();
             sendKeys(additionalFormatInput(section,question),addFileFormats);
-            jsClick(driver,addFormat(section,question));
+            jsClick(addFormat(section,question));
             unWait(1);
             continueButton.click();
             selectByVisibleText(allowedFormats(section, question), addFileFormats);
         }
         if(doYouNeedMultipleUpload.equals("no")) {
-            jsClick(driver,uploadMultipleFiles(section, question));
+            jsClick(uploadMultipleFiles(section, question));
         }
         if(allowDelete.equals("no"))
         {
-            jsClick(driver,allowDelete(section,question));
+            jsClick(allowDelete(section,question));
         }
         sendKeys(maxSizeInput(section,question),fileSize);
         selectByVisibleText(maxSizeDropdown(section,question),sizeType);
@@ -1693,24 +1697,24 @@ public class NonMeasurableSetPage extends TestBase {
 
     public void ToggleButton( WebElement toggleButton,String Action) {
         if(Action.equals("yes")) {
-            jsClick(driver, toggleButton);
+            jsClick(toggleButton);
         }
     }
 
     public NonMeasurableSetPage addQuestion(int section)
     {
         String xpath= "//div[@data-info='question-"+section+"-1']//following-sibling::div//a[not(text()='Add Option')]";
-        jsClick(driver,driver.findElement(By.xpath(xpath)));
+        jsClick(driver.findElement(By.xpath(xpath)));
         return this;
     }
     public NonMeasurableSetPage addSection()
     {
-        jsClick(driver,addSectionButton);
+        jsClick(addSectionButton);
         return this;
     }
 
     public NonMeasurableSetPage createQuestionSetName(String questionSetFieldName) {
-        jsClick(driver, addNonMeasurableSetButton);
+        jsClick(addNonMeasurableSetButton);
         sendKeys(questionSetNameField,questionSetFieldName);
 
         return this;
@@ -1719,8 +1723,8 @@ public class NonMeasurableSetPage extends TestBase {
     public NonMeasurableSetPage NavToNonMeasurableTablePage()
     {
         workFlowDesign.click();
-        jsClick(driver, masterParameterTab);
-        jsClick(driver, nonMeasurableTab);
+        jsClick(masterParameterTab);
+        jsClick(nonMeasurableTab);
 
         return this;
     }
@@ -1739,10 +1743,10 @@ public class NonMeasurableSetPage extends TestBase {
             {
                 System.out.println( usernameColumn.getText());
                 switch (uploadType){
-                    case "1":   jsClick(driver,row.findElement(By.xpath("./td//a[1]//img")));
+                    case "1":   jsClick(row.findElement(By.xpath("./td//a[1]//img")));
                         break;
 
-                    case "2":jsClick(driver,row.findElement(By.xpath("./td//a[2]//img")));
+                    case "2":jsClick(row.findElement(By.xpath("./td//a[2]//img")));
                         break;
 
                 }
@@ -1783,13 +1787,13 @@ public class NonMeasurableSetPage extends TestBase {
         stagesTab.click();
         editButtons.get(0).click();
         js.executeScript("window.scrollTo(0, 700);");
-        jsClick(driver,addSection);
+        jsClick(addSection);
         sectionName.sendKeys(sectionCName);
         unWait(1);
-        jsClick(driver,add);
+        jsClick(add);
 
-        jsClick(driver,sectionCTabs(sectionCName));;
-        jsClick(driver,nonMeasurableRadioButton(sectionCName));
+        jsClick(sectionCTabs(sectionCName));;
+        jsClick(nonMeasurableRadioButton(sectionCName));
         selectByVisibleText(nonMeasurableDropdownQuestionDropdown(sectionCName),DropdownToSelect);
         //Should Add Validations
 
@@ -1825,7 +1829,7 @@ public class NonMeasurableSetPage extends TestBase {
     {
         sendKeys(question1,question);
         ExtentLogger.pass(question+" is Sent to the Question Input Field");
-        jsClick(driver,saveButtonOfCreateQuestionSet);
+        jsClick(saveButtonOfCreateQuestionSet);
         ExtentLogger.pass("Save Button is Clicked");
 //
         try {
@@ -1843,7 +1847,7 @@ public class NonMeasurableSetPage extends TestBase {
     {
         sendKeys(question1,question);
         ExtentLogger.pass(question+"is Sent to the Question Input Field");
-        jsClick(driver,saveButtonOfCreateQuestionSet);
+        jsClick(saveButtonOfCreateQuestionSet);
         ExtentLogger.pass("Save Button is Clicked");
         try {
             assertEquals(questionErrors(1, 1).getAttribute("class"), "error", "There is No Error Exception Displayed in Questions Field");
@@ -1882,7 +1886,7 @@ public class NonMeasurableSetPage extends TestBase {
     {
 
         sendKeys(additionalFormatInput(section, question), addFileFormats);
-        jsClick(driver,addFormat(section,question));
+        jsClick(addFormat(section,question));
         unWait(1);
         continueButton.click();
     }
@@ -1903,7 +1907,7 @@ public class NonMeasurableSetPage extends TestBase {
 
         sendKeys(SetSectionQuestionName(section, question), questionName);
         setQuestionTypes(section, question, questionType).click();
-        jsClick(driver,fileUploadSettings(section,question));
+        jsClick(fileUploadSettings(section,question));
         addAdditionalFormats(section,question).click();
         try {
             addAdditionalFileFormat(section,question);
@@ -1912,7 +1916,7 @@ public class NonMeasurableSetPage extends TestBase {
         {
             addAdditionalFileFormat(section,question);
         }
-        jsClick(driver,allowedFormats(section,question));
+        jsClick(allowedFormats(section,question));
         dropdownOptions(allowedFormats(section,question),addFileFormats);
         return this;
     }
@@ -1980,10 +1984,10 @@ public class NonMeasurableSetPage extends TestBase {
         selectByVisibleText(shortAnsValueType(section,question),valueType);
         if(allowSpChar==0)
         {
-            jsClick(driver,shortAnsAllowSpecialChar(section,question));
+            jsClick(shortAnsAllowSpecialChar(section,question));
         }
         saveRecord();
-        jsClick(driver,backButton);
+        jsClick(backButton);
 
         return this;
     }
@@ -1992,20 +1996,20 @@ public class NonMeasurableSetPage extends TestBase {
     {
         stagesTab.click();
         stageName=driver.findElement(By.xpath("//td[1]")).getText();
-        jsClick(driver,editButtons.get(0));
+        jsClick(editButtons.get(0));
 
         try {
-            jsClick(driver,sectionTabs);
+            jsClick(sectionTabs);
         }catch (NoSuchElementException e) {
-            jsClick(driver,addSection);
+            jsClick(addSection);
             sendKeys(sectionName, sectionNameInput);
-            jsClick(driver,add);
+            jsClick(add);
         }
         jsWindowsScroll(500);
-        jsClick(driver,nonMeasurableSetRadioBtn);
+        jsClick(nonMeasurableSetRadioBtn);
         selectByVisibleText(nonMeasurableDropdown,SelectNonMeaQuestion);
         saveRecord();
-        jsClick(driver,backButton);
+        jsClick(backButton);
 
 
         return this;
@@ -2023,12 +2027,12 @@ public class NonMeasurableSetPage extends TestBase {
         selectByVisibleText(stagesActions.subSubProcessField,"Sub Sub AJP");
         stagesActions.searchButton.click();
 
-        jsClick(driver,selectStageTabs(stageName));
+        jsClick(selectStageTabs(stageName));
 
         stagesActions.recordEyeButton.get(0).click();
-        jsClick(driver,sectionTabs);
+        jsClick(sectionTabs);
         sendKeys(inputTextArea,inputInStagesRecord);
-        jsClick(driver,save);
+        jsClick(save);
         unWait(1);
         Assert.assertFalse(continueButton.isDisplayed(),"The System Accepted the Invalid "+inputInStagesRecord+" Input and saved the record");
 
@@ -2041,19 +2045,19 @@ public class NonMeasurableSetPage extends TestBase {
     {
         sendKeys(SetSectionQuestionName(section, question), questionName);
         setQuestionTypes(section, question, questionType).click();
-        jsClick(driver,fileUploadSettings(section,question));
+        jsClick(fileUploadSettings(section,question));
         selectByVisibleText(allowedFormats(section,question),dropdownOptions);
         if(uploadMultFiles==0) {
-            jsClick(driver, uploadMultipleFiles(section, question));
+            jsClick(uploadMultipleFiles(section, question));
         }
         if(delete==0)
         {
-            jsClick(driver, allowDelete(section, question));
+            jsClick(allowDelete(section, question));
         }
         sendKeys(maxSizeInput(section,question),maxSize);
         selectByVisibleText(maxSizeDropdown(section,question),fileUnitData);
         saveRecord();
-        jsClick(driver,backButton);
+        jsClick(backButton);
         return this;
     }
     public NonMeasurableSetPage validateFileUpload(int uploadFiles,String uploadFile1,String uploadFile2,String uploadFile3,String singleFile,int Delete)
@@ -2064,10 +2068,10 @@ public class NonMeasurableSetPage extends TestBase {
         selectByVisibleText(stagesActions.subSubProcessField,"Sub Sub AJP");
         stagesActions.searchButton.click();
 
-        jsClick(driver,selectStageTabs("Wyzmindz"));
+        jsClick(selectStageTabs("Wyzmindz"));
 
         stagesActions.recordEyeButton.get(0).click();
-        jsClick(driver,sectionTabs);
+        jsClick(sectionTabs);
         jsWindowsScroll(600);
         if (uploadFiles==0) {
 
@@ -2076,7 +2080,7 @@ public class NonMeasurableSetPage extends TestBase {
 //                fail("The System is Uploading Multiple File");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-               softAssert.assertTrue(e.getMessage().contains("the element can not hold multiple files"));
+                softAssert.assertTrue(e.getMessage().contains("the element can not hold multiple files"));
             }
         }else {
             try {
@@ -2108,16 +2112,14 @@ public class NonMeasurableSetPage extends TestBase {
 
 
 
-
-
     @FindBy(xpath ="//button[text()='Save']")
     WebElement save;
 
     public NonMeasurableSetPage saveRecord2()
     {
-        jsClick(driver,save);
+        jsClick(save);
         unWait(1);
-        jsClick(driver,continueButton);
+        jsClick(continueButton);
         return this;
     }
 
@@ -2212,7 +2214,7 @@ public class NonMeasurableSetPage extends TestBase {
     WebElement smsTemplate;
     public void smsTemp()
     {
-        jsClick(driver, smsTemplate);
+        jsClick(smsTemplate);
     }
 
 

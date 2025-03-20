@@ -146,7 +146,10 @@ public class ReferPreviousStagePage extends TestBase {
      * @param stageOption Stages dataset dropdown list to be mapped with dataset.
      * @return
      */
-    public ReferPreviousStagePage createRecord(String uploadRecordName,String datasetName,String StageName,String fromDateText,String toDateText,List<String> datasetFieldName, List<String> stageOption)
+    public ReferPreviousStagePage createRecord(String uploadRecordName,String datasetName,
+                                               String StageName,String fromDateText,
+                                               String toDateText,List<String> datasetFieldName,
+                                               List<String> stageOption)
     {
         create.click();
         uploadName.sendKeys(uploadRecordName);//Name
@@ -234,7 +237,7 @@ public class ReferPreviousStagePage extends TestBase {
                 unWaitInMilli(500);  // Consider replacing with WebDriverWait for better synchronization
                 continueButton.click();
                 unWaitInMilli(500);
-                jsClick(driver,backButton);
+                jsClick(backButton);
             }
 
         } catch (NoSuchElementException e) {
@@ -254,7 +257,7 @@ public class ReferPreviousStagePage extends TestBase {
         selectByVisibleText(stageDropdown,stageName);
 
         expectedDataName =recordName.get(number).getText();
-        jsClick(driver,recordEyeButton.get(number));
+        jsClick(recordEyeButton.get(number));
         System.out.println(expectedDataName);
         saveRecord();
         return this;
@@ -284,7 +287,7 @@ public class ReferPreviousStagePage extends TestBase {
             WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
             if(usernameColumn.getText().equals(recordName)){
                 WebElement editButton= row.findElement(By.xpath(".//img[contains(@class,'edit-dataupload')]"));
-                jsClick(driver,editButton);
+                jsClick(editButton);
                 break;
             }
         }
@@ -367,7 +370,7 @@ public class ReferPreviousStagePage extends TestBase {
                 WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
                 if(usernameColumn.getText().equals(recordName)){
                     WebElement deleteButton = row.findElement(By.xpath(".//img[@alt='delete-icon ']"));
-                    jsClick(driver, deleteButton);
+                    jsClick(deleteButton);
                     deleteConfirm.click();
                     unWaitInMilli(500);
                     continueButton.click();

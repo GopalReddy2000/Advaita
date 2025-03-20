@@ -20,6 +20,7 @@ public class App extends TestBase {
 	@FindBy(id = "stage_search")
 	WebElement stageSearch;
 
+	
 	@FindBy(xpath = "//td[1]//img")
 	WebElement recordEyeButton;
 
@@ -194,7 +195,7 @@ public class App extends TestBase {
 	public App navToRecordToAuditForm(String stageSelect) {
 		navigateWithinAlchemy(auditForm);
 		selectByVisibleText(stageSearch, stageSelect);
-		jsClick(driver, recordEyeButton);
+		jsClick(recordEyeButton);
 		return this;
 	}
 
