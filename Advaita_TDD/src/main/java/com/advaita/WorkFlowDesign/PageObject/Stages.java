@@ -33,8 +33,8 @@ public class Stages extends TestBase {
 
 	SoftAssert softAssert = new SoftAssert();
 
-	static private String stageListingPageUrl = "https://test.capture.autosherpas.com/en/stages/stages_list/";
-	static private String stagesCraeteFormURL = "https://test.capture.autosherpas.com/en/stages/create_stages/";
+	static private String stageListingPageUrl = mainURl+"en/stages/stages_list/";
+	static private String stagesCraeteFormURL = mainURl+"en/stages/create_stages/";
 
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
@@ -274,7 +274,7 @@ public class Stages extends TestBase {
 
 	public Stages navigateFetchProcessRecord(boolean wantToFetchRecord) throws Throwable {
 
-		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
+		driver.navigate().to(mainURl+"en/data_management/process/");
 
 		Thread.sleep(4000);
 
@@ -315,7 +315,7 @@ public class Stages extends TestBase {
 
 	public void navigateToStages() {
 
-		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
+		driver.navigate().to(mainURl+"en/stages/stages_list/");
 	}
 
 	public void navigateNonMeasurableCreate() throws Throwable {

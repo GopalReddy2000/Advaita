@@ -54,7 +54,7 @@ public class TestBase {
 
   
 	protected static SoftAssert softAssert;
-	public static String mainURl = "https://test.capture.autosherpas.com/";
+	public static String mainURl = "https://fkart.transmonqa.in/";
 //	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 	
 

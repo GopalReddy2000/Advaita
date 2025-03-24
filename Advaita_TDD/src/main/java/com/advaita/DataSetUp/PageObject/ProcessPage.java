@@ -5,6 +5,7 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.Pagination;
+import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 import net.bytebuddy.utility.dispatcher.JavaDispatcher.IsConstructor;
@@ -283,7 +285,7 @@ public class ProcessPage extends TestBase {
 	}
 
 	// Create
-	public ProcessPage createProcess1(String processName, String processDesc) {
+	public ProcessPage createProcess1(String processName, String processDesc) throws Throwable {
 
 		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed.");
 		createProcessButton.click();
@@ -313,14 +315,14 @@ public class ProcessPage extends TestBase {
 //
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
-		
+		PropertieFileUtil.storeSingleTextInPropertiesFile("process", processName);
 		unWait(1);
 		
 		return this;
 
 	}
 
-	public ProcessPage createSubProcess(String subprocessfield, String subprocssDesc) {
+	public ProcessPage createSubProcess(String subprocessfield, String subprocssDesc) throws Throwable {
 
 //		assertTrue(fetchProcessName.isDisplayed(), "fetchProcessName is not displayed.");
 //		String fetchhprocessName = fetchProcessName.getText();
@@ -360,6 +362,7 @@ public class ProcessPage extends TestBase {
 //
 //		assertTrue(continuElement.isDisplayed(), "continuElement is not displayed");
 //		continuElement.click();
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subprocessfield);
 		unWait(1);
 		
 		return this;
@@ -411,7 +414,7 @@ public class ProcessPage extends TestBase {
 		unWait(2);
 		assertTrue(createSuceessMessage.isDisplayed(), "It is Not Displayed");
 		continueButton.click();
-
+		PropertieFileUtil.storeSingleTextInPropertiesFile("subSubProcess", SubsubProcessName);
 //		assertTrue(save_UpdateButtonInSubsubProcess.isDisplayed(), "save_UpdateButtonInSubsubProcess is not displayed");
 //		save_UpdateButtonInSubsubProcess.click();
 

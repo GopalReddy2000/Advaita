@@ -17,6 +17,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
+import com.advaita.DataSetUp.PageObject.ProcessPage;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.PropertieFileUtil;
@@ -33,6 +34,11 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class DataSetUpEndToEnd extends TestBase {
 
+	final static boolean processRun = true;
+	final static boolean dataSetRun = true;
+	final static boolean metaDataRun = true;
+	final static boolean manualUploadRun = true;
+	
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
 	public ExtentTest test;
@@ -43,6 +49,8 @@ public class DataSetUpEndToEnd extends TestBase {
 	MetaData metaData;
 	DataSet dataset;
 	ManualUpload manualUpload;
+
+	ProcessPage process;
 
 	public DataSetUpEndToEnd() {
 		super();
@@ -71,13 +79,14 @@ public class DataSetUpEndToEnd extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
+		process = new ProcessPage();
 		metaData = new MetaData();
 		dataset = new DataSet();
 		manualUpload = new ManualUpload();
 
 	}
 
-	String employeeName = "EmployeeC";
+	String employeeName = "EmployeeB";
 
 	final String metaDataName = employeeName + " Details MetaData";
 	final String manualUploadName = employeeName + " Details Upload";
@@ -86,7 +95,30 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	HomePage hp = new HomePage();
 
-	@Test(priority = 1)
+	@Test(priority = 1, enabled = processRun)
+	public void verifyProcessCreate() throws Throwable {
+		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
+		homePage.clickOnProcessManagementCreate();
+
+//		String testName = "TestAB";
+//
+//		process.createProcess1(testName + " P", "TestPDesc");
+//
+//		process.createSubProcess(testName + " Sub P", "TestSPDesc");
+//
+//		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
+
+		process.createProcess1(employeeName + " P", "TestPDesc");
+
+		process.createSubProcess(employeeName + " S P", "TestSPDesc");
+
+		process.createSubSubProcess(employeeName + " S S P", "TestSSPDesc");
+
+		Thread.sleep(2000);
+
+	}
+
+	@Test(priority = 2,enabled = dataSetRun)
 	public void verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType() throws Throwable {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
 //		HomePage.clickOnProcessManagementCreate();
@@ -105,7 +137,7 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	}
 
-	@Test(priority = 2)
+	@Test(priority = 3,enabled = metaDataRun)
 	public void verifynewCreateMetaData() throws Throwable {
 
 		test = reports.createTest("verifynewCreateMetaData");
@@ -118,7 +150,7 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	}
 
-	@Test(priority = 3)
+	@Test(priority = 4,enabled = manualUploadRun)
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
@@ -156,8 +188,8 @@ public class DataSetUpEndToEnd extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
+		driver.manage().window().minimize();
+		driver.quit();
 		reports.flush();
 	}
 

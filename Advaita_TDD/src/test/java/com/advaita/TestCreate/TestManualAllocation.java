@@ -41,17 +41,17 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "TestADD";
+	static String employeeName = "DemoC";
 
 	// Run Test Based on Boolean
-	final boolean processRun = true;
-	final boolean dataSetRun = true;
-	final boolean metaDataRun = true;
-	final boolean manualUploadRun = true;
+	final boolean processRun = false;
+	final boolean dataSetRun = false;
+	final boolean metaDataRun = false;
+	final boolean manualUploadRun = false;
 	final boolean nonMeasurableRun = false;
-	final boolean stageRun = true;
+	final boolean stageRun = false;
 	final boolean userRun = false;
-	final boolean samplingPlanRun = false;
+	final boolean samplingPlanRun = true;
 	final boolean manualAllocationRun = false;
 
 	Faker faker = new Faker();

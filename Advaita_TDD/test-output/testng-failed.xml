@@ -3,14 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.EndtoEnd.run.test.MastersEndToEnd">
+      <class name="com.advaita.TestCreate.TestManualAllocation">
         <methods>
-          <include name="verifyCreateMastersAdd"/>
           <include name="tearDown"/>
-          <include name="setUp"/>
+          <include name="verifyCreateSamplingPlan"/>
           <include name="getResult"/>
+          <include name="setUp"/>
         </methods>
-      </class> <!-- com.advaita.EndtoEnd.run.test.MastersEndToEnd -->
+      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

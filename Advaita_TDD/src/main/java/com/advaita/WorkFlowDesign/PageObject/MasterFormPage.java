@@ -42,7 +42,7 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class MasterFormPage extends TestBase {
 
-	public static final String masterURL = "https://test.capture.autosherpas.com/en/masters/masters_question_sets/";
+	public static final String masterURL = mainURl+"en/masters/masters_question_sets/";
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;

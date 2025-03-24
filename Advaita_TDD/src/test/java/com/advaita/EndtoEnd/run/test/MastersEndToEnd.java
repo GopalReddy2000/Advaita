@@ -29,7 +29,7 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 
 public class MastersEndToEnd extends TestBase {
 
-	final String index = "K";
+	final String index = "A";
 	final boolean fieldSetCreate = false;
 	final boolean masterFormCreate = false;
 	final boolean masterMenuCreate = false;

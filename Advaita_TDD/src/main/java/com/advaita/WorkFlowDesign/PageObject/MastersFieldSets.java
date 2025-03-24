@@ -41,7 +41,7 @@ public class MastersFieldSets extends TestBase {
 
 	FakeData fake = new FakeData();
 
-	public static final String masterURL = "https://test.capture.autosherpas.com/en/masters/masters_question_sets/";
+	public static final String masterURL = mainURl+"en/masters/masters_question_sets/";
 	public static String existingFieldSetRecord;
 	public static int existingFieldSetRecordCount;
 
@@ -1816,6 +1816,7 @@ public class MastersFieldSets extends TestBase {
 		case MULTIPLE_CHOICE:
 			Map.Entry<String, List<String>> questionAndOptions = Questions
 					.generateGenuineQuestionAndOptionsForDropDown(questionIndex, randomizeQuestions);
+			
 			return new AbstractMap.SimpleEntry<>(questionAndOptions.getKey(),
 					questionAndOptions.getValue().toArray(new String[0]));
 		default:

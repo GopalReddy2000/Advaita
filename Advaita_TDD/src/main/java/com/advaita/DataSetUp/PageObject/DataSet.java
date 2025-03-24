@@ -618,8 +618,8 @@ public class DataSet extends TestBase {
 //	##############################################################################################################################
 
 	public DataSet navigateToDataSetup() throws Throwable {
-
-		fecthProcess_SubProces_SubSubProcess();
+		hp.clickOnProcessManagementCreate();
+//		fecthProcess_SubProces_SubSubProcess();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(dataSetup.isDisplayed(), "DataSetup is not Displayed");
@@ -628,7 +628,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
+		String expecteddURL = mainURl+"en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
@@ -639,7 +639,7 @@ public class DataSet extends TestBase {
 
 	public DataSet fecthProcess_SubProces_SubSubProcess() throws Throwable {
 
-		hp.clickOnProcessManagementCreate();
+		
 
 		dropDown1.isDisplayed();
 		dropDown1.click();

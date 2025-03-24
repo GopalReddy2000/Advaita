@@ -1,6 +1,7 @@
 package com.advaita.sideMasters;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.util.Arrays;
@@ -36,6 +37,9 @@ public class MastersAdd extends TestBase {
 
 	@FindBy(xpath = "//button[@type='submit'][normalize-space()='Submit']")
 	public WebElement submitButton;
+	
+	@FindBy(xpath = "//h3[text()='Success']/..//span[normalize-space()='Data updated successfully']")
+	public WebElement confirmationPopUp;
 
 	public MastersAdd() {
 
@@ -265,6 +269,8 @@ public class MastersAdd extends TestBase {
 	public MastersAdd saveAddMasters() {
 
 		ClickUtilities.scrollToViewAndClick(submitButton);
+		assertTrue(confirmationPopUp.isDisplayed(), "confirmationPopUp is not displayed.");
+		
 
 		return this;
 	}
