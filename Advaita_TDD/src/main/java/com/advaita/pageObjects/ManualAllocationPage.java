@@ -1,5 +1,6 @@
 package com.advaita.pageObjects;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -11,13 +12,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.PropertieFileUtil;
-import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 public class ManualAllocationPage extends TestBase {
 
@@ -97,9 +98,6 @@ public class ManualAllocationPage extends TestBase {
 	public WebElement autoAllocate;
 
 
-
-
-
 	public ManualAllocationPage() {
 		PageFactory.initElements(driver, this);
 	}
@@ -116,21 +114,21 @@ public class ManualAllocationPage extends TestBase {
 
 	public ManualAllocationPage allocationMethodToggleButton(String toggleOption) {
 		switch (toggleOption.toLowerCase()) {
-			case "trainee":
-				click(driver, traineeToogleButton);
-				break;
-			case "test":
-				click(driver, testToogleButton);
-				break;
-			case "normalaudit":
-				click(driver, normalAuditToogleButton);
-				click(driver, normalAuditToogleButton);
-				break;
-			case "calibration":
-				click(driver, calibrationToogleButton);
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid toggle option: " + toggleOption);
+		case "trainee":
+			click(driver, traineeToogleButton);
+			break;
+		case "test":
+			click(driver, testToogleButton);
+			break;
+		case "normalaudit":
+			click(driver, normalAuditToogleButton);
+			click(driver, normalAuditToogleButton);
+			break;
+		case "calibration":
+			click(driver, calibrationToogleButton);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid toggle option: " + toggleOption);
 		}
 
 		return this;
@@ -163,86 +161,86 @@ public class ManualAllocationPage extends TestBase {
 		PropertieFileUtil.storeSingleTextInPropertiesFile("designation", selectGroup);
 
 		switch (allocationType.toLowerCase()) {
-			case "call":
+		case "call":
 
-				List<String> multipleLabelTexts = Arrays.asList("Allocation Type *", "Role");
-				List<String> multipleDropdownIds = Arrays.asList("id_allocation_type", "to_role");
-				List<String> multipleDefaultOptions = Arrays.asList("Select", "All");
-				List<String> multipleOptionsToSelect = Arrays.asList("Call Wise", selectGroup);
+			List<String> multipleLabelTexts = Arrays.asList("Allocation Type *", "Role");
+			List<String> multipleDropdownIds = Arrays.asList("id_allocation_type", "to_role");
+			List<String> multipleDefaultOptions = Arrays.asList("Select", "All");
+			List<String> multipleOptionsToSelect = Arrays.asList("Call Wise", selectGroup);
 
-				DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts, multipleDropdownIds, multipleDefaultOptions,
-						multipleOptionsToSelect, false);
+			DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts, multipleDropdownIds, multipleDefaultOptions,
+					multipleOptionsToSelect, false);
 
-				String totalSampleCount = totalSample.getText();
-				String sampleCount = totalSampleCount.contains(": ") ? totalSampleCount.split(": ")[1] : "Not found";
-				int count = Integer.parseInt(sampleCount);
+			String totalSampleCount = totalSample.getText();
+			String sampleCount = totalSampleCount.contains(": ") ? totalSampleCount.split(": ")[1] : "Not found";
+			int count = Integer.parseInt(sampleCount);
 
-				System.out.println("sampleCount : " + count);
+			System.out.println("sampleCount : " + count);
 
-				for (int i = 1; i <= count; i++) {
+			for (int i = 1; i <= count; i++) {
 
-					Thread.sleep(1000);
+				Thread.sleep(1000);
 
-					actions.moveToElement(singleToUserField).perform();
+				actions.moveToElement(singleToUserField).perform();
 
 //				jsClick(driver, item);
-					ClickUtilities.clickWithRetry(singleToUserField, 4);
-					Thread.sleep(1000);
-					String userNameXPath = String.format("//li[@role='treeitem'][normalize-space()='%s']", userName);
-					WebElement userNameCall = driver.findElement(By.xpath(userNameXPath));
-					userNameCall.click();
+				ClickUtilities.clickWithRetry(singleToUserField, 4);
+				Thread.sleep(1000);
+				String userNameXPath = String.format("//li[@role='treeitem'][normalize-space()='%s']", userName);
+				WebElement userNameCall = driver.findElement(By.xpath(userNameXPath));
+				userNameCall.click();
 //				driver.findElement(By.xpath(userNameXPath)).click();
-					actions.moveToElement(allocateButton).perform();
-					click(driver, allocateButton);
-					wait.until(ExpectedConditions.visibilityOf(continueButton));
-					unWait(1);
-					jsClick(continueButton);
+				actions.moveToElement(allocateButton).perform();
+				click(driver, allocateButton);
+				wait.until(ExpectedConditions.visibilityOf(continueButton));
+				unWait(1);
+				jsClick(continueButton);
 //				continueButton.click();
-					unWait(1);
+				unWait(1);
 //				click(driver, continueButton);
 //				jsClick(driver, continueButton);
 
-					driver.findElement(By.xpath("//h2[normalize-space()='Create Manual Allocation']")).click();
+				driver.findElement(By.xpath("//h2[normalize-space()='Create Manual Allocation']")).click();
 
-				}
+			}
 
 //			String firstInputXPath = "//tr[@class='col_rowval']//input[contains(@class, 'select2-search__field') and @tabindex='-1']";
 
-				break;
-			case "qa":
+			break;
+		case "qa":
 
-				List<String> multipleLabelTexts1 = Arrays.asList("Allocation Type *", "From User*");
-				List<String> multipleDropdownIds1 = Arrays.asList("id_allocation_type", "from_user");
-				List<String> multipleDefaultOptions1 = Arrays.asList("Select", "Select");
-				List<String> multipleOptionsToSelect1 = Arrays.asList("QA Wise", "GopalReddy");
+			List<String> multipleLabelTexts1 = Arrays.asList("Allocation Type *", "From User*");
+			List<String> multipleDropdownIds1 = Arrays.asList("id_allocation_type", "from_user");
+			List<String> multipleDefaultOptions1 = Arrays.asList("Select", "Select");
+			List<String> multipleOptionsToSelect1 = Arrays.asList("QA Wise", "GopalReddy");
 
-				DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts1, multipleDropdownIds1,
-						multipleDefaultOptions1, multipleOptionsToSelect1, false);
+			DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts1, multipleDropdownIds1,
+					multipleDefaultOptions1, multipleOptionsToSelect1, false);
 
-				DropDown.isMandatory("To User*");
-				click(driver, toUserField);
+			DropDown.isMandatory("To User*");
+			click(driver, toUserField);
 
-				for (WebElement item : toUserList) {
-					click(driver, item);
+			for (WebElement item : toUserList) {
+				click(driver, item);
 
-				}
+			}
 
-				driver.findElement(By.xpath("//p[contains(text(),'Total Samples')]")).click();
+			driver.findElement(By.xpath("//p[contains(text(),'Total Samples')]")).click();
 
-				break;
-			case "cliqa":
-				DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select",
-						"CliQA Wise");
-				break;
-			case "tl":
-				DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select", "TL Wise");
-				break;
-			case "role":
-				DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select",
-						"Role Wise");
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid toggle option: " + allocationType);
+			break;
+		case "cliqa":
+			DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select",
+					"CliQA Wise");
+			break;
+		case "tl":
+			DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select", "TL Wise");
+			break;
+		case "role":
+			DropDown.validateStarMarkAndHandleDropdown("Allocation Type *", "id_allocation_type", "Select",
+					"Role Wise");
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid toggle option: " + allocationType);
 		}
 
 		return this;
@@ -260,39 +258,42 @@ public class ManualAllocationPage extends TestBase {
 		return this;
 	}
 
-
 	public ManualAllocationPage manualAllocationData(String process, String subProcess, String subSubProcess,
-													 String stage, String allocationType, String role, String toUser) {
+			String stage, String allocationType, String role, String toUser) {
 		// Navigate to Manual Allocation Page
 		navigateWithinAlchemy(manualAllocationButton);
-		Assert.assertTrue(isElementDisplayed(createManualAllocationButton), "Create Manual Allocation button is not displayed.");
+		assertTrue(isElementDisplayed(createManualAllocationButton),
+				"Create Manual Allocation button is not displayed.");
 
 		// Click on the Create Manual Allocation button
 		jsClick(createManualAllocationButton);
 		unWait(1);
-		Assert.assertTrue(isElementDisplayed(processDropdown), "Process dropdown is not displayed after clicking Create Manual Allocation.");
+		assertTrue(isElementDisplayed(processDropdown),
+				"Process dropdown is not displayed after clicking Create Manual Allocation.");
 
 		// Select values in the dropdowns
 		selectByVisibleText(processDropdown, process);
-		Assert.assertEquals(getSelectedOption(processDropdown), process, "Process dropdown selection failed.");
+		assertEquals(getSelectedOption(processDropdown), process, "Process dropdown selection failed.");
 
 		selectByVisibleText(subProcessDropdown, subProcess);
-		Assert.assertEquals(getSelectedOption(subProcessDropdown), subProcess, "SubProcess dropdown selection failed.");
+		assertEquals(getSelectedOption(subProcessDropdown), subProcess, "SubProcess dropdown selection failed.");
 
 		selectByVisibleText(subSubProcessDropdown, subSubProcess);
-		Assert.assertEquals(getSelectedOption(subSubProcessDropdown), subSubProcess, "SubSubProcess dropdown selection failed.");
+		assertEquals(getSelectedOption(subSubProcessDropdown), subSubProcess,
+				"SubSubProcess dropdown selection failed.");
 
 		selectByVisibleText(stageDropdown, stage);
-		Assert.assertEquals(getSelectedOption(stageDropdown), stage, "Stage dropdown selection failed.");
+		assertEquals(getSelectedOption(stageDropdown), stage, "Stage dropdown selection failed.");
 
 		selectByVisibleText(allocationTypeDropdown, allocationType);
-		Assert.assertEquals(getSelectedOption(allocationTypeDropdown), allocationType, "Allocation Type dropdown selection failed.");
+		assertEquals(getSelectedOption(allocationTypeDropdown), allocationType,
+				"Allocation Type dropdown selection failed.");
 
 		selectByVisibleText(toRoleDropdown, role);
-		Assert.assertEquals(getSelectedOption(toRoleDropdown), role, "Role dropdown selection failed.");
+		assertEquals(getSelectedOption(toRoleDropdown), role, "Role dropdown selection failed.");
 
 		selectByVisibleText(toUserDropdown, toUser);
-		Assert.assertEquals(getSelectedOption(toUserDropdown), toUser, "To User dropdown selection failed.");
+		assertEquals(getSelectedOption(toUserDropdown), toUser, "To User dropdown selection failed.");
 
 		// Click on the Auto Allocate button
 		jsClick(autoAllocate);
@@ -318,6 +319,5 @@ public class ManualAllocationPage extends TestBase {
 			return false;
 		}
 	}
-
 
 }

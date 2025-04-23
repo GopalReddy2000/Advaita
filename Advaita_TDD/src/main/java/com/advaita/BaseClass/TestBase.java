@@ -72,7 +72,14 @@ public class TestBase {
 //		options.merge(cap);
 //
 		options = new ChromeOptions();
-		Map<String, Object> prefs = new HashMap<>();
+		
+//        options.addArguments("--headless=new"); // Use new headless mode (recommended for Chrome)
+//        options.addArguments("--disable-gpu"); // Optional, but recommended for headless
+//        options.addArguments("--window-size=1920,1080"); // Set window size for consistent rendering
+//        options.addArguments("--no-sandbox"); // For CI/CD environments
+//        options.addArguments("--disable-dev-shm-usage"); // Overcome limited resource problems
+		
+        Map<String, Object> prefs = new HashMap<>();
 		// Set Chrome preferences to block microphone and camera
 
 		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
@@ -154,6 +161,9 @@ public class TestBase {
 
 	@FindBy(xpath = "(//button[text()='Continue'])[2]")
 	public WebElement continueButton;
+	
+	@FindBy(xpath = "(//button[text()='Continue'])[1]")
+	public WebElement continueButton2;
 
 	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
@@ -250,8 +260,10 @@ public class TestBase {
 	public void navigateWithinAlchemy(WebElement element) {
 		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			
 			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
+			unWait(1);
 			jsClick(alchemy);
 			jsClick(element);
 		}

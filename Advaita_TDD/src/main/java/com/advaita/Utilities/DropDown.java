@@ -337,7 +337,7 @@ public class DropDown extends TestBase {
 
 		System.out.println("currentSelectedOption : " + currentSelectedOption.getText());
 		// Validate using TestNG Assert
-		assertEquals(currentSelectedOption.getText(), optionToSelect, "The selected option is not as expected.");
+		softAssert.assertEquals(currentSelectedOption.getText(), optionToSelect, "The selected option is not as expected.");
 
 		boolean isValid = currentSelectedOption.getText().equals(optionToSelect);
 

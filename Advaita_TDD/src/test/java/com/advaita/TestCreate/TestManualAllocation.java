@@ -41,15 +41,15 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "DemoC";
+	static String employeeName = "DemoJ";
 
 	// Run Test Based on Boolean
-	final boolean processRun = false;
-	final boolean dataSetRun = false;
-	final boolean metaDataRun = false;
-	final boolean manualUploadRun = false;
+	final boolean processRun = true;
+	final boolean dataSetRun = true;
+	final boolean metaDataRun = true;
+	final boolean manualUploadRun = true;
 	final boolean nonMeasurableRun = false;
-	final boolean stageRun = false;
+	final boolean stageRun = true;
 	final boolean userRun = false;
 	final boolean samplingPlanRun = true;
 	final boolean manualAllocationRun = false;
@@ -184,7 +184,7 @@ public class TestManualAllocation extends TestBase {
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		homePage.clickOnProcessManagementCreate();
+//		homePage.clickOnProcessManagementCreate();
 
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 		int addNumberOfRecord = 15;
@@ -243,9 +243,8 @@ public class TestManualAllocation extends TestBase {
 				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
 				.verifyAddSectionA(false, false, true);
 
-		// .verifyAddAndRemoveBlockInSectionB(4)
-		// .selectMetaDataInAddBlockSectionB(2, true, false)
-//		stages.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
+		stages.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2, true, false).addSection(1,
+				measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
 //		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
 		String viewCheckBox[] = { "all" };
@@ -284,6 +283,20 @@ public class TestManualAllocation extends TestBase {
 
 		PropertieFileUtil.storeSingleTextInPropertiesFile("userName", usernameToDoAction);
 		userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess, stages);
+	}
+
+	@Test(priority = 7)
+	public void verifyUserCreateAndUserMapping2() throws Throwable {
+
+		test = reports.createTest("verifyUserCreateAndUserMapping2");
+		userSetUp.navToUserSetUp("management");
+
+		int noOfUser = 2;
+		List<String> myGroups = Arrays.asList("Admin", "Agent");
+		List<String> permissionsList = Arrays.asList("Admin", "Agent");
+		boolean createButton = true;
+		userSetUp.createMultipleUsers(noOfUser, myGroups, permissionsList, createButton);
+
 	}
 
 	@Test(priority = 8, enabled = samplingPlanRun)

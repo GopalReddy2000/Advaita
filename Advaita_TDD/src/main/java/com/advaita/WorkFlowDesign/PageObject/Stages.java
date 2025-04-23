@@ -408,6 +408,7 @@ public class Stages extends TestBase {
 		char lastChar = text.charAt(text.length() - 1);
 		assertEquals(lastChar, '*');
 
+		Thread.sleep(1000);
 		assertTrue(selectProcessDropDownElement.isDisplayed(), "selectProcessDropDownElement is not displayed.");
 
 		Select select = new Select(selectProcessDropDownElement);
@@ -424,6 +425,7 @@ public class Stages extends TestBase {
 		char lastChar = text.charAt(text.length() - 1);
 		assertEquals(lastChar, '*');
 
+		Thread.sleep(1000);
 		assertTrue(selectSubProcessDropDownElement.isDisplayed(), "selectSubProcessDropDownElement is not displayed.");
 
 		wait.until(ExpectedConditions.visibilityOf(selectSubProcessDropDownElement));

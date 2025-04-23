@@ -6,11 +6,19 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,7 +30,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
@@ -30,11 +37,12 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
+import com.advaita.Utilities.FieldVerificationUtils;
+import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class UserSetupPage extends TestBase {
-
 
 	@FindBy(xpath = "//select[@id='multiselect']")
 	public static WebElement rolePermissionDropdown;
@@ -440,10 +448,6 @@ public class UserSetupPage extends TestBase {
 	@FindBy(id = "downloadButton")
 	public static WebElement stageFilters;
 
-
-
-
-
 	public int getRandomIndex(List<WebElement> element) {
 		if (element.size() > 0) {
 			Random rand = new Random();
@@ -464,7 +468,6 @@ public class UserSetupPage extends TestBase {
 		PageFactory.initElements(driver, this);
 
 	}
-
 
 	String firstName;
 	String lastName;
@@ -648,7 +651,7 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage navToUserManagement() {
-		actions.moveByOffset(100,200).click().perform();
+		actions.moveByOffset(100, 200).click().perform();
 		try {
 			userManagement.click();
 		} catch (NoSuchElementException e) {
@@ -883,7 +886,7 @@ public class UserSetupPage extends TestBase {
 	WebElement UserMappingProcess;
 
 	public UserSetupPage userMappingProcess(String ProcessName, String SubProcessName, String SubSubProcess,
-											String Stages) {
+			String Stages) {
 		// Adjust timeout as needed
 		UserMappingProcess.click();
 		jsClick(AddRow);
@@ -1118,7 +1121,7 @@ public class UserSetupPage extends TestBase {
 	WebElement emailError;
 
 	public void userCreationFieldsNeg(String userName, String firstName, String lastname, String email,
-									  String password) {
+			String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1155,7 +1158,7 @@ public class UserSetupPage extends TestBase {
 	}
 
 	public UserSetupPage userWithOutPermission(String userName, String firstName, String lastname, String email,
-											   String password) {
+			String password) {
 
 		navigateWithinUserSetup(userManagement);
 		userManagementCreateButton.click();
@@ -1328,7 +1331,8 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//td[1]")
 	WebElement stageFilterUserName;
-	public UserSetupPage StagesFilter(String userName){
+
+	public UserSetupPage StagesFilter(String userName) {
 		jsClick(stageFilters);
 		searchBox.sendKeys(userName);
 		searchButton.click();
@@ -1339,9 +1343,10 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//td[10]")
 	List<WebElement> roles;
-	public UserSetupPage searchRole(String role){
+
+	public UserSetupPage searchRole(String role) {
 		jsClick(stageFilters);
-		selectByVisibleText(roleDropdown,role);
+		selectByVisibleText(roleDropdown, role);
 		searchButton.click();
 		assert roles.get(0).getText().equals(role);
 		return this;
@@ -1349,35 +1354,37 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//td[11]")
 	List<WebElement> superiorName;
-	public UserSetupPage superiorName(String role){
 
-		selectByVisibleText(superiorDropdown,role);
+	public UserSetupPage superiorName(String role) {
+
+		selectByVisibleText(superiorDropdown, role);
 		searchButton.click();
-		assertEquals(role, superiorName.get(0).getText() );
+		assertEquals(role, superiorName.get(0).getText());
 		return this;
 	}
 
 	@FindBy(xpath = "//td[5]")
 	List<WebElement> status;
-	public UserSetupPage status(String role){
+
+	public UserSetupPage status(String role) {
 		jsClick(stageFilters);
-		selectByVisibleText(statusDropdown,role);
+		selectByVisibleText(statusDropdown, role);
 		searchButton.click();
-		assertEquals(role, status.get(0).getText() );
+		assertEquals(role, status.get(0).getText());
 		return this;
 	}
 
-	public UserSetupPage dropdownSearch(String role,String superiorRole,String statusRole){
+	public UserSetupPage dropdownSearch(String role, String superiorRole, String statusRole) {
 		jsClick(stageFilters);
-		selectByVisibleText(roleDropdown,role);
-		selectByVisibleText(superiorDropdown,superiorRole);
-		selectByVisibleText(statusDropdown,statusRole);
+		selectByVisibleText(roleDropdown, role);
+		selectByVisibleText(superiorDropdown, superiorRole);
+		selectByVisibleText(statusDropdown, statusRole);
 
 		searchButton.click();
 
 		softAssert.assertEquals(role, roles.get(0).getText());
 		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
-		softAssert.assertEquals(statusRole, status.get(0).getText() );
+		softAssert.assertEquals(statusRole, status.get(0).getText());
 		softAssert.assertAll();
 		return this;
 	}
@@ -1394,51 +1401,46 @@ public class UserSetupPage extends TestBase {
 	@FindBy(xpath = "//td[6]")
 	WebElement process;
 
-	public UserSetupPage searchProcess(String processValue,String subProcessValue,String subSubProcessValue,String stageValue){
+	public UserSetupPage searchProcess(String processValue, String subProcessValue, String subSubProcessValue,
+			String stageValue) {
 
 		jsClick(stageFilters);
 
-		selectByVisibleText(searchProcessDropdown,processValue);
-		selectByVisibleText(searchSubProcessDropdown,subProcessValue);
-		selectByVisibleText(searchSubSubProcessDropdown,subSubProcessValue);
-		selectByVisibleText(stageDropdown,stageValue);
+		selectByVisibleText(searchProcessDropdown, processValue);
+		selectByVisibleText(searchSubProcessDropdown, subProcessValue);
+		selectByVisibleText(searchSubSubProcessDropdown, subSubProcessValue);
+		selectByVisibleText(stageDropdown, stageValue);
 
 		searchButton.click();
 
-		softAssert.assertEquals(process.getText(),processValue);
-		softAssert.assertEquals(subProcess.getText(),subProcessValue);
-		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
-		softAssert.assertEquals(stageName.getText(),stageValue);
-
+		softAssert.assertEquals(process.getText(), processValue);
+		softAssert.assertEquals(subProcess.getText(), subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(), subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(), stageValue);
 
 		softAssert.assertAll();
 		return this;
 	}
 
-	public UserSetupPage stageWithFilters(String userName,String superiorRole,
-										  String statusRole,String processValue,String subProcessValue,
-										  String subSubProcessValue,String stageValue){
+	public UserSetupPage stageWithFilters(String userName, String superiorRole, String statusRole, String processValue,
+			String subProcessValue, String subSubProcessValue, String stageValue) {
 		navigateWithinUserSetup(userManagement);
 		jsClick(stageFilters);
-
 
 		softAssert.assertEquals(userName, stageFilterUserName.getText());
 
 		softAssert.assertEquals(superiorRole, superiorName.get(0).getText());
-		softAssert.assertEquals(statusRole, status.get(0).getText() );
+		softAssert.assertEquals(statusRole, status.get(0).getText());
 
-		softAssert.assertEquals(process.getText(),processValue);
-		softAssert.assertEquals(subProcess.getText(),subProcessValue);
-		softAssert.assertEquals(subSubProcess.getText(),subSubProcessValue);
-		softAssert.assertEquals(stageName.getText(),stageValue);
-
+		softAssert.assertEquals(process.getText(), processValue);
+		softAssert.assertEquals(subProcess.getText(), subProcessValue);
+		softAssert.assertEquals(subSubProcess.getText(), subSubProcessValue);
+		softAssert.assertEquals(stageName.getText(), stageValue);
 
 		softAssert.assertAll();
 
 		return this;
 	}
-
-
 
 	@FindBy(xpath = "//a[text()='Export']")
 	WebElement exportButton;
@@ -1468,7 +1470,7 @@ public class UserSetupPage extends TestBase {
 
 		// Read Excel file and compare data
 		try (FileInputStream fis = new FileInputStream(downloadedFile);
-			 Workbook workbook = WorkbookFactory.create(fis)) {
+				Workbook workbook = WorkbookFactory.create(fis)) {
 
 			Sheet sheet = workbook.getSheetAt(0);
 			List<List<String>> excelData = new ArrayList<>();
@@ -1512,7 +1514,315 @@ public class UserSetupPage extends TestBase {
 		throw new RuntimeException("Downloaded file not found.");
 	}
 
+//##########################################################################################################################################################
+//##########################################################################################################################################################
+//#######################################GOPAL#####################################################################################################
+//##########################################################################################################################################################
+//##########################################################################################################################################################
 
+	@FindBy(xpath = "//a[@id='menulist1']")
+	WebElement userSetupModule;
 
+	@FindBy(linkText = "User Management")
+	public WebElement userManagementPageButton;
+
+	@FindBy(linkText = "Role & Permissions")
+	public WebElement rolePermissionsPageButton;
+
+	@FindBy(linkText = "System Names")
+	public WebElement systemNamesPageButton;
+
+	@FindBy(linkText = "+ Create User")
+	public WebElement createUserbutton;
+
+	public UserSetupPage navToUserSetUp(String pageName) {
+		click(driver, userSetupModule);
+
+		switch (pageName.toLowerCase()) {
+		case "management":
+			click(driver, userManagementPageButton);
+			break;
+		case "role and permission":
+			click(driver, rolePermissionsPageButton);
+			break;
+		case "system names":
+			click(driver, systemNamesPageButton);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid page name: " + pageName);
+		}
+
+		return this;
+	}
+
+	public UserSetupPage createNewUser() {
+
+		click(driver, createUserbutton);
+
+		FieldVerificationUtils.verifyTextArea(inputUserName, "Gopal1234", false);
+		FieldVerificationUtils.verifyTextArea(inputFirstName, "Gopal", false);
+		FieldVerificationUtils.verifyTextArea(inputLastName, "Reddy", false);
+		FieldVerificationUtils.verifyTextArea(inputEmail, "gopalreddy12@gmail.com", false);
+		FieldVerificationUtils.verifyTextArea(inputPassword, "Qwerty@123", false);
+		FieldVerificationUtils.verifyTextArea(inputConfirmPassword, "Qwerty@123", false);
+
+		return this;
+	}
+
+	/*
+	 * 
+	 * Admin
+	 * 
+	 * Agent
+	 * 
+	 * CE Head
+	 * 
+	 * CRC Admin
+	 * 
+	 * Complaint Desk
+	 * 
+	 * DSE
+	 * 
+	 * Drivingschool
+	 * 
+	 * Insurance
+	 * 
+	 * Manager
+	 * 
+	 * QA
+	 * 
+	 * QAADMIN
+	 * 
+	 * Sales
+	 * 
+	 * Service
+	 * 
+	 * SuperAdmin
+	 * 
+	 * Team Lead
+	 * 
+	 * Usedcar
+	 * 
+	 */
+
+	public UserSetupPage selectGroup(String groupName) {
+		WebElement multiSelect = driver.findElement(By.id("multiselect_group"));
+		Select select = new Select(multiSelect);
+
+		try {
+			select.selectByVisibleText(groupName);
+		} catch (NoSuchElementException e) {
+			throw new IllegalArgumentException("Invalid group name: " + groupName);
+		}
+
+		return this;
+	}
+
+	// Method to load properties file
+	private Properties loadProperties(String propertiesFilePath) {
+		Properties properties = new Properties();
+		try (FileInputStream fileInput = new FileInputStream(propertiesFilePath)) {
+			properties.load(fileInput);
+		} catch (IOException e) {
+			throw new RuntimeException("Error loading properties file", e);
+		}
+		return properties;
+	}
+
+	String path = getClass().getClassLoader().getResource("permissions.properties").getPath();
+
+//	public UserSetupPage selectPermissions(String selection) {
+//		Properties properties = loadProperties(path);
+//
+//		// Split the input string by comma and trim spaces
+//		List<String> keys = Arrays.stream(selection.split(",")).map(String::trim).filter(s -> !s.isEmpty()) // Ignore
+//																											// empty
+//																											// entries
+//				.collect(Collectors.toList());
+//
+//		Set<String> allPermissions = new LinkedHashSet<>(); // Preserve order, avoid duplicates
+//
+//		for (String key : keys) {
+//			// Check if the key is a group defined in the properties file
+//			String value = properties.getProperty(key);
+//			if (value != null) {
+//				// Key is a group; add all associated permissions
+//				List<String> perms = Arrays.stream(value.split(",")).map(String::trim).filter(s -> !s.isEmpty())
+//						.collect(Collectors.toList());
+//				allPermissions.addAll(perms);
+//			} else {
+//				// Key is not a group; treat it as an individual permission
+//				allPermissions.add(key);
+//			}
+//		}
+//
+//		// Select each permission in the UI
+//		for (String permission : allPermissions) {
+//			try {
+//				WebElement option = driver
+//						.findElement(By.xpath("//select[@id='multiselect']/option[text()='" + permission + "']"));
+//				if (!option.isSelected()) {
+//					option.click();
+//				}
+//			} catch (NoSuchElementException e) {
+//				throw new IllegalArgumentException("Permission not found in UI: " + permission, e);
+//			}
+//		}
+//
+//		return this;
+//	}
+
+	public UserSetupPage clickSideButton(String section, String buttonType) {
+		String prefix;
+
+		switch (section.toLowerCase()) {
+		case "group":
+			prefix = "multiselect_group_";
+			break;
+		case "permission":
+			prefix = "multiselect_";
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid section: " + section);
+		}
+
+		String buttonId;
+
+		switch (buttonType.toLowerCase()) {
+		case "rightall":
+			buttonId = prefix + "rightAll";
+			break;
+		case "rightselected":
+			buttonId = prefix + "rightSelected";
+			break;
+		case "leftselected":
+			buttonId = prefix + "leftSelected";
+			break;
+		case "leftall":
+			buttonId = prefix + "leftAll";
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid button type: " + buttonType);
+		}
+
+		WebElement button = driver.findElement(By.id(buttonId));
+		jsClick(button);
+
+		return this;
+	}
+
+//	################################################################################
+
+	public UserSetupPage createMultipleUsers(int numberOfUsers, List<String> customGroups, List<String> permissionsList,
+			boolean create) {
+		Properties userProps = new Properties(); // Fresh Properties object each time
+		Faker faker = new Faker();
+
+// Use customGroups if provided and not empty, otherwise fallback to default groups
+		List<String> groups = (customGroups != null && !customGroups.isEmpty()) ? customGroups
+				: Arrays.asList("Admin", "Agent", "CE Head", "CRC Admin", "Complaint Desk", "DSE", "Drivingschool",
+						"Insurance", "Manager", "QA", "QAADMIN", "Sales", "Service", "SuperAdmin", "Team Lead",
+						"Usedcar");
+
+// Ensure permissionsList is not null or empty; fallback to a default if needed
+		List<String> permissionsToUse = (permissionsList != null && !permissionsList.isEmpty()) ? permissionsList
+				: Arrays.asList("Agent"); // Default to "Agent" permissions if none provided
+
+		for (int i = 1; i <= numberOfUsers; i++) {
+			String username = faker.name().username() + i;
+			String firstName = faker.name().firstName();
+			String lastName = faker.name().lastName();
+			String email = username + "@example.com";
+			String password = "Pass@" + faker.number().digits(4);
+			String confirmPassword = password;
+
+// Get group based on index (loop back using modulo if users > groups)
+			String groupName = groups.get((i - 1) % groups.size());
+
+// Get permissions for this user (cycle through permissionsList if needed)
+			String permissions = permissionsToUse.get((i - 1) % permissionsToUse.size());
+
+			click(driver, createUserbutton);
+
+			FieldVerificationUtils.verifyTextArea(inputUserName, username, false);
+			FieldVerificationUtils.verifyTextArea(inputFirstName, firstName, false);
+			FieldVerificationUtils.verifyTextArea(inputLastName, lastName, false);
+			FieldVerificationUtils.verifyTextArea(inputEmail, email, false);
+			FieldVerificationUtils.verifyTextArea(inputPassword, password, false);
+			FieldVerificationUtils.verifyTextArea(inputConfirmPassword, confirmPassword, false);
+
+// Select the group
+			selectGroup(groupName);
+			clickSideButton("group", "rightselected");
+
+// Select permissions (group name or specific permissions)
+			selectPermissions(permissions);
+			clickSideButton("permission", "rightselected");
+
+			if (create) {
+				clickOnGroupCreateButton();
+			}
+
+// Store user credentials and group info
+			userProps.setProperty("user" + i + ".username", username);
+			userProps.setProperty("user" + i + ".password", password);
+			userProps.setProperty("user" + i + ".group", groupName);
+			userProps.setProperty("user" + i + ".permissions", permissions);
+		}
+
+// Define the file path
+		String filePath = "src/test/resources/DynamicUsers.properties";
+
+// Optionally delete the file if it exists to ensure a fresh start
+		File file = new File(filePath);
+		if (file.exists()) {
+			file.delete();
+		}
+
+// Save user data to properties file (overwrites existing file)
+		try (FileOutputStream output = new FileOutputStream(filePath)) {
+			userProps.store(output, "Generated Users using Faker and Group Assignment");
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to store user properties", e);
+		}
+
+		return this;
+	}
+
+//Updated method to select permissions by group name or specific permission
+	public UserSetupPage selectPermissions(String selection) {
+		Properties properties = loadProperties(path);
+
+// Split the input string by comma and trim spaces
+		List<String> selections = Arrays.stream(selection.split(",")).map(String::trim).collect(Collectors.toList());
+
+		Set<String> allPermissions = new LinkedHashSet<>(); // Preserve order and avoid duplicates
+
+		for (String item : selections) {
+// Check if the item is a group key in the properties file
+			String value = properties.getProperty(item);
+			if (value != null) {
+// Item is a group (e.g., "Agent", "QA"); split its permissions
+				List<String> perms = Arrays.asList(value.split(",\\s*"));
+				allPermissions.addAll(perms);
+			} else {
+// Item is a specific permission (e.g., "Can Create Dataset")
+				allPermissions.add(item);
+			}
+		}
+
+// Select each permission in the UI
+		for (String permission : allPermissions) {
+			try {
+				WebElement option = driver
+						.findElement(By.xpath("//select[@id='multiselect']/option[text()='" + permission + "']"));
+				option.click();
+			} catch (NoSuchElementException e) {
+				throw new IllegalArgumentException("Permission not found in UI: " + permission);
+			}
+		}
+
+		return this;
+	}
 
 }
