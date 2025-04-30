@@ -41,14 +41,14 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "DemoJ";
+	static String employeeName = "DemoE";
 
 	// Run Test Based on Boolean
 	final boolean processRun = true;
 	final boolean dataSetRun = true;
 	final boolean metaDataRun = true;
 	final boolean manualUploadRun = true;
-	final boolean nonMeasurableRun = false;
+	final boolean nonMeasurableRun = true;
 	final boolean stageRun = true;
 	final boolean userRun = false;
 	final boolean samplingPlanRun = true;

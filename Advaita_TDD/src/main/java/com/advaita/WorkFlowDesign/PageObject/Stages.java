@@ -525,18 +525,38 @@ public class Stages extends TestBase {
 				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
 			}
 		}
-		if (clickUpToFourthLastElement) {
-			// Find all matching elements
-			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+//		if (clickUpToFourthLastElement) {
+//			// Find all matching elements
+//			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+//
+//			// Calculate the last index to click
+//			int totalElements = elements.size();
+//			int lastIndexToClick = totalElements - 3;
+//
+//			// Click elements up to the fourth last element
+//			for (int i = 0; i < lastIndexToClick; i++) {
+//				elements.get(i).click();
+//			}
+			if (clickUpToFourthLastElement) {
+				// Find all matching elements
+				List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+				
+				for(WebElement ele : elements) {
+					System.out.println("Section A :"+ele.findElement(By.xpath("./../label")).getText());
+					
+				}
+				
+				int totalCheckboxes = elements.size();
+				int clickLimit = Math.max(1, totalCheckboxes - 5); // Always click at least 1, and ignore last 4 if possible
+				
+				System.out.println("totalCheckboxes : "+totalCheckboxes+"\n"+"clickLimit : "+clickLimit);
 
-			// Calculate the last index to click
-			int totalElements = elements.size();
-			int lastIndexToClick = totalElements - 3;
-
-			// Click elements up to the fourth last element
-			for (int i = 0; i < lastIndexToClick; i++) {
-				elements.get(i).click();
-			}
+				for (int i = 0; i < clickLimit; i++) {
+				    WebElement checkbox = elements.get(i);
+				    if (!checkbox.isSelected()) {
+				        checkbox.click();
+				    }
+				}
 
 		}
 

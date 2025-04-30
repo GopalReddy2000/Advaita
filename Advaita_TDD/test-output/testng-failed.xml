@@ -6,9 +6,9 @@
       <class name="com.advaita.TestCreate.TestManualAllocation">
         <methods>
           <include name="tearDown"/>
-          <include name="verifyCreateSamplingPlan"/>
           <include name="getResult"/>
           <include name="setUp"/>
+          <include name="verifyStageCreate"/>
         </methods>
       </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
     </classes>

@@ -27,7 +27,7 @@ public class DynamicXpath extends TestBase {
 
 	public static WebElement dataSetMaxLength(int dataSetMaxLengthIndex) {
 
-		String xpath = String.format("//textarea[@name='form-%d-ds_field_value']", dataSetMaxLengthIndex);
+		String xpath = String.format("//input[@name='form-%d-ds_field_value']", dataSetMaxLengthIndex);
 		return driver.findElement(By.xpath(xpath));
 	}
 
