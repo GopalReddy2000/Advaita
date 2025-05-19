@@ -33,8 +33,8 @@ public class Stages extends TestBase {
 
 	SoftAssert softAssert = new SoftAssert();
 
-	static private String stageListingPageUrl = mainURl+"en/stages/stages_list/";
-	static private String stagesCraeteFormURL = mainURl+"en/stages/create_stages/";
+	static private String stageListingPageUrl = mainURl + "en/stages/stages_list/";
+	static private String stagesCraeteFormURL = mainURl + "en/stages/create_stages/";
 
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
@@ -274,7 +274,7 @@ public class Stages extends TestBase {
 
 	public Stages navigateFetchProcessRecord(boolean wantToFetchRecord) throws Throwable {
 
-		driver.navigate().to(mainURl+"en/data_management/process/");
+		driver.navigate().to(mainURl + "en/data_management/process/");
 
 		Thread.sleep(4000);
 
@@ -315,7 +315,7 @@ public class Stages extends TestBase {
 
 	public void navigateToStages() {
 
-		driver.navigate().to(mainURl+"en/stages/stages_list/");
+		driver.navigate().to(mainURl + "en/stages/stages_list/");
 	}
 
 	public void navigateNonMeasurableCreate() throws Throwable {
@@ -448,8 +448,8 @@ public class Stages extends TestBase {
 				"selectSubSubProcessDropDownElement is not displayed.");
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
-		
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
+
 		Select select = new Select(selectSubSubProcessDropDownElement);
 		Thread.sleep(1000);
 
@@ -526,39 +526,32 @@ public class Stages extends TestBase {
 			}
 		}
 //		if (clickUpToFourthLastElement) {
-//			// Find all matching elements
-//			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+//			
+//			List<WebElement> checkboxes = driver.findElements(By.cssSelector("input[name='sectionA_fieldname']"));
 //
-//			// Calculate the last index to click
-//			int totalElements = elements.size();
-//			int lastIndexToClick = totalElements - 3;
+//			for (WebElement checkbox : checkboxes) {
+//			    String fieldName = checkbox.getAttribute("data-fieldname");
 //
-//			// Click elements up to the fourth last element
-//			for (int i = 0; i < lastIndexToClick; i++) {
-//				elements.get(i).click();
+//			    checkbox.click(); // Click the checkbox
+//
+//			    if ("Trans_Unique_Id".equals(fieldName)) {
+//			        break; // Stop clicking after Trans_Unique_Id
+//			    }
 //			}
 			if (clickUpToFourthLastElement) {
-				// Find all matching elements
-				List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
-				
-				for(WebElement ele : elements) {
-					System.out.println("Section A :"+ele.findElement(By.xpath("./../label")).getText());
-					
-				}
-				
-				int totalCheckboxes = elements.size();
-				int clickLimit = Math.max(1, totalCheckboxes - 5); // Always click at least 1, and ignore last 4 if possible
-				
-				System.out.println("totalCheckboxes : "+totalCheckboxes+"\n"+"clickLimit : "+clickLimit);
+				List<WebElement> checkboxes = driver.findElements(By.name("sectionA_fieldname"));
 
-				for (int i = 0; i < clickLimit; i++) {
-				    WebElement checkbox = elements.get(i);
+				for (WebElement checkbox : checkboxes) {
+				    String fieldName = checkbox.getAttribute("data-fieldname");
+				    if ("Trans_Unique_Id".equals(fieldName)) {
+				        break;
+				    }
 				    if (!checkbox.isSelected()) {
 				        checkbox.click();
 				    }
 				}
 
-		}
+			}
 
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
@@ -1147,8 +1140,8 @@ public class Stages extends TestBase {
 	public Stages stageSettingListSaveAndConfirmation() {
 
 //		actions.moveToElement(saveButton2).perform();
-		
-		CommonUtils.scrollToPoint(driver,578,774);
+
+		CommonUtils.scrollToPoint(driver, 578, 774);
 
 //		saveButton2.click();
 		click(driver, saveButton2);

@@ -101,7 +101,7 @@ public class Questions extends TestBase {
 		questions.add(Map.of("FieldName", "Job Title", "Type", "Character", "MaxLength", "40", "IsMandatory", "Yes"));
 		questions.add(Map.of("FieldName", "Nationality", "Type", "Character", "MaxLength", "40", "IsMandatory", "No"));
 		questions.add(
-				Map.of("FieldName", "Preferred Language", "Type", "Character", "MaxLength", "15", "IsMandatory", "No"));
+				Map.of("FieldName", "Preferred Language", "Type", "Character", "MaxLength", "50", "IsMandatory", "No"));
 		questions.add(Map.of("FieldName", "Supervisor", "Type", "Character", "MaxLength", "30", "IsMandatory", "Yes"));
 		questions.add(Map.of("FieldName", "Emergency Contact Relation", "Type", "Character", "MaxLength", "40",
 				"IsMandatory", "No"));

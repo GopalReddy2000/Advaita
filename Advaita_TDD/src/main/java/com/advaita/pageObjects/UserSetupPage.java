@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,11 +27,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
@@ -38,6 +42,8 @@ import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
 import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
+import com.advaita.Utilities.SendDataUtils;
 import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
@@ -1535,6 +1541,27 @@ public class UserSetupPage extends TestBase {
 	@FindBy(linkText = "+ Create User")
 	public WebElement createUserbutton;
 
+	@FindBy(xpath = "//button[normalize-space()='Admin Process']")
+	WebElement adminProcessSection;
+
+	@FindBy(xpath = "//button[normalize-space()='Process']")
+	WebElement processSection;
+
+	@FindBy(xpath = "//a[text()='+ Add Row']")
+	WebElement addRowOption;
+
+	@FindBy(xpath = "//button[contains(@class,'btn-primary')][text()='Save']")
+	WebElement mappingSaveButton;
+
+	@FindBy(xpath = "(//h3/..//span['Created Successfully'])[1]")
+	WebElement userSuccessPopUp;
+
+	@FindBy(xpath = "(//h3/..//span['Created Successfully']/..//button[text()='Continue'])[1]")
+	WebElement userContinueButton;
+
+	@FindBy(id = "exampleInputPassword1")
+	WebElement searchField;
+
 	public UserSetupPage navToUserSetUp(String pageName) {
 		click(driver, userSetupModule);
 
@@ -1821,6 +1848,182 @@ public class UserSetupPage extends TestBase {
 				throw new IllegalArgumentException("Permission not found in UI: " + permission);
 			}
 		}
+
+		return this;
+	}
+
+	/*
+	 * clickUserActionIcon("lucina.mayert2", "edit"); // Clicks edit icon
+	 * clickUserActionIcon("lucina.mayert2", "delete"); // Clicks delete icon
+	 * clickUserActionIcon("lucina.mayert2", "map"); // Clicks mapping
+	 */
+	public void clickUserActionIcon(String username, String actionType) {
+		List<WebElement> rows = driver.findElements(By.xpath("//table//tr[td]")); // only rows with <td>
+
+		for (WebElement row : rows) {
+			WebElement usernameCell;
+			try {
+				usernameCell = row.findElement(By.xpath("./td[1]"));
+			} catch (NoSuchElementException e) {
+				continue; // Skip if <td[1]> not found
+			}
+
+			if (usernameCell.getText().trim().equals(username)) {
+				WebElement targetElement = null;
+
+				try {
+					switch (actionType.toLowerCase()) {
+					case "edit":
+						targetElement = row.findElement(By.cssSelector(".edit_userdata"));
+						break;
+					case "delete":
+						targetElement = row.findElement(By.cssSelector(".delete_groupdata"));
+						break;
+					case "map":
+						targetElement = row.findElement(By.xpath(".//a[img[@title='User Mapping']]"));
+						System.out.println(targetElement);
+						break;
+					default:
+						throw new IllegalArgumentException("Invalid action type: " + actionType);
+					}
+
+					if (targetElement != null) {
+						// Scroll only if needed (optional)
+						((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+								targetElement);
+						targetElement.click(); // use normal click first
+						System.out.println(actionType + " clicked for user: " + username);
+					}
+
+				} catch (Exception e) {
+					System.err.println("Failed to click " + actionType + " for user: " + username);
+					e.printStackTrace();
+				}
+
+				break; // Stop after finding the match
+			}
+		}
+	}
+
+	public boolean isProcessSelected(String processName) {
+
+		click(driver, adminProcessSection);
+
+		List<WebElement> processDropdowns = driver.findElements(By.cssSelector("select[name$='-process_id']"));
+		for (WebElement dropdown : processDropdowns) {
+			Select select = new Select(dropdown);
+			WebElement selectedOption = select.getFirstSelectedOption();
+			if (selectedOption.getText().trim().equalsIgnoreCase(processName)) {
+				click(driver, processSection);
+
+				return true; // "DemoG P" is selected in at least one dropdown
+			}
+		}
+		return false; // Not selected in any
+	}
+
+	public UserSetupPage verifyMappingForAllUsers() {
+
+		Properties props = new Properties();
+		try (FileInputStream fis = new FileInputStream("src/test/resources/DynamicUsers.properties")) {
+			props.load(fis);
+
+			// Get all property keys
+			Set<Object> keys = props.keySet();
+
+			// Loop through all usernames
+			for (Object key : keys) {
+				String keyStr = key.toString();
+
+				// We only care about keys like user1.username, user2.username
+				if (keyStr.endsWith(".username")) {
+					String username = props.getProperty(keyStr).trim();
+					searchTheUser(username);
+					clickUserActionIcon(username, "map");
+					String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+					assertTrue(isProcessSelected(processValue), "process is not available in admin process section.");
+
+					String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
+					String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
+					String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+					selectProcessHierarchy(processValue, subProcessValue, subSubProcessValue, stages);
+
+					saveAndConfirmation();
+					click(driver, userManagementPageButton);
+				}
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return this;
+	}
+
+	public void searchTheUser(String userName) {
+
+		assertTrue(searchField.isDisplayed(), "searchField is not displayed.");
+
+		SendDataUtils.clearAndSendKeys(searchField, userName);
+
+		String xpath = String.format("//td[normalize-space()='%s']", userName);
+		WebElement searchedUserName = driver.findElement(By.xpath(xpath));
+		assertTrue(searchedUserName.isDisplayed(), "searchedUserName is not displayed.");
+
+	}
+
+	public void selectProcessHierarchy(String process, String subProcess, String subSubProcess, String stage) {
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+		List<WebElement> emptyFormRow = driver.findElements(By.xpath("//tr[@class='form_set empty_form_tr']"));
+
+		if (!emptyFormRow.isEmpty() && emptyFormRow.get(0).isDisplayed()) {
+			throw new IllegalStateException("Row already exists: 'form_set empty_form_tr' is visible.");
+		} else {
+			addRowOption.click();
+		}
+
+		String rowPrefix = "form-0";
+
+		// Process
+		Select processDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-process_id")));
+		processDropdown.selectByVisibleText(process);
+		waitUntilOptionsPopulated(By.id("id_" + rowPrefix + "-sub_process_id"), wait);
+
+		// Sub Process
+		Select subProcessDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-sub_process_id")));
+		subProcessDropdown.selectByVisibleText(subProcess);
+		waitUntilOptionsPopulated(By.id("id_" + rowPrefix + "-s_sub_process_id"), wait);
+
+		// Sub Sub Process
+		Select subSubProcessDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-s_sub_process_id")));
+		subSubProcessDropdown.selectByVisibleText(subSubProcess);
+		waitUntilOptionsPopulated(By.id("id_" + rowPrefix + "-stage_id"), wait);
+
+		// Stage
+		Select stageDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-stage_id")));
+		stageDropdown.selectByVisibleText(stage);
+
+		System.out.println("Process hierarchy selected successfully.");
+	}
+
+	private void waitUntilOptionsPopulated(By locator, WebDriverWait wait) {
+		wait.until(driver -> {
+			WebElement dropdown = driver.findElement(locator);
+			Select select = new Select(dropdown);
+			return select.getOptions().size() > 1; // "Select" + real options
+		});
+	}
+
+	public UserSetupPage saveAndConfirmation() {
+
+		click(driver, mappingSaveButton);
+		wait.until(ExpectedConditions.visibilityOf(userSuccessPopUp));
+		assertTrue(userSuccessPopUp.isDisplayed(), "userSuccessPopUp is not displayed.");
+		assertTrue(userContinueButton.isDisplayed(), "userContinueButton is not displayed.");
+
+		userContinueButton.click();
 
 		return this;
 	}

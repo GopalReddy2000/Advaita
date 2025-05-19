@@ -3,17 +3,29 @@ package com.advaita.pageObjects;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.ClickUtilities;
@@ -97,9 +109,9 @@ public class ManualAllocationPage extends TestBase {
 	@FindBy(id = "auto_allocate_btn")
 	public WebElement autoAllocate;
 
-
-	public ManualAllocationPage() {
+	public ManualAllocationPage() throws IOException {
 		PageFactory.initElements(driver, this);
+		this.usersList = loadUsers();
 	}
 
 	public ManualAllocationPage navigateToAlchemyManualAllocation() {
@@ -319,5 +331,173 @@ public class ManualAllocationPage extends TestBase {
 			return false;
 		}
 	}
+
+//	#####################################################################################
+
+	private final String userPropPath = "src/test/resources/DynamicUsers.properties";
+	private final List<Map<String, String>> usersList;
+
+	private List<Map<String, String>> loadUsers() throws IOException {
+		Properties props = new Properties();
+		props.load(new FileInputStream(userPropPath));
+
+		Map<String, Map<String, String>> allUsers = new LinkedHashMap<>();
+		for (String key : props.stringPropertyNames()) {
+			String[] parts = key.split("\\.");
+			if (parts.length == 2) {
+				allUsers.computeIfAbsent(parts[0], k -> new HashMap<>()).put(parts[1], props.getProperty(key));
+			}
+		}
+		return new ArrayList<>(allUsers.values());
+	}
+
+//	    🔹 1. Allocate to 1 specific user
+//	    List<String> user = List.of("rob.funk2");
+//	    allocator.allocateSamplesToUsers("one", user, 0, 3);
+//	    ✔ Allocates 3 samples to rob.funk2.
+//
+//	    🔹 2. Allocate to multiple specific users
+//	    List<String> users = List.of("rob.funk2", "chi.gulgowski1");
+//	    allocator.allocateSamplesToUsers("multiple", users, 0, 2);
+//	    ✔ Allocates 2 samples to each of the users.
+//
+//	    🔹 3. Allocate to N random users
+//	    allocator.allocateSamplesToUsers("random", null, 2, 3);
+//	    ✔ Randomly selects 2 users and allocates 3 samples to each.
+//
+//	    🔹 4. Allocate to all users in properties
+//	    allocator.allocateSamplesToUsers("all", null, 0, 1);
+//	    ✔ Allocates 1 sample to every user in the properties file.
+//
+//	    🔸 Invalid Example (will throw validation error)
+//	    allocator.allocateSamplesToUsers("one", null, 0, 1); // ❌ Missing selected username
+
+	public void allocateSamplesToUsers(String mode, List<String> selectedNames, int numberOfUsers, int samplesPerUser)
+			throws Throwable {
+
+		// Filter users based on the mode
+		List<Map<String, String>> selectedUsers = new ArrayList<>();
+		switch (mode.toLowerCase()) {
+		case "one":
+			selectedUsers = usersList.stream().filter(u -> u.get("username").equalsIgnoreCase(selectedNames.get(0)))
+					.collect(Collectors.toList());
+			break;
+		case "multiple":
+			selectedUsers = usersList.stream().filter(u -> selectedNames.contains(u.get("username")))
+					.collect(Collectors.toList());
+			break;
+		case "random":
+			Collections.shuffle(usersList);
+			selectedUsers = usersList.subList(0, Math.min(numberOfUsers, usersList.size()));
+			break;
+		case "all":
+			selectedUsers = new ArrayList<>(usersList);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid mode: " + mode);
+		}
+
+		if (selectedUsers.isEmpty()) {
+			throw new RuntimeException("No users selected for allocation.");
+		}
+
+		// Extract distinct groups from selected users
+		Set<String> groups = selectedUsers.stream().map(u -> u.get("group")).filter(Objects::nonNull)
+				.collect(Collectors.toSet());
+
+		if (groups.size() > 1) {
+			throw new RuntimeException("Selected users belong to different groups: " + groups);
+		}
+
+		// Only one group is allowed
+		String selectGroup = groups.iterator().next();
+		if (selectGroup == null || selectGroup.isEmpty()) {
+			throw new RuntimeException("Group not found for selected user(s).");
+		}
+
+		// Select group-based dropdowns
+		List<String> multipleLabelTexts = Arrays.asList("Allocation Type *", "Role");
+		List<String> multipleDropdownIds = Arrays.asList("id_allocation_type", "to_role");
+		List<String> multipleDefaultOptions = Arrays.asList("Select", "All");
+		List<String> multipleOptionsToSelect = Arrays.asList("Call Wise", selectGroup);
+
+		DropDown.validateStarMarkAndHandleDropdowns(multipleLabelTexts, multipleDropdownIds, multipleDefaultOptions,
+				multipleOptionsToSelect, false);
+
+		List<WebElement> sampleRows = driver.findElements(By.cssSelector("tr.col_rowval"));
+		int totalSamplesNeeded = selectedUsers.size() * samplesPerUser;
+
+		if (totalSamplesNeeded > sampleRows.size()) {
+			throw new RuntimeException("Not enough sample rows available for allocation. Required: "
+					+ totalSamplesNeeded + ", Available: " + sampleRows.size());
+		}
+
+		Properties outputProps = new Properties();
+		int rowIndex = 0;
+
+		for (Map<String, String> user : selectedUsers) {
+			String username = user.get("username");
+			System.out.println("Allocating to user: " + username);
+
+			for (int i = 0; i < samplesPerUser; i++) {
+				WebElement row = sampleRows.get(rowIndex++);
+
+				unWait(1);
+
+			
+				WebElement selectField = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(
+						By.xpath("//table[contains(@class,'stage_sampling_table')]/tbody/tr[@class='col_rowval']["
+								+ (rowIndex) + "]/td[2]/div[@class='form_group']"))));
+
+				// Locate the vertical scrollbar
+		        WebElement verticalScrollBar = driver.findElement(By.xpath("//div[@class='zl-scrollBar zl-verticalBar']"));
+
+		   
+//	            CommonUtils.scrollToElementByActions(selectField);
+//	            unWaitInMilli(30);
+//	            CommonUtils.scrollToElementByActions(selectField);
+				selectField.click();
+				
+				Thread.sleep(1000);
+				 // Perform drag and drop to scroll
+		        actions.clickAndHold(verticalScrollBar)
+		               .moveByOffset(0, 20) // Adjust Y offset for scroll distance
+		               .release()
+		               .perform();
+		        Thread.sleep(1000);
+
+				String userOptionXPath = String.format(
+						"//span[contains(@class, 'select2-dropdown')]//ul[@class='select2-results__options']/li[text()='%s']",
+						username);
+				WebElement userOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userOptionXPath)));
+				userOption.click();
+
+//	            driver.findElement(By.xpath("//p[contains(text(),'Total Samples')]"));
+//	            jsClick(driver.findElement(By.xpath("//p[contains(text(),'Total Samples')]")));
+				Thread.sleep(1000);
+				// Simulate pressing the Escape key
+		        actions.sendKeys(Keys.ESCAPE).perform();
+		        Thread.sleep(500);
+
+				List<WebElement> columns = row.findElements(By.tagName("td"));
+				StringBuilder rowData = new StringBuilder();
+				for (int j = 2; j < columns.size(); j++) {
+					rowData.append(columns.get(j).getText()).append(",");
+				}
+
+				String rowValue = rowData.toString().replaceAll(",$", "");
+				outputProps.setProperty(username + ".sample" + (i + 1), rowValue);
+			}
+		}
+
+		try (FileOutputStream fos = new FileOutputStream("src/test/resources/allocated_samples.properties")) {
+			outputProps.store(fos, "Sample allocation for users");
+		}
+	}
+	
+	
+	
+
+
 
 }

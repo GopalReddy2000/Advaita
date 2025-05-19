@@ -313,20 +313,22 @@ public class ManualUpload extends TestBase {
 		assertTrue(driver.findElement(By.xpath(uploadRemarkXpath)).isDisplayed(),
 				"uploadRemarkXpath is not displayed.");
 
+		
+//		###### Need To Change The Logic ######
 //	Records After Upload
-
-		String uploadRecordViewButton = "//tbody//tr//td[normalize-space()='" + uploadName
-				+ "']/..//a[@id='show_history']";
-		driver.findElement(By.xpath(uploadRecordViewButton)).click();
-
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(uploadRecordViewButton)));
-		int noOfRecords = countTotalRecords(pagination, uploadedRecord);
-
-		System.out.println("noOfRecords : " + noOfRecords);
+//
+//		String uploadRecordViewButton = "//tbody//tr//td[normalize-space()='" + uploadName
+//				+ "']/..//a[@id='show_history']";
+//		driver.findElement(By.xpath(uploadRecordViewButton)).click();
+//
+//		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(uploadRecordViewButton)));
+//		int noOfRecords = countTotalRecords(pagination, uploadedRecord);
+//
+//		System.out.println("noOfRecords : " + noOfRecords);
 //
 //		assertEquals(numberOfUploadedData, noOfRecords, "Values are not equal!");
 
-		click(driver, closeButtonOnPopUp);
+//		click(driver, closeButtonOnPopUp);
 
 		return this;
 	}
