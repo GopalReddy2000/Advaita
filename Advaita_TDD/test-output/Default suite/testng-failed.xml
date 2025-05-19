@@ -3,14 +3,31 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
+<<<<<<< HEAD
       <class name="com.advaita.TestCreate.TestManualAllocation">
+=======
+<<<<<<< HEAD
+      <class name="com.advaita.TestCreate.TestMenusSetupCreate">
+        <methods>
+          <include name="setUp"/>
+          <include name="EndToEnDMenuSetupNegative"/>
+        </methods>
+      </class> <!-- com.advaita.TestCreate.TestMenusSetupCreate -->
+=======
+      <class name="com.advaita.EndtoEnd.run.test.MastersEndToEnd">
+>>>>>>> 02d29c0148f104b33822e240db974919af06f0b4
         <methods>
           <include name="tearDown"/>
           <include name="verifyCreateManualUpload"/>
           <include name="getResult"/>
           <include name="setUp"/>
         </methods>
+<<<<<<< HEAD
       </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
+=======
+      </class> <!-- com.advaita.EndtoEnd.run.test.MastersEndToEnd -->
+>>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
+>>>>>>> 02d29c0148f104b33822e240db974919af06f0b4
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

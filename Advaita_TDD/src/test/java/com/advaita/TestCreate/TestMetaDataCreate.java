@@ -1,27 +1,19 @@
 package com.advaita.TestCreate;
 
-import java.io.IOException;
-import java.util.Date;
-
-import org.openqa.selenium.WebElement;
-import org.testng.ITestResult;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
-
-import static com.advaita.DataSetUp.PageObject.ProcessPage.selectProcessDropDown;
-import static com.advaita.DataSetUp.PageObject.ProcessPage.selectSubProcessDropDown;
 
 public class TestMetaDataCreate extends TestBase {
 

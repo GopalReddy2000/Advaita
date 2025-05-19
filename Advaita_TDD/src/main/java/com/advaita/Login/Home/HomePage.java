@@ -39,6 +39,9 @@ public class HomePage extends TestBase {
 	
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
 	public WebElement mastersTabElement;
+	
+	@FindBy(xpath = "//a[text()='+ Add Disposition']")
+	public WebElement dispositionCreateButton;
 
 	public HomePage() {
 
@@ -85,6 +88,7 @@ public class HomePage extends TestBase {
 		click(driver, workflowDesign);
 		assertTrue(masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
 		click(driver, dispositionTab);
+		click(driver, dispositionCreateButton);
 
 	}
 

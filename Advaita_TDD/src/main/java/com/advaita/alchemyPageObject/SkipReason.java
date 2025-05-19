@@ -5,10 +5,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.logging.Logger;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +22,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.SendDataUtils;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -25,7 +33,22 @@ public class SkipReason extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
+	SmsTemplate smsTemplate;
+
 	FakeData fake = new FakeData();
+
+	// UserIds
+	String superAmdin = "Capture_Admin";
+	String superAdminPass = "Qwerty@123";
+
+	String userID = "Abhijit@trasccon";
+	String userPassword = "Qwerty@123";
+
+	String userId1 = "Abhijit_idamta";
+	String password1 = "Qwerty@123";
+
+	// Global Variables
+	// ------------------------------------------->
 	public String FirstCreatedUserName;
 
 	public WebElement driverIninteractable;
@@ -36,17 +59,13 @@ public class SkipReason extends TestBase {
 
 	public String lastCreatedSkipReasonText;
 
-	String superAmdin = "Capture_Admin";
-	String superAdminPass = "Qwerty@123";
+	public String fetchProcesstext;
+	public String fetchSubProcesstext;
+	public String fetchSubsubProcesstext;
 
-	String userID = "Abhijit@trasccon";
-	String userPassword = "Qwerty@123";
-
-	String userId1 = "Abhijit_idamta";
-	String password1 = "Qwerty@123";
+	// ---------------------------------------------------->
 
 	// process , subprocess , Subsubprocess
-
 	@FindBy(xpath = "(//input[@data-type='process']/..//span)[1]")
 	public WebElement fetchProcess;
 
@@ -85,10 +104,10 @@ public class SkipReason extends TestBase {
 	public WebElement reasonName_textfield;
 
 	@FindBy(id = "id_description")
-	public WebElement description_textfield;
+	public WebElement descriptionTextfield;
 
 	@FindBy(xpath = "//h2/../..//button[@id='manual_id']")
-	public WebElement createButton_createSkipReasonPopup;
+	public WebElement createButton_CreteSkipReasonPopup;
 
 	@FindBy(xpath = "//h2/../..//button[text()='Cancel']")
 	public WebElement cancelButton_CreateSkipReasonPopup;
@@ -101,6 +120,9 @@ public class SkipReason extends TestBase {
 
 	@FindBy(xpath = "//tbody/tr[last()]//td")
 	public WebElement lastCreated_skipReason;
+
+	@FindBy(xpath = "//tbody/tr[last()]//td[1]")
+	public WebElement lastSearchedSkipReason;
 
 	@FindBy(xpath = "//tbody//tr//td[1]")
 	public List<WebElement> CreatedSkipReasons;
@@ -117,7 +139,7 @@ public class SkipReason extends TestBase {
 	public WebElement lastDleteButton_SkipReasonTable;
 
 	@FindBy(name = "text_search")
-	public WebElement seachElementTextfield;
+	public WebElement searchTextfield;
 
 	@FindBy(xpath = "//select[@id='process_search']")
 	public WebElement processDropdown_Table;
@@ -139,6 +161,9 @@ public class SkipReason extends TestBase {
 
 	@FindBy(xpath = "(//tbody//tr//td//img[@alt='delete-icon '])[last()]")
 	public WebElement deleteButtonLast;
+
+	@FindBy(xpath = "//td[normalize-space(text())='No Entries Found']")
+	public WebElement noEntriesFound;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
 	public WebElement deletePopup;
@@ -204,10 +229,43 @@ public class SkipReason extends TestBase {
 	@FindBy(xpath = "//select[@id='reason_name']")
 	public WebElement selectSkipReasonDropdown;
 
+	@FindBy(xpath = "(//button[text()='Save'])[2]")
+	public WebElement saveButtonSkipAudit;
+
+	// Negative Scenarious
+	@FindBy(xpath = "//label[text()='This field is required.']")
+	public WebElement fieldRequiredErrorMesg;
+
+	@FindBy(xpath = "//label[text()='Process*']")
+	public WebElement processLabel;
+
+	@FindBy(xpath = "//label[text()='Sub Process*']")
+	public WebElement subProcessLabel;
+
+	@FindBy(xpath = "//label[text()='Sub Sub Process*']")
+	public WebElement subSubProcessLabel;
+
+	@FindBy(xpath = "//label[text()='Process*']")
+	public WebElement reasonsLabel;
+
+	@FindBy(xpath = "//label[text()=' Description ']")
+	public WebElement descriptionLabel;
+
+	@FindBy(xpath = "//span[@id='change_error_msg']")
+	public WebElement somethingWentWrongErrorMesg;
+
+	@FindBy(xpath = "//tbody//tr//td[5]//img[@alt='delete-icon ']")
+	public List<WebElement> deleteButtons;
+
+	// Negative
+	@FindBy(xpath = "//label[@id='process-error']")
+	public WebElement thisFieldisRequiredErrorMessage;
+
 	// Dropdown Utils
 	public void dropdownUtilsALL(WebElement dropdownElement, String selectionType, String selectionValue) {
 		try {
 			// Assert dropdown is displayed and enabled
+			wait.until(ExpectedConditions.visibilityOf(dropdownElement));
 			assertTrue(dropdownElement.isDisplayed(), "Dropdown is not visible.");
 			assertTrue(dropdownElement.isEnabled(), "Dropdown is not enabled.");
 
@@ -219,39 +277,39 @@ public class SkipReason extends TestBase {
 
 			// Perform selection based on type
 			switch (selectionType.toLowerCase()) {
-				case "text":
-					dropdown.selectByVisibleText(selectionValue);
-					break;
-				case "value":
-					dropdown.selectByValue(selectionValue);
-					break;
-				case "index":
-					try {
-						int index = Integer.parseInt(selectionValue);
-						dropdown.selectByIndex(index);
-					} catch (NumberFormatException e) {
-						Assert.fail("Index should be an integer value.");
-					}
-					break;
-				default:
-					Assert.fail("Invalid selection type. Use 'text', 'value', or 'index'.");
+			case "text":
+				dropdown.selectByVisibleText(selectionValue);
+				break;
+			case "value":
+				dropdown.selectByValue(selectionValue);
+				break;
+			case "index":
+				try {
+					int index = Integer.parseInt(selectionValue);
+					dropdown.selectByIndex(index);
+				} catch (NumberFormatException e) {
+					Assert.fail("Index should be an integer value.");
+				}
+				break;
+			default:
+				Assert.fail("Invalid selection type. Use 'text', 'value', or 'index'.");
 			}
 
 			// Verify the selected option
 			WebElement selectedOption = dropdown.getFirstSelectedOption();
 			switch (selectionType.toLowerCase()) {
-				case "text":
-					Assert.assertEquals(selectedOption.getText(), selectionValue,
-							"Selected value doesn't match the expected text.");
-					break;
-				case "value":
-					Assert.assertEquals(selectedOption.getAttribute("value"), selectionValue,
-							"Selected value doesn't match the expected value.");
-					break;
-				case "index":
-					Assert.assertEquals(options.indexOf(selectedOption), Integer.parseInt(selectionValue),
-							"Selected index doesn't match the expected index.");
-					break;
+			case "text":
+				Assert.assertEquals(selectedOption.getText(), selectionValue,
+						"Selected value doesn't match the expected text.");
+				break;
+			case "value":
+				Assert.assertEquals(selectedOption.getAttribute("value"), selectionValue,
+						"Selected value doesn't match the expected value.");
+				break;
+			case "index":
+				Assert.assertEquals(options.indexOf(selectedOption), Integer.parseInt(selectionValue),
+						"Selected index doesn't match the expected index.");
+				break;
 			}
 			System.out.println("Successfully selected: " + selectedOption.getText());
 		} catch (Exception e) {
@@ -261,15 +319,15 @@ public class SkipReason extends TestBase {
 
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
-		fetchProcess.getText();
+		fetchProcesstext = fetchProcess.getText();
 		System.out.println("Fetchprocessname :" + fetchProcess.getText());
 
 		fetchProcess.click();
-		FethSubProcess.getText();
+		fetchSubProcesstext = FethSubProcess.getText();
 		System.out.println("FetchSubProcess name : " + FethSubProcess.getText());
 
 		FethSubProcess.click();
-		SubSubProcess.getText();
+		fetchSubsubProcesstext = SubSubProcess.getText();
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 
 	}
@@ -408,8 +466,8 @@ public class SkipReason extends TestBase {
 		String randomTemplateName1 = skipReasonDescription[randomIndex1];
 		System.out.println("Random SMS Template Name: " + randomTemplateName);
 
-		assertTrue(description_textfield.isDisplayed(), " description_textfield is not dispalyed ");
-		description_textfield.sendKeys(randomTemplateName1);
+		assertTrue(descriptionTextfield.isDisplayed(), " description_textfield is not dispalyed ");
+		descriptionTextfield.sendKeys(randomTemplateName1);
 
 	}
 
@@ -472,14 +530,14 @@ public class SkipReason extends TestBase {
 	}
 
 	public void descriptionTextfield() {
-		randomDescriptionTextField(description_textfield);
+		randomDescriptionTextField(descriptionTextfield);
 
 	}
 
 	public void clickOnCreateSkipReason() {
 
-		assertTrue(createButton_createSkipReasonPopup.isDisplayed(), "createButton_createSkipReasonPopup");
-		createButton_createSkipReasonPopup.click();
+		assertTrue(createButton_CreteSkipReasonPopup.isDisplayed(), "createButton_createSkipReasonPopup");
+		createButton_CreteSkipReasonPopup.click();
 	}
 
 	public void verifyCreatedSkipReasonPopup() throws Throwable {
@@ -506,12 +564,24 @@ public class SkipReason extends TestBase {
 
 	}
 
+//	final static List<String> captureCreatedSkipReasonsList = new ArrayList<String>();
+//
+//	public void captureAllCreatedSkipReasons() {
+//
+////		captureCreatedSkipReasonsList = new ArrayList<String>();
+//
+//		for (WebElement skipreasonsText : CreatedSkipReasons) {
+//
+//			captureCreatedSkipReasonsList.add(skipreasonsText.getText());
+//			System.out.println("captureCreatedSkipReasonsList:" + captureCreatedSkipReasonsList);
+//
+//		}
+//
+//	}
 
+	public List<String> elementTexts; // global Variable
 
-	public List<Object> elementTexts;  //global Variable
-
-	// Utility method to get text from both normal elements and dropdowns
-	public List<Object> getAllTextFromElements(List<WebElement> elements) {
+	public List<String> getAllTextFromElements(List<WebElement> elements) {
 
 		elementTexts = new ArrayList<>();
 
@@ -537,7 +607,7 @@ public class SkipReason extends TestBase {
 				elementTexts.add(text);
 
 				// Print each element's text for verification
-				//System.out.println("Element Text: " + text);
+				// System.out.println("Element Text: " + text);
 			}
 
 		}
@@ -548,43 +618,44 @@ public class SkipReason extends TestBase {
 
 	public void captureAllCreatedSkipReasons() {
 
-
 		getAllTextFromElements(CreatedSkipReasons);
-		System.out.println("elementTexts:"+ elementTexts);
+		System.out.println("elementTexts:" + elementTexts);
 
 	}
 
+	List<String> SkipAuditReasonsLists = new ArrayList<String>();
+
 	public void selecteSkipReason() {
 
-		List<Object>createdSkipReasonsLists=new ArrayList<Object>();
-		Select skipreasonDropdwon=new Select(selectSkipReasonDropdown);
-		for (WebElement skipReasonsOptions : skipreasonDropdwon.getOptions())
-		{
-
-			createdSkipReasonsLists.add(skipReasonsOptions.getText());
-			System.out.println("skipreasonDropdwon :"+ skipReasonsOptions.getText());
-
+		Select skipreasonDropdown = new Select(selectSkipReasonDropdown);
+		List<WebElement> skipReasonsOptionsList = skipreasonDropdown.getOptions();
+		// Start the loop from index 1 to skip the first option
+		for (int i = 1; i < skipReasonsOptionsList.size(); i++) {
+			WebElement skipReasonsOption = skipReasonsOptionsList.get(i);
+			SkipAuditReasonsLists.add(skipReasonsOption.getText().trim()); // Add the text to the list
+			System.out.println("Skip reason option: " + skipReasonsOption.getText());
 		}
 
-		//	assertTrue(createdSkipReasonsLists.contains(elementTexts), "Created skip reasons are displayed in 'SkipTheAudit Dropdown'");
-		System.out.println("elementTexts 1 :"+ elementTexts);
+		System.out.println("captureCreatedSkipReasonsList: " + elementTexts);
+		System.out.println("SkipAuditReasonsLists: " + SkipAuditReasonsLists);
 
-		assertTrue(createdSkipReasonsLists.contains(elementTexts), "Created skip reasons are  not displayed in 'SkipTheAudit Reasons Dropdown");
+//		assertTrue(SkipAuditReasonsLists.containsAll(captureCreatedSkipReasonsList),
+//    "Not all elements from 'captureCreatedSkipReasonsList' are found in 'SkipAuditReasonsLists'.");
+		assertTrue(SkipAuditReasonsLists.containsAll(elementTexts),
+				"Not all elements from 'captureCreatedSkipReasonsList' are found in 'SkipAuditReasonsLists'.");
 
-		dropdownUtilsALL(selectSkipReasonDropdown, "value", "35");
+		dropdownUtilsALL(selectSkipReasonDropdown, "index", "1");
 	}
 
 	public void searchThroughReasonsName() {
 
 		NavigateTo_Skipreason();
 
-		assertTrue(seachElementTextfield.isDisplayed(), "seachElementTextfield is not displayed");
-		// assertTrue(seachElementTextfield.isEnabled(), "seachElementTextfield element
-		// is enabled");
+		assertTrue(searchTextfield.isDisplayed(), "seachElementTextfield is not displayed");
 
-		seachElementTextfield.sendKeys(lastCreatedSkipReasonText);
+		searchTextfield.sendKeys(lastCreatedSkipReasonText);
 
-		String searchTextfieldValue = seachElementTextfield.getAttribute("value");
+		String searchTextfieldValue = searchTextfield.getAttribute("value");
 		System.out.println("searchTextfieldValue :" + searchTextfieldValue);
 
 		assertEquals(lastCreatedSkipReasonText, searchTextfieldValue, "searchtextfieldvale is equal after click only");
@@ -917,22 +988,14 @@ public class SkipReason extends TestBase {
 	// Verify the user is able to see the "created skip reasons" in Stages profile
 	// when they click n skip audit
 	CallLogSatgeView callLogSatgeView = new CallLogSatgeView();
-
-@FindBy(linkText = "Call Log Stage View")
-WebElement callLogStageView;
-
-@FindBy(xpath = "//img[@alt='filter_search' and @class='img-fluid']")
-WebElement searchButton;
+	// private String String reasonNametextfield;
 
 	public void navigateToSkipAudit() {
 
+		callLogSatgeView.navigateToCallLogStageView();
 
-//		callLogSatgeView.naivigateToCallLogStageView();
-
-		navigateWithinAlchemy(callLogStageView);
 		dropdownUtilsALL(callLogSatgeView.SearchStages, "text", "Booking Information Stage"); // select Stage
-//		callLogSatgeView.searchButton.click();
-		searchButton.click();
+		callLogSatgeView.searchButton.click();
 
 		wait.until(ExpectedConditions.visibilityOf(eyeIconProfileview));
 		assertTrue(eyeIconProfileview.isDisplayed(), "eyeIconProfileview is not displayed");
@@ -948,9 +1011,377 @@ WebElement searchButton;
 		wait.until(ExpectedConditions.visibilityOf(verifySkipAudit));
 		assertTrue(verifySkipAudit.isDisplayed(), "verifySkipAudit is not displayed");
 
+	}
 
+	public void saveAudit() {
+
+		assertTrue(saveButtonSkipAudit.isDisplayed(), "saveButtonSkipAudit is not displayed");
+		saveButtonSkipAudit.click();
 
 	}
 
-}
+	public void deleteReason() throws Throwable {
 
+		assertTrue(lastDleteButton_SkipReasonTable.isDisplayed(), "lastDleteButton_SkipReasonTable is not displayed");
+		lastDleteButton_SkipReasonTable.click();
+		assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete is not displayed");
+		deleteButton_delete.click();
+
+		wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
+		assertTrue(deleted_SuceessfullyPopup.isDisplayed(), "deleted_SuceessfullyPopup");
+		continueButton_DeleteSuccessullyPopup.click();
+
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfield is not displayed");
+
+//		String searchValueText = searchTextfield.getAttribute("value");
+//		System.out.println("searchValueText :"+ searchValueText);
+
+		searchTextfield.clear();
+		searchTextfield.sendKeys(lastCreated_skipReason.getText());
+
+		String searchValueText = searchTextfield.getAttribute("value");
+		System.out.println("searchValueText :" + searchValueText);
+
+		searchButton_table.click();
+		System.out.println("lastSearchedSkipReason :" + lastSearchedSkipReason.getText());
+		assertEquals(searchValueText, lastSearchedSkipReason.getText());
+
+		if (searchValueText.equals(lastSearchedSkipReason.getText())) {
+
+			assertTrue(true, "FAIL:passing value in search Textfiel and LastCreated text is not equal");
+			System.out.println("Pass:passing value in search Textfiel and LastCreated text is not equal");
+		} else {
+
+			System.out.println("FAIL:passing value in search Textfiel and LastCreated text is not equal");
+		}
+
+		clearAllFilters_table.click();
+
+	}
+
+	// #################################################################################################
+
+	// Negative Scenarious
+	public void withoutselectMandatoryTextFieldsUTILTY(WebElement LabelNameElement, WebElement textfieldElement,
+			String thisFieldRequired) throws Throwable {
+
+		thisFieldRequired = "This field is required. ";
+
+		wait.until(ExpectedConditions.visibilityOf(LabelNameElement));
+		assertTrue(LabelNameElement.isDisplayed(), "reasonsLabl is not displayed");
+		String reasonLabelText = LabelNameElement.getText();
+
+		if (reasonLabelText.contains("*")) {
+			assertTrue(reasonLabelText.contains("*"), "ReasonsLabel is  not a mangatory field");
+
+			if (textfieldElement.isDisplayed()) {
+
+				String reasonField = textfieldElement.getAttribute("value");
+
+				if (reasonField.isEmpty()) {
+
+					createButton_CreteSkipReasonPopup.click();
+
+					if (fieldRequiredErrorMesg.getText().equals(thisFieldRequired)) {
+
+						System.out.println("pass: the pfield is a mandatory field");
+					}
+
+				}
+
+			}
+
+		} else {
+			System.out.println("The field is not mandatory the field is not empty");
+		}
+	}
+
+	public void withoutSelectingReasonsTextfield() throws Throwable {
+
+		createButton_SkipReasonPage.click();
+
+		dropdownUtilsALL(ProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubsubProcessDropdown, "index", "1");
+
+		withoutselectMandatoryTextFieldsUTILTY(processLabel, reasonName_textfield, "This field is required");
+
+	}
+
+	public void withoutSelectingProcess() {
+
+		createButton_SkipReasonPage.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processLabel));
+		assertTrue(processLabel.isDisplayed(), "Label is not displayed");
+
+		String processLabelText = processLabel.getText();
+
+		if (processLabelText.contains("*")) {
+
+			System.out.println("This Label is a mandatory ");
+			// assertTrue(true, "This Label is a mandatry ");
+			if (ProcessDropdown.isDisplayed()) {
+
+				String defaultProcess = "Select Process";
+
+				Select defaultDropdown = new Select(ProcessDropdown);
+				WebElement defaultSelectedOption = defaultDropdown.getFirstSelectedOption();
+				String defaultSelectedOptionText = defaultSelectedOption.getText();
+
+				assertEquals(defaultSelectedOptionText, defaultProcess,
+						"Default process not matched with firstSelected options");
+
+			}
+
+		} else {
+			System.out.println("the label is not manadatory");
+		}
+
+		String enterData = "Random Names";
+		reasonName_textfield.sendKeys(enterData);
+
+		createButton_CreteSkipReasonPopup.click();
+
+		assertTrue(subProcessLabel.isDisplayed(), "subSubProcessLabel is not displayed");
+
+		String thisFieldRequired = "This field is required.";
+
+		assertEquals(fieldRequiredErrorMesg.getText(), thisFieldRequired);
+
+	}
+
+	public String enterData;
+
+	public void nonMandatoryTextfieldUTILITY(WebElement labelElement, WebElement element,
+			WebElement CreateButtonElement, WebElement successCreatedPopupElement) throws InterruptedException {
+
+		enterData = "Random Names";
+		reasonName_textfield.sendKeys(enterData);
+
+		// Check if the descriptionLabel has an asterisk (*), meaning it is a mandatory
+		// field
+		String descriptionLabelText = labelElement.getText();
+
+		if (!descriptionLabelText.contains("*")) { // No asterisk means the description field is not mandatory
+
+			if (element.isDisplayed()) {
+				// Assert the description textfield is displayed
+				assertTrue(element.isDisplayed(), "description is not displayed");
+
+				// Check if the description field is mandatory by asserting on the label
+				assertTrue(true, "This DescriptionField is a  not a mandatory field");
+
+				// Get the current value of the description textfield
+				String descriptionTextfieldValue = element.getAttribute("value");
+
+				// If the description field is empty, click create
+				if (descriptionTextfieldValue.isEmpty()) {
+					CreateButtonElement.click();
+
+					// Wait for the popup and assert it's displayed
+
+					wait.until(ExpectedConditions.visibilityOf(successCreatedPopupElement));
+					assertTrue(successCreatedPopupElement.isDisplayed(),
+							"successCreatedPopupElement is displayed And testcasePass");
+				} else {
+					// Else part: Description is not empty, provide a message or action
+					assertFalse(false, " This field is not empty but it should be.");
+				}
+
+			} else {
+				// Else part: Description field is not displayed, and it should be
+				assertFalse(true, "This TextfieldField Element  is not displayed but should be.");
+			}
+
+		} else {
+			// Else part: Description label contains asterisk (*) and is marked as mandatory
+			assertTrue(false, "This Textfieldfield is mandatory as it contains an asterisk (*), this was unexpected.");
+		}
+	}
+
+	public void enterAllAndsaveWithoutnonEnterInMandatoryTextfield() throws InterruptedException {
+
+		createButton_SkipReasonPage.click();
+
+		// Select dropdown options using your utility method
+		dropdownUtilsALL(ProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubsubProcessDropdown, "index", "1");
+
+		nonMandatoryTextfieldUTILITY(descriptionLabel, description_textfield_edit, createButton_CreteSkipReasonPopup,
+				successfullyCreated_popup);
+
+	}
+
+	public void saveWithSpecialCharacterUTILITY(WebElement createButtonWebpage,
+			WebElement successfullyCreatedPopupElement, WebElement somethingwentWrongMessage) {
+
+		createButtonWebpage.click();
+
+		// Check if the success or error popup is displayed
+		try {
+			// Wait for the "successfullyCreated_popup" to appear
+			wait.until(ExpectedConditions.visibilityOf(successfullyCreatedPopupElement));
+
+			// If success popup is displayed, the test case should fail
+			assertFalse(successfullyCreatedPopupElement.isDisplayed(),
+					"Test case failed: successfullyCreated_popup is displayed, but an error was expected.");
+
+		} catch (TimeoutException e) {
+			// If success popup is not displayed within the timeout, check for the error
+			// message
+
+			// Check if "somethingWentWrongErrorMesg" appears
+			if (somethingwentWrongMessage.isDisplayed()) {
+				// Test case should pass if error message is displayed
+				assertTrue(true, "Test case passed: somethingWentWrongErrorMesg is displayed.");
+			} else {
+				// Test case should fail if no error message is found
+				assertFalse(true, "Test case failed: Neither success popup nor error message was displayed.");
+			}
+		}
+
+	}
+
+	public void saveWithSpecialCharacter() {
+
+		String specailChar = "!@#$%^&*(_";
+
+		createButton_SkipReasonPage.click();
+
+		dropdownUtilsALL(ProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubProcessDropdown, "index", "1");
+		dropdownUtilsALL(SubsubProcessDropdown, "index", "1");
+
+		// Enter data into reasonName_textfield
+		reasonName_textfield.sendKeys(specailChar);
+		saveWithSpecialCharacterUTILITY(createButton_CreteSkipReasonPopup, successfullyCreated_popup,
+				somethingWentWrongErrorMesg);
+
+	}
+
+	String invalidOptionDrpdown = "NonExistingOption";
+
+	public void selectanInvalidOptionFromDropdownUTILITY(WebElement dropdownElement) {
+
+		try {
+			// Try selecting an invalid option
+			Select dropdown = new Select(dropdownElement);
+			dropdown.selectByVisibleText(invalidOptionDrpdown);
+
+			// If the invalid option is selected, the test should fail
+			Assert.fail("Test case failed: Able to select non-existing option.");
+		} catch (NoSuchElementException e) {
+			// If the exception is thrown, this is the expected behavior, so the test should
+			// pass
+			Assert.assertTrue(true, "Test case passed: Non-existing option could not be selected.");
+		}
+	}
+
+	public void selectanInvalidOptionFromDropdown() {
+
+		createButton_SkipReasonPage.click();
+		selectanInvalidOptionFromDropdownUTILITY(ProcessDropdown);
+		selectanInvalidOptionFromDropdownUTILITY(SubProcessDropdown);
+		selectanInvalidOptionFromDropdownUTILITY(SubsubProcessDropdown);
+	}
+
+	public void searchInvalidCreatedNamesInSearchFieldUTILITY(WebElement searchTextfieldElement,
+			WebElement noEntriesFoundElement, WebElement searchButtonElement, WebElement clearallFilterElement) {
+
+		assertTrue(searchTextfieldElement.isDisplayed(), "seachTextfield is not displayed");
+		searchTextfield.sendKeys(invalidOptionDrpdown);
+
+		searchButtonElement.click();
+
+		if (noEntriesFoundElement.isDisplayed()) {
+			assertTrue(true, " Testcasepass: invali option cant displayed");
+		} else {
+			assertTrue(false, " Testcase Fail: invali option can displayed");
+		}
+
+		clearallFilterElement.click();
+
+	}
+
+	public void searchinvalidCreatedNamesInSearchField() {
+
+		searchInvalidCreatedNamesInSearchFieldUTILITY(searchTextfield, noEntriesFound, searchButton_table,
+				clearAllFilters_table);
+	}
+
+	String emoji = "❤️😂😊";
+
+	public void searchThroughEmojisInSearchTextfieldUTILITY(WebElement seachtextfieldElement, String emoji,
+			WebElement searchButtonTableElement, WebElement noEntriesFoundElement) {
+
+		SendDataUtils.sendKeysWithJSExecutor(seachtextfieldElement, emoji); // use for send "emojis"
+
+		assertTrue(searchButtonTableElement.isDisplayed(), "searchButton_table is not displayed");
+		searchButtonTableElement.click();
+		assertTrue(noEntriesFoundElement.isDisplayed(), "Fail : noEntriesFound found is not displayed");
+
+	}
+
+	public void searchThroughEmojisInSearchTextfield() throws Throwable {
+
+		searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchButton_table, noEntriesFound);
+
+	}
+
+	public void verifyAfterDeleteCreatedSkipReasonsDisplayedInSkipTheAudit() {
+
+		String lastCreastedReason = lastCreated_skipReason.getText();
+		System.out.println("lastCreastedReasn :" + lastCreastedReason);
+
+		assertTrue(lastDleteButton_SkipReasonTable.isDisplayed(), "lastDleteButton_SkipReasonTable is not displayed");
+		lastDleteButton_SkipReasonTable.click();
+		deleteButton_delete.click();
+
+		wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
+		assertTrue(deleted_SuceessfullyPopup.isDisplayed(), "deleted_SuceessfullyPopup is not displayed");
+		assertTrue(continueButton_DeleteSuccessullyPopup.isDisplayed(),
+				"continueButton_DeleteSuccessullyPopupis not displayed");
+		continueButton_DeleteSuccessullyPopup.click();
+
+		navigateToSkipAudit();
+		clickOnSkipAuditReason();
+
+		assertTrue(!SkipAuditReasonsLists.contains(lastCreastedReason),
+				"FAil: last Created SkipReason Contain In SkipAudit Dropdown");
+	}
+
+	public void searchThroughProcessAndStagesInSearchTextfieldUTILITY(WebElement searchTextfieldElement,
+			WebElement searchButtonElement, String stagesCreatedProcess1, WebElement noEntriesFoundElement,
+			WebElement clearallElemenet) {
+
+		assertTrue(searchTextfieldElement.isDisplayed(), "searchTextfield is not displayed");
+		searchTextfieldElement.sendKeys(stagesCreatedProcess1);
+		searchButtonElement.click();
+
+		assertTrue(noEntriesFoundElement.isDisplayed(), "noEntriesFoundis not displayed");
+		clearallElemenet.click();
+
+	}
+
+	public void searchThroughProcessesInSearchTextfield() throws Throwable {
+		NavigateToFetchprocess();
+		navigateTo_AlchemyModule();
+		NavigateTo_Skipreason();
+
+		//Search by Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table, fetchProcesstext,
+				noEntriesFound, clearAllFilters_table);
+		
+		//Search By Sub Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table, fetchSubProcesstext,
+				noEntriesFound, clearAllFilters_table);
+		
+		//Search By SubSub Process
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchButton_table,
+				fetchSubsubProcesstext, noEntriesFound, clearAllFilters_table);
+		
+	}
+
+}

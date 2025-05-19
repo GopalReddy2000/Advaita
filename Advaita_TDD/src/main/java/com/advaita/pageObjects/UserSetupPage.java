@@ -48,6 +48,8 @@ import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
+
+
 public class UserSetupPage extends TestBase {
 
 	@FindBy(xpath = "//select[@id='multiselect']")
@@ -344,7 +346,7 @@ public class UserSetupPage extends TestBase {
 	public static WebElement uMUserSystemMappingTab;
 
 	@FindBy(linkText = "+ Add Row")
-	public static WebElement AddRow;
+public static WebElement AddRow;
 
 	@FindBy(xpath = "//tbody//tr//td[1]//select[not(contains(@name,'__prefix__'))]")
 	public static List<WebElement> UMProcessNameDropdown;
@@ -491,9 +493,11 @@ public class UserSetupPage extends TestBase {
 		softAssert.assertTrue(textBox.isDisplayed());
 
 	}
-
-	public UserSetupPage navToUserCreatePage() {
-		navigateWithinUserSetup(userManagement);
+	public UserSetupPage navToUserCreatePage()
+	{
+				//userSetup.click();
+				jsClick(driver, userSetup);
+		click(driver,userManagement);
 		userManagementCreateButton.click();
 		return this;
 	}
@@ -663,6 +667,7 @@ public class UserSetupPage extends TestBase {
 		} catch (NoSuchElementException e) {
 			userSetup.click();
 			userManagement.click();
+
 		}
 		return this;
 	}
@@ -901,50 +906,35 @@ public class UserSetupPage extends TestBase {
 		selectByVisibleText(UMSubSubProcessNameDropdown.get(UMSubSubProcessNameDropdown.size() - 1), SubSubProcess);
 		selectByVisibleText(UMStageNameDropdown.get(UMStageNameDropdown.size() - 1), Stages);
 
-		/*
-		 * try {
-		 *
-		 * <<<<<<< HEAD // // try { // if(!deleteButton.get(0).isDisplayed()) { //
-		 * System.out.println("Rows are already added."); // } // }catch (Exception e) {
-		 * // // AddRow.click(); // } // uMProcessTab.click();
-		 *
-		 * wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown)); //
-		 * dropdownValidation(UMProcessNameDropdown);
-		 * DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select",
-		 * ProcessName); // selectByVisibleText(UMProcessNameDropdown, ProcessName);
-		 *
-		 * // dropdownValidation(UMSubProcessNameDropdown);
-		 * wait.until(ExpectedConditions.visibilityOf(UMSubProcessNameDropdown));
-		 * Thread.sleep(1000);
-		 * DropDown.dropdownWithAllPosibleValidation(UMSubProcessNameDropdown, "Select",
-		 * SubProcessName); // selectByVisibleText(UMSubProcessNameDropdown,
-		 * SubProcessName);
-		 *
-		 * // dropdownValidation(UMSubSubProcessNameDropdown); //
-		 * selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
-		 * wait.until(ExpectedConditions.visibilityOf(UMSubSubProcessNameDropdown));
-		 * Thread.sleep(1000);
-		 * DropDown.dropdownWithAllPosibleValidation(UMSubSubProcessNameDropdown,
-		 * "Select", SubSubProcess);
-		 *
-		 * // dropdownValidation(UMStageNameDropdown); //
-		 * selectByVisibleText(UMStageNameDropdown, Stages);
-		 * wait.until(ExpectedConditions.visibilityOf(UMStageNameDropdown));
-		 * Thread.sleep(2000);
-		 * DropDown.dropdownWithAllPosibleValidation(UMStageNameDropdown, "Select",
-		 * Stages);
-		 *
-		 * UMSaveButton.click(); unWait(1); continueButton.click();
-		 *
-		 * return this; }
-		 *
-		 * public UserSetupPage userMappingUserSuperior(String Stages,String role,String
-		 * name) { try { ======= >>>>>>> 113c4e248eaefbff61444a63f35824325884da76 if
-		 * (!deleteButton.isDisplayed()) {
-		 * System.out.println("Rows are already added."); } } catch (Exception e) {
-		 *
-		 * AddRow.click();// Handle other exceptions if necessary e.printStackTrace(); }
-		 */
+	/*	try {
+
+//		
+//		try {
+//			if(!deleteButton.get(0).isDisplayed()) {
+//			System.out.println("Rows are already added.");
+//			}
+//			}catch (Exception e) {
+//				
+//				AddRow.click();
+//			}
+//				uMProcessTab.click();
+
+//		dropdownValidation(UMProcessNameDropdown);
+		selectByVisibleText(UMProcessNameDropdown, ProcessName);
+		wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown));
+//		dropdownValidation(UMProcessNameDropdown);
+		DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select", ProcessName);
+//		selectByVisibleText(UMProcessNameDropdown, ProcessName);
+
+//		dropdownValidation(UMSubProcessNameDropdown);
+<<<<<<< HEAD
+		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
+
+//		dropdownValidation(UMSubSubProcessNameDropdown);
+		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+
+//		dropdownValidation(UMStageNameDropdown);
+		selectByVisibleText(UMStageNameDropdown, Stages);
 
 		UMSaveButton.click();
 
@@ -952,8 +942,17 @@ public class UserSetupPage extends TestBase {
 			unWait(1);
 			continueButton.click();
 		} catch (Exception e) {
-			System.out.println("Continue button was not displayed");
-		}
+
+			AddRow.click();// Handle other exceptions if necessary
+			e.printStackTrace();
+		}*/
+
+
+
+		UMSaveButton.click();
+		unWait(1);
+		//unWait(1000);
+		//continueButton.click();
 
 		return this;
 	}
@@ -1004,14 +1003,18 @@ public class UserSetupPage extends TestBase {
 		saveRecord();
 		return this;
 	}
+//	@FindBy(xpath = "//button[text()='System mapping ']")
+//	WebElement systemMappingTab;
 
 	public UserSetupPage navToSysNames() {
 		try {
 			systemNames.click();
-		} catch (NoSuchElementException e) {
+		}catch (org.openqa.selenium.NoSuchElementException e)
+		{
 			userSetup.click();
 			systemNames.click();
 		}
+
 		return this;
 	}
 
@@ -1022,7 +1025,7 @@ public class UserSetupPage extends TestBase {
 		systemNameSaveButton.click();
 		unWait(1);
 		continueButton.click();
-
+		
 		return this;
 
 	}

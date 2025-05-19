@@ -123,16 +123,13 @@ public class DataSetUpEndToEnd extends TestBase {
 		test = reports.createTest("verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType");
 //		HomePage.clickOnProcessManagementCreate();
 
-		// Get all questions
-		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
-		// Define the types and order of questions you want to select
-		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Character", "Text Area", "HyperLink");
-		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 7, true);
-
-		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
-		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
+		final String dataSetName = "Emplyee Details";
+		// Data for multiple rows
+		List<Map<String, String>> fieldData = List.of(
+				Map.of("FieldName", "Employee Name ?", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee ID ?", "Type", "Number", "MaxLength", "10", "IsMandatory", "Yes"),
+				Map.of("FieldName", " Emp Phone Number ?", "Type", "Number", "MaxLength", "14", "IsMandatory", "No"));
+		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();
 
 	}

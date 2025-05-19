@@ -6,18 +6,25 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.SendDataUtils;
+import com.advaita.alchemyPageObject.SmsTemplate;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -31,149 +38,311 @@ public class userStatus extends TestBase {
 
 	FakeData fake = new FakeData();
 
+	String statusName1 = "Admin";
+	String statusName2 = "Meeting";
+	String statusName3 = " Trainee Employee";
+	String statusName4 = "Customer";
+
 	public static String defaultUrl;
 	public static String userStatusUrl;
 	public static String createdStatusInputvlaue; // input valie
 	public static String firstStatusNameText;
 	public static String inputFieldAttributeValue;
 	public static String editStatusNameValue;
-	
+
+	@FindBy(xpath = "//img[@class='img-fluid profile_img']/..//span")
+	public WebElement userProfileName;
 
 	@FindBy(xpath = "//ul[@class='sidemenu_ul']//li//a//span[@class='text menu-text']")
-	public static List<WebElement> sideMenusListsElement;
+	public List<WebElement> sideMenusListsElement;
 
 	@FindBy(xpath = "(//ul[@class='sidemenu_ul']//li//a[@class='dropdown-item  menu-text'])[position() > 4]")
-	public static List<WebElement> subSideMenusListsElements;
+	public List<WebElement> subSideMenusListsElements;
 	//// ul[@class='sidemenu_ul']//li//a[@class='dropdown-item menu-text']
 	// Prfile options
-	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']//span[text()='Admin Super Admin']")
-	public static WebElement profileDropdown;
+
+	@FindBy(xpath = "//span[contains(@class, 'profile_name')]")
+	public WebElement profileDropdown;
+
+	@FindBy(linkText = "My Profile")
+	public WebElement myProfileOption;
+
+	@FindBy(linkText = "Change Password")
+	public WebElement changePasswordOption;
+
+	@FindBy(linkText = "Logout")
+	public WebElement logout;
 
 	@FindBy(xpath = "(//form[@action='/en/user_status/user_status_listing/'])[2]//li//a")
 	List<WebElement> createdStatuses;
 
 	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown'])[3]//span/..//img")
-	public static WebElement subMenuDropdwonProfile;
+	public WebElement subMenuDropdwonProfile;
+
+	@FindBy(xpath = "(//div[@aria-labelledby='profileDropdown'])[3]//span/..//img /../..//ul//li")
+	List<WebElement> createdStatusListStatusDrodown;
 
 	@FindBy(xpath = "(//a[@class='user_status_dropdown' and text()='Trainee Employee'])[3]")
-	public static WebElement traineeEmployee;
+	public WebElement traineeEmployee;
 
 	@FindBy(xpath = "//table//tbody//td[2]")
 	List<WebElement> defaultNamesMenuSetup;
 
 	@FindBy(xpath = "//a//span[text()='Menu Setup']")
-	public static WebElement menuSetup;
+	public WebElement menuSetup;
 
 	@FindBy(xpath = "//a[text()='Call Log Tab View']")
-	public static WebElement callLogTabView;
+	public WebElement callLogTabView;
 
 	@FindBy(xpath = "//a//span[text()='Alchemy']")
-	public static WebElement alchemyModul;
+	public WebElement alchemyModul;
 
-	@FindBy(xpath = "//a//span[text()='User Status']")
-	public static WebElement userStatus;
+	@FindBy(xpath = "//a//span[text()='User Settings ']")
+	public WebElement userStatus;
 
 	@FindBy(xpath = "(//h1[text()=' User Status '])[1]")
-	public static WebElement verifyUserStatusPage;
+	public WebElement verifyUserStatusPage;
 
 	@FindBy(xpath = "//a[text()='+ Create']")
-	public static WebElement Create;
+	public WebElement Create;
 
 	@FindBy(xpath = "//h1[contains(@class, 'page_heading') and not(contains(@class, 'mobile_page_heading'))]")
-	public static WebElement verifyCreateUserStatus;
+	public WebElement verifyCreateUserStatus;
 
 	@FindBy(xpath = "//label[text()='Status Name*']")
-	public static WebElement statusNameLabel;
+	public WebElement statusNameLabel;
 
 	@FindBy(xpath = "//input[@id='status_name']")
-	public static WebElement statusNameInputfield;
+	public WebElement statusNameInputfield;
 
 	@FindBy(xpath = "//label[text()='Description']")
-	public static WebElement descriptionLabel;
+	public WebElement descriptionLabel;
 
 	@FindBy(xpath = "//label[text()='Description']/..//textarea")
-	public static WebElement descriptionField;
+	public WebElement descriptionField;
 
 	@FindBy(xpath = "//label[text()='Menus To Hide']")
-	public static WebElement menusToHideLevel;
+	public WebElement menusToHideLevel;
 
 	@FindBy(xpath = "//select[@id='multiselect']")
-	public static WebElement menusToHideDropdown;
+	public WebElement menusToHideDropdown;
 
 	@FindBy(id = "multiselect_rightAll")
-	public static WebElement multiselect_RightAll;
+	public WebElement multiselect_RightAll;
 
 	@FindBy(id = "multiselect_rightSelected")
-	public static WebElement multiselect_RightSelected;
+	public WebElement multiselect_RightSelected;
 
 	@FindBy(id = "multiselect_leftSelected")
-	public static WebElement multiselect_LeftSelected;
+	public WebElement multiselect_LeftSelected;
 
 	@FindBy(id = "multiselect_leftAll")
-	public static WebElement multiSelecd_LeftAll;
+	public WebElement multiSelecd_LeftAll;
+
+	@FindBy(xpath = "//h3[@class='process']")
+	public WebElement activeStatusLabel;
+
+	@FindBy(xpath = "//h3[text()='Active Status']/..//label")
+	public WebElement activeStatusToggleButton;
+
+	@FindBy(xpath = "//label[text()='Is Default']")
+	public WebElement isDefaultLabeel;
+
+	@FindBy(xpath = "//label[text()='Is Default']/..//input[@id='is_default']")
+	public WebElement isDefaultCheckBox;
+
+	@FindBy(xpath = "//input[@placeholder='Search...']")
+	public WebElement searchTextfieldMenusToHide;
 
 	@FindBy(xpath = "//button[@id='submt_single']")
-	public static WebElement createButton;
+	public WebElement createButton;
+
+	@FindBy(xpath = "//button[text()='Cancel']")
+	public WebElement CancelButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement successFullyCreated_popuop;
+	public WebElement successFullyCreated_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement continueButton_create;
+	public WebElement continueButton_create;
+
+	@FindBy(xpath = "//tbody//tr[1]//td[1]")
+	public WebElement firstCreatedUserStatus;
+
+	@FindBy(xpath = "//tbody//tr//td[2]")
+	List<WebElement> activeStatusLists;
+
+	@FindBy(xpath = "//tbody//tr//td[3]")
+	List<WebElement> isDefaultLists;
 
 	// Table
 	@FindBy(xpath = "//tbody//td[1]")
-	public static List<WebElement> statusNames;
+	public List<WebElement> statusNames;
 
 	@FindBy(xpath = "//input[@id='text_search']")
-	public static WebElement searchTextfield;
+	public WebElement searchTextfield;
 
 	@FindBy(xpath = "//tbody//tr[1]/td[1]")
-	public static WebElement firstStatusName;
+	public WebElement firstStatusName;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
-	public static WebElement searchbutton_Table;
+	public WebElement searchbutton_Table;
 
 	@FindBy(xpath = "//div//img/..//h6")
-	public static WebElement clearAllFiltersButton_Table;
+	public WebElement clearAllFiltersButton_Table;
 
 	@FindBy(xpath = "(//img[@alt='delete-icon '])[1]")
-	public static WebElement deleteButton;
+	public WebElement deleteButton;
+
+	@FindBy(xpath = "(//img[@alt='delete-icon '])")
+	List<WebElement> deleteOptions;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
-	public static WebElement deletePopup_userStatus;
+	public WebElement deletePopup_userStatus;
 
 	@FindBy(xpath = "//button[text()='Delete']")
-	public static WebElement deleteButton_delete;
+	public WebElement deleteButton_delete;
 
 	@FindBy(xpath = "//h3/..//span[text()='Deleted Successfully']")
-	public static WebElement deleted_SuceessfullyPopup;
+	public WebElement deleted_SuceessfullyPopup;
 
 	@FindBy(xpath = "(//h3/..//span/..//button[text()='Continue'])[1]")
-	public static WebElement continueButton_DeleteSuccessullyPopup;
+	public WebElement continueButton_DeleteSuccessullyPopup;
 
 	@FindBy(xpath = "//tbody//tr//td")
-	public static WebElement noEntriedFound;
+	public WebElement noEntriedFound;
 
 	// Edit
 	@FindBy(xpath = "//tbody/tr[position()=1]//td//div//img[@alt='table-edit']")
-	public static WebElement editButton;
+	public WebElement editButton;
 
 	@FindBy(xpath = "multiselect_to")
-	public static List<WebElement> multiselectTomenuHide; // MultiseletTo menus hide
+	public List<WebElement> multiselectTomenuHide; // MultiseletTo menus hide
 
 	// usersStatusHideModules
 	@FindBy(xpath = "//a//span[text()='API Key Setup']")
-	public static WebElement apiKeySetup;
+	public WebElement apiKeySetup;
 
 	@FindBy(xpath = "//button[@id='submt_single']")
-	public static WebElement updateButton;
+	public WebElement updateButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public static WebElement userStatusUpdatedSuccessfullyPopup;
+	public WebElement userStatusUpdatedSuccessfullyPopup;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public static WebElement ContineButton_update;
+	public WebElement ContineButton_update;
+
+	@FindBy(xpath = "//td[normalize-space(.)='No Records Found']")
+	public WebElement noRecordsFound;
+
+	// My Profile Elements
+	@FindBy(xpath = "//h2[text()='Account Settings']")
+	public WebElement verifyAccountSettingsPage;
+
+	@FindBy(xpath = "//label[text()='First Name*']")
+	public WebElement firstNameLabel;
+
+	@FindBy(id = "first_name")
+	public WebElement firstNameTextfield;
+
+	@FindBy(id = "last_name")
+	public WebElement lastNameTextfield;
+
+	@FindBy(xpath = "//label[text()='Last Name']")
+	public WebElement lastNameLabel;
+
+	@FindBy(id = "email")
+	public WebElement emailTextfield;
+
+	@FindBy(xpath = "//label[text()='Email*']")
+	public WebElement emailtextfieldLabel;
+
+	@FindBy(xpath = "//label[text()='Mobile No*']")
+	public WebElement MobileLabel;
+
+	@FindBy(id = "mobile")
+	public WebElement mobileTextfield;
+
+	@FindBy(linkText = "Update")
+	public WebElement updateOptionAccountSettings;
+
+	@FindBy(linkText = "Cancel")
+	public WebElement cancelOptionAccountSettings;
+
+	@FindBy(xpath = "//label[@class='edit_profile']/../..//h1")
+	public WebElement verifyuserNameInAccontSettings;
+
+	@FindBy(xpath = "//label[@class='edit_profile']")
+	public WebElement editProfileAccountSettings;
+
+	@FindBy(xpath = "//span[@id='change_msg']/..//button")
+	public WebElement continueButton_MyProfile;
+
+	@FindBy(xpath = "//label[@id='first_name-error']")
+	public WebElement firstNameErrorMesg;
+
+	@FindBy(xpath = "//label[@id='email-error']")
+	public WebElement emailTextFieldErrorMesg;
+
+	@FindBy(xpath = "//label[@id='mobile-error']")
+	public WebElement mobileNumberTextFieldErrorMesg;
+
+	// Change Password
+	@FindBy(xpath = "//h2[text()='Change Password']")
+	public WebElement verifychangePasswordPage;
+
+	@FindBy(xpath = "//label[text()='Old Password']")
+	public WebElement oldPasswordLabel;
+
+	@FindBy(id = "oldpassword")
+	public WebElement oldPasswordTextfield;
+
+	@FindBy(xpath = "(//img[@class='img-fluid eye_icon'])[1]")
+	public WebElement oldPassEyeIcon;
+
+	@FindBy(xpath = "//label[text()='New Password']")
+	public WebElement newPasswordLabel;
+
+	@FindBy(id = "newpassword1")
+	public WebElement newPasswordTextfield;
+
+	@FindBy(xpath = "(//img[@class='img-fluid eye_icon'])[2]")
+	public WebElement newPassEyeIcon;
+
+	@FindBy(xpath = "//label[text()='Confirm New Password']")
+	public WebElement conformPAsswordLabel;
+
+	@FindBy(id = "newpassword2")
+	public WebElement conformPasswordTextfield;
+
+	@FindBy(xpath = "(//img[@class='img-fluid eye_icon'])[3]")
+	public WebElement conformPassEyeIcon;
+
+	@FindBy(xpath = "//button[text()='Change My Password']")
+	public WebElement changeMyPasswordButton;
+
+	@FindBy(xpath = "//ul[@class='errorlist']")
+	public WebElement oldPasswordErrorMessage;
+
+	@FindBy(id = "oldpassword-error")
+	public WebElement oldPassIsRequiredErrorMesg;
+
+	@FindBy(id = "newpassword1-error")
+	public WebElement newPasswordFieldErrorMessagElement;
+
+	@FindBy(id = "newpassword2-error")
+	public WebElement conformPassErrorMessage;
+
+	/////////// Negative///////////////////////
+
+	@FindBy(id = "status_name-error")
+	public WebElement statusNameErrorMessage;
+
+	@FindBy(id = "is_default-error")
+	public WebElement isDefaultErrorMessagElement;
+
+	@FindBy(xpath = "//span[@id='change_error_msg']")
+	public WebElement somethingWentWrongErrorMesg;
 
 	public void navigateToMenuSetup() throws Throwable {
 
@@ -207,7 +376,7 @@ public class userStatus extends TestBase {
 
 	}
 
-	public void NavigateToUserStatus() throws Throwable {
+	public void NavigateToUserStatus() {
 
 		defaultUrl = driver.getCurrentUrl();
 		System.out.println("defaultUrlUrl : " + defaultUrl);
@@ -239,11 +408,10 @@ public class userStatus extends TestBase {
 
 	}
 
-	// InputField Validations
-	// isDisplayed
+	// InputField Validations isDisplayed
 	public void inputFieldIsDisplayed(WebElement element) {
 		// Element is displayed
-		assertTrue(element.isDisplayed(), "statusNameInputfield is not displayed");
+		assertTrue(element.isDisplayed(), "Inputfield is not displayed");
 	}
 
 	// Element IsEnabled
@@ -276,9 +444,9 @@ public class userStatus extends TestBase {
 
 	// Alternatively, you could also check for an asterisk (*) in the label or other
 	// visual cues
-	public void checkthroughAsterisk(WebElement element, boolean isMandatoryCheck) {
+	public void checkthroughAsterisk(WebElement elementLabel, boolean isMandatoryCheck) {
 
-		boolean hasAsterisk = element.getText().contains("*");
+		boolean hasAsterisk = elementLabel.getText().contains("*");
 
 		if (isMandatoryCheck) {
 			assertTrue(hasAsterisk, "The 'status_name' field label does not indicate it is mandatory.");
@@ -298,7 +466,6 @@ public class userStatus extends TestBase {
 		inputfieldIsRequired(statusNameInputfield);
 		checkthroughAsterisk(statusNameLabel, true);
 
-		String[] statusNames = { "Admin ", "Meeting ", "Trainee Employee", "Customer", };
 //		// Generate a random index to select a status
 //		Random random = new Random();
 //		int randomIndex = random.nextInt(statusNames.length);
@@ -307,7 +474,7 @@ public class userStatus extends TestBase {
 //
 //		statusNameInputfield.sendKeys(randomStatus);
 
-		//String chosenStatus = "Trainee Employee";
+		// String chosenStatus = "Trainee Employee";
 		System.out.println("Chosen statusName: " + chosenStatus);
 		statusNameInputfield.sendKeys(chosenStatus);
 
@@ -330,7 +497,7 @@ public class userStatus extends TestBase {
 
 	}
 
-	public void menusToHideDropdwon() throws Throwable {
+	public void selectMenusToHideDropdwon() throws Throwable {
 		checkthroughAsterisk(menusToHideLevel, false);
 
 		assertTrue(menusToHideDropdown.isDisplayed(), "menus To Hide multi select dropdwon is not displayed");
@@ -382,8 +549,10 @@ public class userStatus extends TestBase {
 		continueButton_create.click();
 	}
 
+	List<String> statusNameLists = new ArrayList<String>();
+
 	public void verifyCreatedStatus() throws Throwable {
-		List<String> statusNameLists = new ArrayList<String>();
+
 		for (WebElement statusNameList : statusNames) {
 			statusNameLists.add(statusNameList.getText());
 			System.out.println("statusNameLists :" + statusNameList.getText());
@@ -428,7 +597,6 @@ public class userStatus extends TestBase {
 	public void selectStatus(WebDriver driver, String desiredStatus) // as per hide menus select " status"
 	{
 		subMenuDropdwonProfile.click();
-		
 
 		List<String> createdStatusList = new ArrayList<>();
 
@@ -440,7 +608,8 @@ public class userStatus extends TestBase {
 
 			// Check for exact or partial match based on desiredStatus format
 			if (desiredStatus.equalsIgnoreCase(status) || desiredStatus.contains(status)) {
-				statusText.click();
+				// statusText.click();
+				jsClick(driver, statusText);
 				System.out.println("Clicked on '" + status + "'");
 				break; // Exit the loop after clicking on the matching status
 			}
@@ -450,7 +619,7 @@ public class userStatus extends TestBase {
 	// "Hide" Single Menus" for "SideModules"
 
 	public void selectStatusHideSingleMenus() throws Throwable // as per hide menus select " status" from sub menu
-	// dopdown and pass
+																// dopdown and pass
 	{
 
 		selectStatus(driver, "Trainee Employee"); // change 'status" parametr
@@ -460,7 +629,7 @@ public class userStatus extends TestBase {
 	// "Hide" Single Menus" for "SideModules"
 
 	public void verifyMenusAreHideSideMenusModule(String menuName) throws Throwable {
-		
+
 		List<String> sideMenuList = new ArrayList<String>();
 
 		for (WebElement menusLists : sideMenusListsElement) {
@@ -482,6 +651,7 @@ public class userStatus extends TestBase {
 
 	// Method to verify that "Hide" Multiple Menus for "Side SubMenus Modules"
 	public void selectStatusHideMultipleMenus() throws Throwable {
+
 		selectStatus(driver, "Meeting"); // change 'desired status" parametr
 		driver.findElement(By.xpath("//a[@id='menulist2']//span//span[text()='Alchemy']")).click();
 		Thread.sleep(2000);
@@ -620,7 +790,7 @@ public class userStatus extends TestBase {
 
 		statusNameInputfield.sendKeys(chosenEditStatus);
 
-		 editStatusNameValue = statusNameInputfield.getAttribute("value");
+		editStatusNameValue = statusNameInputfield.getAttribute("value");
 		// assertEquals(editStatusNameValue,firstStatusNameText );
 
 	}
@@ -655,27 +825,993 @@ public class userStatus extends TestBase {
 
 		multiSelect.selectByValue("Email Template");
 		multiselect_RightSelected.click();
-		
+
 		assertTrue(updateButton.isEnabled(), "updateButton is not enabled");
 		assertTrue(updateButton.isDisplayed(), "updateButtonis not displayed");
-		
-		jsClick(updateButton);
-		
+
+		jsClick(driver, updateButton);
+
 		wait.until(ExpectedConditions.visibilityOf(userStatusUpdatedSuccessfullyPopup));
-		assertTrue(userStatusUpdatedSuccessfullyPopup.isDisplayed(), "userStatusUpdatedSuccessfullyPopup is not displayed");
-		
+		assertTrue(userStatusUpdatedSuccessfullyPopup.isDisplayed(),
+				"userStatusUpdatedSuccessfullyPopup is not displayed");
+
 		assertTrue(ContineButton_update.isDisplayed(), "ContineButton_update is not displayed");
 		ContineButton_update.click();
-		
-		assertEquals(editStatusNameValue,firstStatusName.getText());
-		
+
+		assertEquals(editStatusNameValue, firstStatusName.getText());
+
+	}
+
+	public void navigateToaAdmin() throws Throwable {
+		createUserStatus();
+		statusNameInputField("Admin");
+		// descriptionField();
+		String[] descriptionfield = { "Admin status grants full access to all menus." };
+
+		// String chosenStatus = "Trainee Employee";
+		System.out.println("descriptionfield: " + descriptionfield);
+		descriptionField.sendKeys(descriptionfield);
+
+		multiselect_RightAll.click();
+		Thread.sleep(1000);
+		multiSelecd_LeftAll.click();
+
+		assertTrue(createButton.isDisplayed(), "createButton is not displayed");
+		jsClick(driver, createButton);
+
+		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
+		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuop is not displayed");
+
+		assertTrue(continueButton_create.isDisplayed(), "continueButton_create is not disaplyed");
+		continueButton_create.click();
+
+		profileDropdown.click();
+		subMenuDropdwonProfile.click();
+
+		Thread.sleep(2000);
+		selectStatus(driver, "Admin");
+
+	}
+
+	public void activeStatusTogglebutton() {
+
+		checkthroughAsterisk(activeStatusToggleButton, false);
+		assertTrue(activeStatusToggleButton.isDisplayed(), "activeStatusToggleButton is not displayed");
+		assertTrue(activeStatusToggleButton.isEnabled(), "activeStatusToggleButtonis not enabled");
+
+	}
+
+	public void searchmenusInSearchtextfield() {
+		Create.click();
+		assertTrue(verifyCreateUserStatus.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(searchTextfieldMenusToHide.isDisplayed(), "searchTextfieldMenusToHideis not displayed");
+		assertTrue(searchTextfieldMenusToHide.isEnabled(), "searchTextfieldMenusToHide is not enabled");
+
+		List<String> menuItems = Arrays.asList("Data Setup", "Workflow Design", "User Setup", "User Management",
+				"Role & Permissions", "Alchemy", "User Mapping", "Bias", "Manual Allocation", "Auto Allocation",
+				"Re Allocation", "Sampling Plan & Generation", "Escalation Metrics", "Add Evaluation",
+				"View/Modify Evaluation", "Evaluation Tab View", "Open Escalated Form", "Edit Escalated Form",
+				"Audit the Auditor", "Skip Reason", "Email Template", "SMS Template", "Whatsapp Template",
+				"Sample Status", "Transmon Report", "Normal Report", "Rejected Audit Form", "User Status",
+				"API Key Setup", "Menu Setup", "Masters", "Notification", "Transaction Report", "System Names",
+				"Site Settings");
+
+		// Choose a random name from the list
+		Random random = new Random();
+		String randomName = menuItems.get(random.nextInt(menuItems.size()));
+
+		// Enter the random name into the search field
+		searchTextfieldMenusToHide.clear(); // Clear the field before entering new text
+		searchTextfieldMenusToHide.sendKeys(randomName);
+
+		assertTrue(CancelButton.isDisplayed(), "CancelButton is  not displayed");
+		assertTrue(CancelButton.isEnabled(), "CancelButton is not enabled");
+		jsClick(driver, CancelButton);
+		// CancelButton.click();
+
+	}
+
+//////////////////////////////////////UserStatus_Negative  ////////////////////////////////////////////////////////////////////////
+
+//	public void withoutSelectingAnyFieldAndCreteUtility(WebElement smsCreateButton,
+//			WebElement fieldRequiredErrorMEssage) {
+//
+//		String Combinetext = processLabel.getText() + subProcessLabel.getText() + subSubProcessLabel.getText()
+//				+ stagesLabel.getText() + templateNameLabel.getText() + messagLabel.getText();
+//		System.out.println("Combinetext" + Combinetext);
+//
+//		String asterisk = "*";
+//		assertTrue(Combinetext.contains(asterisk), "asterisk is not contains in Combinetext text");
+//
+//		smsCreateButton.click();
+//
+//		boolean isEitherDisplayed = fieldRequiredErrorMEssage.isDisplayed();
+//		assertTrue(isEitherDisplayed,
+//				"'thisFieldisRequiredErrorMessage' is not displayed for Mandatory fields, test failed.");
+//
+//	}
+
+	public boolean withoutSelectingAnyFieldAndCreateUserstatus() {
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+		assertTrue(verifyCreateUserStatus.isDisplayed(), "verifyCreateUserStatus is not dispalyed");
+		checkthroughAsterisk(statusNameLabel, true);
+		String statusNameFieldValue = statusNameInputfield.getAttribute("value");
+
+		checkthroughAsterisk(descriptionLabel, false);
+		assertTrue(descriptionField.isDisplayed(), "descriptionFieldis not dispalyed");
+		String descriptionNameFieldValue = statusNameInputfield.getAttribute("value");
+
+		// createButton.click();
+		jsClick(driver, createButton);
+		// Check if the value is null or empty
+		return statusNameFieldValue == null || statusNameFieldValue.isEmpty() && descriptionNameFieldValue == null
+				&& statusNameErrorMessage.isDisplayed();
+
+	}
+
+	SmsTemplate smsTemplate = new SmsTemplate();
+
+	public void createUserStatusThroughSpecialCharacters() {
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
+
+		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(statusNameLabel, statusNameInputfield, createButton,
+				successFullyCreated_popuop, somethingWentWrongErrorMesg);
 	}
 	
-	public void navigateToaAdmin() 
-	{
+	public void createUserStatusThrougByenteringNonEnglishCahracterInStatusNameTextfield() {
+
+		String nonEnglishCahracter="கூட்டம் "; //(Meeting)
 		
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameInputfield.sendKeys(nonEnglishCahracter);
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
+
+		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(statusNameLabel, statusNameInputfield, createButton,
+				successFullyCreated_popuop, somethingWentWrongErrorMesg);
 	}
 	
+	public void createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield() {
+		
+		String nonEnglishCahracter="கூட்டம் "; //(Meeting)
+		
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameInputfield.sendKeys(fake.lastName1());
+		
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(nonEnglishCahracter);
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
+
+		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(descriptionLabel, descriptionField, createButton,
+				successFullyCreated_popuop, somethingWentWrongErrorMesg);
+	}
+
+	public void userCreateUserStatusThroughEmojis() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+
+		smsTemplate.createTemplateForMandatoryFieldThroughEmojisUTILITY(statusNameLabel, statusNameInputfield,
+				createButton, successFullyCreated_popuop, somethingWentWrongErrorMesg);
+
+	}
+
+	public void createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield() {
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+		smsTemplate.characterLimitTextfieldUtility(statusNameInputfield, createButton, successFullyCreated_popuop,
+				somethingWentWrongErrorMesg);
+	}
 	
+	public void createUserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield() {
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+		
+		statusNameInputfield.sendKeys(fake.lastName1());
+		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFullyCreated_popuop,
+				somethingWentWrongErrorMesg);
+	}
+	
+	public void createUserStatusByEnteringNonEnglishCahracterInTextfield() {
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+		
+		statusNameInputfield.sendKeys(fake.lastName1());
+		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFullyCreated_popuop,
+				somethingWentWrongErrorMesg);
+	}
+
+	public void createUserStatusThroughOnlyNumericValue() {
+
+		String numericValue = "1234568900000000";
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameInputfield.sendKeys(numericValue);
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+
+		jsClick(driver, createButton);
+
+		if (successFullyCreated_popuop.isDisplayed()) {
+			// Assert.fail("Test failed because successFullyCreated_popuop is displayed.");
+			assertFalse(true, "Test failed because successFullyCreated_popuop is displayed.");
+		} else if (somethingWentWrongErrorMesg.isDisplayed()) {
+			Assert.assertTrue(true, "Test passed because somethingWentWrongErrorMesg is displayed.");
+		}
+
+	}
+
+	ArrayList<String> activeStatusist = new ArrayList<String>();
+	ArrayList<String> isDefaultStatusLists = new ArrayList<String>();
+
+	public void createUserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		// ActiveStatus
+		for (WebElement activeStatusListvalues : activeStatusLists) {
+			String activeStatusListvaluesText = activeStatusListvalues.getText();
+			System.out.println("activeStatusistvaluesText:" + activeStatusListvaluesText);
+
+			activeStatusist.add(activeStatusListvaluesText);
+		}
+
+		// isDefault
+		for (WebElement isDefaultvalues : isDefaultLists) {
+			String isDefaultListsText = isDefaultvalues.getText();
+			System.out.println("isDefaultListsText:" + isDefaultListsText);
+
+			isDefaultStatusLists.add(isDefaultListsText);
+		}
+
+		assertTrue(activeStatusist.contains("True") && isDefaultStatusLists.contains("True"),
+				"No user status is created with default one");
+
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(isDefaultLabeel, false);
+		isDefaultCheckBox.click();
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameLabel.sendKeys(fake.lastName1());
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not displayed");
+
+		jsClick(driver, createButton);
+		assertTrue(isDefaultErrorMessagElement.isDisplayed(),
+				"isDefaultErrorMessagElement is not dispalyed it can appect to create multiple Default users");
+
+	}
+
+	List<String> statusNameList = new ArrayList<>();
+	List<String> createdStatusLists = new ArrayList<>();
+
+	public void userCreateUserStatuswithoutSelectingActiveStausAndIsDefault() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameInputfield.sendKeys(fake.lastName1());
+
+		String createdStatusNameInputfieldValue = statusNameInputfield.getAttribute("value");
+		System.out.println("createdStatusNameInputfieldValue :" + createdStatusNameInputfieldValue);
+
+		checkthroughAsterisk(activeStatusLabel, false);
+		activeStatusToggleButton.click();
+
+		checkthroughAsterisk(isDefaultLabeel, false);
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not displayed");
+
+		// createButton.click();
+		jsClick(driver, createButton);
+
+		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
+		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuop is not dispalyed ");
+		continueButton_create.click();
+
+//		for (WebElement statusName : statusNames) {
+//			String statusNameTexts = statusName.getText();
+//
+//			statusNameList.add(statusNameTexts);
+//		}
+//
+//		assertTrue(statusNameList.contains(createdStatusNameInputfieldValue),
+//				"createdStatusNameInputfieldValue not contains");
+////		assertTrue(statusNameList.contains(createdStatusNameInputfieldValue) && activeStatusist.contains("False")
+////				&& isDefaultStatusist.contains("False"), " after disabling only activeStatus and check box ststaus are not changed");
+//		profileDropdown.click();
+//		subMenuDropdwonProfile.click();
+//
+//		for (WebElement createdStatusLists : createdStatusListStatusDrodown) {
+//			String createdStatusListsTexts = createdStatusLists.getText();
+//			System.out.println("createdStatusListsTexts :" + createdStatusListsTexts);
+//
+//		}
+//		createdStatusLists.add(createdStatusNameInputfieldValue);
+//		assertTrue(createdStatusLists.contains(createdStatusNameInputfieldValue),
+//				"Cretaed userStatus is not contains in UsersatatusDropdown");
+//			
+
+		// Adding status names to the list
+		for (WebElement statusName : statusNames) {
+			String statusNameText = statusName.getText();
+			statusNameList.add(statusNameText);
+		}
+
+		// Assert that the created status name is in the status name list
+		Assert.assertTrue(statusNameList.contains(createdStatusNameInputfieldValue),
+				"createdStatusNameInputfieldValue not contained in statusNameList");
+
+		// Open profile dropdown menu
+		profileDropdown.click();
+		subMenuDropdwonProfile.click();
+
+		boolean statusFoundAndClicked = false;
+
+		// Check if createdStatusNameInputfieldValue is in the dropdown, and click it if
+		// found
+		for (WebElement createdStatus : createdStatusListStatusDrodown) {
+			String createdStatusText = createdStatus.getText();
+			System.out.println("createdStatusText :" + createdStatusText);
+
+			if (createdStatusText.equals(createdStatusNameInputfieldValue)) {
+				createdStatus.click();
+				statusFoundAndClicked = true;
+				break;
+			}
+		}
+
+		// Assert to ensure the created status was found and clicked
+		Assert.assertTrue(statusFoundAndClicked,
+				"Created user status is not present or could not be clicked in UserStatusDropdown");
+	}
+
+	public void searchInvalidCharacterInSearchTextfieldInUserStatusPage() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+		smsTemplate.searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield, searchbutton_Table,
+				noRecordsFound, clearAllFiltersButton_Table);
+
+	}
+
+	public void tryToSearchByWithoutEnteringAnyData() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldis not dispalyed");
+
+		String currentUrl = driver.getCurrentUrl();
+
+		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not displayed");
+		searchbutton_Table.click();
+
+		String afterSearchCurrentUrl = driver.getCurrentUrl();
+
+		assertNotEquals(afterSearchCurrentUrl, currentUrl, "current url is not changed after click on search button");
+
+		String currentSearchTextFieldValue = searchTextfield.getAttribute("value");
+		assertTrue(currentSearchTextFieldValue == null || currentSearchTextFieldValue.isEmpty(),
+				"Test failed: searchTextfield value is not empty after clicking search button.");
+		clearAllFiltersButton_Table.click();
+
+	}
+
+	String activeStatus = "True";
+
+	public void userSearchthroughActiveStatus() {
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldis not dispalyed");
+		searchTextfield.sendKeys(activeStatus);
+		searchTextfield.click();
+
+		searchbutton_Table.click();
+
+		boolean ErrorMessage = noEntriedFound.isDisplayed();
+
+		assertTrue(ErrorMessage, "ErrorMessage is not displayed");
+		clearAllFiltersButton_Table.click();
+
+	}
+
+	String isDefaultStatus = "False";
+
+	public void userSearchthroughisDefaultStatus() {
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldis not dispalyed");
+		searchTextfield.sendKeys(isDefaultStatus);
+		searchTextfield.click();
+
+		searchbutton_Table.click();
+
+		boolean ErrorMessage = noEntriedFound.isDisplayed();
+
+		assertTrue(ErrorMessage, "ErrorMessage is not displayed");
+		clearAllFiltersButton_Table.click();
+
+	}
+
+	public void filledAlldataInCreateUserStatusPageAndClickONCancel() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(Create.isDisplayed(), "Create is not displayed");
+		Create.click();
+
+		assertTrue(verifyCreateUserStatus.isDisplayed(), "verifyCreateUserStatusis not dispaleyd");
+
+		checkthroughAsterisk(statusNameLabel, true);
+		statusNameInputfield.sendKeys(fake.lastName1());
+
+		String createdStatusNameInputfieldValue = statusNameInputfield.getAttribute("value");
+		System.out.println("createdStatusNameInputfieldValue :" + createdStatusNameInputfieldValue);
+
+		checkthroughAsterisk(isDefaultLabeel, false);
+
+		checkthroughAsterisk(descriptionLabel, false);
+		descriptionField.sendKeys(fake.lastName1());
+
+		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not displayed");
+
+		assertTrue(CancelButton.isDisplayed(), "CancelButton is not displayed");
+		// CancelButton.click();
+		jsClick(driver, CancelButton);
+
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		assertTrue(!statusNameLists.contains(createdStatusNameInputfieldValue),
+				"After cancely only user status is created");
+	}
+
+	// Delete
+	public void afterClickOnDeleteIconInsteofClickDeleteOrcancelButtonClickOutise() {
+
+		NavigateToUserStatus();
+		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+		String firstCreatedUserStatusText = firstCreatedUserStatus.getText();
+		System.out.println("firstCreatedUserStatusText :" + firstCreatedUserStatusText);
+
+		assertTrue(deleteButton.isDisplayed(), "deleteButton is not displayed");
+		deleteButton.click();
+
+		assertTrue(deletePopup_userStatus.isDisplayed(), "deletePopup_userStatus is not displayed");
+
+		actions.moveByOffset(0, 0).click().perform();
+
+//		assertTrue(!deleted_SuceessfullyPopup.isDisplayed(), "delete successfult popup is displayed");
+//		driver.navigate().refresh();
+
+		if (verifyUserStatusPage.isDisplayed()) {
+			Assert.assertTrue(true, "Test passed: 'userStatus' page is displayed.");
+		} else if (deleted_SuceessfullyPopup.isDisplayed()) {
+
+			Assert.fail("Test failed: 'Deleted Successfully' popup is displayed.");
+		} else {
+			Assert.fail("Test failed: Neither popup nor status page is displayed.");
+
+		}
+
+	}
+
+	public void TheUserAbleTodeleteAllUserStatus() {
+		try {
+
+			NavigateToUserStatus();
+			assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+
+			for (WebElement deleteButton : deleteOptions) {
+				deleteButton.click();
+
+				deleteButton_delete.click();
+
+				wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
+				assertTrue(deleted_SuceessfullyPopup.isDisplayed(), "deleted_SuceessfullyPopupis not displayed");
+				deleted_SuceessfullyPopup.isDisplayed();
+				continueButton_DeleteSuccessullyPopup.isDisplayed();
+				continueButton_DeleteSuccessullyPopup.click();
+
+				Thread.sleep(1000);
+			}
+
+			System.out.println("All items deleted successfully.");
+
+		} catch (
+
+		Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	public void logoutAmdin() {
+		// Logout
+		assertTrue(profileDropdown.isDisplayed(), "profileDropdown is not displayed");
+		profileDropdown.click();
+
+		assertTrue(logout.isDisplayed(), "logout is not displayed");
+		logout.click();
+	}
+
+	// <!================
+	// Profile_MyProfile_Positive======================================================================
+
+	public void navigateToAccountSettingPage() {
+
+		assertTrue(profileDropdown.isDisplayed(), "profileDropdown is not displayed");
+		profileDropdown.click();
+
+		assertTrue(myProfileOption.isDisplayed(), "myProfileOption is not displayed");
+		myProfileOption.click();
+
+		assertTrue(verifyAccountSettingsPage.isDisplayed(), "verifyAccountSettingsPage is not dispalyed");
+
+	}
+
+	public void UpdateAndContinue() {
+
+		updateOptionAccountSettings.click();
+
+		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
+		assertTrue(successFullyCreated_popuop.isDisplayed(),
+				"Test Failed:successFullyCreated_popuop is not displayed  first name last name Not changed ");
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton_MyProfile));
+		continueButton_MyProfile.click();
+
+	}
+
+	// <=========== Profile_ChangePassword_Positive=============
+
+	public void navigateToChangePasswordPage() {
+
+		assertTrue(profileDropdown.isDisplayed(), "profileDropdown is not displayed");
+		profileDropdown.click();
+
+		assertTrue(changePasswordOption.isDisplayed(), "changePasswordOption is not displayed");
+		changePasswordOption.click();
+
+		assertTrue(verifychangePasswordPage.isDisplayed(), "verifychangePasswordPage is not displayed");
+	}
+
+	public void userIsAbleToChangeUserName(String EnterFirstName, String EnterLastName) {
+		// First Name
+
+		verifyuserNameInAccontSettings.isDisplayed();
+		String userNameInAccontSettingsText = verifyuserNameInAccontSettings.getText();
+
+		assertTrue(firstNameLabel.isDisplayed(), "firstNameLabel is not displayed");
+		checkthroughAsterisk(firstNameLabel, true);
+		assertTrue(firstNameTextfield.isDisplayed(), "firstNameTextfield is not displayed");
+
+		String firstNameTextfieldvalue = firstNameTextfield.getAttribute("value");
+
+		firstNameTextfield.clear();
+		firstNameTextfield.sendKeys(EnterFirstName);
+
+		String afterUpdatefirstNameValue = firstNameTextfield.getAttribute("value");
+
+		// LastName
+		assertTrue(lastNameLabel.isDisplayed(), "lastNameLabel is not displayed");
+		checkthroughAsterisk(lastNameLabel, false);
+		assertTrue(lastNameTextfield.isDisplayed(), "lastNameTextfield is not displayed");
+
+		String lastNameTextfieldText = lastNameTextfield.getAttribute("value");
+
+		lastNameTextfield.clear();
+		lastNameTextfield.sendKeys(EnterLastName);
+
+		String afterUpdateLastNameValue = lastNameTextfield.getAttribute("value");
+
+		UpdateAndContinue();
+
+		String afterChangeduserNameInAccontSettingsText = verifyuserNameInAccontSettings.getText();
+
+		assertNotEquals(afterChangeduserNameInAccontSettingsText, userNameInAccontSettingsText);
+
+	}
+
+	public void userIsAbleTochangeEmailId(String EnterNewEmailID) {
+
+		assertTrue(emailtextfieldLabel.isDisplayed(), "emailTextfieldLabelis not displayed");
+		checkthroughAsterisk(emailtextfieldLabel, true);
+		assertTrue(emailTextfield.isDisplayed(), "emailTextfieldis not displayed");
+
+		String emailtextfieldInAccontSettingsvalue = emailTextfield.getAttribute("value");
+
+		emailTextfield.clear();
+		emailTextfield.sendKeys(EnterNewEmailID);
+
+		UpdateAndContinue();
+
+		String afterUpdateEmailTextfieldValue = emailTextfield.getAttribute("value");
+		;
+
+		assertNotEquals(emailtextfieldInAccontSettingsvalue, afterUpdateEmailTextfieldValue);
+
+	}
+
+	public void userIsAbleTochangeEmailMobileNumber() {
+		// Generate a random 10-digit number
+		Random random = new Random();
+		long randomNumber = 1000000000L + (long) (random.nextDouble() * 9000000000L); // Ensures 10-digit number
+
+		System.out.println("Generated 10-digit number: " + randomNumber);
+
+		// Ensure the random number is converted to a String
+		String randomNumberString = String.valueOf(randomNumber);
+
+		assertTrue(MobileLabel.isDisplayed(), "MobileLabel not displayed");
+		checkthroughAsterisk(MobileLabel, true);
+		assertTrue(mobileTextfield.isDisplayed(), "mobileTextfield not displayed");
+
+		String mobileNumberFieldValueInAccontSettings = mobileTextfield.getAttribute("value");
+
+		mobileTextfield.clear();
+		mobileTextfield.sendKeys(randomNumberString); // Pass random number as String
+
+		UpdateAndContinue();
+
+		String afterUpdatemobileNumberValue = mobileTextfield.getText();
+
+		assertNotEquals(mobileNumberFieldValueInAccontSettings, afterUpdatemobileNumberValue);
+	}
+
+	public void userIsAbleToeditProflePicture() {
+
+		try {
+
+			// Profile WebElement
+			WebElement fileInput = driver.findElement(By.xpath("//input[@type='file' and @id='profile_pic']"));
+
+			assertTrue(editProfileAccountSettings.isDisplayed(), "editProfileAccountSettings is not displayed");
+			editProfileAccountSettings.click();
+
+			// Images Path
+			String imagePath = "D:\\Wyzmindz\\ADVAITA Project\\wyzmindz-solutions-pvt.-ltd.-600px-logo.png";
+			fileInput.sendKeys(imagePath);
+
+			unWait(1000);
+
+			// Upload the image using sendKeys
+			fileInput.sendKeys(imagePath);
+
+			updateOptionAccountSettings.click();
+
+			// Simulate file dialog cancel action by pressing Escape
+			robot.delay(2000); // Wait for the dialog to appear
+			robot.keyPress(KeyEvent.VK_ESCAPE); // Press ESC
+			robot.keyRelease(KeyEvent.VK_ESCAPE); // Release ESC
+
+			System.out.println("Image uploaded successfully!");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	// <========== MyProfile Neagtive
+
+	public void userWithoutFilledAnyFieldInmandatoryFieldAndUpdate() {
+
+		checkthroughAsterisk(firstNameLabel, true);
+		checkthroughAsterisk(lastNameLabel, false);
+		checkthroughAsterisk(emailtextfieldLabel, true);
+		checkthroughAsterisk(MobileLabel, true);
+		assertTrue(firstNameTextfield.isDisplayed() && lastNameTextfield.isDisplayed() && emailTextfield.isDisplayed()
+				&& mobileTextfield.isDisplayed());
+
+		firstNameTextfield.clear();
+		lastNameTextfield.clear();
+		emailTextfield.clear();
+		mobileTextfield.clear();
+
+		updateOptionAccountSettings.click();
+
+		assertTrue(firstNameErrorMesg.isDisplayed() && emailTextFieldErrorMesg.isDisplayed()
+				&& mobileNumberTextFieldErrorMesg.isDisplayed(), "Error message is not dispalyed ");
+
+		wait.until(ExpectedConditions.elementToBeClickable(cancelOptionAccountSettings));
+		cancelOptionAccountSettings.click();
+
+	}
+
+	public void userFilledAllTheTextfieldAndClickONCancel(String EnterFirstName, String EnterLastName,
+			String EnterEmailId, String EnterMobilenumber) {
+
+		assertTrue(firstNameTextfield.isDisplayed() && lastNameTextfield.isDisplayed() && emailTextfield.isDisplayed()
+				&& mobileTextfield.isDisplayed());
+
+		firstNameTextfield.clear();
+		lastNameTextfield.clear();
+		emailTextfield.clear();
+		mobileTextfield.clear();
+
+		firstNameTextfield.sendKeys(EnterFirstName);
+		lastNameTextfield.sendKeys(EnterLastName);
+		emailTextfield.sendKeys(EnterEmailId);
+		mobileTextfield.sendKeys(EnterMobilenumber);
+
+		cancelOptionAccountSettings.click();
+
+		assertTrue(!successFullyCreated_popuop.isDisplayed(), "Test Failed: successFullyCreated_popuop is displayed");
+	}
+
+	// EmailTextfield
+//	public void verifyTheUSerisAbleToUpdateByEnteronlyCharactersIntextfield(String EnterCharacter) {
+//
+//		checkthroughAsterisk(emailTextfieldLabel, true);
+//		assertTrue(emailTextfield.isDisplayed(), "emailTextfield is not displayed");
+//		emailTextfield.sendKeys("EnterCharacter");
+//		updateOptionAccountSettings.click();
+//
+//		assertTrue(emailTextFieldErrorMesg.isDisplayed(), "Test Failed : error messgae is not dispalyed");
+//		cancelOptionAccountSettings.click();
+//
+//	}
+
+	public void verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(WebElement TextfieldLabelElement,
+			WebElement TextfieldElement, String EnterCharacter, WebElement TextfieldErrorMesgElement) {
+
+		wait.until(ExpectedConditions.visibilityOfAllElements(TextfieldLabelElement));
+		checkthroughAsterisk(TextfieldLabelElement, true);
+		assertTrue(TextfieldElement.isDisplayed(), "emailTextfield is not displayed");
+		TextfieldElement.clear();
+		TextfieldElement.sendKeys(EnterCharacter);
+		updateOptionAccountSettings.click();
+
+		assertTrue(TextfieldErrorMesgElement.isDisplayed(), "Test Failed : error messgae is not dispalyed");
+		cancelOptionAccountSettings.click();
+
+	}
+
+	public void userIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY(WebElement textfieldElement, String emoji,
+			WebElement UpdateOptionAccountSettings, WebElement successfullyPopup) {
+
+		assertTrue(textfieldElement.isDisplayed(), "textfieldElement is not displayed");
+		textfieldElement.clear();
+		SendDataUtils.sendKeysWithJSExecutor(textfieldElement, emoji); // use for send "emojis"
+
+		assertTrue(UpdateOptionAccountSettings.isDisplayed(), "UpdateOptionAccountSettings is not displayed");
+		UpdateOptionAccountSettings.click();
+		assertTrue(!successfullyPopup.isDisplayed(), "Test Fail : successfullyPopup is displayed");
+		cancelOptionAccountSettings.click();
+
+	}
+
+	// Repeated Character
+	public void userIsAbleToenterRepeatedCharacterINTextfield(WebElement textfieldElement,
+			String invalidCreatedProcess) {
+
+		try {
+			assertTrue(textfieldElement.isDisplayed(), "textfieldElement is not displayed");
+
+			textfieldElement.clear();
+			textfieldElement.sendKeys(invalidCreatedProcess);
+			updateOptionAccountSettings.click();
+			unWait(2000);
+			assertTrue(!successFullyCreated_popuop.isDisplayed(),
+					"TestCase Failed: successFullyCreated_popuop is  displayed");
+
+		} catch (NoSuchElementException e) {
+			System.out.println(" Test Case Pass: successFullyCreated_popuop is not Displayed");
+		}
+
+	}
+
+	// <============================== Change Password
+
+	String userName = "das " + "Abhijit@wyzminz.com";
+	String commmonPassword = "Qwerty@123";
+
+	public void userIsAbleToChangePassword(String enterOldPassword, String enterNewPassword,
+			String enterConfirmPassword) {
+
+		// Assert that all required fields are displayed
+		assertTrue(oldPasswordTextfield.isDisplayed(), "Old password text field is not displayed.");
+		assertTrue(newPasswordTextfield.isDisplayed(), "New password text field is not displayed.");
+		assertTrue(conformPasswordTextfield.isDisplayed(), "Confirm password text field is not displayed.");
+
+		// Clear and enter the old password
+		oldPasswordTextfield.clear();
+		oldPasswordTextfield.sendKeys(enterOldPassword);
+
+		// Clear and enter the new password
+		newPasswordTextfield.clear();
+		newPasswordTextfield.sendKeys(enterNewPassword);
+
+		// Enter the confirm password
+		conformPasswordTextfield.clear();
+		conformPasswordTextfield.sendKeys(enterConfirmPassword);
+
+		// Validate the new password
+		boolean hasUpperCase = enterNewPassword.matches(".*[A-Z].*");
+		boolean hasNumber = enterNewPassword.matches(".*[0-9].*");
+		boolean hasSpecialCharacter = enterNewPassword.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+
+		// Assert checks for password complexity requirements
+		assertTrue(hasUpperCase, "New password does not contain an uppercase letter.");
+		assertTrue(hasNumber, "New password does not contain a numerical value.");
+		assertTrue(hasSpecialCharacter, "New password does not contain a special character.");
+
+		// Validate if confirm password matches the new password
+		assertTrue(enterNewPassword.equals(enterConfirmPassword), "Confirm password does not match the new password.");
+
+		// Perform the password change action
+		changeMyPasswordButton.click();
+
+		// Confirmation message or validation (if applicable)
+		System.out.println("Password changed successfully.");
+	}
+
+	public void userIsAbleGetErrorMessage(String enterWrongPassWordonOldPassword, String enterNewPassword,
+			String enterConfirmPassword, WebElement oldPasswordErrorMessageElement) {
+
+		// Assert that all required fields are displayed
+		assertTrue(oldPasswordTextfield.isDisplayed(), "Old password text field is not displayed.");
+		assertTrue(newPasswordTextfield.isDisplayed(), "New password text field is not displayed.");
+		assertTrue(conformPasswordTextfield.isDisplayed(), "Confirm password text field is not displayed.");
+
+		// Clear and enter the old password
+		oldPasswordTextfield.clear();
+		oldPasswordTextfield.sendKeys(enterWrongPassWordonOldPassword);
+
+		// Clear and enter the new password
+		newPasswordTextfield.clear();
+		newPasswordTextfield.sendKeys(enterNewPassword);
+
+		// Enter the confirm password
+		conformPasswordTextfield.clear();
+		conformPasswordTextfield.sendKeys(enterConfirmPassword);
+
+		// Validate the new password
+		boolean hasUpperCase = enterNewPassword.matches(".*[A-Z].*");
+		boolean hasNumber = enterNewPassword.matches(".*[0-9].*");
+		boolean hasSpecialCharacter = enterNewPassword.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+
+		// Assert checks for password complexity requirements
+		assertTrue(hasUpperCase, "New password does not contain an uppercase letter.");
+		assertTrue(hasNumber, "New password does not contain a numerical value.");
+		assertTrue(hasSpecialCharacter, "New password does not contain a special character.");
+
+		// Validate if confirm password matches the new password
+		assertTrue(enterNewPassword.equals(enterConfirmPassword), "Confirm password does not match the new password.");
+
+		// Perform the password change action
+		changeMyPasswordButton.click();
+
+		assertTrue(oldPasswordErrorMessageElement.isDisplayed(), "Test Fail: oldPasswordErrorMessage is not dispalyed");
+	}
+
+	public void userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(String EnterOldPassword,
+			String EnterNewPassword, String EnterConformPassword, WebElement errorMesssageElement) {
+
+		checkthroughAsterisk(oldPasswordLabel, false);
+		checkthroughAsterisk(newPasswordLabel, false);
+		checkthroughAsterisk(conformPAsswordLabel, false);
+
+		oldPasswordTextfield.isDisplayed();
+		oldPasswordTextfield.sendKeys(EnterOldPassword);
+
+		newPasswordTextfield.isDisplayed();
+		newPasswordTextfield.sendKeys(EnterNewPassword);
+
+		conformPasswordTextfield.isDisplayed();
+		conformPasswordTextfield.sendKeys(EnterConformPassword);
+
+		changeMyPasswordButton.click();
+
+		assertTrue(errorMesssageElement.isDisplayed(), "Test Failed : errorMesssageElement is not displayed");
+	}
+
+	public void userIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimit(String enterOldPassword,
+			String enterNewPassword, WebElement ErrorMessageElement) {
+
+		checkthroughAsterisk(oldPasswordLabel, false);
+		checkthroughAsterisk(newPasswordLabel, false);
+		checkthroughAsterisk(conformPAsswordLabel, false);
+
+		// Validate that the new password contains more than 8 characters
+		assertTrue(enterNewPassword.length() < 8, "New password must contain more than 8 characters.");
+
+		// Clear and enter the old password
+		oldPasswordTextfield.clear();
+		oldPasswordTextfield.sendKeys(enterOldPassword);
+
+		// Clear and enter the new password
+		newPasswordTextfield.clear();
+		newPasswordTextfield.sendKeys(enterNewPassword);
+
+		// Validate the new password
+		boolean hasUpperCase = enterNewPassword.matches(".*[A-Z].*");
+		boolean hasNumber = enterNewPassword.matches(".*[0-9].*");
+		boolean hasSpecialCharacter = enterNewPassword.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
+
+		// Assert checks for password complexity requirements
+		assertTrue(hasUpperCase, "New password does not contain an uppercase letter.");
+		assertTrue(hasNumber, "New password does not contain a numerical value.");
+		assertTrue(hasSpecialCharacter, "New password does not contain a special character.");
+
+		// Perform the password change action
+		changeMyPasswordButton.click();
+
+		assertTrue(ErrorMessageElement.isDisplayed(), "Test Fail: oldPasswordErrorMessage is not dispalyed");
+
+	}
+
+	public void userisAbleToSeeThePasswordByClickEyeIcon(WebElement PasswordTextfieldElement, String EnterPassword,
+			WebElement eyeIconElement) {
+
+		PasswordTextfieldElement.isDisplayed();
+		PasswordTextfieldElement.sendKeys(EnterPassword);
+		String beforeClickOnEyeIconAttributeTypeValue = PasswordTextfieldElement.getAttribute("type");
+
+		assertTrue(beforeClickOnEyeIconAttributeTypeValue.equals("password"),
+				"Test Failed: beforeClickOnEyeIconAttributeTypeValue is not equal with Password ");
+		System.out.println("beforeClickOnEyeIconAttributeTypeValue :" + beforeClickOnEyeIconAttributeTypeValue);
+
+		eyeIconElement.click();
+
+		String afterClickOnEyeIconAttributeTypeValue = PasswordTextfieldElement.getAttribute("type");
+
+		assertTrue(afterClickOnEyeIconAttributeTypeValue.equals("text"),
+				"Test Failed: afterClickOnEyeIconAttributeTypeValue is not equal with Text ");
+
+	}
 
 }

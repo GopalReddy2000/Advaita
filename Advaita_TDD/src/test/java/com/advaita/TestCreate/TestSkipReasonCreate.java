@@ -2,7 +2,7 @@ package com.advaita.TestCreate;
 
 import java.sql.Driver;
 
-import org.openqa.selenium.WebElement;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -10,7 +10,6 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.alchemyPageObject.SkipReason;
-import com.advaita.alchemyPageObject.SmsTemplate;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -65,7 +64,7 @@ public class TestSkipReasonCreate extends TestBase {
 	}
 
 	@Test(priority = 1)
-	public void Create_skipreason() throws Throwable {
+	public void CreateSkipreason() throws Throwable {
 		skipReason.NavigateToFetchprocess();
 		skipReason.navigateTo_AlchemyModule();
 		skipReason.NavigateTo_Skipreason();
@@ -83,17 +82,17 @@ public class TestSkipReasonCreate extends TestBase {
 		skipReason.navigateToSkipAudit();
 		skipReason.clickOnSkipAuditReason();
 		skipReason.selecteSkipReason();
+		skipReason.saveAudit();
 
-		// SearchBy Reasons Name
-		//skipReason.searchThroughReasonsName();
+// SearchBy Reasons Name
+		skipReason.searchThroughReasonsName();
 
-//		skipReason.ClearFilters();
-//		skipReason.EditSKipReasons();
-//		skipReason.CanceCreate_Edit();
-//		skipReason.Delete_SkipReasons();
+//Edit SkipReasons		
+		// skipReason.EditSKipReasons();
+
+		// skipReason.CanceCreate_Edit();
+		// skipReason.Delete_SkipReasons();
 	}
-	
-	
 
 	@Test(priority = 2)
 	public void searchByProcesses() throws Throwable {
@@ -116,18 +115,55 @@ public class TestSkipReasonCreate extends TestBase {
 		skipReason.ClearFilters();
 
 	}
-	
-	@Test
-	public void navigate() throws Throwable {
-		
+
+	@Test(priority = 4)
+	public void VerifydeleteReason() throws Throwable {
 
 		skipReason.navigateTo_AlchemyModule();
 		skipReason.NavigateTo_Skipreason();
-		skipReason.captureAllCreatedSkipReasons();
-//		skipReason.navigateToSkipAudit();
-//		skipReason.clickOnSkipAuditReason();
-		
+		skipReason.deleteReason();
+
 	}
-	
+
+//#########################################################################################################################
+//Negative Testing
+
+	@Test
+	public void withoutSelectingReasonTextfield() throws Throwable {
+
+		skipReason.navigateTo_AlchemyModule();
+		skipReason.NavigateTo_Skipreason();
+
+		// skipReason.withoutSelectingReasonsTextfield(); //passs
+
+		// skipReason.withoutSelectingProcess(); //pass
+
+		// skipReason.enterAllAndsaveWithoutnonEnterInMandatoryTextfield(); //pass
+
+		// skipReason.saveWithSpecialCharacter(); //Fail_ Error
+
+		// skipReason.selectanInvalidOptionFromDropdown();// ???
+
+		// skipReason.searchinvalidCreatedNamesInSearchField();
+
+		// skipReason.searchThroughEmojisInSearchTextfield();
+
+		// skipReason.verifyAfterDeleteCreatedSkipReasonsDisplayedInSkipTheAudit();
+
+	}
+
+	@Test
+	public void searchThroughProcessesInSearchTextfield() throws Throwable {
+
+		skipReason.searchThroughProcessesInSearchTextfield();
+
+	}
+
+	@AfterTest
+	public void tearDown() {
+		driver.manage().window().minimize();
+		driver.quit();
+		reports.flush();
+	}
 
 }

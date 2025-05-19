@@ -552,6 +552,14 @@ public class Stages extends TestBase {
 				}
 
 			}
+		
+		if (clickUpToFourthLastElement) {
+			// Find all matching elements
+			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+
+			// Calculate the last index to click
+			int totalElements = elements.size();
+			int lastIndexToClick = totalElements - 3;
 
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
@@ -572,9 +580,12 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
 		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
 		cancelButtonInaddSectionAPopUp.click();
-
+		
+		
+	}
 		return this;
 	}
+		
 
 	public void verifySectionB() {
 		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
@@ -702,8 +713,11 @@ public class Stages extends TestBase {
 			assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
 
 			// Verify and fill the section name and weightage fields
-			String sectionName = "DemoSec" + i;
-			String sectionWeightage = "TestWeightage" + i;
+			//String sectionName = "TestSec" + i;
+			//String sectionWeightage = "TestWeightage" + i;
+			String sectionName = "Notification" + i;
+			String sectionWeightage = "NotificationWeightage" + i;
+			
 
 			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName, true, false, 1);
 
@@ -748,8 +762,10 @@ public class Stages extends TestBase {
 				clickOnCheckBoxes(allOptionsMeasurable, "all");
 				clickOnCheckBoxes(allOptionsMeasurable, optionNames);
 
-				DropDown.dropdownWithAllPosibleValidation(nonMeasurableQuestionSet, "Select",
-						PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable"));
+				String employeeName = "notificationALERT";
+				
+//				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select",
+//						employeeName);
 
 			} else {
 				System.out.println("Element not clickable or displayed: " + section.toString());

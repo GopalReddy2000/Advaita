@@ -65,11 +65,13 @@ public class TestBase {
 //		options = new ChromeOptions();
 //		options.addArguments("--disable-notifications");
 //		options.addArguments("use-fake-ui-for-media-stream");
+//		options.addArguments("use-fake-ui-for-media-stream");
 //		options.addArguments("--incognito");
 //
 //		DesiredCapabilities cap = new DesiredCapabilities();
 //		cap.setCapability(ChromeOptions.CAPABILITY, options);
 //		cap.setCapability("applicationCacheEnabled", false);
+//		// Setting the default behavior to block the microphone
 //		options.merge(cap);
 //
 		options = new ChromeOptions();
@@ -88,15 +90,11 @@ public class TestBase {
 		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
 		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
-		if (driver == null) {
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().deleteAllCookies();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-			wait = new WebDriverWait(driver, Duration.ofSeconds(25));
-		}
-
-//		driver = new ChromeDriver(options);
+		driver = new ChromeDriver();
+		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
 		actions = new Actions(driver);
 		robot = new Robot();
@@ -202,6 +200,11 @@ public class TestBase {
 
 	public static void jsClick(WebElement element) {
 
+		js.executeScript("arguments[0].click();", element);
+	}
+	
+	public static void jsClick(WebDriver driver, WebElement element) {
+		
 		js.executeScript("arguments[0].click();", element);
 	}
 
@@ -336,6 +339,7 @@ public class TestBase {
 		}
 
 	}
+	
 
 	public void dropdownUtil(WebElement dropdownElement, String expectedOption) {
 		Select dropdown = new Select(dropdownElement);

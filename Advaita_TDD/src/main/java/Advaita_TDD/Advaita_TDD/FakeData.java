@@ -155,7 +155,7 @@ public class FakeData {
 		return randomLastName;
 	}
 
-	public static void firstName() {
+	public  void firstName() {
 		// Create a Faker instance
 		Faker faker = new Faker();
 

@@ -236,9 +236,10 @@ public class DataSet extends TestBase {
 
 	FakeData fake = new FakeData();
 
-	String processValue;
-	String subProcessValue;
-	String subSubProcessValue;
+//	String processValue;
+//	String subProcessValue;
+//	String subSubProcessValue;
+	
 
 //	String processValue = "AJP";
 //	String subProcessValue = "Sub AJP";
