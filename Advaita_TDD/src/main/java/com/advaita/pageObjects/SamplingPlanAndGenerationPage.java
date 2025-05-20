@@ -2,9 +2,9 @@ package com.advaita.pageObjects;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,12 +17,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SamplingPlanAndGenerationPage extends TestBase {
 
@@ -134,6 +135,12 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 
 	@FindBy(xpath = "(//button[text()='Cancel'])[1]")
 	WebElement cancel;
+
+	@FindBy(xpath = "//span[@id='status']")
+	public WebElement checkStatus;
+
+	@FindBy(xpath = "//span[@id='generated_sample']")
+	public WebElement sampleCount;
 
 	public SamplingPlanAndGenerationPage navToCreate() {
 		navigateWithinAlchemy(samplingPlanAndGeneration);
@@ -371,7 +378,7 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 		return this;
 	}
 
-	public SamplingPlanAndGenerationPage saveSamplingAndGetConfirmation() {
+	public SamplingPlanAndGenerationPage saveSamplingAndGetConfirmation() throws Throwable {
 
 		nextForConditional.click();
 		nextForScheduling.click();
@@ -382,6 +389,17 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 		System.out.println("Sample is Generated Successfully");
 
 		continueButton.click();
+
+		unWait(1);
+		String statusText = checkStatus.getText();
+		System.out.println("statusText : " + statusText);
+		// Assertion to verify status is "Completed"
+		assertEquals(statusText, "Completed", "Status did not update to 'Completed'!");
+
+		assertEquals(sampleCount.getText(), PropertieFileUtil.getSingleTextFromPropertiesFile("no.OfRecord"),
+				"Generated sample count is incorrect!");
+
+		continueButton2.click();
 
 		return this;
 	}

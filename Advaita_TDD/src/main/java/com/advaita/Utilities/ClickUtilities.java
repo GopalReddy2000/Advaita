@@ -241,5 +241,11 @@ public class ClickUtilities extends TestBase {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 
 	}
+	public static void scrollToViewAndClick(WebElement element) {
+//		
+		scrollToViewElement(element);
+		click(driver, element);
+		
+	}
 
 }

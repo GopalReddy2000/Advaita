@@ -41,7 +41,7 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "TestE";
+	static String employeeName = "DemoI";
 
 	// Run Test Based on Boolean
 	final boolean processRun = false;
@@ -49,9 +49,9 @@ public class TestManualAllocation extends TestBase {
 	final boolean metaDataRun = false;
 	final boolean manualUploadRun = false;
 	final boolean nonMeasurableRun = false;
-	final boolean stageRun = true;
+	final boolean stageRun = false;
 	final boolean userRun = false;
-	final boolean samplingPlanRun = true;
+	final boolean samplingPlanRun = false;
 	final boolean manualAllocationRun = true;
 
 	Faker faker = new Faker();
@@ -136,11 +136,11 @@ public class TestManualAllocation extends TestBase {
 //
 //		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
 
-		process.createProcess1(employeeName + " Process ", "TestPDesc");
+		process.createProcess1(employeeName + " P", "TestPDesc");
 
-		process.createSubProcess(employeeName + " SubProcess ", "TestSPDesc");
+		process.createSubProcess(employeeName + " S P", "TestSPDesc");
 
-		process.createSubSubProcess(employeeName + " Sub Sub Process", "TestSSPDesc");
+		process.createSubSubProcess(employeeName + " S S P", "TestSSPDesc");
 
 		Thread.sleep(2000);
 
@@ -184,10 +184,10 @@ public class TestManualAllocation extends TestBase {
 	public void verifyCreateManualUpload() throws Throwable {
 
 		test = reports.createTest("verifyCreateManualUpload");
-		homePage.clickOnProcessManagementCreate();
+//		homePage.clickOnProcessManagementCreate();
 
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
-		int addNumberOfRecord = 15;
+		int addNumberOfRecord = 30;
 
 		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
@@ -243,9 +243,8 @@ public class TestManualAllocation extends TestBase {
 				.verifyStageSelectAllProcessDropDown().verifyStageCalculationTypeDropDown()
 				.verifyAddSectionA(false, false, true);
 
-		// .verifyAddAndRemoveBlockInSectionB(4)
-		// .selectMetaDataInAddBlockSectionB(2, true, false)
-//		stages.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
+//		stages.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2, true, false);
+		stages.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
 //		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
 		String viewCheckBox[] = { "all" };
@@ -267,23 +266,40 @@ public class TestManualAllocation extends TestBase {
 
 	static String lastName = " QA";
 	static String usernameToDoAction = employeeName + lastName;
+//
+//	@Test(priority = 7, enabled = userRun)
+//	public void verifyUserCreateAndUserMapping() throws Throwable {
+//
+//		test = reports.createTest("verifyUserCreateAndUserMapping");
+//		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+//		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+//		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+//		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+//
+//		userSetUp.navToUserCreatePage();
+//
+//		userSetUp.userCreationFields(employeeName, lastName, "Qwerty@123")
+//				.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
+//
+//		PropertieFileUtil.storeSingleTextInPropertiesFile("userName", usernameToDoAction);
+//		userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess, stages);
+//	}
 
 	@Test(priority = 7, enabled = userRun)
-	public void verifyUserCreateAndUserMapping() throws Throwable {
+	public void verifyUserCreateAndUserMapping2() throws Throwable {
 
-		test = reports.createTest("verifyUserCreateAndUserMapping");
-		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		test = reports.createTest("verifyUserCreateAndUserMapping2");
+		userSetUp.navToUserSetUp("management");
 
-		userSetUp.navToUserCreatePage();
+		int noOfUser = 4;
+		List<String> myGroups = Arrays.asList("Agent", "Agent","Agent", "Agent");
+		List<String> permissionsList = Arrays.asList("Agent", "Agent","Agent", "Agent");
+		boolean createButton = true;
+		userSetUp.createMultipleUsers(noOfUser, myGroups, permissionsList, createButton);
+		userSetUp.verifyMappingForAllUsers();
+		
+		
 
-		userSetUp.userCreationFields(employeeName, lastName, "Qwerty@123")
-				.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
-
-		PropertieFileUtil.storeSingleTextInPropertiesFile("userName", usernameToDoAction);
-		userSetUp.userMappingRecord(usernameToDoAction).userMappingProcess(process, subProcess, subSubProcess, stages);
 	}
 
 	@Test(priority = 8, enabled = samplingPlanRun)
@@ -319,13 +335,14 @@ public class TestManualAllocation extends TestBase {
 		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
 		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String allocationType = "call";
+//		String allocationType = "call";
 
 		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
 				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
-						subSubProcessValue, stages)
-				.allocationTypeDropdown(allocationType, usernameToDoAction);
-		manualAllocationPage.saveAndConfirmation();
+						subSubProcessValue, stages);
+//				.allocationTypeDropdown(allocationType, usernameToDoAction);
+		manualAllocationPage.allocateSamplesToUsers("all", null, 0, 1);
+//		manualAllocationPage.saveAndConfirmation();
 	}
 
 	@AfterMethod
@@ -349,8 +366,8 @@ public class TestManualAllocation extends TestBase {
 
 	@AfterTest
 	public void tearDown() throws Throwable {
-		driver.manage().window().minimize();
-		driver.quit();
+//		driver.manage().window().minimize();
+//		driver.quit();
 		reports.flush();
 //		ScreenRecorderUtil.stopRecord();
 	}

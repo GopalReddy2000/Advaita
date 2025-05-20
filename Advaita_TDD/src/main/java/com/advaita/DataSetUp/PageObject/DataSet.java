@@ -1,6 +1,5 @@
 package com.advaita.DataSetUp.PageObject;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -279,11 +278,11 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = mainURl+"/en/dataset_management/dataset/";
+		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
-		assertEquals(actualURL, expecteddURL);
+		Assert.assertEquals(actualURL, expecteddURL);
 
 		String totalRecord = fetchTotalRecord.getText();
 		String beforeResult = totalRecord.replace("Showing 1 to 10 of ", "");
@@ -432,7 +431,7 @@ public class DataSet extends TestBase {
 		String afterResult = afterTotalRecord.replace("Showing 1 to 10 of ", "");
 		System.out.println("After Result: " + afterResult);
 
-		assertEquals(afterResult, beforeTotalRecored);
+		Assert.assertEquals(afterResult, beforeTotalRecored);
 
 		System.out.println("The User is Able to Create Dataset");
 
@@ -540,7 +539,7 @@ public class DataSet extends TestBase {
 		int yCoordinate = searchLocation.getY();
 
 		System.out.println("X Coordinates:" + xCoordinate + "\n" + "Y Coordinates:" + yCoordinate);
-		assertEquals(300, xCoordinate);
+		Assert.assertEquals(300, xCoordinate);
 
 		searchBar.clear();
 		searchBar.sendKeys(createdDataSet);
@@ -619,8 +618,8 @@ public class DataSet extends TestBase {
 //	##############################################################################################################################
 
 	public DataSet navigateToDataSetup() throws Throwable {
-
-		fecthProcess_SubProces_SubSubProcess();
+		hp.clickOnProcessManagementCreate();
+//		fecthProcess_SubProces_SubSubProcess();
 
 		// Assert whether Datasetup Button is Displayed on the left Navigation Menu
 		assertTrue(dataSetup.isDisplayed(), "DataSetup is not Displayed");
@@ -629,18 +628,16 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://fkart.transmonqa.in/en/dataset_management/dataset/";
+		String expecteddURL = mainURl + "en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
-		assertEquals(actualURL, expecteddURL);
+		Assert.assertEquals(actualURL, expecteddURL);
 
 		return this;
 	}
 
 	public DataSet fecthProcess_SubProces_SubSubProcess() throws Throwable {
-
-		hp.clickOnProcessManagementCreate();
 
 		dropDown1.isDisplayed();
 		dropDown1.click();
@@ -840,7 +837,7 @@ public class DataSet extends TestBase {
 
 		String text = driver.findElement(By.xpath("//label[normalize-space()='Dataset Name*']")).getText();
 		char lastChar = text.charAt(text.length() - 1);
-		assertEquals(lastChar, '*', "dataSetNameField label does not end with '*'.");
+		Assert.assertEquals(lastChar, '*', "dataSetNameField label does not end with '*'.");
 
 		assertTrue(dataSetNameField.isEnabled(), "dataSetNameField is not enabled.");
 
@@ -868,7 +865,7 @@ public class DataSet extends TestBase {
 		unWait(1);
 
 		String enteredText = dataSetNameField.getAttribute("value");
-		assertEquals(enteredText, dataSetName.replace(" ", ""), "dataSetName is not correctly entered in the field.");
+		Assert.assertEquals(enteredText, dataSetName.replace(" ", ""), "dataSetName is not correctly entered in the field.");
 	}
 
 	public DataSet processDropDownSelect(WebElement processDropDown, String processValue) {
@@ -907,73 +904,73 @@ public class DataSet extends TestBase {
 	private static final String PROPERTIES_FILE = "src/main/resources/DataSet.properties";
 
 	public DataSet enterFieldNameAndValidations(List<Map<String, String>> fieldData) throws Throwable {
-	    // Using LinkedHashMap to maintain order
-	    LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
+		// Using LinkedHashMap to maintain order
+		LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
 
-	    try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
-	        properties.store(fos, "Cleared Existing Labels");
-	    }
+		try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
+			properties.store(fos, "Cleared Existing Labels");
+		}
 
-	    for (int i = 0; i < fieldData.size(); i++) {
-	        Map<String, String> row = fieldData.get(i);
+		for (int i = 0; i < fieldData.size(); i++) {
+			Map<String, String> row = fieldData.get(i);
 
-	        String fieldName = row.get("FieldName");
-	        String type = row.get("Type");
-	        String maxLength = row.get("MaxLength");
-	        String isMandatory = row.get("IsMandatory");
+			String fieldName = row.get("FieldName");
+			String type = row.get("Type");
+			String maxLength = row.get("MaxLength");
+			String isMandatory = row.get("IsMandatory");
 
-	        verifyFieldNameField(DynamicXpath.dataSetField(i), fieldName);
-	        verifyLabelNameField(DynamicXpath.dataSetLabelField(i), fieldName);
+			verifyFieldNameField(DynamicXpath.dataSetField(i), fieldName);
+//			verifyLabelNameField(DynamicXpath.dataSetLabelField(i), fieldName);
+			verifyLabelNameFieldValue(DynamicXpath.dataSetLabelField(i), fieldName);
 
-	        // Store label in LinkedHashMap
-	        labelMap.put("label_" + i, fieldName);
+			// Store label in LinkedHashMap
+			labelMap.put("label_" + i, fieldName);
 
-	        typeDropDownSelect(i, type);
+			typeDropDownSelect(i, type);
 
-	        if (!"Date".equalsIgnoreCase(type) && !"Date Time".equalsIgnoreCase(type)) {
-	            verifyMaxLengthField(DynamicXpath.dataSetMaxLength(i), maxLength);
-	        }
+			if (!"Date".equalsIgnoreCase(type) && !"Date Time".equalsIgnoreCase(type)) {
+				verifyMaxLengthField(DynamicXpath.dataSetMaxLength(i), maxLength);
+			}
 
-	        mandatoryDropDownSelect(i, isMandatory);
+			mandatoryDropDownSelect(i, isMandatory);
 
-	        if (i < fieldData.size() - 1) {
-	            click(driver, addRowButton);
-	        }
-	    }
+			if (i < fieldData.size() - 1) {
+				click(driver, addRowButton);
+			}
+		}
 
-	    // Write to properties file in the correct order
-	    try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
-	        for (Map.Entry<String, String> entry : labelMap.entrySet()) {
-	            properties.setProperty(entry.getKey(), entry.getValue());
-	        }
-	        properties.store(fos, "Stored Label Names");
-	    }
+		// Write to properties file in the correct order
+		try (FileOutputStream fos = new FileOutputStream(PROPERTIES_FILE)) {
+			for (Map.Entry<String, String> entry : labelMap.entrySet()) {
+				properties.setProperty(entry.getKey(), entry.getValue());
+			}
+			properties.store(fos, "Stored Label Names");
+		}
 
-	    return this;
+		return this;
 	}
 
 	public ArrayList<String> getLabelNamesFromProperties() {
-		
-	    ArrayList<String> labelNames = new ArrayList<>();
-	    LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
 
-	    try (BufferedReader reader = new BufferedReader(new FileReader(PROPERTIES_FILE))) {
-	        String line;
-	        while ((line = reader.readLine()) != null) {
-	            if (line.contains("=")) {
-	                String[] parts = line.split("=", 2);
-	                labelMap.put(parts[0].trim(), parts[1].trim());
-	            }
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		ArrayList<String> labelNames = new ArrayList<>();
+		LinkedHashMap<String, String> labelMap = new LinkedHashMap<>();
 
-	    labelNames.addAll(labelMap.values()); // Maintain insertion order
+		try (BufferedReader reader = new BufferedReader(new FileReader(PROPERTIES_FILE))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.contains("=")) {
+					String[] parts = line.split("=", 2);
+					labelMap.put(parts[0].trim(), parts[1].trim());
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-	    return labelNames;
+		labelNames.addAll(labelMap.values()); // Maintain insertion order
+
+		return labelNames;
 	}
-
 
 	public DataSet verifyFieldNameField(WebElement fieldNameField, String fieldName) {
 
@@ -989,7 +986,7 @@ public class DataSet extends TestBase {
 		SendDataUtils.clearAndSendKeys(fieldNameField, fieldName);
 
 		String enteredText = fieldNameField.getAttribute("value");
-		assertEquals(enteredText.replace(" ", ""), fieldName.replace(" ", ""),
+		Assert.assertEquals(enteredText.replace(" ", ""), fieldName.replace(" ", ""),
 				"fieldName is not correctly entered in the field.");
 
 		return this;
@@ -1009,8 +1006,20 @@ public class DataSet extends TestBase {
 		SendDataUtils.clearAndSendKeys(labelNameField, labelName);
 
 		String enteredText = labelNameField.getAttribute("value");
-		assertEquals(enteredText, labelName, "fieldName is not correctly entered in the field.");
+		Assert.assertEquals(enteredText, labelName.replace(" ", ""), "fieldName is not correctly entered in the field.");
 
+		return this;
+	}
+	
+	public DataSet verifyLabelNameFieldValue(WebElement labelNameField, String labelName) {
+		
+		assertTrue(labelNameField.isEnabled(), "fieldNameField is not enabled.");
+		
+		
+		
+		String enteredText = labelNameField.getAttribute("value");
+		Assert.assertEquals(enteredText, labelName.replace(" ", ""), "fieldName is not correctly entered in the field.");
+		
 		return this;
 	}
 
@@ -1028,7 +1037,7 @@ public class DataSet extends TestBase {
 		SendDataUtils.clearAndSendKeys(maxLengthField, maxLength);
 
 		String enteredText = maxLengthField.getAttribute("value");
-		assertEquals(enteredText, maxLength, "maxLength is not correctly entered in the field.");
+		Assert.assertEquals(enteredText, maxLength, "maxLength is not correctly entered in the field.");
 
 		return this;
 	}

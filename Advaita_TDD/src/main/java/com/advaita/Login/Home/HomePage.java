@@ -50,9 +50,8 @@ public class HomePage extends TestBase {
 
 	public void clickOnProcessManagementCreate() {
 
-//		click(driver, DataSetUpButton);
-		//DataSetUpButton.click();
-		jsClick(DataSetUpButton);
+		click(driver, DataSetUpButton);
+//		DataSetUpButton.click();
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");
 	}
 

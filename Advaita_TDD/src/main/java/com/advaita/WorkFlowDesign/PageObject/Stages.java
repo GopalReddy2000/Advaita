@@ -33,8 +33,8 @@ public class Stages extends TestBase {
 
 	SoftAssert softAssert = new SoftAssert();
 
-	static private String stageListingPageUrl = mainURl+"en/stages/stages_list/";
-	static private String stagesCraeteFormURL = mainURl+"en/stages/create_stages/";
+	static private String stageListingPageUrl = mainURl + "en/stages/stages_list/";
+	static private String stagesCraeteFormURL = mainURl + "en/stages/create_stages/";
 
 	public static String fetchProcessRecord;
 	public static String fetchSubProcessRecord;
@@ -274,7 +274,7 @@ public class Stages extends TestBase {
 
 	public Stages navigateFetchProcessRecord(boolean wantToFetchRecord) throws Throwable {
 
-		driver.navigate().to(mainURl+"en/data_management/process/");
+		driver.navigate().to(mainURl + "en/data_management/process/");
 
 		Thread.sleep(4000);
 
@@ -315,7 +315,7 @@ public class Stages extends TestBase {
 
 	public void navigateToStages() {
 
-		driver.navigate().to(mainURl+"en/stages/stages_list/");
+		driver.navigate().to(mainURl + "en/stages/stages_list/");
 	}
 
 	public void navigateNonMeasurableCreate() throws Throwable {
@@ -352,7 +352,6 @@ public class Stages extends TestBase {
 		assertTrue(workFlowStagesTab.isDisplayed(), "workFlowStagesTab is not displayed");
 //		click(driver, workFlowStagesTab);
 		assertTrue(stageListingPage.isDisplayed(), "stageListingPage is not displayed");
-		unWait(2000);
 		assertEquals(driver.getCurrentUrl(), stageListingPageUrl);
 
 		return this;
@@ -409,6 +408,7 @@ public class Stages extends TestBase {
 		char lastChar = text.charAt(text.length() - 1);
 		assertEquals(lastChar, '*');
 
+		Thread.sleep(1000);
 		assertTrue(selectProcessDropDownElement.isDisplayed(), "selectProcessDropDownElement is not displayed.");
 
 		Select select = new Select(selectProcessDropDownElement);
@@ -425,6 +425,7 @@ public class Stages extends TestBase {
 		char lastChar = text.charAt(text.length() - 1);
 		assertEquals(lastChar, '*');
 
+		Thread.sleep(1000);
 		assertTrue(selectSubProcessDropDownElement.isDisplayed(), "selectSubProcessDropDownElement is not displayed.");
 
 		wait.until(ExpectedConditions.visibilityOf(selectSubProcessDropDownElement));
@@ -447,8 +448,8 @@ public class Stages extends TestBase {
 				"selectSubSubProcessDropDownElement is not displayed.");
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
-		
+		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//select[@id='s_sub_process']/option")));
+
 		Select select = new Select(selectSubSubProcessDropDownElement);
 		Thread.sleep(1000);
 
@@ -524,19 +525,34 @@ public class Stages extends TestBase {
 				wait.until(ExpectedConditions.elementToBeClickable(element)).click();
 			}
 		}
-		if (clickUpToFourthLastElement) {
-			// Find all matching elements
-			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
+//		if (clickUpToFourthLastElement) {
+//			
+//			List<WebElement> checkboxes = driver.findElements(By.cssSelector("input[name='sectionA_fieldname']"));
+//
+//			for (WebElement checkbox : checkboxes) {
+//			    String fieldName = checkbox.getAttribute("data-fieldname");
+//
+//			    checkbox.click(); // Click the checkbox
+//
+//			    if ("Trans_Unique_Id".equals(fieldName)) {
+//			        break; // Stop clicking after Trans_Unique_Id
+//			    }
+//			}
+			if (clickUpToFourthLastElement) {
+				List<WebElement> checkboxes = driver.findElements(By.name("sectionA_fieldname"));
 
-			// Calculate the last index to click
-			int totalElements = elements.size();
-			int lastIndexToClick = totalElements - 3;
+				for (WebElement checkbox : checkboxes) {
+				    String fieldName = checkbox.getAttribute("data-fieldname");
+				    if ("Trans_Unique_Id".equals(fieldName)) {
+				        break;
+				    }
+				    if (!checkbox.isSelected()) {
+				        checkbox.click();
+				    }
+				}
 
-			// Click elements up to the fourth last element
-			for (int i = 0; i < lastIndexToClick; i++) {
-				elements.get(i).click();
 			}
-		}
+		
 		if (clickUpToFourthLastElement) {
 			// Find all matching elements
 			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
@@ -544,8 +560,6 @@ public class Stages extends TestBase {
 			// Calculate the last index to click
 			int totalElements = elements.size();
 			int lastIndexToClick = totalElements - 3;
-
-		}
 
 		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
 		click(driver, addButtonInaddSectionAPopUp);
@@ -566,9 +580,12 @@ public class Stages extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
 		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
 		cancelButtonInaddSectionAPopUp.click();
-
+		
+		
+	}
 		return this;
 	}
+		
 
 	public void verifySectionB() {
 		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
@@ -1139,8 +1156,8 @@ public class Stages extends TestBase {
 	public Stages stageSettingListSaveAndConfirmation() {
 
 //		actions.moveToElement(saveButton2).perform();
-		
-		CommonUtils.scrollToPoint(driver,578,774);
+
+		CommonUtils.scrollToPoint(driver, 578, 774);
 
 //		saveButton2.click();
 		click(driver, saveButton2);

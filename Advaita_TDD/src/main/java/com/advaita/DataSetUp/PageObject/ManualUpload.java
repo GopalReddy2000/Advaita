@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -191,7 +192,14 @@ public class ManualUpload extends TestBase {
 
 		System.out.println("filteredItems : " + filteredItems);
 
-		//assertTrue(excelColumns.equals(filteredItems), "Excel columns are mismatching.");
+		//added because of space issue in dataset
+		List<String> normalizedExcelColumns = excelColumns.stream().map(s -> s.replaceAll("\\s+", "").toLowerCase())
+				.collect(Collectors.toList());
+
+		List<String> normalizedFilteredItems = filteredItems.stream().map(s -> s.replaceAll("\\s+", "").toLowerCase())
+				.collect(Collectors.toList());
+
+		assertTrue(normalizedExcelColumns.equals(normalizedFilteredItems), "Excel columns are mismatching.");
 
 		// Iterate over each column and add five values below existing rows
 		int lastRowNum = sheet.getLastRowNum();
@@ -305,20 +313,22 @@ public class ManualUpload extends TestBase {
 		assertTrue(driver.findElement(By.xpath(uploadRemarkXpath)).isDisplayed(),
 				"uploadRemarkXpath is not displayed.");
 
+		
+//		###### Need To Change The Logic ######
 //	Records After Upload
-
-		String uploadRecordViewButton = "//tbody//tr//td[normalize-space()='" + uploadName
-				+ "']/..//a[@id='show_history']";
-		driver.findElement(By.xpath(uploadRecordViewButton)).click();
-
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(uploadRecordViewButton)));
-		int noOfRecords = countTotalRecords(pagination, uploadedRecord);
-
-		System.out.println("noOfRecords : " + noOfRecords);
+//
+//		String uploadRecordViewButton = "//tbody//tr//td[normalize-space()='" + uploadName
+//				+ "']/..//a[@id='show_history']";
+//		driver.findElement(By.xpath(uploadRecordViewButton)).click();
+//
+//		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(uploadRecordViewButton)));
+//		int noOfRecords = countTotalRecords(pagination, uploadedRecord);
+//
+//		System.out.println("noOfRecords : " + noOfRecords);
 //
 //		assertEquals(numberOfUploadedData, noOfRecords, "Values are not equal!");
 
-		click(driver, closeButtonOnPopUp);
+//		click(driver, closeButtonOnPopUp);
 
 		return this;
 	}

@@ -570,6 +570,21 @@ public class TestuserStatusCreate extends TestBase {
 		verifyTheUSerIsAbleDoChangePasswordByEnteringWrongConformPAssword();
 		VerifyTheUserIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimitU();
 	}
+	
+
+		  //Edit
+		//@Test
+		public void UserStatusEdit() throws Throwable {
+			
+			userStatus1.navigateToMenuSetup();
+			userStatus1.callLogatTabViewClick();
+			userStatus1.NavigateToUserStatus();
+			
+			userStatus1.EditStatus();  //Edit mandatory field name
+			userStatus1.EditDescriptnField();  
+			userStatus1.multiseletToMenuHide();
+		}
+		
 
 	
 	@AfterTest

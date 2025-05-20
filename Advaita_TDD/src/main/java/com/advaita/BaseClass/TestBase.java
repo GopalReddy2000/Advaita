@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -23,9 +22,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.devtools.DevTools;
-import org.openqa.selenium.devtools.v129.network.Network;
-import org.openqa.selenium.devtools.v129.network.model.RequestId;
-import org.openqa.selenium.devtools.v129.network.model.Response;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -54,8 +50,8 @@ public class TestBase {
 
   
 	protected static SoftAssert softAssert;
-	public static String mainURl = "https://fkart.transmonqa.in/";
-//	public static String mainURl = "https://test.capture.autosherpas.com/";
+	public static String mainURl = "https://test.capture.autosherpas.com/";
+//	public static String mainURl = "https://fkart.transmonqa.in/";
 //	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 	
 
@@ -73,19 +69,22 @@ public class TestBase {
 //		cap.setCapability("applicationCacheEnabled", false);
 //		// Setting the default behavior to block the microphone
 //		options.merge(cap);
+//
+		options = new ChromeOptions();
 		
+//        options.addArguments("--headless=new"); // Use new headless mode (recommended for Chrome)
+//        options.addArguments("--disable-gpu"); // Optional, but recommended for headless
+//        options.addArguments("--window-size=1920,1080"); // Set window size for consistent rendering
+//        options.addArguments("--no-sandbox"); // For CI/CD environments
+//        options.addArguments("--disable-dev-shm-usage"); // Overcome limited resource problems
+		
+        Map<String, Object> prefs = new HashMap<>();
+		// Set Chrome preferences to block microphone and camera
 
-
-//		Map<String, Object> prefs = new HashMap<>();
-//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-//		options.setExperimentalOption("prefs", prefs);
-//		driver = new ChromeDriver(options);	
-//
-//
-//		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
-//		prefs.put("profile.default_content_setting_values.media_stream_camera", 2); // Block camera as well
-//		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
-//		options.setExperimentalOption("prefs", prefs);
+		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
+		prefs.put("profile.default_content_setting_values.media_stream_camera", 2); // Block camera as well
+		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
+		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
@@ -100,28 +99,28 @@ public class TestBase {
 		softAssert = new SoftAssert();
 
 		// Set up DevTools
-		DevTools devTools = ((ChromeDriver) driver).getDevTools();
-		devTools.createSession();
-
-		// Enable network tracking
-		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-
-		// Add a listener to capture response details
-		devTools.addListener(Network.responseReceived(), response -> {
-			RequestId requestId = response.getRequestId();
-			Response responseDetails = response.getResponse();
-
-			// Get the status code and status text
-			int statusCode = responseDetails.getStatus();
-			String statusText = responseDetails.getStatusText();
-
-			// Print details only if the status code starts with 3, 4, or 5
-			if (statusCode >= 300 && statusCode < 600) { // Status codes 3xx, 4xx, 5xx
-				System.out.println("\n"+"URL: " + responseDetails.getUrl());
-				System.out.println("Status Code: " + statusCode);
-				System.out.println("Status Text: " + statusText + "\n");
-			}
-		});
+//		DevTools devTools = ((ChromeDriver) driver).getDevTools();
+//		devTools.createSession();
+//
+//		// Enable network tracking
+//		devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+//
+//		// Add a listener to capture response details
+//		devTools.addListener(Network.responseReceived(), response -> {
+//			RequestId requestId = response.getRequestId();
+//			Response responseDetails = response.getResponse();
+//
+//			// Get the status code and status text
+//			int statusCode = responseDetails.getStatus();
+//			String statusText = responseDetails.getStatusText();
+//
+//			// Print details only if the status code starts with 3, 4, or 5
+//			if (statusCode >= 300 && statusCode < 600) { // Status codes 3xx, 4xx, 5xx
+//				System.out.println("\n"+"URL: " + responseDetails.getUrl());
+//				System.out.println("Status Code: " + statusCode);
+//				System.out.println("Status Text: " + statusText + "\n");
+//			}
+//		});
 
 		driver.get(mainURl);
 
@@ -157,6 +156,9 @@ public class TestBase {
 
 	@FindBy(xpath = "(//button[text()='Continue'])[2]")
 	public WebElement continueButton;
+	
+	@FindBy(xpath = "(//button[text()='Continue'])[1]")
+	public WebElement continueButton2;
 
 	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
@@ -252,13 +254,16 @@ public class TestBase {
 	}
 
 	@FindBy(id = "menulist2")
+	public
 	WebElement alchemy;
 
 	public void navigateWithinAlchemy(WebElement element) {
 		try {
 			driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+			
 			jsClick(element);
 		} catch (org.openqa.selenium.NoSuchElementException e) {
+			unWait(1);
 			jsClick(alchemy);
 			jsClick(element);
 		}

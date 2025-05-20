@@ -16,113 +16,99 @@
 	</properties>
 
 	<dependencies>
-
-		<!--
-		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<!-- Selenium -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>4.25.0</version>
 		</dependency>
-
-
-		<!--	&lt;!&ndash;
-		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver
-		&ndash;&gt;-->
-		<!--	<dependency>-->
-		<!--	    <groupId>org.seleniumhq.selenium</groupId>-->
-		<!--	    <artifactId>selenium-chrome-driver</artifactId>-->
-		<!--	    <version>4.16.1</version>-->
-		<!--	</dependency>-->
-
-		<!--
-		https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-devtools-v85 -->
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-devtools-v85</artifactId>
 			<version>4.16.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<!-- Apache Commons -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>3.12.0</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.13.0</version>
 		</dependency>
-
-
-		<!-- https://mvnrepository.com/artifact/org.testng/testng -->
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>7.11.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!--
-		https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
+		<!-- TestNG -->
+		<!--		<dependency>-->
+		<!--			<groupId>org.testng</groupId>-->
+		<!--			<artifactId>testng</artifactId>-->
+		<!--			<version>7.11.0</version>-->
+		<!--			<scope>test</scope>-->
+		<!--		</dependency>-->
+		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
 			<version>2.17.1</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!--
-		https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<!-- HTTP Client -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.14</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<!-- JSON Libraries -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.10.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20250107</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.18.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<!-- Extent Reports -->
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
 			<version>5.1.1</version>
 		</dependency>
-
+		<!-- Freemarker -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.30</version>
 		</dependency>
-
-		<!--
-		https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
+		<!-- WebDriver Manager -->
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
 			<version>5.9.1</version>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+		<!-- JavaFaker -->
 		<dependency>
 			<groupId>com.github.javafaker</groupId>
 			<artifactId>javafaker</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-
+		<!-- Apache POI -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>5.2.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -143,53 +129,61 @@
 			<artifactId>xmlbeans</artifactId>
 			<version>5.1.1</version>
 		</dependency>
+
+
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>7.10.1</version>
+			<version>7.11.0</version>
 			<scope>compile</scope>
 		</dependency>
 
-		<!--
-		https://mvnrepository.com/artifact/com.github.stephenc.monte/monte-screen-recorder -->
+		<!-- Monte Screen Recorder -->
 		<dependency>
 			<groupId>com.github.stephenc.monte</groupId>
 			<artifactId>monte-screen-recorder</artifactId>
 			<version>0.7.7.0</version>
 		</dependency>
-
-
 	</dependencies>
+
 	<build>
 		<plugins>
+			<!-- Compiler Plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
 					<source>11</source>
 					<target>11</target>
 				</configuration>
 			</plugin>
+			<!-- JAR Plugin to make it executable -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>Advaita_TDD.Advaita_TDD.WebScraper</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+
+			<!-- Surefire Plugin for Tests -->
+			<!--			<plugin>-->
+			<!--				<groupId>org.apache.maven.plugins</groupId>-->
+			<!--				<artifactId>maven-surefire-plugin</artifactId>-->
+			<!--				<version>3.4.0</version>-->
+			<!--				<configuration>-->
+			<!--					<suiteXmlFiles>-->
+			<!--						<suiteXmlFile>testng.xml</suiteXmlFile>-->
+			<!--					</suiteXmlFiles>-->
+			<!--				</configuration>-->
+			<!--			</plugin>-->
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>3.4.0</version>
-					<configuration>
-						<suiteXmlFiles>
-							<suiteXmlFile>
-								testng.xml
-							</suiteXmlFile>
-						</suiteXmlFiles>
-					</configuration>
-
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
-
-
 </project>
