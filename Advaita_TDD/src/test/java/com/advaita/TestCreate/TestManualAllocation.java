@@ -41,18 +41,18 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "TestADD";
+	static String employeeName = "TestE";
 
 	// Run Test Based on Boolean
-	final boolean processRun = true;
-	final boolean dataSetRun = true;
-	final boolean metaDataRun = true;
-	final boolean manualUploadRun = true;
+	final boolean processRun = false;
+	final boolean dataSetRun = false;
+	final boolean metaDataRun = false;
+	final boolean manualUploadRun = false;
 	final boolean nonMeasurableRun = false;
 	final boolean stageRun = true;
 	final boolean userRun = false;
-	final boolean samplingPlanRun = false;
-	final boolean manualAllocationRun = false;
+	final boolean samplingPlanRun = true;
+	final boolean manualAllocationRun = true;
 
 	Faker faker = new Faker();
 //	public String num = "24";
@@ -136,11 +136,11 @@ public class TestManualAllocation extends TestBase {
 //
 //		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
 
-		process.createProcess1(employeeName + " P", "TestPDesc");
+		process.createProcess1(employeeName + " Process ", "TestPDesc");
 
-		process.createSubProcess(employeeName + " S P", "TestSPDesc");
+		process.createSubProcess(employeeName + " SubProcess ", "TestSPDesc");
 
-		process.createSubSubProcess(employeeName + " S S P", "TestSSPDesc");
+		process.createSubSubProcess(employeeName + " Sub Sub Process", "TestSSPDesc");
 
 		Thread.sleep(2000);
 
@@ -349,8 +349,8 @@ public class TestManualAllocation extends TestBase {
 
 	@AfterTest
 	public void tearDown() throws Throwable {
-//		driver.manage().window().minimize();
-//		driver.quit();
+		driver.manage().window().minimize();
+		driver.quit();
 		reports.flush();
 //		ScreenRecorderUtil.stopRecord();
 	}

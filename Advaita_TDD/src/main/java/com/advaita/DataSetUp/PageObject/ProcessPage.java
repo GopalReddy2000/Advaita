@@ -451,6 +451,7 @@ public class ProcessPage extends TestBase {
 //		Select select = new Select(selectSubProcessDropDown);
 //		select.selectByVisibleText(fetchSubProcssNameElement);
 
+		wait.until(ExpectedConditions.visibilityOf(subSubProcessNameField));
 		assertTrue(subSubProcessNameField.isDisplayed(), "subSubProcessNameField is not displayed");
 		subSubProcessNameField.sendKeys(SubsubProcessName);
 

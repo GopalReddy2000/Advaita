@@ -279,7 +279,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
+		String expecteddURL = mainURl+"/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 
@@ -629,7 +629,7 @@ public class DataSet extends TestBase {
 		assertTrue(dataSetTab.isDisplayed(), "Datasetup Tab is not Displayed");
 		dataSetTab.click();
 
-		String expecteddURL = "https://test.capture.autosherpas.com/en/dataset_management/dataset/";
+		String expecteddURL = "https://fkart.transmonqa.in/en/dataset_management/dataset/";
 
 		String actualURL = driver.getCurrentUrl();
 

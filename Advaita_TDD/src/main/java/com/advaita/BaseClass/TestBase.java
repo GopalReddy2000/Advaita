@@ -54,7 +54,8 @@ public class TestBase {
 
   
 	protected static SoftAssert softAssert;
-	public static String mainURl = "https://test.capture.autosherpas.com/";
+	public static String mainURl = "https://fkart.transmonqa.in/";
+//	public static String mainURl = "https://test.capture.autosherpas.com/";
 //	public static String mainURl1 = "https://ltfs-test.transmonqa.in/";
 	
 
@@ -72,17 +73,19 @@ public class TestBase {
 //		cap.setCapability("applicationCacheEnabled", false);
 //		// Setting the default behavior to block the microphone
 //		options.merge(cap);
+		
+
+
+//		Map<String, Object> prefs = new HashMap<>();
+//		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
+//		options.setExperimentalOption("prefs", prefs);
+//		driver = new ChromeDriver(options);	
 //
-		Map<String, Object> prefs = new HashMap<>();
-		prefs.put("profile.default_content_setting_values.media_stream_mic", Optional.of(2)); // 1: Allow, 2: Block
-		options.setExperimentalOption("prefs", prefs);
-		driver = new ChromeDriver(options);	
-
-
-		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
-		prefs.put("profile.default_content_setting_values.media_stream_camera", 2); // Block camera as well
-		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
-		options.setExperimentalOption("prefs", prefs);
+//
+//		prefs.put("profile.default_content_setting_values.media_stream_mic", 2); // 1: Allow, 2: Block
+//		prefs.put("profile.default_content_setting_values.media_stream_camera", 2); // Block camera as well
+//		prefs.put("profile.default_content_setting_values.geolocation", 2); // Block geolocation access just in case
+//		options.setExperimentalOption("prefs", prefs);
 		// Normal Execution
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();

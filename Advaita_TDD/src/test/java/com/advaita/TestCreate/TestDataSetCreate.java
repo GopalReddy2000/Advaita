@@ -161,8 +161,8 @@ public class TestDataSetCreate extends TestBase {
 
 	@AfterTest
 	public void tearDown() {
-//		driver.manage().window().minimize();
-//		driver.quit();
+		driver.manage().window().minimize();
+		driver.quit();
 		reports.flush();
 	}
 
