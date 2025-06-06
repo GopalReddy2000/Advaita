@@ -1,7 +1,5 @@
 package com.advaita.TestTable;
 
-import javax.swing.text.Utilities;
-
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,10 +13,9 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import net.bytebuddy.implementation.bind.annotation.RuntimeType;
+import net.datafaker.Faker;
 
 public class TestCallLogStageView extends TestBase {
 	Faker faker = new Faker();

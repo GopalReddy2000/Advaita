@@ -2,7 +2,6 @@ package com.advaita.pageObjects;
 
 import static org.testng.Assert.assertTrue;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -18,6 +17,12 @@ import com.advaita.Utilities.PropertieFileUtil;
 
 public class ReAllocationPage extends TestBase {
 
+	@FindBy(xpath = "//button[@id='pills-Stages-tab']")
+	public WebElement stageWiseTab;
+	
+	@FindBy(xpath = "//button[@id='pills-UserWise-tab']")
+	public WebElement userWiseTab;
+	
 	@FindBy(id = "process")
 	public WebElement processDropDown;
 
@@ -71,13 +76,26 @@ public class ReAllocationPage extends TestBase {
 		PageFactory.initElements(driver, this);
 	}
 
-	public ReAllocationPage navigateToReAllocation() throws Throwable {
+	public ReAllocationPage navigateToReAllocation(String selectTypeOfReAllocation) throws Throwable {
 
 		navigateWithinAlchemy(reAllocationButton);
+		
+		switch (selectTypeOfReAllocation.toLowerCase()) {
+		case "stagewise":
+			click(driver, stageWiseTab);
+			break;
+		case "userwise":
+			click(driver, userWiseTab);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid toggle option: " + selectTypeOfReAllocation);
+		}
 
 		return this;
 
 	}
+	
+	
 
 	public ReAllocationPage selectProcess_SubProcess_SubSubProcess_Stages(String process, String subProcess,
 			String subSubProcess) throws Throwable {
@@ -139,10 +157,6 @@ public class ReAllocationPage extends TestBase {
 
 		DropDown.validateStarMarkAndHandleDropdown("From User*", "from_user", "Select From User", user);
 
-//		DropDown.isMandatory("From User*");
-//		wait.until(ExpectedConditions.visibilityOf(fromUserDropDown));
-//
-//		DropDown.jsDropdownWithAllPossibleValidation(driver, fromUserDropDown, "Select From Designation", user);
 
 		return this;
 	}

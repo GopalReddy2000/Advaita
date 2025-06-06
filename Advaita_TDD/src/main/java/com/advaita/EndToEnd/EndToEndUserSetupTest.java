@@ -1,6 +1,15 @@
 package com.advaita.EndToEnd;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
+import static com.advaita.Utilities.PropertieFileUtil.getSingleTextFromPropertiesFile;
+import static org.testng.Assert.assertEquals;
+
+import java.io.IOException;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ProcessPage;
@@ -12,11 +21,8 @@ import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.pageObjects.NonMeasurableSetPage;
 import com.advaita.pageObjects.UserSetupPage;
-import org.testng.annotations.*;
 
-import java.io.IOException;
-import static com.advaita.Utilities.PropertieFileUtil.getSingleTextFromPropertiesFile;
-import static org.testng.Assert.assertEquals;
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class EndToEndUserSetupTest extends TestBase {
 

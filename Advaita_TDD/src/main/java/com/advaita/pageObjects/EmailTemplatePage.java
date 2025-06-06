@@ -1,8 +1,10 @@
 package com.advaita.pageObjects;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.FetchDataFromInputTagWithJS;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -10,11 +12,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.FetchDataFromInputTagWithJS;
 
 public class EmailTemplatePage extends TestBase{
 

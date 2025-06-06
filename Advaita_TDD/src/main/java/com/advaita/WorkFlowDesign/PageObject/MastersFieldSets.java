@@ -1239,6 +1239,7 @@ public class MastersFieldSets extends TestBase {
 		assertTrue(successConfirmationPopup.isDisplayed(), "successConfirmationPopup is not displayed.");
 
 		click(driver, ContinueButtonOnSuccessConfirmationPopup);
+		leftArrowToGoBackTablePage.click();
 
 		return this;
 	}

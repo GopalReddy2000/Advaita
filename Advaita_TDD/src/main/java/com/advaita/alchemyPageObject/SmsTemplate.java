@@ -7,11 +7,9 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.poi.xwpf.usermodel.ISDTContent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -20,16 +18,11 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.SendDataUtils;
-import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.UserSetupPage;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 

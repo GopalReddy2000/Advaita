@@ -7,15 +7,14 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.DatePicker;
 import com.advaita.WorkFlowDesign.PageObject.MastersMastersforms;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import net.datafaker.Faker;
 
 public class TestMastersMasterFormsCreate extends TestBase {
 

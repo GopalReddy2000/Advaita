@@ -3,7 +3,6 @@ package com.advaita.alchemyPageObject;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.fail;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -13,8 +12,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.SpecialAction;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -34,12 +31,9 @@ import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.SendDataUtils;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
-import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
-import com.advaita.pageObjects.StagePage;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import Advaita_TDD.Advaita_TDD.Questions;
 
 public class NotificationTemplate extends TestBase {
 

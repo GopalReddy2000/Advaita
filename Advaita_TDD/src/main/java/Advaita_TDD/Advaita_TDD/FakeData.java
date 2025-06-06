@@ -4,18 +4,290 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-import com.github.javafaker.Faker;
+import net.datafaker.Faker;
 
 public class FakeData {
 
-	static Faker faker = new Faker();
+	private static Faker faker;
+//    private final Random random;
+	private final List<String> processes;
+	private final Map<String, List<String>> subProcesses;
+	private final Map<String, List<String>> subSubProcesses;
+	private final Map<String, List<String>> datasets;
+	private final Map<String, List<String>> stages;
+	private final Map<String, List<String>> nonMeasurableSets;
+	private final Map<String, List<String>> fieldSets;
+	private final Map<String, List<String>> masterForms;
+	private final Map<String, List<String>> masterMenus;
+	private final Map<String, List<String>> samplingNames;
+	private final Map<String, List<String>> metaData;
+	private final Map<String, List<String>> manualUploadNames;
+
+	public FakeData() {
+		this.faker = new Faker();
+		this.random = new Random();
+		this.processes = new ArrayList<>();
+		this.subProcesses = new HashMap<>();
+		this.subSubProcesses = new HashMap<>();
+		this.datasets = new HashMap<>();
+		this.stages = new HashMap<>();
+		this.nonMeasurableSets = new HashMap<>();
+		this.fieldSets = new HashMap<>();
+		this.masterForms = new HashMap<>();
+		this.masterMenus = new HashMap<>();
+		this.samplingNames = new HashMap<>();
+		this.metaData = new HashMap<>();
+		this.manualUploadNames = new HashMap<>();
+	}
+
+	// Helper method to capitalize the first letter of each word
+	private String capitalizeWords(String input) {
+		return Arrays.stream(input.split(" ")).map(
+				word -> word.isEmpty() ? word : Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase())
+				.collect(Collectors.joining(" "));
+	}
+
+	// Helper method to generate a value under maxLength (retrying if too long)
+	private String generateValidValue(Supplier<String> generator, int maxLength) {
+	    String value;
+	    int maxTries = 10; // avoid infinite loop
+	    int tries = 0;
+	    do {
+	        value = generator.get();
+	        tries++;
+	    } while (value.length() > maxLength && tries < maxTries);
+
+	    // Optional safety: If still too long after maxTries, truncate
+	    if (value.length() > maxLength) {
+	        value = value.substring(0, maxLength);
+	    }
+
+	    return value;
+	}
+	
+	// Generate or reuse a Process
+	public String getProcess() {
+		if (!processes.isEmpty() && random.nextBoolean()) {
+			return processes.get(random.nextInt(processes.size()));
+		}
+
+		String department = generateValidValue(() -> faker.commerce().department() + " P", 30);
+		String process = capitalizeWords(department);
+		processes.add(process);
+		return process;
+	}
+
+	// Generate or reuse a SubProcess for a given Process
+	public String getSubProcess(String process) {
+		if (process == null || process.isEmpty()) {
+			throw new IllegalArgumentException("Process cannot be null or empty");
+		}
+		subProcesses.computeIfAbsent(process, k -> new ArrayList<>());
+		List<String> subProcessList = subProcesses.get(process);
+		if (!subProcessList.isEmpty() && random.nextBoolean()) {
+			return subProcessList.get(random.nextInt(subProcessList.size()));
+		}
+		String product = generateValidValue(() -> faker.commerce().productName() + " S P", 30);
+		String subProcess = capitalizeWords(product);
+		subProcessList.add(subProcess);
+		return subProcess;
+	}
+
+	// Generate or reuse a SubSubProcess for a given SubProcess
+	public String getSubSubProcess(String subProcess) {
+		if (subProcess == null || subProcess.isEmpty()) {
+			throw new IllegalArgumentException("SubProcess cannot be null or empty");
+		}
+		subSubProcesses.computeIfAbsent(subProcess, k -> new ArrayList<>());
+		List<String> subSubProcessList = subSubProcesses.get(subProcess);
+		if (!subSubProcessList.isEmpty() && random.nextBoolean()) {
+			return subSubProcessList.get(random.nextInt(subSubProcessList.size()));
+		}
+		String marketing = generateValidValue(() -> faker.marketing().buzzwords() + " S S P", 30);
+		String subSubProcess = capitalizeWords(marketing);
+		subSubProcessList.add(subSubProcess);
+		return subSubProcess;
+	}
+
+	// Generate or reuse a Dataset for a given SubSubProcess
+	public String getDataset(String subSubProcess) {
+		if (subSubProcess == null || subSubProcess.isEmpty()) {
+			throw new IllegalArgumentException("SubSubProcess cannot be null or empty");
+		}
+		datasets.computeIfAbsent(subSubProcess, k -> new ArrayList<>());
+		List<String> datasetList = datasets.get(subSubProcess);
+		if (!datasetList.isEmpty() && random.nextBoolean()) {
+			return datasetList.get(random.nextInt(datasetList.size()));
+		}
+		String dataset1 = generateValidValue(() -> faker.company().industry() + " Dataset", 20);
+		String dataset = capitalizeWords(dataset1);
+		datasetList.add(dataset);
+		return dataset;
+	}
+
+	// Generate or reuse a Stage for a given Dataset
+	public String getStage(String dataset) {
+		if (dataset == null || dataset.isEmpty()) {
+			throw new IllegalArgumentException("Dataset cannot be null or empty");
+		}
+		stages.computeIfAbsent(dataset, k -> new ArrayList<>());
+		List<String> stageList = stages.get(dataset);
+		if (!stageList.isEmpty() && random.nextBoolean()) {
+			return stageList.get(random.nextInt(stageList.size()));
+		}
+		String stage1 = generateValidValue(() -> faker.job().field() + " Stage", 20);
+		String stage = capitalizeWords(stage1);
+		stageList.add(stage);
+		return stage;
+	}
+
+	// Generate or reuse a Non-Measurable Set for a given Stage
+	public String getNonMeasurableSet(String stage) {
+		if (stage == null || stage.isEmpty()) {
+			throw new IllegalArgumentException("Stage cannot be null or empty");
+		}
+		nonMeasurableSets.computeIfAbsent(stage, k -> new ArrayList<>());
+		List<String> nonMeasurableList = nonMeasurableSets.get(stage);
+		if (!nonMeasurableList.isEmpty() && random.nextBoolean()) {
+			return nonMeasurableList.get(random.nextInt(nonMeasurableList.size()));
+		}
+		String nonMeasurable = generateValidValue(() -> faker.science().element() + " Non-Measurable Set", 20);;
+		String nonMeasurableSet = capitalizeWords(nonMeasurable);
+		nonMeasurableList.add(nonMeasurableSet);
+		return nonMeasurableSet;
+	}
+
+	// Generate or reuse a Field Set for a given Non-Measurable Set
+	public String getFieldSet(String nonMeasurableSet) {
+		if (nonMeasurableSet == null || nonMeasurableSet.isEmpty()) {
+			throw new IllegalArgumentException("NonMeasurableSet cannot be null or empty");
+		}
+		fieldSets.computeIfAbsent(nonMeasurableSet, k -> new ArrayList<>());
+		List<String> fieldSetList = fieldSets.get(nonMeasurableSet);
+		if (!fieldSetList.isEmpty() && random.nextBoolean()) {
+			return fieldSetList.get(random.nextInt(fieldSetList.size()));
+		}
+		String fieldSet1 = generateValidValue(() -> faker.book().genre() + " Field Set", 20);;
+//		String fieldSet1 = faker.book().genre() + " Field Set";
+		String fieldSet = capitalizeWords(fieldSet1);
+		fieldSetList.add(fieldSet);
+		return fieldSet;
+	}
+
+	// Generate or reuse a Master Form for a given Field Set
+	public String getMasterForm(String fieldSet) {
+		if (fieldSet == null || fieldSet.isEmpty()) {
+			throw new IllegalArgumentException("FieldSet cannot be null or empty");
+		}
+		masterForms.computeIfAbsent(fieldSet, k -> new ArrayList<>());
+		List<String> masterFormList = masterForms.get(fieldSet);
+		if (!masterFormList.isEmpty() && random.nextBoolean()) {
+			return masterFormList.get(random.nextInt(masterFormList.size()));
+		}
+		String form = generateValidValue(() -> faker.app().name() + " Master Form", 20);;
+		String masterForm = capitalizeWords(form);
+		masterFormList.add(masterForm);
+		return masterForm;
+	}
+
+	// Generate or reuse a Master Menu for a given Master Form
+	public String getMasterMenu(String masterForm) {
+		if (masterForm == null || masterForm.isEmpty()) {
+			throw new IllegalArgumentException("MasterForm cannot be null or empty");
+		}
+		masterMenus.computeIfAbsent(masterForm, k -> new ArrayList<>());
+		List<String> masterMenuList = masterMenus.get(masterForm);
+		if (!masterMenuList.isEmpty() && random.nextBoolean()) {
+			return masterMenuList.get(random.nextInt(masterMenuList.size()));
+		}
+		String menu = generateValidValue(() -> faker.food().dish() + " Menu", 20);;
+		String masterMenu = capitalizeWords(menu);
+		masterMenuList.add(masterMenu);
+		return masterMenu;
+	}
+
+	// Generate or reuse a Sampling Name for a given Master Menu
+	public String getSamplingName(String masterMenu) {
+		if (masterMenu == null || masterMenu.isEmpty()) {
+			throw new IllegalArgumentException("MasterMenu cannot be null or empty");
+		}
+		samplingNames.computeIfAbsent(masterMenu, k -> new ArrayList<>());
+		List<String> samplingNameList = samplingNames.get(masterMenu);
+		if (!samplingNameList.isEmpty() && random.nextBoolean()) {
+			return samplingNameList.get(random.nextInt(samplingNameList.size()));
+		}
+		String sampling = generateValidValue(() -> faker.science().unit() + " Sampling", 20);;
+		String samplingName = capitalizeWords(sampling);
+		samplingNameList.add(samplingName);
+		return samplingName;
+	}
+
+	// Generate or reuse a Meta Data for a given Sampling Name
+	public String getMetaData(String samplingName) {
+		if (samplingName == null || samplingName.isEmpty()) {
+			throw new IllegalArgumentException("SamplingName cannot be null or empty");
+		}
+		metaData.computeIfAbsent(samplingName, k -> new ArrayList<>());
+		List<String> metaDataList = metaData.get(samplingName);
+		if (!metaDataList.isEmpty() && random.nextBoolean()) {
+			return metaDataList.get(random.nextInt(metaDataList.size()));
+		}
+		String meta = generateValidValue(() -> faker.lorem().word() + " Meta Data", 20);;
+		String metaData = capitalizeWords(meta);
+		metaDataList.add(metaData);
+		return metaData;
+	}
+
+	// Generate or reuse a Manual Upload Name for a given Meta Data
+	public String getManualUploadName(String metaData) {
+		if (metaData == null || metaData.isEmpty()) {
+			throw new IllegalArgumentException("MetaData cannot be null or empty");
+		}
+		manualUploadNames.computeIfAbsent(metaData, k -> new ArrayList<>());
+		List<String> manualUploadNameList = manualUploadNames.get(metaData);
+		if (!manualUploadNameList.isEmpty() && random.nextBoolean()) {
+			return manualUploadNameList.get(random.nextInt(manualUploadNameList.size()));
+		}
+		String manualUpload = generateValidValue(() -> faker.file().fileName() + " Upload", 20);;
+		String manualUploadName = capitalizeWords(manualUpload);
+		manualUploadNameList.add(manualUploadName);
+		return manualUploadName;
+	}
+
+	// Getter for all generated data (for debugging or further use)
+	public Map<String, Object> getAllData() {
+		Map<String, Object> allData = new HashMap<>();
+		allData.put("Processes", processes);
+		allData.put("SubProcesses", subProcesses);
+		allData.put("SubSubProcesses", subSubProcesses);
+		allData.put("Datasets", datasets);
+		allData.put("Stages", stages);
+		allData.put("NonMeasurableSets", nonMeasurableSets);
+		allData.put("FieldSets", fieldSets);
+		allData.put("MasterForms", masterForms);
+		allData.put("MasterMenus", masterMenus);
+		allData.put("SamplingNames", samplingNames);
+		allData.put("MetaData", metaData);
+		allData.put("ManualUploadNames", manualUploadNames);
+
+		return allData;
+	}
+
+//	static Faker faker = new Faker();
 
 	public static void main(String[] args) {
 
@@ -155,7 +427,7 @@ public class FakeData {
 		return randomLastName;
 	}
 
-	public  void firstName() {
+	public void firstName() {
 		// Create a Faker instance
 		Faker faker = new Faker();
 
@@ -225,7 +497,7 @@ public class FakeData {
 	private static final Set<Integer> generatedNumbers = new HashSet<>();
 	private static final Set<String> generatedPhoneNumbers = new HashSet<>();
 	private static final Set<LocalDate> generatedDates = new HashSet<>();
-	private static final Random random = new Random();
+	private static Random random = new Random();
 
 	/**
 	 * Generates a unique random string using Java Faker.
@@ -377,4 +649,20 @@ public class FakeData {
 	public static boolean generateRandomBoolean() {
 		return faker.bool().bool();
 	}
+
+//    public static String generateProcessName() {
+//        return faker.company().industry();
+//    }
+//
+//    public static String generateSubProcessName() {
+//        return  faker.job().field();
+//    }
+//
+//    public static String generateSubSubProcessName() {
+//        return faker.commerce().productName();
+//    }
+//    
+//    public static String generateDatasetName() {
+//        return faker.science().element();
+//    } 
 }

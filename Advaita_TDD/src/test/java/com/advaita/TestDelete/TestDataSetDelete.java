@@ -3,7 +3,6 @@ package com.advaita.TestDelete;
 import java.io.IOException;
 import java.util.Date;
 
-
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -21,7 +20,8 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
+
+import net.datafaker.Faker;
 
 public class TestDataSetDelete extends TestBase {
 

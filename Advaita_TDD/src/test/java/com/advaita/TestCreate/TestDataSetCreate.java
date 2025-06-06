@@ -25,9 +25,9 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.Questions;
+import net.datafaker.Faker;
 
 public class TestDataSetCreate extends TestBase {
 

@@ -3,25 +3,22 @@ package com.advaita.TestCreate;
 import java.util.Arrays;
 import java.util.List;
 
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.QuestionSelector;
 import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
-import com.advaita.alchemyPageObject.CallLogSatgeView;
 import com.advaita.alchemyPageObject.SmsTemplate;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import net.datafaker.Faker;
 
 public class TestSmstemplateCreate extends TestBase {
 	Faker faker = new Faker();

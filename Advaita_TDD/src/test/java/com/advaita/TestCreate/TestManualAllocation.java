@@ -22,11 +22,11 @@ import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
-import com.advaita.Utilities.ScreenRecorderUtil;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.ManualAllocationPage;
+import com.advaita.pageObjects.ReAllocationPage;
 import com.advaita.pageObjects.SamplingPlanAndGenerationPage;
 import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
@@ -35,30 +35,27 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
+import Advaita_TDD.Advaita_TDD.FakeData;
 import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "DemoI";
+//	static String employeeName = "DemoP";
 
 	// Run Test Based on Boolean
-	final boolean processRun = false;
-	final boolean dataSetRun = false;
-	final boolean metaDataRun = false;
-	final boolean manualUploadRun = false;
-	final boolean nonMeasurableRun = false;
-	final boolean stageRun = false;
-	final boolean userRun = false;
-	final boolean samplingPlanRun = false;
+	final boolean processRun = true;
+	final boolean dataSetRun = true;
+	final boolean metaDataRun = true;
+	final boolean manualUploadRun = true;
+	final boolean nonMeasurableRun = true;
+	final boolean stageRun = true;
+	final boolean userRun = true;
+	final boolean samplingPlanRun = true;
 	final boolean manualAllocationRun = true;
+	final boolean reAllocationRun = true;
 
-	Faker faker = new Faker();
-//	public String num = "24";
-//	public String dataSetName = "Test Single Data Set" + num;
-
-//	public final String dataSetName = faker.name().lastName();
+	FakeData data = new FakeData();
 
 	public ExtentReports reports;
 	public ExtentSparkReporter htmlReporter;
@@ -66,7 +63,7 @@ public class TestManualAllocation extends TestBase {
 
 	LoginPage loginPage;
 	HomePage homePage;
-	ProcessPage process;
+	ProcessPage processPage;
 	MetaData metaData;
 	DataSet dataset;
 	ManualUpload manualUpload;
@@ -75,6 +72,7 @@ public class TestManualAllocation extends TestBase {
 	UserSetupPage userSetUp;
 	SamplingPlanAndGenerationPage SPAG;
 	ManualAllocationPage manualAllocationPage;
+	ReAllocationPage reAllocation;
 
 	public TestManualAllocation() {
 		super();
@@ -106,7 +104,7 @@ public class TestManualAllocation extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		process = new ProcessPage();
+		processPage = new ProcessPage();
 		metaData = new MetaData();
 		dataset = new DataSet();
 		manualUpload = new ManualUpload();
@@ -115,13 +113,32 @@ public class TestManualAllocation extends TestBase {
 		userSetUp = new UserSetupPage();
 		SPAG = new SamplingPlanAndGenerationPage();
 		manualAllocationPage = new ManualAllocationPage();
+		reAllocation = new ReAllocationPage();
 
 	}
 
-	final String metaDataName = employeeName + " Details MetaData";
-	final String manualUploadName = employeeName + " Details Upload";
-	final String dataSetName = employeeName + " Details";
+//	final String metaDataName = employeeName + " Details MetaData";
+//	final String manualUploadName = employeeName + " Details Upload";
+//	final String dataSetName = employeeName + " Details";
 	final String remark = "Test Manual Upload";
+
+	final String process = data.getProcess();
+
+	final String subProcess = data.getSubProcess(process);
+
+	final String subSubProcess = data.getSubSubProcess(subProcess);
+
+	final String dataSetName = data.getDataset(subSubProcess);
+
+	final String metaDataName = data.getMetaData(dataSetName);
+
+	final String manualUploadName = data.getManualUploadName(metaDataName);
+
+	final String nonMeasurableSet = data.getNonMeasurableSet(manualUploadName);
+
+	final String stage = data.getStage(nonMeasurableSet);
+
+	final String sampling = data.getSamplingName(stage);
 
 	@Test(priority = 1, enabled = processRun)
 	public void verifyProcessCreate() throws Throwable {
@@ -136,11 +153,10 @@ public class TestManualAllocation extends TestBase {
 //
 //		process.createSubSubProcess(testName + " Sub Sub P", "TestSSPDesc");
 
-		process.createProcess1(employeeName + " P", "TestPDesc");
-
-		process.createSubProcess(employeeName + " S P", "TestSPDesc");
-
-		process.createSubSubProcess(employeeName + " S S P", "TestSSPDesc");
+		// Step 2: Use that data in your methods
+		processPage.createProcess1(process, "TestPDesc");
+		processPage.createSubProcess(subSubProcess, "TestSPDesc");
+		processPage.createSubSubProcess(subSubProcess, "TestSSPDesc");
 
 		Thread.sleep(2000);
 
@@ -187,7 +203,7 @@ public class TestManualAllocation extends TestBase {
 //		homePage.clickOnProcessManagementCreate();
 
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
-		int addNumberOfRecord = 30;
+		int addNumberOfRecord = 70;
 
 		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
@@ -206,7 +222,7 @@ public class TestManualAllocation extends TestBase {
 		// Perform necessary UI steps for creating the field set
 		stages.navigateNonMeasurableCreate();
 		// Set the question set name
-		String questionSetNameString = employeeName + " NM";
+		String questionSetNameString = nonMeasurableSet;
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
@@ -222,6 +238,7 @@ public class TestManualAllocation extends TestBase {
 				defineQuestionTypeRandom);
 
 		masterFieldSet.verifySaveInCreateFieldSet();
+		masterFieldSet.leftArrowToGoBackTablePage.click();
 
 	}
 
@@ -230,7 +247,7 @@ public class TestManualAllocation extends TestBase {
 
 		test = reports.createTest("verifyStageCreate");
 
-		String stageName = employeeName + " Stage";
+		String stageName = stage;
 
 		PropertieFileUtil.storeSingleTextInPropertiesFile("stage", stageName);
 
@@ -264,8 +281,8 @@ public class TestManualAllocation extends TestBase {
 
 	}
 
-	static String lastName = " QA";
-	static String usernameToDoAction = employeeName + lastName;
+//	static String lastName = " QA";
+//	static String usernameToDoAction = employeeName + lastName;
 //
 //	@Test(priority = 7, enabled = userRun)
 //	public void verifyUserCreateAndUserMapping() throws Throwable {
@@ -292,13 +309,11 @@ public class TestManualAllocation extends TestBase {
 		userSetUp.navToUserSetUp("management");
 
 		int noOfUser = 4;
-		List<String> myGroups = Arrays.asList("Agent", "Agent","Agent", "Agent");
-		List<String> permissionsList = Arrays.asList("Agent", "Agent","Agent", "Agent");
+		List<String> myGroups = Arrays.asList("Agent", "Agent", "Agent", "Agent");
+		List<String> permissionsList = Arrays.asList("Agent", "Agent", "Agent", "Agent");
 		boolean createButton = true;
 		userSetUp.createMultipleUsers(noOfUser, myGroups, permissionsList, createButton);
 		userSetUp.verifyMappingForAllUsers();
-		
-		
 
 	}
 
@@ -309,7 +324,7 @@ public class TestManualAllocation extends TestBase {
 
 		SPAG.navToCreate();
 
-		String samplingName = employeeName + " SN";
+		String samplingName = sampling;
 
 		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
 		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
@@ -330,19 +345,59 @@ public class TestManualAllocation extends TestBase {
 
 		test = reports.createTest("verifyManualAllocationCreate");
 
+		int sampleNo = 10;
+
 		String toogle = "normalAudit";
 		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
 		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
 		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
 		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-//		String allocationType = "call";
 
-		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
+//		String allocationType = "call"; 
+
+		manualAllocationPage.navigateToAlchemyManualAllocationCreate().allocationMethodToggleButton(toogle)
 				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
-						subSubProcessValue, stages);
+						subSubProcessValue, stages)
+				.selectAllocationTypeAndDetails("Call Wise", "All", null);
+		;
 //				.allocationTypeDropdown(allocationType, usernameToDoAction);
-		manualAllocationPage.allocateSamplesToUsers("all", null, 0, 1);
+//		manualAllocationPage.allocateSamplesToUsers("all", null, 0, 3);
+		manualAllocationPage.allocateSamplesDynamically(driver, sampleNo, "random");
 //		manualAllocationPage.saveAndConfirmation();
+	}
+
+	@Test(priority = 10, enabled = reAllocationRun)
+	public void verifyReAllocationCreate() throws Throwable {
+
+		test = reports.createTest("verifyReAllocationCreate");
+
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile("designation");
+//		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
+//		String userName2 = PropertieFileUtil.getSingleTextFromPropertiesFile("userName2");
+
+		// if map is required for reallocation users it will handle automatically
+		userSetUp.verifyMappingForAllUsers2(ManualAllocationPage.PROPERTIES_FILE_PATH);
+		// ToUsers We can give multiple
+//		List<String> toUsers = Arrays.asList(userName2);
+
+		reAllocation.navigateToReAllocation("stagewise")
+				.selectProcess_SubProcess_SubSubProcess_Stages(processValue, subProcessValue, subSubProcessValue)
+				.selectStages(stages);
+
+		reAllocation.selectFromDesignation(designation);
+
+//		.selectFromUser(userName).search()
+//				.selectToDesignation(designation).selectToUser(toUsers);
+
+		String condition = "Single";
+//		String condition = "Multiple";
+//		String condition ="All";
+//		reAllocation.reAllocationOfRecords(4, condition, designation, toUsers);
+
 	}
 
 	@AfterMethod

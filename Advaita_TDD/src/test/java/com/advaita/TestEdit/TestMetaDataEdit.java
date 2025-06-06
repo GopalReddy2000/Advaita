@@ -20,7 +20,8 @@ import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
+
+import net.datafaker.Faker;
 
 public class TestMetaDataEdit extends TestBase {
 
