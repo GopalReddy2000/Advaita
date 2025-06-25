@@ -1,5 +1,15 @@
 package com.advaita.EndToEnd;
 
+import static Advaita_TDD.Advaita_TDD.FakeData.lastName1;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
@@ -12,16 +22,11 @@ import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MeasurableSetPage;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
-import com.advaita.pageObjects.*;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.util.List;
-
-import static Advaita_TDD.Advaita_TDD.FakeData.lastName1;
+import com.advaita.pageObjects.ManualAllocationPage;
+import com.advaita.pageObjects.NonMeasurableSetPage;
+import com.advaita.pageObjects.SamplingPlanAndGenerationPage;
+import com.advaita.pageObjects.StagesActions;
+import com.advaita.pageObjects.UserSetupPage;
 
 public class ProcessToStagesTest extends TestBase {
 

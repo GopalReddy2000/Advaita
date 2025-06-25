@@ -1,8 +1,5 @@
 package com.TestuserStatus;
 
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
-
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -15,10 +12,9 @@ import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import net.datafaker.Faker;
 
 public class TestUserStatusHistory extends TestBase {
 

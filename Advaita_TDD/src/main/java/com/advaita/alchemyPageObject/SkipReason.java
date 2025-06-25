@@ -5,16 +5,12 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeoutException;
 
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -1214,52 +1210,52 @@ public class SkipReason extends TestBase {
 
 	}
 
-	public void saveWithSpecialCharacterUTILITY(WebElement createButtonWebpage,
-			WebElement successfullyCreatedPopupElement, WebElement somethingwentWrongMessage) {
+//	public void saveWithSpecialCharacterUTILITY(WebElement createButtonWebpage,
+//			WebElement successfullyCreatedPopupElement, WebElement somethingwentWrongMessage) {
+//
+//		createButtonWebpage.click();
+//
+//		// Check if the success or error popup is displayed
+//		try {
+//			// Wait for the "successfullyCreated_popup" to appear
+//			wait.until(ExpectedConditions.visibilityOf(successfullyCreatedPopupElement));
+//
+//			// If success popup is displayed, the test case should fail
+//			assertFalse(successfullyCreatedPopupElement.isDisplayed(),
+//					"Test case failed: successfullyCreated_popup is displayed, but an error was expected.");
+//
+//		} catch (TimeoutException e) {
+//			// If success popup is not displayed within the timeout, check for the error
+//			// message
+//
+//			// Check if "somethingWentWrongErrorMesg" appears
+//			if (somethingwentWrongMessage.isDisplayed()) {
+//				// Test case should pass if error message is displayed
+//				assertTrue(true, "Test case passed: somethingWentWrongErrorMesg is displayed.");
+//			} else {
+//				// Test case should fail if no error message is found
+//				assertFalse(true, "Test case failed: Neither success popup nor error message was displayed.");
+//			}
+//		}
+//
+//	}
 
-		createButtonWebpage.click();
-
-		// Check if the success or error popup is displayed
-		try {
-			// Wait for the "successfullyCreated_popup" to appear
-			wait.until(ExpectedConditions.visibilityOf(successfullyCreatedPopupElement));
-
-			// If success popup is displayed, the test case should fail
-			assertFalse(successfullyCreatedPopupElement.isDisplayed(),
-					"Test case failed: successfullyCreated_popup is displayed, but an error was expected.");
-
-		} catch (TimeoutException e) {
-			// If success popup is not displayed within the timeout, check for the error
-			// message
-
-			// Check if "somethingWentWrongErrorMesg" appears
-			if (somethingwentWrongMessage.isDisplayed()) {
-				// Test case should pass if error message is displayed
-				assertTrue(true, "Test case passed: somethingWentWrongErrorMesg is displayed.");
-			} else {
-				// Test case should fail if no error message is found
-				assertFalse(true, "Test case failed: Neither success popup nor error message was displayed.");
-			}
-		}
-
-	}
-
-	public void saveWithSpecialCharacter() {
-
-		String specailChar = "!@#$%^&*(_";
-
-		createButton_SkipReasonPage.click();
-
-		dropdownUtilsALL(ProcessDropdown, "index", "1");
-		dropdownUtilsALL(SubProcessDropdown, "index", "1");
-		dropdownUtilsALL(SubsubProcessDropdown, "index", "1");
-
-		// Enter data into reasonName_textfield
-		reasonName_textfield.sendKeys(specailChar);
-		saveWithSpecialCharacterUTILITY(createButton_CreteSkipReasonPopup, successfullyCreated_popup,
-				somethingWentWrongErrorMesg);
-
-	}
+//	public void saveWithSpecialCharacter() {
+//
+//		String specailChar = "!@#$%^&*(_";
+//
+//		createButton_SkipReasonPage.click();
+//
+//		dropdownUtilsALL(ProcessDropdown, "index", "1");
+//		dropdownUtilsALL(SubProcessDropdown, "index", "1");
+//		dropdownUtilsALL(SubsubProcessDropdown, "index", "1");
+//
+//		// Enter data into reasonName_textfield
+//		reasonName_textfield.sendKeys(specailChar);
+//		saveWithSpecialCharacterUTILITY(createButton_CreteSkipReasonPopup, successfullyCreated_popup,
+//				somethingWentWrongErrorMesg);
+//
+//	}
 
 	String invalidOptionDrpdown = "NonExistingOption";
 

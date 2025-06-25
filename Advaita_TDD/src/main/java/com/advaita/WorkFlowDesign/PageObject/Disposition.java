@@ -1,9 +1,16 @@
 package com.advaita.WorkFlowDesign.PageObject;
 
-import Advaita_TDD.Advaita_TDD.FakeData;
-import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.Pagination;
-import com.google.common.util.concurrent.Uninterruptibles;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -14,13 +21,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.Pagination;
+import com.google.common.util.concurrent.Uninterruptibles;
 
-import static org.testng.Assert.*;
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class Disposition extends TestBase {
 

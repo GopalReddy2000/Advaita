@@ -509,9 +509,9 @@ public class Menusetup extends TestBase {
 
 	}
 
-//	public Menusetup ClickOnEdit(String DefaultName) {
-//		return ClickOnEditOptionBasedOnDefaultName(DefaultName);
-//	}
+	public Menusetup ClickOnEdit(String DefaultName) {
+		return ClickOnEditOptionBasedOnDefaultName(DefaultName);
+	}
 
 	public Menusetup ClickOnEditOptionBasedOnDefaultName(String DefaultName) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));

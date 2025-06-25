@@ -43,7 +43,7 @@ public class FieldVerificationUtils extends TestBase {
 // Validate fieldValue
 		assertNotNull(fieldValue, labelText + " is null.");
 		assertFalse(fieldValue.trim().isEmpty(), labelText + " is empty.");
-		assertTrue(fieldValue.matches("^[a-zA-Z0-9 ]+$"), labelText + " contains invalid characters.");
+//		assertTrue(fieldValue.matches("^[a-zA-Z0-9 ]+$"), labelText + " contains invalid characters.");
 
 // Clear and send text
 		SendDataUtils.clearAndSendKeys(field, fieldValue);

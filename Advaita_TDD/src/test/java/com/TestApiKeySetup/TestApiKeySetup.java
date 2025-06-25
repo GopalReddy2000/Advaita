@@ -12,7 +12,8 @@ import com.advaita.Login.Home.LoginPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.github.javafaker.Faker;
+
+import net.datafaker.Faker;
 
 public class TestApiKeySetup extends TestBase {
 

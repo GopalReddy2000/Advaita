@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <testng-results ignored="60" total="62" passed="1" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
@@ -94,6 +95,40 @@ at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
           </reporter-output>
         </test-method> <!-- CreateUserStatusAndVerfiyHideMenuForALchemy -->
       </class> <!-- com.TestuserStatus.TestuserStatusCreate -->
+=======
+<testng-results ignored="9" total="10" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-06-06T16:18:10 IST" name="Default suite" finished-at="2025-06-06T16:18:30 IST" duration-ms="20279">
+    <groups>
+    </groups>
+    <test started-at="2025-06-06T16:18:10 IST" name="Default test" finished-at="2025-06-06T16:18:30 IST" duration-ms="20279">
+      <class name="com.advaita.TestCreate.TestManualAllocation">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@7a8136b3]" started-at="2025-06-06T16:18:10 IST" name="setUp" finished-at="2025-06-06T16:18:19 IST" duration-ms="8930" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@7a8136b3]" started-at="2025-06-06T16:18:19 IST" name="verifyProcessCreate" finished-at="2025-06-06T16:18:30 IST" duration-ms="10922" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- verifyProcessCreate -->
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@7a8136b3]" started-at="2025-06-06T16:18:30 IST" name="getResult" finished-at="2025-06-06T16:18:30 IST" duration-ms="347" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=verifyProcessCreate status=SUCCESS method=TestManualAllocation.verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@7a8136b3] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@7a8136b3]" started-at="2025-06-06T16:18:30 IST" name="tearDown" finished-at="2025-06-06T16:18:30 IST" duration-ms="21" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
+>>>>>>> 82ba1f32e239094f91c4d8da570f681703a5bfe3
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

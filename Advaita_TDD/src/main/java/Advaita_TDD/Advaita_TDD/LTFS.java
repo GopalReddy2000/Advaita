@@ -1,13 +1,15 @@
 package Advaita_TDD.Advaita_TDD;
 
-import com.advaita.BaseClass.TestBase;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.testng.Assert.*;
+import com.advaita.BaseClass.TestBase;
 
 public class LTFS extends TestBase {
     public LTFS()

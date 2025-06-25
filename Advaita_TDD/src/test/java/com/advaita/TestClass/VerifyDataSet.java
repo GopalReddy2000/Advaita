@@ -1,6 +1,12 @@
 package com.advaita.TestClass;
 
-import org.testng.annotations.*;
+import static Advaita_TDD.Advaita_TDD.FakeData.lastName2;
+
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
@@ -10,9 +16,8 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
-import static Advaita_TDD.Advaita_TDD.FakeData.lastName2;
+import net.datafaker.Faker;
 
 public class VerifyDataSet extends TestBase {
 

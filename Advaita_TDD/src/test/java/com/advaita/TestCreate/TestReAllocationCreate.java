@@ -27,9 +27,9 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.Questions;
+import net.datafaker.Faker;
 
 public class TestReAllocationCreate extends TestBase {
 
@@ -356,7 +356,7 @@ public class TestReAllocationCreate extends TestBase {
 		// ToUsers We can give multiple
 		List<String> toUsers = Arrays.asList(userName2);
 
-		reAllocation.navigateToReAllocation()
+		reAllocation.navigateToReAllocation("stagewise")
 				.selectProcess_SubProcess_SubSubProcess_Stages(processValue, subProcessValue, subSubProcessValue)
 				.selectStages(stages).selectFromDesignation(designation).selectFromUser(userName).search()
 				.selectToDesignation(designation).selectToUser(toUsers);

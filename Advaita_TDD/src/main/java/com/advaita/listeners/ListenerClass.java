@@ -1,18 +1,23 @@
 package com.advaita.listeners;
 
+import static com.advaita.BaseClass.TestBase.driver;
+
+import java.io.IOException;
+
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.testng.ISuite;
+import org.testng.ISuiteListener;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
+
 import com.advaita.reports.ConsoleCapture;
 import com.advaita.reports.ExtentLogger;
 import com.advaita.reports.ExtentManager;
 import com.advaita.reports.ExtentReport;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.testng.*;
-
-import java.io.IOException;
-
-import static com.advaita.BaseClass.TestBase.driver;
 
 public class ListenerClass implements ITestListener, ISuiteListener {
     ExtentTest test;

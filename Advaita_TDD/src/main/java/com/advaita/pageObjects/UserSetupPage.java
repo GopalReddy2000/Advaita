@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +40,16 @@ import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.CommonUtils;
 import com.advaita.Utilities.ExcelUtils;
 import com.advaita.Utilities.ExcelWrite;
 import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-
-
+import net.datafaker.Faker;
 
 public class UserSetupPage extends TestBase {
 
@@ -346,7 +347,7 @@ public class UserSetupPage extends TestBase {
 	public static WebElement uMUserSystemMappingTab;
 
 	@FindBy(linkText = "+ Add Row")
-public static WebElement AddRow;
+	public static WebElement AddRow;
 
 	@FindBy(xpath = "//tbody//tr//td[1]//select[not(contains(@name,'__prefix__'))]")
 	public static List<WebElement> UMProcessNameDropdown;
@@ -493,11 +494,11 @@ public static WebElement AddRow;
 		softAssert.assertTrue(textBox.isDisplayed());
 
 	}
-	public UserSetupPage navToUserCreatePage()
-	{
-				//userSetup.click();
-				jsClick(driver, userSetup);
-		click(driver,userManagement);
+
+	public UserSetupPage navToUserCreatePage() {
+		// userSetup.click();
+		jsClick(driver, userSetup);
+		click(driver, userManagement);
 		userManagementCreateButton.click();
 		return this;
 	}
@@ -906,53 +907,40 @@ public static WebElement AddRow;
 		selectByVisibleText(UMSubSubProcessNameDropdown.get(UMSubSubProcessNameDropdown.size() - 1), SubSubProcess);
 		selectByVisibleText(UMStageNameDropdown.get(UMStageNameDropdown.size() - 1), Stages);
 
-	/*	try {
-
-//		
-//		try {
-//			if(!deleteButton.get(0).isDisplayed()) {
-//			System.out.println("Rows are already added.");
-//			}
-//			}catch (Exception e) {
-//				
-//				AddRow.click();
-//			}
-//				uMProcessTab.click();
-
-//		dropdownValidation(UMProcessNameDropdown);
-		selectByVisibleText(UMProcessNameDropdown, ProcessName);
-		wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown));
-//		dropdownValidation(UMProcessNameDropdown);
-		DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select", ProcessName);
-//		selectByVisibleText(UMProcessNameDropdown, ProcessName);
-
-//		dropdownValidation(UMSubProcessNameDropdown);
-<<<<<<< HEAD
-		selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
-
-//		dropdownValidation(UMSubSubProcessNameDropdown);
-		selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
-
-//		dropdownValidation(UMStageNameDropdown);
-		selectByVisibleText(UMStageNameDropdown, Stages);
-
-		UMSaveButton.click();
-
-		try {
-			unWait(1);
-			continueButton.click();
-		} catch (Exception e) {
-
-			AddRow.click();// Handle other exceptions if necessary
-			e.printStackTrace();
-		}*/
-
-
+		/*
+		 * try {
+		 * 
+		 * // // try { // if(!deleteButton.get(0).isDisplayed()) { //
+		 * System.out.println("Rows are already added."); // } // }catch (Exception e) {
+		 * // // AddRow.click(); // } // uMProcessTab.click();
+		 * 
+		 * // dropdownValidation(UMProcessNameDropdown);
+		 * selectByVisibleText(UMProcessNameDropdown, ProcessName);
+		 * wait.until(ExpectedConditions.visibilityOf(UMProcessNameDropdown)); //
+		 * dropdownValidation(UMProcessNameDropdown);
+		 * DropDown.dropdownWithAllPosibleValidation(UMProcessNameDropdown, "Select",
+		 * ProcessName); // selectByVisibleText(UMProcessNameDropdown, ProcessName);
+		 * 
+		 * // dropdownValidation(UMSubProcessNameDropdown); <<<<<<< HEAD
+		 * selectByVisibleText(UMSubProcessNameDropdown, SubProcessName);
+		 * 
+		 * // dropdownValidation(UMSubSubProcessNameDropdown);
+		 * selectByVisibleText(UMSubSubProcessNameDropdown, SubSubProcess);
+		 * 
+		 * // dropdownValidation(UMStageNameDropdown);
+		 * selectByVisibleText(UMStageNameDropdown, Stages);
+		 * 
+		 * UMSaveButton.click();
+		 * 
+		 * try { unWait(1); continueButton.click(); } catch (Exception e) {
+		 * 
+		 * AddRow.click();// Handle other exceptions if necessary e.printStackTrace(); }
+		 */
 
 		UMSaveButton.click();
 		unWait(1);
-		//unWait(1000);
-		//continueButton.click();
+		// unWait(1000);
+		// continueButton.click();
 
 		return this;
 	}
@@ -1009,8 +997,7 @@ public static WebElement AddRow;
 	public UserSetupPage navToSysNames() {
 		try {
 			systemNames.click();
-		}catch (org.openqa.selenium.NoSuchElementException e)
-		{
+		} catch (org.openqa.selenium.NoSuchElementException e) {
 			userSetup.click();
 			systemNames.click();
 		}
@@ -1025,7 +1012,7 @@ public static WebElement AddRow;
 		systemNameSaveButton.click();
 		unWait(1);
 		continueButton.click();
-		
+
 		return this;
 
 	}
@@ -1544,11 +1531,11 @@ public static WebElement AddRow;
 	@FindBy(linkText = "+ Create User")
 	public WebElement createUserbutton;
 
-	@FindBy(xpath = "//button[normalize-space()='Admin Process']")
-	WebElement adminProcessSection;
-
 	@FindBy(xpath = "//button[normalize-space()='Process']")
 	WebElement processSection;
+
+	@FindBy(xpath = "//button[normalize-space()='Stages']")
+	WebElement stageSection;
 
 	@FindBy(xpath = "//a[text()='+ Add Row']")
 	WebElement addRowOption;
@@ -1910,14 +1897,17 @@ public static WebElement AddRow;
 
 	public boolean isProcessSelected(String processName) {
 
-		click(driver, adminProcessSection);
+		click(driver, processSection);
 
 		List<WebElement> processDropdowns = driver.findElements(By.cssSelector("select[name$='-process_id']"));
+		System.out.println(processDropdowns.size());
 		for (WebElement dropdown : processDropdowns) {
 			Select select = new Select(dropdown);
+			
+			
 			WebElement selectedOption = select.getFirstSelectedOption();
 			if (selectedOption.getText().trim().equalsIgnoreCase(processName)) {
-				click(driver, processSection);
+				click(driver, stageSection);
 
 				return true; // "DemoG P" is selected in at least one dropdown
 			}
@@ -1925,7 +1915,7 @@ public static WebElement AddRow;
 		return false; // Not selected in any
 	}
 
-	public UserSetupPage verifyMappingForAllUsers() {
+	public UserSetupPage verifyMappingForAllUsers() throws Throwable {
 
 		Properties props = new Properties();
 		try (FileInputStream fis = new FileInputStream("src/test/resources/DynamicUsers.properties")) {
@@ -1964,6 +1954,67 @@ public static WebElement AddRow;
 		return this;
 	}
 
+	public UserSetupPage verifyMappingForAllUsers2(String path) throws Throwable {
+		navToUserSetUp("management");
+
+		Properties props = new Properties();
+		try (FileInputStream fis = new FileInputStream(path)) {
+			props.load(fis);
+
+			// To store unique usernames like drema.schultz3
+			Set<String> uniqueUsernames = new HashSet<>();
+
+			// Extract unique usernames using lastIndexOf('.')
+			for (Object keyObj : props.keySet()) {
+				String key = keyObj.toString();
+				if (key.contains(".")) {
+					String username = key.substring(0, key.lastIndexOf('.')).trim();
+					uniqueUsernames.add(username);
+				}
+			}
+
+			// Iterate through each unique username
+			for (String username : uniqueUsernames) {
+				System.out.println("Verifying user: " + username);
+				searchTheUser(username);
+				clickUserActionIcon(username, "map");
+
+				// Load mapping values
+				String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+				String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
+				String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
+				String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+
+				// Verify process selected
+//				assertTrue(isProcessSelected(processValue), "Process is not available in admin process section.");
+
+				if (isProcessSelected(processValue) == false) {
+
+					selectProcessHierarchy2(processValue, subProcessValue, subSubProcessValue, null);
+					saveAndConfirmation();
+					click(driver, stageSection);
+					selectProcessHierarchy2(processValue, subProcessValue, subSubProcessValue, stages);
+
+					// Perform mapping
+
+					saveAndConfirmation();
+
+					// Go back to user management page
+					click(driver, userManagementPageButton);
+				} else {
+
+					click(driver, userManagementPageButton);
+
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return this;
+	}
+
 	public void searchTheUser(String userName) {
 
 		assertTrue(searchField.isDisplayed(), "searchField is not displayed.");
@@ -1976,8 +2027,18 @@ public static WebElement AddRow;
 
 	}
 
-	public void selectProcessHierarchy(String process, String subProcess, String subSubProcess, String stage) {
+//	##Usage##
+//	// Single stage
+//	selectProcessHierarchy("Process 1", "SubProcess A", "SubSub A", "Stage A");
+//
+//	// Multiple stages
+//	selectProcessHierarchy("Process 1", "SubProcess A", "SubSub A", "Stage A, Stage B");
+//
+//	// All stages
+//	selectProcessHierarchy("Process 1", "SubProcess A", "SubSub A", "ALL");
 
+	public void selectProcessHierarchy(String process, String subProcess, String subSubProcess, String stage)
+			throws InterruptedException {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 		List<WebElement> emptyFormRow = driver.findElements(By.xpath("//tr[@class='form_set empty_form_tr']"));
 
@@ -2002,13 +2063,134 @@ public static WebElement AddRow;
 		// Sub Sub Process
 		Select subSubProcessDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-s_sub_process_id")));
 		subSubProcessDropdown.selectByVisibleText(subSubProcess);
-		waitUntilOptionsPopulated(By.id("id_" + rowPrefix + "-stage_id"), wait);
+//	    waitUntilOptionsPopulated(By.id("id_" + rowPrefix + "-stage_id"), wait);
+		Thread.sleep(1000);
 
-		// Stage
-		Select stageDropdown = new Select(driver.findElement(By.id("id_" + rowPrefix + "-stage_id")));
-		stageDropdown.selectByVisibleText(stage);
+		// Stage - Multi-select handling
+		WebElement stageMultiSelect = driver
+				.findElement(By.xpath("(//input[contains(@class,'select2-search__field')])[last()]"));
 
-		System.out.println("Process hierarchy selected successfully.");
+//	    stageMultiSelect.click();
+		Thread.sleep(500); // ensure dropdown opens
+		stageMultiSelect.click();
+//	    actions.moveToElement(stageMultiSelect).click().perform();
+		Thread.sleep(1000);
+
+		if (stage.equalsIgnoreCase("ALL")) {
+			// Select all visible options
+			List<WebElement> allOptions = driver.findElements(By.xpath(
+					"//li[contains(@class, 'select2-results__option') and not(contains(@class,'select2-results__message'))]"));
+			for (WebElement option : allOptions) {
+				if (!option.getAttribute("aria-selected").equals("true")) {
+					option.click();
+					Thread.sleep(200);
+				}
+			}
+		} else {
+			// Select one or more stages based on comma-separated input
+			String[] stages = stage.split(",");
+			for (String s : stages) {
+//	            stageMultiSelect.click(); // Reopen dropdown
+				String trimmedStage = s.trim();
+				String stageOptionXPath = String.format(
+						"//span[contains(@class, 'select2-dropdown')]//ul[@class='select2-results__options']/li[text()='%s']",
+						trimmedStage);
+//				WebElement userOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userOptionXPath)));
+				System.out.println("stageOptionXPath : " + stageOptionXPath);
+				WebElement stageOption = driver.findElement(By.xpath(stageOptionXPath));
+				if (!stageOption.getAttribute("aria-selected").equals("true")) {
+					stageOption.click();
+					Thread.sleep(200);
+				}
+			}
+		}
+
+		System.out.println("Process hierarchy selected successfully with stage(s): " + stage);
+	}
+
+	public void selectProcessHierarchy2(String process, String subProcess, String subSubProcess, String stage)
+			throws Throwable {
+
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+
+		// Always click "Add Row" to ensure a new one appears
+//	    CommonUtils.scrollToElementByJS(addRowOption);
+//	    CommonUtils.scrollToElementByJS2(addRowOption);
+		CommonUtils.scrollToBottom(driver);
+//	    js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+		ClickUtilities.clickAndHighlightElement(addRowOption, driver);
+
+		// Wait for new process dropdown to appear
+		wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("select[id$='-process_id']"), 0));
+		List<WebElement> processDropdowns = driver.findElements(By.cssSelector("select[id$='-process_id']"));
+		WebElement lastProcessDropdown = processDropdowns.get(processDropdowns.size() - 1);
+
+		// Extract the dynamic row prefix (e.g., "form-0", "form-1", etc.)
+		String lastProcessId = lastProcessDropdown.getAttribute("id"); // e.g., id_form-0-process_id
+		String rowPrefix = lastProcessId.replace("id_", "").replace("-process_id", ""); // e.g., form-0
+
+		// Select Process
+		wait.until(ExpectedConditions.elementToBeClickable(lastProcessDropdown));
+		new Select(lastProcessDropdown).selectByVisibleText(process);
+
+		// Sub-process
+		By subProcessBy = By.id("id_" + rowPrefix + "-sub_process_id");
+		waitUntilOptionsPopulated(subProcessBy, wait);
+		WebElement subProcessDropdown = driver.findElement(subProcessBy);
+		new Select(subProcessDropdown).selectByVisibleText(subProcess);
+
+		// Sub-Sub-process
+		By subSubProcessBy = By.id("id_" + rowPrefix + "-s_sub_process_id");
+		waitUntilOptionsPopulated(subSubProcessBy, wait);
+		WebElement subSubProcessDropdown = driver.findElement(subSubProcessBy);
+		new Select(subSubProcessDropdown).selectByVisibleText(subSubProcess);
+
+		// Stage (if provided)
+		if (stage != null && !stage.trim().isEmpty()) {
+			Thread.sleep(1000);
+
+			// Stage - Multi-select handling
+			WebElement stageMultiSelect = driver
+					.findElement(By.xpath("(//input[contains(@class,'select2-search__field')])[last()]"));
+
+//	    stageMultiSelect.click();
+			Thread.sleep(500); // ensure dropdown opens
+			stageMultiSelect.click();
+//	    actions.moveToElement(stageMultiSelect).click().perform();
+			Thread.sleep(1000);
+
+			if (stage.equalsIgnoreCase("ALL")) {
+				// Select all visible options
+				List<WebElement> allOptions = driver.findElements(By.xpath(
+						"//li[contains(@class, 'select2-results__option') and not(contains(@class,'select2-results__message'))]"));
+				for (WebElement option : allOptions) {
+					if (!option.getAttribute("aria-selected").equals("true")) {
+						option.click();
+						Thread.sleep(200);
+					}
+				}
+			} else {
+				// Select one or more stages based on comma-separated input
+				String[] stages = stage.split(",");
+				for (String s : stages) {
+//	            stageMultiSelect.click(); // Reopen dropdown
+					String trimmedStage = s.trim();
+					String stageOptionXPath = String.format(
+							"//span[contains(@class, 'select2-dropdown')]//ul[@class='select2-results__options']/li[text()='%s']",
+							trimmedStage);
+//				WebElement userOption = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(userOptionXPath)));
+					System.out.println("stageOptionXPath : " + stageOptionXPath);
+					WebElement stageOption = driver.findElement(By.xpath(stageOptionXPath));
+					if (!stageOption.getAttribute("aria-selected").equals("true")) {
+						stageOption.click();
+						Thread.sleep(200);
+					}
+				}
+			}
+		} else {
+			System.out.println("Process hierarchy selected (without stage).");
+		}
 	}
 
 	private void waitUntilOptionsPopulated(By locator, WebDriverWait wait) {

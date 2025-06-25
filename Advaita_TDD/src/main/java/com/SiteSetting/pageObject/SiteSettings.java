@@ -5,7 +5,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.openqa.selenium.Dimension;
@@ -19,9 +18,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Utilities.PropertieFileUtil;
-import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import net.datafaker.Faker;
 
 public class SiteSettings extends TestBase {
 

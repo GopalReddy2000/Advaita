@@ -1,6 +1,9 @@
 package com.advaita.pageObjects;
 
-import com.advaita.BaseClass.TestBase;
+import static org.testng.Assert.assertEquals;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -9,9 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
-import java.util.List;
-
-import static org.testng.Assert.assertEquals;
+import com.advaita.BaseClass.TestBase;
 
 public class DocumentNamePage extends TestBase {
 

@@ -1,7 +1,10 @@
 package com.advaita.EndToEnd;
 
-import com.advaita.BaseClass.TestBase;
-import com.advaita.WorkFlowDesign.PageObject.Stages;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -12,12 +15,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import static Advaita_TDD.Advaita_TDD.FakeData.lastName2;
+import com.advaita.BaseClass.TestBase;
+import com.advaita.WorkFlowDesign.PageObject.Stages;
 
 public class FieldsToMastersPage extends TestBase {
 

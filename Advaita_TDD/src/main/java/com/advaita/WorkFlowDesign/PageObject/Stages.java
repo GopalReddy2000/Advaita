@@ -29,6 +29,8 @@ import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
 
+import net.datafaker.Faker;
+
 public class Stages extends TestBase {
 
 	SoftAssert softAssert = new SoftAssert();
@@ -538,21 +540,21 @@ public class Stages extends TestBase {
 //			        break; // Stop clicking after Trans_Unique_Id
 //			    }
 //			}
-			if (clickUpToFourthLastElement) {
-				List<WebElement> checkboxes = driver.findElements(By.name("sectionA_fieldname"));
+		if (clickUpToFourthLastElement) {
+			List<WebElement> checkboxes = driver.findElements(By.name("sectionA_fieldname"));
 
-				for (WebElement checkbox : checkboxes) {
-				    String fieldName = checkbox.getAttribute("data-fieldname");
-				    if ("Trans_Unique_Id".equals(fieldName)) {
-				        break;
-				    }
-				    if (!checkbox.isSelected()) {
-				        checkbox.click();
-				    }
+			for (WebElement checkbox : checkboxes) {
+				String fieldName = checkbox.getAttribute("data-fieldname");
+				if ("Trans_Unique_Id".equals(fieldName)) {
+					break;
 				}
-
+				if (!checkbox.isSelected()) {
+					checkbox.click();
+				}
 			}
-		
+
+		}
+
 		if (clickUpToFourthLastElement) {
 			// Find all matching elements
 			List<WebElement> elements = driver.findElements(By.xpath("//input[@name='sectionA_fieldname']"));
@@ -561,31 +563,30 @@ public class Stages extends TestBase {
 			int totalElements = elements.size();
 			int lastIndexToClick = totalElements - 3;
 
-		assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
-		click(driver, addButtonInaddSectionAPopUp);
+			assertTrue(addButtonInaddSectionAPopUp.isDisplayed(), "addButtonInaddSectionAPopUp is not displayed.");
+			click(driver, addButtonInaddSectionAPopUp);
 
-		wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
-		js.executeScript("arguments[0].scrollIntoView(true);", editButtonInSectionAElement);
-		assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
+			wait.until(ExpectedConditions.visibilityOf(editButtonInSectionAElement));
+			js.executeScript("arguments[0].scrollIntoView(true);", editButtonInSectionAElement);
+			assertTrue(editButtonInSectionAElement.isDisplayed(), "editButtonInSectionAElement is not displayed.");
 
-		click(driver, editButtonInSectionAElement);
+			click(driver, editButtonInSectionAElement);
 
-		unWait(1);
+			unWait(1);
 
-		assertTrue(
-				DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
-						PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
-				"fetched meta data is not present in meta data drop down.");
+			assertTrue(
+					DropDown.validateSelectedDropdownOption(selectMetaDatDropDownElement,
+							PropertieFileUtil.getSingleTextFromPropertiesFile("metaData")),
+					"fetched meta data is not present in meta data drop down.");
 
-		wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
-		assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(), "cancelButtonInaddSectionAPopUp is not displayed.");
-		cancelButtonInaddSectionAPopUp.click();
-		
-		
-	}
+			wait.until(ExpectedConditions.visibilityOf(cancelButtonInaddSectionAPopUp));
+			assertTrue(cancelButtonInaddSectionAPopUp.isDisplayed(),
+					"cancelButtonInaddSectionAPopUp is not displayed.");
+			cancelButtonInaddSectionAPopUp.click();
+
+		}
 		return this;
 	}
-		
 
 	public void verifySectionB() {
 		wait.until(ExpectedConditions.visibilityOf(sectionB_ExpantionPanel));
@@ -701,6 +702,9 @@ public class Stages extends TestBase {
 	public Stages addSection(int count, boolean measurableRadio, boolean nonMeasurableRadio, String... optionNames)
 			throws Throwable {
 
+		String sectionName1 = null;
+		String sectionWeightage = null;
+
 		for (int i = 1; i <= count; i++) {
 			// Use the appropriate index for the section's "Add" button (1 for the first, 2
 			// for the rest)
@@ -713,13 +717,17 @@ public class Stages extends TestBase {
 			assertTrue(addSomeSectionPopUp.isDisplayed(), "addSomeSectionPopUp is not displayed.");
 
 			// Verify and fill the section name and weightage fields
-			//String sectionName = "TestSec" + i;
-			//String sectionWeightage = "TestWeightage" + i;
-			String sectionName = "Notification" + i;
-			String sectionWeightage = "NotificationWeightage" + i;
+			sectionName1 = "TestSec" + i;
 			
+			Faker faker = new Faker();
+//			weightage is nothing but giving scoring for any task
+	        // Generates a number from 1 (inclusive) to 11 (exclusive) => 1 to 10
+	        String randomNumber = String.valueOf(faker.number().numberBetween(1, 11));
+			sectionWeightage = randomNumber;
+//			String sectionName = "Notification" + i;
+//			String sectionWeightage = "NotificationWeightage" + i;
 
-			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName, true, false, 1);
+			FieldVerificationUtils.verifyTextField(sectionNameField, "Section Name", sectionName1, true, false, 1);
 
 			FieldVerificationUtils.verifyTextField(sectionWeightageField, "Weightage", sectionWeightage, false, true,
 					1);
@@ -762,10 +770,17 @@ public class Stages extends TestBase {
 				clickOnCheckBoxes(allOptionsMeasurable, "all");
 				clickOnCheckBoxes(allOptionsMeasurable, optionNames);
 
-				String employeeName = "notificationALERT";
-				
+//				String employeeName = "notificationALERT";
+//				
 //				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select",
 //						employeeName);
+				String selectQuestionSetXpath = String.format(
+						"//select[contains(@name,'sectionvalnonmesaurable_NonMesaurable_value_%s')]", sectionName1);
+				WebElement selectQuestionSetDropDown = driver.findElement(By.xpath(selectQuestionSetXpath));
+
+				String nonMeasurable = PropertieFileUtil.getSingleTextFromPropertiesFile("nonMeasurable");
+
+				DropDown.dropdownWithAllPosibleValidation(selectQuestionSetDropDown, "Select", nonMeasurable);
 
 			} else {
 				System.out.println("Element not clickable or displayed: " + section.toString());
