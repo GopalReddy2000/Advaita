@@ -6,12 +6,12 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.poi.xwpf.usermodel.ISDTContent;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -20,16 +20,18 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.Test;
 
+import com.ApiKeySetup.pageObject.ApiKeySetup;
 import com.advaita.BaseClass.TestBase;
-import com.advaita.Utilities.QuestionSelector;
+import com.advaita.Login.Home.HomePage;
+import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
+import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
 import com.advaita.WorkFlowDesign.PageObject.Stages;
 import com.advaita.pageObjects.UserSetupPage;
-import com.aventstack.extentreports.reporter.configuration.Theme;
-import com.fasterxml.jackson.annotation.JacksonInject.Value;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -51,9 +53,28 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	String userId1 = "Abhijit_idamta";
 	String password1 = "Qwerty@123";
 
-//Global Variables
-//---------------------------------------------------------> 
-	String searchedStagesName = "Customer Profile Stages";
+	// -----------Global Variables Realted in Template Modules------>
+	public String selectProcess;
+	public String selectSubProcess;
+	public String selectSubSubProcess;
+	public String selectStagesDropdown;
+
+	String dispositionTextField = FakeData.lastName1() + "_DSP";
+
+	String selectToNumberSource_StageField = "From Stage Fields";
+	String selectToNumberSource_SystemName = "From System Names";
+	String selectToNumberSource_Manual = "Manual";
+
+	String toNumberForStageFieldOption = "Mobile_Number";
+	String toNumberForSystemNameOption = "Mobile Number";
+	String toNumberForManualOption = "";
+
+	// Auto Sms
+	public String createdDispositionQuestionSet;
+	public String formName = "Call Log Stage View";
+
+	// -------------------------------------------------
+	String searchedStagesName = "Ticket Booking _Stage 2";
 
 	public String FirstCreatedUserName;
 	public String lastcreatedsmsTemplate_messageTextfield;
@@ -64,13 +85,15 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public String stagesCreatedSubsubProcess3;
 	public String verifyCreatedStages;
 
-	public String createddispositionQuestionSetText;
+	public String createdDispositionQuestionSetText;
 
-//Xpath
-//---------------------------------------------------->	
+	// ---------------Elements------------------
 	// Entirebody Click
 	@FindBy(tagName = "body")
 	public WebElement driverIninteractable;
+
+	@FindBy(xpath = "(//a//img[@alt='right_arrow'])[2]")
+	public WebElement lastrightArrowButton;
 
 	@FindBy(xpath = "//div[@aria-labelledby='profileDropdown']")
 	public WebElement profileDropdown;
@@ -105,8 +128,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "(//h1[text()=' Stages '])[1]")
 	public WebElement verifyStage;
 
-	@FindBy(id = "text_search")
-	public WebElement searchTextfield;
+	@FindBy(xpath = "//input[@id='text_search']")
+	public WebElement searchTextfield_Stages;
 
 	@FindBy(xpath = "//table[@class='w-100']//td[1]")
 	List<WebElement> stagesName;
@@ -191,6 +214,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//label[text()='Stages*']")
 	public WebElement stagesLabel;
 
+	@FindBy(xpath = "//label[text()='API Key Name*']")
+	public WebElement apiKeyNameLabel;
+
+	@FindBy(id = "api_name")
+	public WebElement apikeyName;
+
 	@FindBy(xpath = "//input[@name='template_name']")
 	public WebElement smsTemplateName;
 
@@ -218,6 +247,9 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//label[text()='To Number Source']/..//select")
 	public WebElement toNumberSource;
 
+	@FindBy(xpath = "//label[text()='To Number Source']")
+	public WebElement toNumberSourceLabel;
+
 	@FindBy(xpath = "//textarea[@name='message']")
 	public WebElement message;
 
@@ -227,11 +259,14 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//textarea[@name='remarks']")
 	public WebElement remarks;
 
+	@FindBy(xpath = "//label[text()='Remarks']")
+	public WebElement remarksLabel;
+
 	@FindBy(xpath = "//input[@name='temp_variable_name_1']")
-	public WebElement templateVariableName;
+	public WebElement variableTextfield;
 
 	@FindBy(xpath = "//select[@class='form-control stages_fields_dropsown']")
-	public WebElement stageFieldName;
+	public WebElement stageFieldNameDropdown;
 
 	@FindBy(name = "default_val_1")
 	public WebElement defaultValue;
@@ -438,13 +473,13 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public WebElement processDropdown_Table;
 
 	@FindBy(xpath = "//select[@id='sub_process_search']")
-	public WebElement SubprocessDropdown_Table;
+	public WebElement subprocessDropdown_Table;
 
 	@FindBy(id = "s_sub_process_search")
 	public WebElement subSubProcessDropdown_Table;
 
 	@FindBy(xpath = "//select[@name='stage_search']")
-	public WebElement smsStagesDropdown_table;
+	public WebElement StagesDropdown_table;
 
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
 	public WebElement searchbutton_Table;
@@ -457,6 +492,19 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	@FindBy(xpath = "//select[@id='page-size-select']")
 	public WebElement itemperpageDropdown;
+
+	// Verify Selected Process
+	@FindBy(xpath = "(//thead//tr//th/../../..//td)[2]")
+	public WebElement firstProcess;
+
+	@FindBy(xpath = "(//thead//tr//th/../../..//td)[3]")
+	public WebElement firstSubProcess;
+
+	@FindBy(xpath = "(//thead//tr//th/../../..//td)[4]")
+	public WebElement firstSubSubProcess;
+
+	@FindBy(xpath = "(//thead//tr//th/../../..//td)[5]")
+	public WebElement firstStages;
 
 	@FindBy(xpath = "//tbody//tr/..//tr")
 	List<WebElement> beforeSearchData_Table;
@@ -484,15 +532,31 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//tbody//tr[1]//td[1]/../..//tr//td[1]")
 	List<WebElement> templateNameLists;
 
-	// DispositionStages
-	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[4]")
+	// DispositionStages And Auto Sms Mapping Elemnets
+
+	@FindBy(xpath = "//tbody//tr[1]//td[6]//div//img[@title='stage_settings_list']")
+	public WebElement stageSettingList;
+
+	@FindBy(xpath = "//tbody//tr[6]//td[2]")
 	public WebElement stagesDispositionOption;
 
 	@FindBy(xpath = "((//tbody//tr[1]//td[6])//div//img[@class='img-fluid stages_edit delete-dataset'])[1]")
 	public WebElement stagesEditOptionFirst;
 
-	@FindBy(id = "disposition_stagewise")
-	public WebElement selectDispostionQuestionSetDropdown;
+	@FindBy(xpath = "//select[@id='disposition_stagewise']")
+	public WebElement selectStageInDisposition;
+
+	@FindBy(xpath = "(//label[text()='Disposition*'])[2]")
+	public WebElement selectDispositionQuestionSetLabel;
+
+	@FindBy(xpath = "//select[@id='disposition_stagewise']")
+	public WebElement selectDispositionQuestionSet;
+
+	@FindBy(xpath = "(//label[text()='Form Name*'])[1]")
+	public WebElement selectFormNameLabel;
+
+	@FindBy(xpath = "//select[@id='form_name']")
+	public WebElement selectFormNameInDisposition;
 
 	@FindBy(xpath = "(//tbody/tr[1]//td)[1]")
 	public WebElement dispositionQuestionSet;
@@ -506,14 +570,26 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//tbody//tr[last()]//td[2][last()]")
 	public WebElement toStages;
 
-	@FindBy(xpath = "//tbody//tr[last()]//td[4][last()]//a//img[@title='AUTO SMS Mapping']")
-	public WebElement autoSMSMappingActions;
-
-	@FindBy(id = "auto_sms_template")
-	public WebElement autoSmsTemplatDropdown;
+	@FindBy(xpath = "//tbody//tr[last()]//td[6][last()]//a[4]")
+	public WebElement autoSMSMappingOptions;
 
 	@FindBy(xpath = "//h2[text()='Auto SMS Mapping']")
-	public WebElement verifyAutoSmsMapping;
+	public WebElement verifyAutoSmsMappingPage;
+
+	@FindBy(xpath = "//select[@id='auto_sms_template']")
+	public WebElement autoSmsTemplatDropdown;
+
+	@FindBy(xpath = "//h2[text()='Auto SMS Mapping']/../..//button")
+	public WebElement addButtonInAutoSmsMappingPage;
+
+	@FindBy(xpath = "//tbody[@id='auto_sms_tbody']//tr//td[not(.//img)]")
+	public List<WebElement> listOfAddedTemplateNames;
+
+	@FindBy(xpath = "//span[@id='change_msg']")
+	public WebElement autoSmsAMppingUpdateSuccessfulley_popuop;
+
+	@FindBy(xpath = "//span[@id='change_msg']/..//button")
+	public WebElement continueButtonForAutoSmsMApping;
 
 	// Negative
 	@FindBy(xpath = "//label[@id='process-error']")
@@ -537,6 +613,17 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	@FindBy(xpath = "//span[@id='change_error_msg']")
 	public WebElement somethingWentWrongErrorMesg;
 
+	// Refernce Method
+	HomePage homePage = new HomePage();
+	MastersFieldSets masterFieldSet = new MastersFieldSets();
+	Disposition disposition = new Disposition();
+
+	PropertieFileUtil propertieFileUtil = new PropertieFileUtil();
+	DropDown dropDown = new DropDown();
+	FieldVerificationUtils fieldVerificationUtils = new FieldVerificationUtils();
+
+	ApiKeySetup apiKeySetup = new ApiKeySetup();
+
 	public void NavigateToFetchprocess() {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/data_management/process/");
 		fetchProcess.getText();
@@ -551,8 +638,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		System.out.println("Fetch SubSubProcessName : " + SubSubProcess.getText());
 
 	}
-//	String processName=getTextFromPropertiesFile("process");
-	
+
 	public void clickDynamicStage(int index) {
 		if (satgeNameList.size() > index) { // Ensure the index is within bounds
 			try {
@@ -576,17 +662,12 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		}
 	}
 
-	private String getTextFromPropertiesFile(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void navigatetoStage_verifySMS() throws Throwable {
 		driver.navigate().to("https://test.capture.autosherpas.com/en/stages/stages_list/");
 		assertTrue(verifyStage.isDisplayed(), "verifyStage is not displayed");
 
-		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldStages is not displayed");
-		searchTextfield.sendKeys(searchedStagesName);
+		assertTrue(searchTextfield_Stages.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfield_Stages.sendKeys(searchedStagesName);
 		searchbutton_Table.click();
 		Thread.sleep(2000);
 
@@ -649,7 +730,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 			// leftArrowButton_stages.click();
 			jsClick(driver, leftArrowButton_stages);
 
-			searchTextfield.sendKeys(searchedStagesName);
+			searchTextfield_Stages.sendKeys(searchedStagesName);
 			searchbutton_Table.click();
 
 			// Scroll and click the edit stage option
@@ -771,29 +852,71 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
 	}
 
-	public void selectProcessDropdown() throws Throwable {
+	public void selectProcess() throws Throwable {
+		// 1st Way Fetch Trough stages and Select
+		// dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
 
-		dropdownUtils(ProcessDropdown, stagesCreatedProcess1);
+		// 2nd Way Using Properties File
+		fieldVerificationUtils.checkthroughAsterisk(processLabel, true);
+
+		selectProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+
+		dropDown.dropdownUtils(ProcessDropdown, selectProcess);
+		System.out.println("selectProcess :" + selectProcess);
 
 	}
 
-	public void SelectSubProcessDropdown() throws Throwable {
+	public void SelectSubProcess() throws Throwable {
 
-		dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+		// dropdownUtils(SubProcessDropdown, stagesCreatedSubProcess2);
+
+		// 2nd Way Using Properties File
+		fieldVerificationUtils.checkthroughAsterisk(subProcessLabel, true);
+
+		selectSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+
+		dropDown.dropdownUtils(SubProcessDropdown, selectSubProcess);
+
 	}
 
 	public void selectSubSubProcess() throws Throwable {
 
-		dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+		// dropdownUtils(SubsubProcessDropdown, stagesCreatedSubsubProcess3);
+
+		// 2nd Way Using Properties File
+		fieldVerificationUtils.checkthroughAsterisk(subSubProcessLabel, true);
+
+		selectSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+
+		dropDown.dropdownUtils(SubsubProcessDropdown, selectSubSubProcess);
 	}
 
 	public void selectStages() throws Throwable {
 
-		Thread.sleep(1000);
-		dropdownUtils(smsStages, verifyCreatedStages);
+//		Thread.sleep(1000);
+//		dropdownUtils(smsStages, verifyCreatedStages);
+
+		// 2nd Way Using Properties File
+		fieldVerificationUtils.checkthroughAsterisk(stagesLabel, true);
+
+		selectStagesDropdown = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+
+		dropDown.dropdownUtils(smsStages, selectStagesDropdown);
 	}
 
-	public void SmsTemplateName() {
+	public void selectApiName() throws Throwable {
+
+		// 2nd Way Using Properties File
+		fieldVerificationUtils.checkthroughAsterisk(apiKeyNameLabel, true);
+
+		String selectApiName = PropertieFileUtil.getSingleTextFromPropertiesFile("ApiName");
+		System.out.println("selectApiName :" + selectApiName);
+
+		dropDown.dropdownUtils(apikeyName, selectApiName);
+
+	}
+
+	public void SmsTemplateName() throws IOException {
 
 		// SMS - Template name
 		// Array of predefined SMS template names
@@ -811,21 +934,29 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		String randomTemplateName = templateNames[randomIndex];
 		System.out.println("Random SMS Template Name: " + randomTemplateName);
 
+		fieldVerificationUtils.checkthroughAsterisk(templateNameLabel, true);
+
 		assertTrue(smsTemplateName.isDisplayed(), " smsTemplateName is not dispalyed ");
 		smsTemplateName.sendKeys(randomTemplateName);
+
+		// Capture TemplateName_Sms and Store In Properti File
+		String smsTemplateNameValue = smsTemplateName.getAttribute("value");
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("SmsTemplateName", smsTemplateNameValue);
 	}
 
 	public void disposition() {
 
-		// Sms - disposition
+		// 2nd Way Using Properties File
+
+		fieldVerificationUtils.checkthroughAsterisk(dispositionLabel, false);
 		assertTrue(smsDisposition.isDisplayed(), "smsDisposition is not dispalyed");
-		smsDisposition.sendKeys(fake.lastName1());
+		smsDisposition.sendKeys(dispositionTextField);
 
 	}
 
 	public void fromNumber() {
 
-		// Sms From number
 		// Define the mobile number range
 		long min = 1000000000L; // Minimum 10-digit number
 		long max = 9999999999L; // Maximum 10-digit number
@@ -838,6 +969,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		// Print the random mobile number
 		System.out.println("Random Mobile Number: " + randomNumber);
+
+		fieldVerificationUtils.checkthroughAsterisk(fromNumberLabel, true);
 
 		fromNumber.sendKeys(String.valueOf(randomNumber)); // String.valueOf = any thing is there convert to string
 															// value
@@ -888,20 +1021,26 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public void selectToNumberSource() {
 
+		// Through System Name
 		// validateAndSelectFromDropdownUTILS(toNumberSource, "From System Names");
-		validateAndSelectFromDropdownUTILS(toNumberSource, "From Stage Fields");
+
+		// Through Stage Field
+		fieldVerificationUtils.checkthroughAsterisk(toNumberSourceLabel, false);
+		validateAndSelectFromDropdownUTILS(toNumberSource, selectToNumberSource_StageField);
 
 	}
 
-	String toNumberOption = "Emp Phone Number";
-
 	public void toNumber() {
-		validateAndSelectFromDropdownUTILS(toNumber, toNumberOption);
+
+		fieldVerificationUtils.checkthroughAsterisk(toNumberLabel, false);
+		validateAndSelectFromDropdownUTILS(toNumber, toNumberForStageFieldOption);
 
 	}
 
 	// SMS - message
 	public void message() {
+
+		fieldVerificationUtils.checkthroughAsterisk(messagLabel, true);
 
 		// Array of predefined messages
 		String[] messages = { "Dear Customer, thank you for your purchase! We hope you enjoy your new product.",
@@ -931,59 +1070,83 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	// Remarks
 	public void remarksField() {
 
+		fieldVerificationUtils.checkthroughAsterisk(remarksLabel, false);
 		assertTrue(remarks.isDisplayed(), "remarks is not displayed");
 	}
 
 	public void variables() {
 
-//		WebElement addRowOptions = driver.findElement(By.xpath("//a[text()='+ Add Row']"));
-//		for (int i = 0; i < 1; i++) {
-//			addRowOptions.click();
-//		}
-		// template variable name
-		assertTrue(templateVariableName.isDisplayed(), "templateVariableName is not displayed");
-
-		// Satge Field name
-		assertTrue(stageFieldName.isDisplayed(), "stageFieldName is not displayed");
-
-		// Default value
-		assertTrue(defaultValue.isDisplayed(), "defaultValue is not dispalyed");
+		assertTrue(variableTextfield.isDisplayed(), "templateVariableName is not displayed");
 	}
 
-	public void createButton() {
+	public void selectStageField() {
+
+		assertTrue(stageFieldNameDropdown.isDisplayed(), "stageFieldName is not displayed");
+		validateAndSelectFromDropdownUTILS(stageFieldNameDropdown, toNumberForStageFieldOption);
+	}
+
+	public void EnterDefaultValue() {
+		// Default value
+		assertTrue(defaultValue.isDisplayed(), "defaultValue is not dispalyed");
+
+	}
+
+	@FindBy(xpath = "//a[text()='+ Add Row']")
+	public WebElement addRowOptions;
+
+	public void addMultipleRows(int numberOfRows) {
+		for (int i = 0; i < numberOfRows; i++) {
+			addRowOptions.click();
+		}
+	}
+
+	@FindBy(xpath = "//img[@alt='delete-icon']")
+	public List<WebElement> delteOptions;
+
+	public void deleteMultipleRows(int numberOfRowsToDelete) {
+		for (int i = 0; i < numberOfRowsToDelete; i++) {
+//			delteOptions = driver.findElements(By.xpath("//img[@alt='delete-icon']")); // Refresh list
+			if (!delteOptions.isEmpty()) {
+				delteOptions.get(0).click(); // Always click first one
+			} else {
+				System.out.println("No more rows to delete at index " + i);
+				break;
+			}
+		}
+	}
+
+	public void createButtonAndVerifySuccessPopupAndContinue() {
 
 		// Create Button
 		assertTrue(createButton_SmsTemplatePopup.isDisplayed(), "createButton_SmsTemplatePopup is not displayed");
 		createButton_SmsTemplatePopup.click();
 
+		// Verify Popup
 		wait.until(ExpectedConditions.visibilityOf(smsTemplateCreatedSuccessfully_popuop));
 		assertTrue(smsTemplateCreatedSuccessfully_popuop.isDisplayed(),
 				"smsTemplateCreatedSuccessfully_popuop is not displayed");
 
+		// click on Continue
 		assertTrue(continueButton_create.isDisplayed(), "continueButton_create is not displayed");
 		continueButton_create.click();
 	}
 
-	public void verifyCreatedMessage() {
+	public void verifyCreatedSmsTemplate() {
 
 //        js.executeScript("arguments[0].scrollIntoView(true);", lastIndexArrowButton); // Scroll the webpage
 //        wait.until(ExpectedConditions.visibilityOf(lastIndexArrowButton));
 //        assertTrue(lastIndexArrowButton.isDisplayed(), "lastIndexArrow is not displayed");
 //        lastIndexArrowButton.click();
 
-		wait.until(ExpectedConditions.visibilityOf(last_CreatedSms));
+		js.executeScript("arguments[0].scrollIntoView(true);", lastrightArrowButton); // Scroll the webpage
+		assertTrue(lastrightArrowButton.isDisplayed(), "lastrightArrowButton is not Displayed");
+		lastrightArrowButton.click();
+
+		wait.until(ExpectedConditions.visibilityOf(lastCreatedSms_templatename));
 
 		assertTrue(last_CreatedSms.isDisplayed(), "last_CreatedSms is not displayed");
 		last_CreatedSms.getText();
-		System.out.println("Last Created Smstemplate : " + last_CreatedSms.getText());
-
-//        wait.until(ExpectedConditions.visibilityOf(lastEdit_smsTemplate));
-//        assertTrue(lastEdit_smsTemplate.isDisplayed(), "lastEdit_smsTemplate is not displayed");
-//        //lastEdit_smsTemplate.click();
-//        jsClick(driver, lastEdit_smsTemplate);
-//        lastcreatedsmsTemplate_messageTextfield=lastEdit_smsTemplate.getText();
-//        System.out.println("LastCreatedSmsTemplate_messageTextfield : "+lastEdit_smsTemplate.getText());     //need to implement 1
-//        
+		System.out.println("Last Created Smstemplate : " + lastCreatedSms_templatename.getText());
 
 	}
 
@@ -1337,108 +1500,78 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		logout.click();
 	}
 
-	// Table page
-	// Again login to "Super admin"
-	public void searchThrough_processes() throws Throwable {
-		wait.until(ExpectedConditions.visibilityOf(alchemySidemenubar));
-		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
-//		alchemySidemenubar.click();
-//		alchemySidemenubar.click();
-		jsClick(alchemySidemenubar);
-		jsClick(alchemySidemenubar);
+	// Table Page_SuperAdmin
 
-		driver.navigate().to("https://test.capture.autosherpas.com/en/alchemy/sms_template_listing/");
-		jsClick(smsTemplateTab);
-		assertTrue(smsTemplateText.isDisplayed(), "smsTemplateText is not displayed");
+	public void searchThroughProcess() throws Throwable {
 
-		// before SearchData
-		List<String> beforeSearchDataLists_Table = new ArrayList<String>();
-		for (WebElement beforeSearchData_Table : beforeSearchData_Table) {
-			beforeSearchDataLists_Table.add(beforeSearchData_Table.getText());
-			System.out.println("before search data  :" + beforeSearchData_Table.getText());
-		}
+		assertTrue(processDropdown_Table.isDisplayed(), "processDropdown_Table is not Displayed");
+		assertTrue(processDropdown_Table.isEnabled(), "processDropdown_Table is noT Enabled");
 
-		List<String> processDropdown1List_Table = new ArrayList<String>();
-		Select processDropdown1_Table = new Select(processDropdown_Table);
-		for (WebElement Options : processDropdown1_Table.getOptions()) {
-			wait.until(ExpectedConditions.visibilityOfAllElements(Options));
-			System.out.println(Options.getText());
-			processDropdown1List_Table.add(Options.getText());
-		}
-		assertTrue(processDropdown1List_Table.contains("AJP"));
-		processDropdown1_Table.selectByVisibleText("AJP");
-
-		List<String> subProcessDropdown2List_Table = new ArrayList<String>();
-		actions.moveToElement(driverIninteractable).perform();
-		Select subProcessDropdown2_Table = new Select(SubprocessDropdown_Table);
-		for (WebElement options2 : subProcessDropdown2_Table.getOptions()) {
-			Thread.sleep(1000);
-			System.out.println(subProcessDropdown2_Table.getOptions());
-			subProcessDropdown2List_Table.add(options2.getText());
-		}
-
-		assertTrue(subProcessDropdown2List_Table.contains("Sub AJP"));
-		subProcessDropdown2_Table.selectByVisibleText("Sub AJP");
-
-		List<String> subsubprocessDropdown3List_Table = new ArrayList<String>();
-		boolean elementStale = true;
-		int attempts = 0;
-
-		while (elementStale && attempts < 3) {
-			try {
-				Select subsubProcessDropdown3_Table = new Select(subSubProcessDropdown_Table);
-				subsubprocessDropdown3List_Table.clear(); // Clear the list before each retry
-
-				for (WebElement options3 : subsubProcessDropdown3_Table.getOptions()) {
-					Thread.sleep(2000);
-					System.out.println(options3.getText()); // Print each option's text
-					subsubprocessDropdown3List_Table.add(options3.getText());
-
-				}
-
-				assertTrue(subsubprocessDropdown3List_Table.contains("Sub Sub AJP"));
-				subsubProcessDropdown3_Table.selectByVisibleText("Sub Sub AJP");
-				actions.moveToElement(driverIninteractable).perform();
-
-				elementStale = false; // If we reach here, no exception was thrown
-			} catch (StaleElementReferenceException e) {
-				attempts++;
-				System.out.println("Stale element reference exception. Retrying... " + attempts);
-				Thread.sleep(2000); // Optional: add a wait before retrying
-			}
-		}
-
-		if (elementStale) {
-			throw new RuntimeException(
-					"Failed to interact with the dropdown after 3 attempts due to stale element reference.");
-		}
-
-		List<String> smsStagesLists = new ArrayList<String>();
-		Select smsStagesdropdown = new Select(smsStagesDropdown_table);
-		for (WebElement smsStagesOptions : smsStagesdropdown.getOptions()) {
-			System.out.println("satges Dropdown : " + smsStagesdropdown.getOptions());
-			smsStagesLists.add(smsStagesOptions.getText());
-		}
-		assertTrue(smsStagesLists.contains("CutomerdetailsZZZ Stage"));
-		smsStagesdropdown.selectByVisibleText("CutomerdetailsZZZ Stage");
-
-		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not displayed");
-		searchbutton_Table.click();
-
-		// after SearchData
-		List<String> afterSearchDataLists_Table = new ArrayList<String>();
-		for (WebElement afterSearchData_Table : beforeSearchData_Table) {
-			afterSearchDataLists_Table.add(afterSearchData_Table.getText());
-			System.out.println("After search based on process :" + afterSearchData_Table.getText());
-		}
-
-		assertEquals(beforeSearchDataLists_Table, afterSearchDataLists_Table);
-
-		assertTrue(clearAllFiltersButton_Table.isDisplayed(), "clearAllFiltersButton_Table is not dislayed");
+		String processDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		dropDown.dropdownUtils(processDropdown_Table, processDropdownTable);
 
 	}
 
-	// Verifythe user is able to Clearall filters
+	public void searchThroughSubProcess() throws Throwable {
+
+		assertTrue(subprocessDropdown_Table.isDisplayed(), "SubprocessDropdown_Table is not Displayed");
+		assertTrue(subprocessDropdown_Table.isEnabled(), "processDropdown_Table is noT Enabled");
+
+		String SubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		dropDown.dropdownUtils(subprocessDropdown_Table, SubProcessDropdownTable);
+
+	}
+
+	public void searchThroughSubSubProcess() throws Throwable {
+		assertTrue(subSubProcessDropdown_Table.isDisplayed(), "subSubProcessDropdown_Table is not Displayed");
+		assertTrue(subSubProcessDropdown_Table.isEnabled(), "subSubProcessDropdown_Table is noT Enabled");
+
+		String subSubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		dropDown.dropdownUtils(subSubProcessDropdown_Table, subSubProcessDropdownTable);
+
+	}
+
+	public void searchThroughStages() throws Throwable {
+
+		assertTrue(StagesDropdown_table.isDisplayed(), "StagesDropdown_table is not Displayed");
+		assertTrue(StagesDropdown_table.isEnabled(), "subSubProcessDropdown_Table is noT Enabled");
+
+		String stagesDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		dropDown.dropdownUtils(StagesDropdown_table, stagesDropdownTable);
+	}
+
+	public void clickOnSearchButton() {
+
+		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not Dispalyed");
+		searchbutton_Table.click();
+	}
+
+	// verify with Process
+	public void verifyselectedProcessShouldMatchWithProcess() {
+
+		dropDown.checkForSelectedOptionsAfterSearched(processDropdown_Table, firstProcess, noEntriesFound);
+
+	}
+
+	// verify with SubProcess
+	public void verifyselectedSubProcessShouldMatchWithSubProcess() {
+
+		dropDown.checkForSelectedOptionsAfterSearched(processDropdown_Table, firstSubProcess, noEntriesFound);
+	}
+
+	// verify with SubSubProcess
+	public void verifyselectedSubSubProcessShouldMatchWithSubSubProcess() {
+
+		dropDown.checkForSelectedOptionsAfterSearched(subSubProcessDropdown_Table, firstSubSubProcess, noEntriesFound);
+	}
+
+	// verify with SubSubProcess
+	public void verifyselectedSubSubProcessShouldMatchWithStages() {
+
+		dropDown.checkForSelectedOptionsAfterSearched(StagesDropdown_table, firstStages, noEntriesFound);
+	}
+
+	// Clear Filter
 	public void ClearFilters() {
 		Select processdropdown_tablePage = new Select(processDropdown_Table);
 		processdropdown_tablePage.selectByVisibleText("AJP");
@@ -1446,7 +1579,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		System.out.println("first SelectedOption afterSelect Process Dropdown"
 				+ processdropdown_tablePage.getFirstSelectedOption());
 
-		Select subProcessdropdown_tablePage = new Select(SubprocessDropdown_Table);
+		Select subProcessdropdown_tablePage = new Select(subprocessDropdown_Table);
 		subProcessdropdown_tablePage.selectByVisibleText("Sub AJP");
 		subProcessdropdown_tablePage.getFirstSelectedOption();
 		System.out.println(" first  SelectedOption afterSelect SubProcess Dropdown : "
@@ -1474,27 +1607,48 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 				+ subSubProcessdropdown_tablePage.getFirstSelectedOption());
 	}
 
-	public void SearchThroughSearchField() throws Throwable {
-		Thread.sleep(1000);
-		String lastCreatedsmsTemplate = lastCreatedSms_templatename.getText();
-		System.out.println("lastCreatedsmsTemplate : " + lastCreatedsmsTemplate);
+	public void clearTextfiledByEnterCleaeAllFilters() {
 
-		assertTrue(seachTextfield_SmsTemplate.isDisplayed(), lastCreatedsmsTemplate);
-		lastCreatedsmsTemplate.isEmpty();
-		seachTextfield_SmsTemplate.sendKeys(lastCreatedsmsTemplate);
+	}
 
-		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not displayed");
-		searchbutton_Table.click(); // need to implement
+	// Search Through search Field
+	public void searchThroughSeachTextfield() throws Throwable {
+		String templateName = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
 
-		assertTrue(noEntriesFound.isDisplayed(), "noEntriesFound is not displayed");
-		assertTrue(clearAllFiltersButton_Table.isDisplayed(), "clearAllFiltersButton_Table is not displayed");
-		clearAllFiltersButton_Table.click();
-		assertTrue(smsTemplateText.isDisplayed(), "smsTemplateText is not displayed");
+		assertTrue(seachTextfield_SmsTemplate.isDisplayed(), "seachTextfield_SmsTemplate i snot Displayed");
+		seachTextfield_SmsTemplate.sendKeys(templateName);
+
+		clickOnSearchButton();
+
+		try {
+			if (noEntriesFound.isDisplayed()) {
+				// Fail the test and stop execution
+				throw new AssertionError("Failed: There is no template present with the name: " + templateName);
+			} else {
+				String lastCreatedSmsTemplate = lastCreatedSms_templatename.getText().trim();
+				System.out.println("Template found: " + lastCreatedSmsTemplate);
+
+				assertEquals(templateName, lastCreatedSmsTemplate,
+						"Mismatch between expected and actual template names");
+			}
+		} catch (NoSuchElementException e) {
+			// If the 'noEntriesFound' element doesn't exist, proceed as normal
+			String lastCreatedSmsTemplate = lastCreatedSms_templatename.getText().trim();
+			System.out.println("'noEntriesFound' element not found. Assuming template is present.");
+			System.out.println("Template found: " + lastCreatedSmsTemplate);
+
+			assertEquals(templateName, lastCreatedSmsTemplate, "Mismatch between expected and actual template names");
+		}
 	}
 
 	public void Delete_createdSmsTemplate() {
+
+		String lastCreatedSmsTemplate = last_CreatedSms.getText().trim();
+		System.out.println("lastCreatedSmsTemplate Text: " + lastCreatedSmsTemplate);
+
+		// Delete
 		assertTrue(LastDelete_smsTempalte.isDisplayed(), "LastDelete_smsTempalteis not displayed");
-		// LastDelete_smsTempalte.click();
+
 		jsClick(LastDelete_smsTempalte);
 
 		assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete is not displayed");
@@ -1507,6 +1661,16 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(continueButton_DeleteSuccessullyPopup.isDisplayed(),
 				"continueButton_DeleteSuccessullyPopup is not displayed ");
 		continueButton_DeleteSuccessullyPopup.click();
+
+		assertTrue(searchTextfield_Stages.isDisplayed(), "searchTextfield is not Displayed");
+		searchTextfield_Stages.sendKeys(lastCreatedSmsTemplate);
+
+		clickOnSearchButton();
+
+		assertTrue(noEntriesFound.isDisplayed(), "Failed : Template is Not Yet Deleted after click on Delete Option");
+
+		searchTextfield_Stages.clear();
+
 	}
 
 	// EDIT
@@ -1571,8 +1735,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
 		CreateSmstemplate();
-		selectProcessDropdown();
-		SelectSubProcessDropdown();
+		selectProcess();
+		SelectSubProcess();
 		selectSubSubProcess();
 		selectStages();
 		SmsTemplateName();
@@ -1582,7 +1746,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		toNumberSystemNames();
 		message();
 		remarksField();
-		createButton();
+		createButtonAndVerifySuccessPopupAndContinue();
+
 		// navigateTo_MasterParameterDisposition();
 		stagesDispositionClick();
 
@@ -1597,51 +1762,142 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public void verifyCreatedDispositionQuestionset() throws Throwable {
-		createddispositionQuestionSetText = dispositionQuestionSet.getText();
-		System.out.println("createddispositionQuestionSetText : " + createddispositionQuestionSetText);
+	// -------------- Disposition -------------
+
+	// Addeed Disposition Question Set
+	public void createDispositionQuestionSet() throws Throwable {
+
+		homePage.clickOnDisposition();
+
+		String questionSetNameString = fake.lastName1() + "_Employee Status_A";
+
+		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString); // Create Disposition
+
+		// Drop Down
+		List<String> sector = Arrays.asList("Pending", "complete", "under process");
+		masterFieldSet.addQuestions(0).addDropDownRelatedQuestions("What is the current status of the employee ?", 1, // Section
+				1, // Question
+				MastersFieldSets.DROP_DOWN, sector);
+
+		disposition.saveRecord();
 
 	}
 
-	public void stagesDispositionClick() {
-		String searchedStagesName = "Booking Information Stage";
+	// verify Created Disposition set
+	public void verifyDispositionQuestionSet() throws Throwable {
 
-		assertTrue(searchTextfield.isDisplayed(), "searchTextfieldStages is not displayed");
-		searchTextfield.sendKeys(searchedStagesName);
+		createdDispositionQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("DispositionQuestionSet");
+
+		assertTrue(Disposition.searchBox.isDisplayed(), "searchBox is not Displayed");
+		assertTrue(Disposition.searchBox.isEnabled(), "searchBox is not Enabled");
+
+		Disposition.searchBox.sendKeys(createdDispositionQuestionSet);
+
+		assertTrue(Disposition.searchButton.isDisplayed(), "searchButton is not Displayed");
+
+		Disposition.searchButton.click();
+
+		createdDispositionQuestionSetText = dispositionQuestionSet.getText();
+		System.out.println("createddispositionQuestionSetText : " + createdDispositionQuestionSetText);
+
+		assertEquals(createdDispositionQuestionSet, createdDispositionQuestionSetText,
+				"Failed :search Disposition Question Set Not Matched With Created disposition set");
+
+	}
+
+	public void navigateToStages() {
+
+		driver.navigate().to(mainURl + "en/stages/stages_list/");
+	}
+
+	public void navigateToStageSettingList() {
+		int retries = 3;
+
+		while (retries > 0) {
+			try {
+				WebElement element = wait.until(ExpectedConditions.visibilityOf(stageSettingList));
+
+				assertTrue(element.isDisplayed(), "stageSettingList is not displayed");
+				element.click();
+				break; // success, exit the loop
+
+			} catch (StaleElementReferenceException e) {
+				System.out.println("Caught StaleElementReferenceException, retrying...");
+				retries--;
+			}
+		}
+
+		if (retries == 0) {
+			throw new RuntimeException(
+					"Failed to click on stageSettingList due to repeated StaleElementReferenceExceptions");
+		}
+	}
+
+	public void naviagteToDispositionMapping() {
+
+		navigateToStageSettingList();
+
+		wait.until(ExpectedConditions.visibilityOf(stagesDispositionOption));
+		assertTrue(stagesDispositionOption.isDisplayed(), "stagesDispositionOption is not Displayed");
+		stagesDispositionOption.click();
+	}
+
+	// Disposition_ for Auto Sms
+	public void stagesDispositionClick() throws Throwable {
+
+		navigateToStages(); // naviagte To Stages
+
+		String searchedStages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+
+		assertTrue(searchTextfield_Stages.isDisplayed(), "searchTextfieldStages is not displayed");
+		searchTextfield_Stages.sendKeys(searchedStages);
 		searchbutton_Table.click();
 
-		stagesDispositionOption.click(); // Click on StagesDisposition
+		naviagteToDispositionMapping(); // Naviagte To Disposition Mapping Page
 
 	}
 
-	public void selectSearchProcesses() throws Throwable {
-		dropdownUtils(processDropdown_Table, stagesCreatedProcess1);
-		dropdownUtils(SubprocessDropdown_Table, stagesCreatedSubProcess2);
-		dropdownUtils(subSubProcessDropdown_Table, stagesCreatedSubsubProcess3);
+	public void selectProcesses() throws Throwable {
+
+		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		dropdownUtils(processDropdown_Table, process);
+
+		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		dropdownUtils(subprocessDropdown_Table, subProcess);
+
+		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		dropdownUtils(subSubProcessDropdown_Table, subSubProcess);
 
 	}
 
 	public void selectStagesDisposition() throws Throwable {
 
-		dropdownUtils(smsStagesDropdown_table, verifyCreatedStages);
+		String sealectStage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		dropdownUtils(StagesDropdown_table, sealectStage);
 
 	}
 
 	public void selectDispositionQuestionSet() throws Throwable {
 
-		dropdownUtils(selectDispostionQuestionSetDropdown, createddispositionQuestionSetText);
+		fieldVerificationUtils.checkthroughAsterisk(selectDispositionQuestionSetLabel, true);
+		assertTrue(selectDispositionQuestionSet.isDisplayed(), "selectDispositionQuestionSet is Not dislayed");
+
+		dropdownUtils(selectStageInDisposition, createdDispositionQuestionSet);
 	}
 
-//	public void addAutoSmsMapping(WebElement autoSmsTemplateDropdown, String value) {
-//
-//		Select selectSmstemplate = new Select(autoSmsTemplateDropdown);
-//		selectSmstemplate.selectByValue(value);
-//
-//	}
+	public void selectFormName() throws Throwable {
 
-	public void saveStagesDisposition() {
+		fieldVerificationUtils.checkthroughAsterisk(selectFormNameLabel, true);
+		assertTrue(selectFormNameInDisposition.isDisplayed(), "selectFormNameInDisposition is Not dislayed");
 
-		wait.until(ExpectedConditions.visibilityOf(firstCreated_UserManagement));
+		dropdownUtils(selectFormNameInDisposition, formName);
+
+	}
+
+//-------------------------------------------------------------------------------------
+	public void clickAndsaveOnDispositionMapingPage() {
+
+		// wait.until(ExpectedConditions.visibilityOf(firstCreated_UserManagement));
 		assertTrue(saveButtonStagesDisposition.isDisplayed(), "saveButtonStagesDisposition is not displayed");
 		saveButtonStagesDisposition.click();
 	}
@@ -1666,26 +1922,65 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	}
 
-	public void addAutoSmsMapping() throws Throwable {
+	public void naviagteToAutoSmsMappingAndAddSmstemplate() throws Throwable {
 
-		js.executeScript("arguments[0].scrollIntoView(true);", autoSMSMappingActions);
-		assertTrue(autoSMSMappingActions.isDisplayed(), "autoSMSMappingLink is not displayed");
-		// autoSMSMappingActions.click();
-		jsClick(driver, autoSMSMappingActions);
+		js.executeScript("arguments[0].scrollIntoView(true);", autoSMSMappingOptions);
 
-		wait.until(ExpectedConditions.visibilityOf(verifyAutoSmsMapping));
-		assertTrue(verifyAutoSmsMapping.isDisplayed(), "verifyAutoSmsMapping is not displayed");
+		wait.until(ExpectedConditions.visibilityOf(autoSMSMappingOptions));
 
-		dropdownUtils(autoSmsTemplatDropdown, last_CreatedSms.getText());
+		jsClick(driver, autoSMSMappingOptions);
+
+//		wait.until(ExpectedConditions.visibilityOf(verifyAutoSmsMappingPage));
+//		assertTrue(verifyAutoSmsMappingPage.isDisplayed(), "verifyAutoSmsMapping is not displayed");
 
 	}
 
-	public void selectSmsTemplateForAutoSMS() throws Throwable {
-		wait.until(ExpectedConditions.visibilityOf(verifyAutoSmsMapping));
-		assertTrue(verifyAutoSmsMapping.isDisplayed(), "verifyAutoSmsMapping is not displayed");
+	// Select Sms temaplte In Auto Sms Mapping Page
+	public void selectSmsTemplateAndClickOnAddForAutoSMSMapping() throws Throwable {
 
-		dropdownUtils(autoSmsTemplatDropdown, last_CreatedSms.getText());
+		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
+		dropdownUtils(autoSmsTemplatDropdown, selectQuestionSet);
 
+//		assertTrue(addButtonInAutoSmsMappingPage.isDisplayed(), "addButtonInAutoSmsMappingPage is Not displayed");
+//		addButtonInAutoSmsMappingPage.isEnabled();
+//		addButtonInAutoSmsMappingPage.click();
+
+	}
+
+	public void verifyAutoSmsUpdateSuccessfully() {
+		verifyAutoSmsMappingUpdateSuccessfully();
+	}
+
+	public void verifyAutoSmsMappingUpdateSuccessfully() {
+		assertTrue(autoSmsAMppingUpdateSuccessfulley_popuop.isDisplayed(),
+				"autoSmsAMppingUpdateSuccessfulley_popuop is not Displayed");
+
+		assertTrue(continueButtonForAutoSmsMApping.isDisplayed(), "continueButtonForAutoSmsMApping is Not dispalyed");
+		continueButtonForAutoSmsMApping.click();
+
+	}
+
+	// verify The added Sms template refect In Temaple Page on auto sms MApping
+	// Page.
+
+	List<String> templateNamesListsInAutoSmsMAppingPage = new ArrayList<String>();
+
+	public void verifyselectedTemplateMatchedWithTemplateNameAfterAdd() throws Throwable {
+
+		naviagteToAutoSmsMappingAndAddSmstemplate();// Naviagte To autom sms Mapping Page
+
+		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
+		dropdownUtils(autoSmsTemplatDropdown, selectQuestionSet);
+
+		for (WebElement templateNamesInAutoSmsMapingPage : listOfAddedTemplateNames) {
+
+			String templateName = templateNamesInAutoSmsMapingPage.getText();
+
+			templateNamesListsInAutoSmsMAppingPage.add(templateName);
+		}
+
+		assertTrue(templateNamesListsInAutoSmsMAppingPage.contains(selectQuestionSet),
+				"Selected/AddedQuestion Isnot added and It it is nOt Dispalyed in auto Sms Mapping page");
 	}
 
 /////////////////////////////////////// Negative Testing ///////////////////////////////////////////////////////////////////////	
@@ -2274,7 +2569,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		searchThroughSpacesInSearchTextfielUTILITY(searchTextfield, searchbutton_Table, noEntriesFound,
+		searchThroughSpacesInSearchTextfielUTILITY(searchTextfield_Stages, searchbutton_Table, noEntriesFound,
 				clearAllFiltersButton_Table);
 	}
 
@@ -2282,7 +2577,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		skipReason.searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchbutton_Table,
+		skipReason.searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield_Stages, emoji, searchbutton_Table,
 				noEntriesFound);
 
 	}
@@ -2310,7 +2605,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
 
-		searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield, searchbutton_Table, noEntriesFound,
+		searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield_Stages, searchbutton_Table, noEntriesFound,
 				clearAllFiltersButton_Table);
 
 	}
@@ -2320,7 +2615,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
 
-		assertTrue(searchTextfield.isDisplayed(), "searchTextfield is not displayed");
+		assertTrue(searchTextfield_Stages.isDisplayed(), "searchTextfield is not displayed");
 
 	}
 
@@ -2360,7 +2655,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void withoutSelectingAnyOptionsIAndsearch() throws Throwable {
 
 		navigateto_SmsTemplateTab();
-		withoutSelectingAnyOptionsIAndsearchUTILITY(templateNameLists, processDropdown_Table, SubprocessDropdown_Table,
+		withoutSelectingAnyOptionsIAndsearchUTILITY(templateNameLists, processDropdown_Table, subprocessDropdown_Table,
 				subSubProcessDropdown_Table, searchbutton_Table);
 
 	}
@@ -2382,7 +2677,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield_Stages, searchbutton_Table,
 				stagesCreatedProcess1, noEntriesFound, clearAllFiltersButton_Table);
 	}
 
@@ -2390,7 +2685,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield_Stages, searchbutton_Table,
 				stagesCreatedSubProcess2, noEntriesFound, clearAllFiltersButton_Table);
 	}
 
@@ -2398,19 +2693,17 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield_Stages, searchbutton_Table,
 				stagesCreatedSubsubProcess3, noEntriesFound, clearAllFiltersButton_Table);
 	}
-	
+
 	public void searchThroughStagesInSearchTextfield() throws Throwable {
 
 		navigatetoStage_verifySMS();
 		navigateto_SmsTemplateTab();
-		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield, searchbutton_Table,
+		searchThroughProcessAndStagesInSearchTextfieldUTILITY(searchTextfield_Stages, searchbutton_Table,
 				searchedStagesName, noEntriesFound, clearAllFiltersButton_Table);
 	}
-	
-	
 
 	String doesnotHaveTemplateProcess = "DemoEmpH P";
 	String doesnotHaveTemplateSubProcess = "DemoEmpH S P";
@@ -2437,7 +2730,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void selectinginvalidProcessandStagesWhichDoesnotHaveAnyCreatedTemplate() {
 
 		selectinginvalidProcessandStagesWhichDoesnotHaveAnyCreatedTemplateUTILITY(processDropdown_Table,
-				SubProcessDropdown, SubprocessDropdown_Table);
+				SubProcessDropdown, subprocessDropdown_Table);
 
 //		navigateto_SmsTemplateTab();
 //		Select select1 = new Select(processDropdown_Table);
@@ -2464,7 +2757,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	public void disableShowSmshistoryAndCheckVisibleOrNot() throws InterruptedException {
 
 		stages.navigateToStages();
-		searchTextfield.sendKeys(searchedStagesName);
+		searchTextfield_Stages.sendKeys(searchedStagesName);
 		searchbutton_Table.click();
 
 		assertTrue(editStagesOption.isDisplayed(), "editStagesOption is not displayed");
@@ -2520,7 +2813,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 																							// element
 		try {
 			stages.navigateToStages();
-			searchTextfield.sendKeys(searchedStagesName);
+			searchTextfield_Stages.sendKeys(searchedStagesName);
 			searchbutton_Table.click();
 
 			assertTrue(editStagesOption.isDisplayed(), "editStagesOption is not displayed");
@@ -2573,7 +2866,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public void NavigateTo_Skipreason() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

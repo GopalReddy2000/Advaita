@@ -1,227 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<testng-results ignored="1" total="9" passed="7" failed="1" skipped="0">
-=======
-<<<<<<< HEAD
->>>>>>> 83b44c9e8f4adfc640f133a0656e8d71d3f37303
-<testng-results ignored="0" total="1" passed="0" failed="0" skipped="1">
+<testng-results ignored="60" total="62" passed="1" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-05-20T14:09:59 IST" name="Default suite" finished-at="2025-05-20T14:10:02 IST" duration-ms="3339">
+  <suite started-at="2025-06-17T17:03:15 IST" name="Default suite" finished-at="2025-06-17T17:03:39 IST" duration-ms="23364">
     <groups>
     </groups>
-    <test started-at="2025-05-20T14:09:59 IST" name="Default test" finished-at="2025-05-20T14:10:02 IST" duration-ms="3339">
-      <class name="com.TestApiKeySetup.TestApiKeySetup">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.TestApiKeySetup.TestApiKeySetup@9bd0fa6]" started-at="2025-05-20T14:09:59 IST" name="setUp" finished-at="2025-05-20T14:10:02 IST" duration-ms="3263" status="FAIL">
-          <exception class="org.openqa.selenium.devtools.DevToolsException">
-            <message>
-              <![CDATA[You are using a no-op implementation of the CDP. The most likely reason for this is that Selenium was unable to find an implementation of the CDP protocol that matches your browser. Please be sure to include an implementation on the classpath, possibly by adding a new (maven) dependency of `org.seleniumhq.selenium:selenium-devtools-vNN:4.25.0` where `NN` matches the major version of the browser you're using.
-Build info: version: '4.25.0', revision: '8a8aea2337'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
-Driver info: DevTools Connection]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.devtools.DevToolsException: You are using a no-op implementation of the CDP. The most likely reason for this is that Selenium was unable to find an implementation of the CDP protocol that matches your browser. Please be sure to include an implementation on the classpath, possibly by adding a new (maven) dependency of `org.seleniumhq.selenium:selenium-devtools-vNN:4.25.0` where `NN` matches the major version of the browser you're using.
-Build info: version: '4.25.0', revision: '8a8aea2337'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
-Driver info: DevTools Connection
-at org.openqa.selenium.devtools.noop.NoOpDomains.target(NoOpDomains.java:60)
-at org.openqa.selenium.devtools.DevTools.findTarget(DevTools.java:195)
-at org.openqa.selenium.devtools.DevTools.createSession(DevTools.java:155)
-at org.openqa.selenium.devtools.DevTools.createSession(DevTools.java:141)
-at com.advaita.BaseClass.TestBase.initialization(TestBase.java:104)
-at com.TestApiKeySetup.TestApiKeySetup.setUp(TestApiKeySetup.java:36)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
-at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
-at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
-at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-at org.testng.TestRunner.privateRun(TestRunner.java:739)
-at org.testng.TestRunner.run(TestRunner.java:614)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
-at org.testng.SuiteRunner.run(SuiteRunner.java:312)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
-at org.testng.TestNG.runSuites(TestNG.java:1112)
-at org.testng.TestNG.run(TestNG.java:1079)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.devtools.DevToolsException -->
+    <test started-at="2025-06-17T17:03:15 IST" name="Default test" finished-at="2025-06-17T17:03:39 IST" duration-ms="23364">
+      <class name="com.TestuserStatus.TestuserStatusCreate">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.TestuserStatus.TestuserStatusCreate@25f723b0]" started-at="2025-06-17T17:03:15 IST" name="setUp" finished-at="2025-06-17T17:03:24 IST" duration-ms="8497" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyTheUserIsAbleToCreateNaviagtePage()[pri:0, instance:com.TestApiKeySetup.TestApiKeySetup@9bd0fa6]" started-at="2025-05-20T14:10:02 IST" name="verifyTheUserIsAbleToCreateNaviagtePage" finished-at="2025-05-20T14:10:02 IST" duration-ms="0" status="SKIP">
-          <exception class="org.openqa.selenium.devtools.DevToolsException">
+        <test-method signature="VerifyTheUserIsableToNaviagteUserStatus()[pri:0, instance:com.TestuserStatus.TestuserStatusCreate@25f723b0]" started-at="2025-06-17T17:03:24 IST" name="VerifyTheUserIsableToNaviagteUserStatus" finished-at="2025-06-17T17:03:24 IST" duration-ms="512" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- VerifyTheUserIsableToNaviagteUserStatus -->
+        <test-method signature="CreateUserStatusAndVerfiyHideMenuForALchemy()[pri:0, instance:com.TestuserStatus.TestuserStatusCreate@25f723b0]" started-at="2025-06-17T17:03:24 IST" name="CreateUserStatusAndVerfiyHideMenuForALchemy" finished-at="2025-06-17T17:03:39 IST" depends-on-methods="com.TestuserStatus.TestuserStatusCreate.VerifyTheUserIsableToNaviagteUserStatus" duration-ms="14295" status="FAIL">
+          <exception class="org.openqa.selenium.NoSuchElementException">
             <message>
-              <![CDATA[You are using a no-op implementation of the CDP. The most likely reason for this is that Selenium was unable to find an implementation of the CDP protocol that matches your browser. Please be sure to include an implementation on the classpath, possibly by adding a new (maven) dependency of `org.seleniumhq.selenium:selenium-devtools-vNN:4.25.0` where `NN` matches the major version of the browser you're using.
+              <![CDATA[no such element: Unable to locate element: {"method":"xpath","selector":"(//h1[text()=' User Status '])[1]"}
+  (Session info: chrome=136.0.7103.114)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
 Build info: version: '4.25.0', revision: '8a8aea2337'
 System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
-Driver info: DevTools Connection]]>
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Command: [f049715246b54c5b6fe52fb9df695f4c, findElement {value=(//h1[text()=' User Status '])[1], using=xpath}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 136.0.7103.114, chrome: {chromedriverVersion: 136.0.7103.113 (76fa3c17824..., userDataDir: C:\Users\W2378\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:57260}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:57260/devtoo..., se:cdpVersion: 136.0.7103.114, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: f049715246b54c5b6fe52fb9df695f4c]]>
             </message>
             <full-stacktrace>
-              <![CDATA[org.openqa.selenium.devtools.DevToolsException: You are using a no-op implementation of the CDP. The most likely reason for this is that Selenium was unable to find an implementation of the CDP protocol that matches your browser. Please be sure to include an implementation on the classpath, possibly by adding a new (maven) dependency of `org.seleniumhq.selenium:selenium-devtools-vNN:4.25.0` where `NN` matches the major version of the browser you're using.
+              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"(//h1[text()=' User Status '])[1]"}
+  (Session info: chrome=136.0.7103.114)
+For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
 Build info: version: '4.25.0', revision: '8a8aea2337'
 System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '17.0.11'
-Driver info: DevTools Connection
-at org.openqa.selenium.devtools.noop.NoOpDomains.target(NoOpDomains.java:60)
-at org.openqa.selenium.devtools.DevTools.findTarget(DevTools.java:195)
-at org.openqa.selenium.devtools.DevTools.createSession(DevTools.java:155)
-at org.openqa.selenium.devtools.DevTools.createSession(DevTools.java:141)
-at com.advaita.BaseClass.TestBase.initialization(TestBase.java:104)
-at com.TestApiKeySetup.TestApiKeySetup.setUp(TestApiKeySetup.java:36)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
-at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-at java.base/java.lang.reflect.Method.invoke(Method.java:568)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethodConsideringTimeout(MethodInvocationHelper.java:71)
-at org.testng.internal.invokers.ConfigInvoker.invokeConfigurationMethod(ConfigInvoker.java:400)
-at org.testng.internal.invokers.ConfigInvoker.invokeConfigurations(ConfigInvoker.java:333)
-at org.testng.internal.invokers.TestInvoker.runConfigMethods(TestInvoker.java:833)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:600)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:992)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
-at org.testng.TestRunner.privateRun(TestRunner.java:739)
-at org.testng.TestRunner.run(TestRunner.java:614)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
-at org.testng.SuiteRunner.run(SuiteRunner.java:312)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
-at org.testng.TestNG.runSuites(TestNG.java:1112)
-at org.testng.TestNG.run(TestNG.java:1079)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.devtools.DevToolsException -->
-          <reporter-output>
-          </reporter-output>
-<<<<<<< HEAD
-        </test-method> <!-- verifyTheUserIsAbleToCreateNaviagtePage -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.TestApiKeySetup.TestApiKeySetup@9bd0fa6]" started-at="2025-05-20T14:10:02 IST" name="tearDown" finished-at="2025-05-20T14:10:02 IST" duration-ms="0" status="SKIP">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- tearDown -->
-      </class> <!-- com.TestApiKeySetup.TestApiKeySetup -->
-=======
-        </test-method> <!-- EndToEnDMenuSetupNegative -->
-      </class> <!-- com.advaita.TestCreate.TestMenusSetupCreate -->
-=======
-<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
->>>>>>> 02d29c0148f104b33822e240db974919af06f0b4
-  <reporter-output>
-  </reporter-output>
-  <suite started-at="2025-05-13T16:00:06 IST" name="Default suite" finished-at="2025-05-13T16:04:19 IST" duration-ms="253592">
-    <groups>
-    </groups>
-    <test started-at="2025-05-13T16:00:06 IST" name="Default test" finished-at="2025-05-13T16:04:19 IST" duration-ms="253592">
-      <class name="com.advaita.TestCreate.TestManualAllocation">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:00:06 IST" name="setUp" finished-at="2025-05-13T16:00:14 IST" duration-ms="8505" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- setUp -->
-        <test-method signature="verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:00:14 IST" name="verifyProcessCreate" finished-at="2025-05-13T16:00:26 IST" duration-ms="12060" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyProcessCreate -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:00:26 IST" name="getResult" finished-at="2025-05-13T16:00:27 IST" duration-ms="391" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyProcessCreate status=SUCCESS method=TestManualAllocation.verifyProcessCreate()[pri:1, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:2, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:00:27 IST" name="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType" finished-at="2025-05-13T16:01:13 IST" duration-ms="46263" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:13 IST" name="getResult" finished-at="2025-05-13T16:01:13 IST" duration-ms="31" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType status=SUCCESS method=TestManualAllocation.verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType()[pri:2, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:13 IST" name="verifynewCreateMetaData" finished-at="2025-05-13T16:01:25 IST" duration-ms="12422" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifynewCreateMetaData -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:25 IST" name="getResult" finished-at="2025-05-13T16:01:25 IST" duration-ms="22" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifynewCreateMetaData status=SUCCESS method=TestManualAllocation.verifynewCreateMetaData()[pri:3, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:25 IST" name="verifyCreateManualUpload" finished-at="2025-05-13T16:01:38 IST" duration-ms="12678" status="FAIL">
-          <exception class="org.openqa.selenium.ElementNotInteractableException">
-            <message>
-              <![CDATA[element not interactable: element has zero size
-  (Session info: chrome=136.0.7103.93)
-Build info: version: '4.25.0', revision: '8a8aea2337'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '23'
 Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [5145fd4f7f62cc8cd1a96c952fe18a72, clickElement {id=f.226307F7CE3FB43ABB052E744D46FB79.d.EFD9E4544465588E1B814CEE223B5CE2.e.2224}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 136.0.7103.93, chrome: {chromedriverVersion: 136.0.7103.92 (cb81a4cc5087..., userDataDir: C:\Users\w2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:63758}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:63758/devtoo..., se:cdpVersion: 136.0.7103.93, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Element: [[ChromeDriver: chrome on windows (5145fd4f7f62cc8cd1a96c952fe18a72)] -> xpath: //tbody//tr//td[normalize-space()='DemoI Details Upload']/..//a[@id='show_history']]
-Session ID: 5145fd4f7f62cc8cd1a96c952fe18a72]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.ElementNotInteractableException: element not interactable: element has zero size
-  (Session info: chrome=136.0.7103.93)
-Build info: version: '4.25.0', revision: '8a8aea2337'
-System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '23'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [5145fd4f7f62cc8cd1a96c952fe18a72, clickElement {id=f.226307F7CE3FB43ABB052E744D46FB79.d.EFD9E4544465588E1B814CEE223B5CE2.e.2224}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 136.0.7103.93, chrome: {chromedriverVersion: 136.0.7103.92 (cb81a4cc5087..., userDataDir: C:\Users\w2129\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:63758}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:63758/devtoo..., se:cdpVersion: 136.0.7103.93, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Element: [[ChromeDriver: chrome on windows (5145fd4f7f62cc8cd1a96c952fe18a72)] -> xpath: //tbody//tr//td[normalize-space()='DemoI Details Upload']/..//a[@id='show_history']]
-Session ID: 5145fd4f7f62cc8cd1a96c952fe18a72
-at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:501)
-at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:485)
+Command: [f049715246b54c5b6fe52fb9df695f4c, findElement {value=(//h1[text()=' User Status '])[1], using=xpath}]
+Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 136.0.7103.114, chrome: {chromedriverVersion: 136.0.7103.113 (76fa3c17824..., userDataDir: C:\Users\W2378\AppData\Loca...}, fedcm:accounts: true, goog:chromeOptions: {debuggerAddress: localhost:57260}, networkConnectionEnabled: false, pageLoadStrategy: normal, platformName: windows, proxy: Proxy(), se:cdp: ws://localhost:57260/devtoo..., se:cdpVersion: 136.0.7103.114, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
+Session ID: f049715246b54c5b6fe52fb9df695f4c
+at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:480)
 at org.openqa.selenium.remote.ErrorCodec.decode(ErrorCodec.java:167)
 at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:138)
 at org.openqa.selenium.remote.codec.w3c.W3CHttpResponseCodec.decode(W3CHttpResponseCodec.java:50)
@@ -229,12 +50,19 @@ at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.ja
 at org.openqa.selenium.remote.service.DriverCommandExecutor.invokeExecute(DriverCommandExecutor.java:216)
 at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:174)
 at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:545)
-at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:223)
-at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:76)
-at com.advaita.DataSetUp.PageObject.ManualUpload.valiadtionsAfterCreationOfManualUpload(ManualUpload.java:320)
-at com.advaita.TestCreate.TestManualAllocation.verifyCreateManualUpload(TestManualAllocation.java:196)
-at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+at org.openqa.selenium.remote.ElementLocation$ElementFinder$2.findElement(ElementLocation.java:165)
+at org.openqa.selenium.remote.ElementLocation.findElement(ElementLocation.java:59)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:368)
+at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
+at org.openqa.selenium.support.pagefactory.DefaultElementLocator.findElement(DefaultElementLocator.java:68)
+at org.openqa.selenium.support.pagefactory.internal.LocatingElementHandler.invoke(LocatingElementHandler.java:38)
+at jdk.proxy2/jdk.proxy2.$Proxy15.isDisplayed(Unknown Source)
+at com.advaita.UserStatus.pageobject.UserStatus.naviagteToCreateUserStatus(UserStatus.java:438)
+at com.TestuserStatus.TestuserStatusCreate.CreateUserStatusAndVerfiyHideMenuForALchemy(TestuserStatusCreate.java:233)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
 at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
 at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:687)
 at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
@@ -243,7 +71,7 @@ at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInv
 at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
 at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
 at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
 at org.testng.TestRunner.privateRun(TestRunner.java:741)
 at org.testng.TestRunner.run(TestRunner.java:616)
 at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
@@ -261,92 +89,11 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
 ]]>
             </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.ElementNotInteractableException -->
+          </exception> <!-- org.openqa.selenium.NoSuchElementException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyCreateManualUpload -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:38 IST" name="getResult" finished-at="2025-05-13T16:01:38 IST" duration-ms="250" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateManualUpload status=FAILURE method=TestManualAllocation.verifyCreateManualUpload()[pri:4, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateNonMeasurable()[pri:5, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:01:38 IST" name="verifyCreateNonMeasurable" finished-at="2025-05-13T16:02:00 IST" duration-ms="21901" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyCreateNonMeasurable -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:02:00 IST" name="getResult" finished-at="2025-05-13T16:02:00 IST" duration-ms="45" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateNonMeasurable status=SUCCESS method=TestManualAllocation.verifyCreateNonMeasurable()[pri:5, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:02:00 IST" name="verifyStageCreate" finished-at="2025-05-13T16:02:32 IST" duration-ms="31330" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyStageCreate -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:02:32 IST" name="getResult" finished-at="2025-05-13T16:02:32 IST" duration-ms="31" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyStageCreate status=SUCCESS method=TestManualAllocation.verifyStageCreate()[pri:6, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyUserCreateAndUserMapping2()[pri:7, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:02:32 IST" name="verifyUserCreateAndUserMapping2" finished-at="2025-05-13T16:03:54 IST" duration-ms="81953" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyUserCreateAndUserMapping2 -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:03:54 IST" name="getResult" finished-at="2025-05-13T16:03:54 IST" duration-ms="15" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyUserCreateAndUserMapping2 status=SUCCESS method=TestManualAllocation.verifyUserCreateAndUserMapping2()[pri:7, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method signature="verifyCreateSamplingPlan()[pri:8, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:03:54 IST" name="verifyCreateSamplingPlan" finished-at="2025-05-13T16:04:19 IST" duration-ms="25572" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- verifyCreateSamplingPlan -->
-        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:04:19 IST" name="getResult" finished-at="2025-05-13T16:04:19 IST" duration-ms="42" status="PASS">
-          <params>
-            <param index="0">
-              <value>
-                <![CDATA[[TestResult name=verifyCreateSamplingPlan status=SUCCESS method=TestManualAllocation.verifyCreateSamplingPlan()[pri:8, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63] output={null}]]]>
-              </value>
-            </param>
-          </params>
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getResult -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.advaita.TestCreate.TestManualAllocation@3f390d63]" started-at="2025-05-13T16:04:19 IST" name="tearDown" finished-at="2025-05-13T16:04:19 IST" duration-ms="15" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- tearDown -->
-<<<<<<< HEAD
-      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
-=======
-      </class> <!-- com.advaita.EndtoEnd.run.test.MastersEndToEnd -->
->>>>>>> ea653bb21122a5d6618e216dd0e951a8c4f0e483
->>>>>>> 02d29c0148f104b33822e240db974919af06f0b4
->>>>>>> 83b44c9e8f4adfc640f133a0656e8d71d3f37303
+        </test-method> <!-- CreateUserStatusAndVerfiyHideMenuForALchemy -->
+      </class> <!-- com.TestuserStatus.TestuserStatusCreate -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

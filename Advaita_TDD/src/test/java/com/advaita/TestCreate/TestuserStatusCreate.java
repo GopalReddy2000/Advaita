@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.UserStatus.pageobject.userStatus;
+import com.advaita.UserStatus.pageobject.UserStatus;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.pageObjects.UserSetupPage;
 import com.aventstack.extentreports.ExtentReports;
@@ -32,7 +32,7 @@ public class TestuserStatusCreate extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	userStatus userStatus1;
+	UserStatus userStatus;
 	UserSetupPage userSetupPage;
 
 	public TestuserStatusCreate() throws Exception {
@@ -65,7 +65,7 @@ public class TestuserStatusCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		userStatus1 = new userStatus(); // object creation with referenac of class
+		userStatus = new UserStatus(); // object creation with referenac of class
 
 	}
 
@@ -81,57 +81,56 @@ public class TestuserStatusCreate extends TestBase {
 
 	// @Test(priority = 1)
 	public void navigateToMenusSetup() throws Throwable {
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
 	}
 
 	// @Test(priority = 3)
 	public void navigateTouserStatus() throws Throwable {
-		userStatus1.createUserStatus();
+		userStatus.naviagteToCreateUserStatus();
 
 	}
 
 	// @Test(priority = 4)
 	public void createuserStatus() {
-		userStatus1.createUserStatus();
+		userStatus.naviagteToCreateUserStatus();
 		// userStatus1.statusNameInputField();
-		userStatus1.descriptionField();
+	//	userStatus.descriptionField();
 	}
 
 	// @Test(priority = 5)
 	public void MultiselectDropdwon() throws Throwable {
-		userStatus1.selectMenusToHideDropdwon();
-		userStatus1.CreateButtonclick();
-		userStatus1.verifyCreatedStatus();
+		userStatus.selectMenusToHideDropdwon();
+		userStatus.clickOnCreateButton();
+		userStatus.verifyCreatedStatus();
 		// userStatus1.CreatedStatusList();
 	}
 
 	// Create
 	@Test
 	public void createHideStatus() throws Throwable {
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatus();
-		userStatus1.statusNameInputField("Trainee Employee1");
-		userStatus1.descriptionField();
-		userStatus1.selectMenusToHideDropdwon();
-		userStatus1.CreateButtonclick();
-		userStatus1.verifyCreatedStatus();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.naviagteToCreateUserStatus();
+		//userStatus.statusNameInputField("Trainee Employee1");
+		userStatus.descriptionField();
+		userStatus.selectMenusToHideDropdwon();
+		userStatus.clickOnCreateButton();
+		userStatus.verifyCreatedStatus();
 //		userStatus1.CreatedStatusList();
-		userStatus1.selectStatusHideSingleMenus(); // select "status"with Single "Hide" menus
+	//	userStatus.selectStatusHideSingleMenus(); // select "status"with Single "Hide" menus
 //		userStatus1.selectStatusHideMultipleMenus(); //Select "Status" with multiple "Hide Menus"			
 	}
 
 	// Table
 	@Test(priority = 6)
 	public void userStatusTable() throws Throwable {
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
-		userStatus1.createUserStatus();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.naviagteToCreateUserStatus();
 
-		userStatus1.searchStatus();
-		userStatus1.clearallFiltes();
+		userStatus.searchStatus();
+		userStatus.clearallFiltes();
 		// userStatus1.DeleteStatus();
 	}
 
@@ -139,34 +138,34 @@ public class TestuserStatusCreate extends TestBase {
 	@Test(priority = 7)
 	public void userStatusEdit() throws Throwable {
 
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
-		userStatus1.createUserStatus();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.naviagteToCreateUserStatus();
 
-		userStatus1.EditStatus(); // Edit mandatory field name
-		userStatus1.EditDescriptnField();
-		userStatus1.multiseletToMenuHide();
+		userStatus.EditStatus(); // Edit mandatory field name
+		userStatus.EditDescriptnField();
+		userStatus.multiseletToMenuHide();
 	}
 
 	@Test
 	public void navigateToAmdinProfile() throws Throwable {
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
-		userStatus1.createUserStatus();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.naviagteToCreateUserStatus();
 
 		// userStatus1.navigateToaAdmin();
 
-		userStatus1.searchmenusInSearchtextfield();
+		userStatus.searchmenusInSearchtextfield();
 
 	}
 
 	// @Test(invocationCount = 3)
 	public void searchmenusInSearchtextfield() throws Throwable {
-		userStatus1.navigateToMenuSetup();
-		userStatus1.callLogatTabViewClick();
-		userStatus1.createUserStatus();
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.naviagteToCreateUserStatus();
 
-		userStatus1.searchmenusInSearchtextfield();
+		userStatus.searchmenusInSearchtextfield();
 	}
 
 	// <================= Negative Script for userStatus
@@ -174,36 +173,36 @@ public class TestuserStatusCreate extends TestBase {
 	@Test(priority = 8)
 	public void verifyWithoutSelectingAnyFieldAndCreateuserStatus() {
 
-		userStatus1.createUserStatus();
-		userStatus1.withoutSelectingAnyFieldAndCreateUserstatus();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.withoutSelectingAnyFieldAndCreateUserstatus();
 	}
 
 	@Test(priority = 9)
 	public void verifyTheUsercreateuserStatusThroughSpecialCharacters() { // need to implemennt after fix
 
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatusThroughSpecialCharacters();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.createUserStatusThroughSpecialCharacters();
 	}
 
 	@Test(priority = 10) // need to update after fixed
 	public void verifyCreateuserStatusThrougByenteringNonEnglishCharacterInStatusNameField() {
 
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
 
 	}
 
 	@Test(priority = 10) // need to update after fixed
 	public void verifyCreateuserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield() {
 
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield();
 
 	}
 
 	@Test(priority = 11)
 	public void verifyTheUsercreateuserStatusThroughEmojis() { // need to implemennt after fix
-		userStatus1.userCreateUserStatusThroughEmojis();
+		userStatus.userCreateUserStatusThroughEmojis();
 
 	}
 
@@ -211,71 +210,72 @@ public class TestuserStatusCreate extends TestBase {
 	public void verifyCreateUserByByEnteringMoreThanCharacterLimitInStatusNameTetxfield() { // Need To update after
 																							// fixed
 
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
 	}
 
 	@Test(priority = 13)
 	public void VerifycreateuserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield() {
 
-		userStatus1.createUserStatus();
-		userStatus1.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
+		userStatus.naviagteToCreateUserStatus();
+		userStatus.createUserStatusByEnteringMoreThanCharacterLimitForStatusNameTetxfield();
 	}
 
 	@Test(priority = 14)
 	public void verifyCreateuserStatusThroughOnlyNumericValue() { // need to Update After fix
-		userStatus1.createUserStatusThroughOnlyNumericValue();
+		userStatus.createUserStatusThroughOnlyNumericValue();
 
 	}
 
 	@Test(priority = 15)
 	public void verifyCreateuserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault() {
-		userStatus1.createUserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault();
+		userStatus.createUserStatusByEnablingAndSelectingOptionstoToConsiderIsDefault();
 	}
 
 	@Test(priority = 16)
 	public void verifyUserCreateuserStatuswithoutSelectingActiveStausAndIsDefault() { // implement in Create User status
 
-		userStatus1.userCreateUserStatuswithoutSelectingActiveStausAndIsDefault();
+		userStatus.userCreateUserStatuswithoutSelectingActiveStausAndIsDefault();
 	}
 
 	@Test(priority = 17)
 	public void verifySearchInvalidCharacterInSearchTextfieldInuserStatusPage() {
-		userStatus1.searchInvalidCharacterInSearchTextfieldInUserStatusPage();
+		userStatus.searchInvalidCharacterInSearchTextfieldInUserStatusPage();
 
 	}
 
 	@Test(priority = 18)
 	public void verifyTheUserTryToSearchByWithoutEnteringAnyData() {
-		userStatus1.tryToSearchByWithoutEnteringAnyData();
+		userStatus.tryToSearchByWithoutEnteringAnyData();
 	}
 
 	@Test(priority = 19)
 	public void verifyUserSearchthroughActiveStatus() {
-		userStatus1.userSearchthroughActiveStatus();
+		userStatus.userSearchthroughActiveStatus();
 	}
 
 	@Test(priority = 20)
 	public void verifyUserSearchthroughisDefaultStatus() {
-		userStatus1.userSearchthroughisDefaultStatus();
+		userStatus.userSearchthroughisDefaultStatus();
 	}
 
 	@Test(priority = 21)
 	public void verufyTheUserfilledAlldataInCreateuserStatusPageAndClickONCancel() {
-		userStatus1.filledAlldataInCreateUserStatusPageAndClickONCancel();
+		userStatus.filledAlldataInCreateUserStatusPageAndClickONCancel();
 	}
 
 	@Test(priority = 22)
 	public void verifyTeUserAfterClickOnDeleteIconInsteofClickDeleteOrcancelButtonClickOutise() {
-		userStatus1.afterClickOnDeleteIconInsteofClickDeleteOrcancelButtonClickOutise();
+		userStatus.afterClickOnDeleteIconInsteofClickDeleteOrcancelButtonClickOutise();
 
 	}
 
 	// @Test(priority = 23)
 	public void TheUserAbleTodeleteAlluserStatus() {
-		userStatus1.TheUserAbleTodeleteAllUserStatus();
+		userStatus.TheUserAbleTodeleteAllUserStatus();
 
 	}
+//====================================================================================================================	
 
 	// END To END_User Status
 
@@ -327,7 +327,7 @@ public class TestuserStatusCreate extends TestBase {
 		userSetupPage.clickOnGroupCreateButton();
 		userSetupPage.userMappingRecord(userName);
 		userSetupPage.userMappingProcess(processName, subProcess, subSubProcess, stage);
-		userStatus1.logoutAmdin();
+		userStatus.logoutAmdin();
 		loginToUser(userName);
 		userSetupPage.userLogin(userName, commmonPassword); // need to contonitine
 	}
@@ -336,118 +336,117 @@ public class TestuserStatusCreate extends TestBase {
 	// MyProfile_Emailtextfield_Negative
 	@Test(priority = 24)
 	public void verifyTheuserWithoutFilledAnyFieldInmandatoryFieldAndUpdate() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userWithoutFilledAnyFieldInmandatoryFieldAndUpdate();
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userWithoutFilledAnyFieldInmandatoryFieldAndUpdate();
 	}
 
 	@Test(priority = 25)
 	public void verifyTheUserFilledAllTheTextfieldAndClickONCancel() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userFilledAllTheTextfieldAndClickONCancel(fake.lastName1(), fake.lastName2(), fake.lastName1(),
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userFilledAllTheTextfieldAndClickONCancel(fake.lastName1(), fake.lastName2(), fake.lastName1(),
 				fake.lastName2());
 	}
 
 	@Test(priority = 26)
 	public void verifyTheUSerisAbleToUpdateWithoutEnterEmailId() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, NoDataIntextfield, userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, NoDataIntextfield, userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 27)
 	public void verifyTheUSerisAbleToUpdateByEnterOnlyCharacterOnEmailTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, fake.lastName1(), userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, fake.lastName1(), userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 28)
 	public void verifyTheUserisAbleToUpdateByEnterNumberInEmailTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, numericalNumber, userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, numericalNumber, userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 29)
 	public void verifyTheUSerisAbleToUpdateWithoutEnterDomainNamerInEmailTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, emailWithoutDomainName, userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, emailWithoutDomainName, userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 30)
 	public void verifyTheUSerisAbleToUpdateWithoutEnterSpecialCharactharacterInEmailTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, emailWithoutSpecilaChar, userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, emailWithoutSpecilaChar, userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 31)
 	public void verifyTheUSerisAbleToUpdateByEnteringEmailThroughDiffLanguages() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.emailtextfieldLabel,
-				userStatus1.emailTextfield, emailWithDifferntLanguage, userStatus1.emailTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.emailtextfieldLabel,
+				userStatus.emailTextfield, emailWithDifferntLanguage, userStatus.emailTextFieldErrorMesg);
 	}
 
 	@Test(priority = 32)
 	public void verifyTheUserIsAbleToUpdateByEntringemojisInEmailTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY(userStatus1.emailTextfield, emoji,
-				userStatus1.updateOptionAccountSettings, userStatus1.successFullyCreated_popuop);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY(userStatus.emailTextfield, emoji,
+				userStatus.updateOptionAccountSettings, userStatus.successFully_popuop);
 	}
 
 	@Test(priority = 33)
 	public void UerifyTheUserIsAbleToEnterRepeatedCharacterINTextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userIsAbleToenterRepeatedCharacterINTextfield(userStatus1.firstNameTextfield, "A".repeat(300));
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userIsAbleToenterRepeatedCharacterINTextfield(userStatus.firstNameTextfield, "A".repeat(300));
 	}
 
 	// MyProfile_MobileNumber
 	@Test(priority = 34)
 	public void verifyTheUSerisAbleToUpdateByEnteringCharacterMobileNumberIntextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.MobileLabel,
-				userStatus1.mobileTextfield, fake.lastName1(), userStatus1.mobileNumberTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.MobileLabel,
+				userStatus.mobileTextfield, fake.lastName1(), userStatus.mobileNumberTextFieldErrorMesg);
 	}
 
 	@Test(priority = 35)
 	public void verifyTheUSerisAbleToUpdateByEnteringLessThanCharacterLimitInMobiletextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.MobileLabel,
-				userStatus1.mobileTextfield, lessThan10DigitNumber, userStatus1.mobileNumberTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.MobileLabel,
+				userStatus.mobileTextfield, lessThan10DigitNumber, userStatus.mobileNumberTextFieldErrorMesg);
 	}
 
 	@Test(priority = 36)
 	public void verifyTheUSerisAbleToUpdateByEnteringMoreThanCharacterLimitInMobiletextfield() {
 
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.MobileLabel,
-				userStatus1.mobileTextfield, moreThan10DigitNumber, userStatus1.mobileNumberTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.MobileLabel,
+				userStatus.mobileTextfield, moreThan10DigitNumber, userStatus.mobileNumberTextFieldErrorMesg);
 	}
 
 	@Test(priority = 37)
 	public void verifyTheUSerisAbleToUpdateByEnteringMobileNumberThroughDifferntLanguagesInIntextfield() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus1.MobileLabel,
-				userStatus1.mobileTextfield, mobileNumberWithDiffentLanguage,
-				userStatus1.mobileNumberTextFieldErrorMesg);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.verifyTheUSerisAbleToUpdateByEnteronlyCharacterIntextfield(userStatus.MobileLabel,
+				userStatus.mobileTextfield, mobileNumberWithDiffentLanguage, userStatus.mobileNumberTextFieldErrorMesg);
 	}
 
 	@Test(priority = 38)
 	public void verifyTheUserIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY() {
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY(userStatus1.mobileTextfield, emoji,
-				userStatus1.updateOptionAccountSettings, userStatus1.successFullyCreated_popuop);
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userIsAbleToUpdateByEnteringEmojisInTextfieldUTILITY(userStatus.mobileTextfield, emoji,
+				userStatus.updateOptionAccountSettings, userStatus.successFully_popuop);
 	}
 
 	// <=================== My Profile Positive And Neagtive=============>
 	@Test(priority = 39)
 	public void myProfileAccountSettingPostiveAndNeagtiveEndToEnd() {
 
-		userStatus1.navigateToAccountSettingPage();
-		userStatus1.userIsAbleToChangeUserName(fake.lastName1(), fake.lastName2());
-		userStatus1.userIsAbleTochangeEmailId(fake.lastName1() + fake.lastName2() + "@gmail.com");
-		userStatus1.userIsAbleTochangeEmailMobileNumber();
+		userStatus.navigateToAccountSettingPage();
+		userStatus.userIsAbleToChangeUserName(fake.lastName1(), fake.lastName2());
+		userStatus.userIsAbleTochangeEmailId(fake.lastName1() + fake.lastName2() + "@gmail.com");
+		userStatus.userIsAbleTochangeEmailMobileNumber();
 		// userStatus1.userIsAbleToeditProflePicture();
 
 		verifyTheuserWithoutFilledAnyFieldInmandatoryFieldAndUpdate();
@@ -475,82 +474,82 @@ public class TestuserStatusCreate extends TestBase {
 	public void verifyTheUserIsAbleToChangePassword() {
 
 //		At least 1 upper case letter (A to Z), At least 1 number (0-9), At least 1 special character , At least 8 chracters		
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToChangePassword(commmonPassword, newPassword, newPassword);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToChangePassword(commmonPassword, newPassword, newPassword);
 	}
 
 	@Test(priority = 41)
 	public void verifyTheUserisAbleToSeeTheOldPasswordByClickEyeIcon() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userisAbleToSeeThePasswordByClickEyeIcon(userStatus1.oldPasswordTextfield, commmonPassword,
-				userStatus1.oldPassEyeIcon);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userisAbleToSeeThePasswordByClickEyeIcon(userStatus.oldPasswordTextfield, commmonPassword,
+				userStatus.oldPassEyeIcon);
 	}
 
 	@Test(priority = 42)
 	public void verifyTheUserisAbleToSeeTheNewPasswordByClickEyeIcon() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userisAbleToSeeThePasswordByClickEyeIcon(userStatus1.newPasswordTextfield, commmonPassword,
-				userStatus1.newPassEyeIcon);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userisAbleToSeeThePasswordByClickEyeIcon(userStatus.newPasswordTextfield, commmonPassword,
+				userStatus.newPassEyeIcon);
 	}
 
 	@Test(priority = 43)
 	public void verifyTheUserisAbleToSeeTheConformPasswordByClickEyeIcon() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userisAbleToSeeThePasswordByClickEyeIcon(userStatus1.conformPasswordTextfield, commmonPassword,
-				userStatus1.conformPassEyeIcon);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userisAbleToSeeThePasswordByClickEyeIcon(userStatus.conformPasswordTextfield, commmonPassword,
+				userStatus.conformPassEyeIcon);
 	}
 	// <================== chaange password Neagative
 
 	@Test(priority = 44)
 	public void verifyTheUserIsAbleToChangePassordWithoutEnterOldPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(emprtyPassword, newPassword,
-				newPassword, userStatus1.oldPassIsRequiredErrorMesg);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(emprtyPassword, newPassword,
+				newPassword, userStatus.oldPassIsRequiredErrorMesg);
 
 	}
 
 	@Test(priority = 45)
 	public void verifyTheUserIsAbleToCahngePassordWithoutEnterNewPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, emprtyPassword,
-				newPassword, userStatus1.newPasswordFieldErrorMessagElement);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, emprtyPassword,
+				newPassword, userStatus.newPasswordFieldErrorMessagElement);
 
 	}
 
 	@Test(priority = 46)
 	public void verifyTheUserIsAbleToCahngePassordWithoutEnterConformPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, newPassword,
-				emprtyPassword, userStatus1.conformPassErrorMessage);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, newPassword,
+				emprtyPassword, userStatus.conformPassErrorMessage);
 
 	}
 
 	@Test(priority = 47)
 	public void verifyTheUSerIsAbleDoChangePasswordByEnteringWrongOldPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(wrongPassword, newPassword,
-				newPassword, userStatus1.oldPasswordErrorMessage);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(wrongPassword, newPassword, newPassword,
+				userStatus.oldPasswordErrorMessage);
 	}
 
 	@Test(priority = 48)
 	public void verifyTheUSerIsAbleDoChangePasswordByEnteringWrongNewPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, wrongPassword,
-				newPassword, userStatus1.newPasswordFieldErrorMessagElement);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, wrongPassword, newPassword,
+				userStatus.newPasswordFieldErrorMessagElement);
 	}
 
 	@Test(priority = 49)
 	public void verifyTheUSerIsAbleDoChangePasswordByEnteringWrongConformPAssword() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, newPassword,
-				wrongPassword, userStatus1.conformPassErrorMessage);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToUpdateWithoutEnterAnyOnePasswordTextfieldUTILITY(newPassword, newPassword, wrongPassword,
+				userStatus.conformPassErrorMessage);
 	}
 
 	@Test(priority = 50)
 	public void VerifyTheUserIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimitU() {
-		userStatus1.navigateToChangePasswordPage();
-		userStatus1.userIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimit(newPassword,
-				PaswordLessThanEightCharacter, userStatus1.newPasswordFieldErrorMessagElement);
+		userStatus.navigateToChangePasswordPage();
+		userStatus.userIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimit(newPassword,
+				PaswordLessThanEightCharacter, userStatus.newPasswordFieldErrorMessagElement);
 	}
 
 	// <=================== Change Password Positive/Neagtive Test=============>
@@ -570,23 +569,20 @@ public class TestuserStatusCreate extends TestBase {
 		verifyTheUSerIsAbleDoChangePasswordByEnteringWrongConformPAssword();
 		VerifyTheUserIsAbleToChangePasswordByEnterPasswwordLessThanCharacterLimitU();
 	}
-	
 
-		  //Edit
-		//@Test
-		public void UserStatusEdit() throws Throwable {
-			
-			userStatus1.navigateToMenuSetup();
-			userStatus1.callLogatTabViewClick();
-			userStatus1.NavigateToUserStatus();
-			
-			userStatus1.EditStatus();  //Edit mandatory field name
-			userStatus1.EditDescriptnField();  
-			userStatus1.multiseletToMenuHide();
-		}
-		
+	// Edit
+	// @Test
+	public void UserStatusEdit() throws Throwable {
 
-	
+		userStatus.navigateToMenuSetup();
+		userStatus.callLogatTabViewClick();
+		userStatus.NavigateToUserStatus();
+
+		userStatus.EditStatus(); // Edit mandatory field name
+		userStatus.EditDescriptnField();
+		userStatus.multiseletToMenuHide();
+	}
+
 	@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();

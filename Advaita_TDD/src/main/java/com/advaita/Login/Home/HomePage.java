@@ -4,11 +4,11 @@ import com.advaita.BaseClass.TestBase;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.testng.Assert.assertTrue;
 
 public class HomePage extends TestBase {
-
 
 	@FindBy(xpath = "//a[normalize-space()='Data Setup']")
 	public WebElement DataSetUpButton;
@@ -36,12 +36,19 @@ public class HomePage extends TestBase {
 
 	@FindBy(id = "pills-Disposition-tab")
 	public WebElement dispositionTab;
-	
+
 	@FindBy(xpath = "(//button[normalize-space()='Masters'])[1]")
 	public WebElement mastersTabElement;
-	
+
 	@FindBy(xpath = "//a[text()='+ Add Disposition']")
 	public WebElement dispositionCreateButton;
+
+	// CallLogStage View
+	@FindBy(xpath = "//a[@id='menulist2']")
+	public WebElement alchemySidemenubar;
+
+	@FindBy(xpath = "//a//span[text()='Site Settings']")
+	public WebElement siteSettings;
 
 	public HomePage() {
 
@@ -60,12 +67,13 @@ public class HomePage extends TestBase {
 		click(driver, workflowDesign);
 		assertTrue(masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
 	}
+
 	public void clickOnMaster() {
-		
+
 		click(driver, workflowDesign);
 		assertTrue(masterParameterPage.isDisplayed(), "masterParameterPage is not displayed.");
 		click(driver, mastersTabElement);
-		
+
 	}
 
 	public void clickOnEditMeasurableSet() {
@@ -92,4 +100,17 @@ public class HomePage extends TestBase {
 
 	}
 
+	public void navigateTo_AlchemyModule() {
+
+		assertTrue(alchemySidemenubar.isDisplayed(), "alchemySidemenubar is not displayed");
+		jsClick(driver, alchemySidemenubar);
+
+	}
+
+	public void navigateToSiteSettings() {
+
+		assertTrue(siteSettings.isDisplayed(), "siteSettingsi snot Dispalyed");
+		// actions.scrollByAmount(50, 50);
+		click(driver, siteSettings);
+	}
 }

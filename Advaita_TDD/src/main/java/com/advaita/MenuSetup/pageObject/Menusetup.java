@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,15 +16,19 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
-import com.advaita.UserStatus.pageobject.userStatus;
+import com.advaita.UserStatus.pageobject.UserStatus;
+import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
 import com.advaita.alchemyPageObject.SkipReason;
 import com.advaita.alchemyPageObject.SmsTemplate;
 import com.advaita.pageObjects.UserSetupPage;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
+import junit.framework.AssertionFailedError;
 
 public class Menusetup extends TestBase {
 
@@ -31,10 +36,6 @@ public class Menusetup extends TestBase {
 
 		PageFactory.initElements(driver, this);
 	}
-
-	FakeData fake = new FakeData();
-
-	UserSetupPage userSetupPage = new UserSetupPage();
 
 	// Login UserId
 	String superAmdin = "Capture_Admin";
@@ -104,16 +105,31 @@ public class Menusetup extends TestBase {
 	@FindBy(xpath = "//tbody//td[not(@class='action-header')][position()<=3]")
 	public List<WebElement> nameLists;
 
+	@FindBy(xpath = "//button[contains(@class,'cancel-btnn')]")
+	public WebElement cancelButton;
+
 	// Neagtive
 
 	@FindBy(xpath = "//span[@id='change_error_msg']")
 	public WebElement somethingWentWrongErrorMesg;
 
-	@FindBy(id = "display_name-error")
+	@FindBy(xpath = "//span[@id='displayNameError']")
 	public WebElement displayNameErrorMessage;
 
 	@FindBy(xpath = "//tbody//td[text()='No Records Found']")
 	public WebElement noRecordsFound;
+
+	@FindBy(xpath = "//div[@id='emoji-error-msg']")
+	public WebElement searchFieldErrorMessage;
+
+	// References Methods
+	SoftAssert softAssert = new SoftAssert();
+	FakeData fake = new FakeData();
+	UserSetupPage userSetupPage = new UserSetupPage();
+	UserStatus userStatus = new UserStatus();
+	SmsTemplate smsTemplate = new SmsTemplate();
+
+	FieldVerificationUtils fieldVerificationUtils = new FieldVerificationUtils();
 
 	public void navigateTouserSetup() { // Need To implememnt
 		userSetupPage.navToUserCreatePage();
@@ -242,115 +258,225 @@ public class Menusetup extends TestBase {
 
 	}
 
-	public void searchByFormName() {
+	public void searchByFormName(String selectFormName) throws Throwable {
 
-		userStatus menuSetup = new userStatus();
+		UserStatus menuSetup = new UserStatus();
 
-		List<String> formnNameList = new ArrayList<String>();
+		switch (selectFormName) {
 
-		// Loop through the elements and add the text to formnNameList
-		for (WebElement formName : formNamesElements) {
-			String formText = formName.getText(); // Get text of the element
-			formnNameList.add(formText); // Add text to the list
-			System.out.println("Form Name: " + formText); // This will print all form names
+		case "givenValue":
+
+			// extract all FormName options and Store In Prop file by "FormName"
+			PropertieFileUtil.extractAllAndStore(formNamesElements, "FormName");
+
+			String fornName = PropertieFileUtil.getSingleTextFromPropertiesFile("FormName1");
+
+			menuSetup.inputFieldIsDisplayed(searchTextfield);
+			assertTrue(searchTextfield.isEnabled(), "searcTextfieldi not enabled");
+			menuSetup.checkthroughAsterisk(searchTextfield, false);
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(fornName);
+
+			// Print the randomly selected form name text
+			System.out.println("Given formName: " + fornName);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstFormNameText = firstFormName.getText();
+			System.out.println("firstFormNameText :" + firstFormNameText);
+
+			assertEquals(firstFormNameText, fornName);
+
+			break;
+
+		case "random":
+
+			List<String> formnNameList = new ArrayList<String>();
+
+			// Loop through the elements and add the text to formnNameList
+			for (WebElement formName : formNamesElements) {
+				String formText = formName.getText(); // Get text of the element
+				formnNameList.add(formText); // Add text to the list
+				System.out.println("Form Name: " + formText); // This will print all form names
+			}
+
+			// Select a random element from the formnNameList
+			Random random = new Random();
+			int randomIndex = random.nextInt(formnNameList.size()); // Get random index
+			String randomText = formnNameList.get(randomIndex); // Get text at the random index
+
+			menuSetup.inputFieldIsDisplayed(searchTextfield);
+			assertTrue(searchTextfield.isEnabled(), "searcTextfieldi not enabled");
+			menuSetup.checkthroughAsterisk(searchTextfield, false);
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(randomText);
+
+			// Print the randomly selected form name text
+			System.out.println("Randomly selected formName: " + randomText);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstFormNameText1 = firstFormName.getText();
+			System.out.println("firstFormNameText1 :" + firstFormNameText1);
+
+			assertEquals(firstFormNameText1, randomText);
+
+			break;
+
+		default:
+
+			System.out.println("Invalid case");
+
+			break;
 		}
-
-		// Select a random element from the formnNameList
-		Random random = new Random();
-		int randomIndex = random.nextInt(formnNameList.size()); // Get random index
-		String randomText = formnNameList.get(randomIndex); // Get text at the random index
-
-		menuSetup.inputFieldIsDisplayed(searchTextfield);
-		assertTrue(searchTextfield.isEnabled(), "searcTextfieldi not enabled");
-		menuSetup.checkthroughAsterisk(searchTextfield, false);
-
-		searchTextfield.clear();
-		searchTextfield.sendKeys(randomText);
-
-		// Print the randomly selected form name text
-		System.out.println("Randomly selected formName: " + randomText);
-
-		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
-		assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
-
-		searchButton.click();
-
-		String firstFormNameText = firstFormName.getText();
-		System.out.println("firstFormNameText :" + firstFormNameText);
-
-		assertEquals(firstFormNameText, randomText);
 
 	}
 
-	public void searchByDefaultName() {
+	public void searchByDefaultName(String selectDefaultName) throws Throwable {
 
-		List<String> defaultNameList = new ArrayList<String>();
+		switch (selectDefaultName) {
 
-		// Loop through the elements and add the text to formnNameList
-		for (WebElement defaultName : defaultNamesElements) {
-			String defaultText = defaultName.getText(); // Get text of the element
-			defaultNameList.add(defaultText); // Add text to the list
-			System.out.println("Default Name: " + defaultText); // This will print all form names
+		case "givenValue":
+
+			// extract all FormName options and Store In Prop file by "FormName"
+			PropertieFileUtil.extractAllAndStore(defaultNamesElements, "DefaultNames");
+
+			String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile("DefaultNames1");
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(defaultName);
+
+			// Print the randomly selected form name text
+			System.out.println("Randomly selected defaultName: " + defaultName);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstDefaultNameText = firstDefaultName.getText();
+			System.out.println("firstDefaultNameText :" + firstDefaultNameText);
+
+			assertEquals(firstDefaultNameText, defaultName);
+
+			break;
+
+		case "random":
+
+			List<String> defaultNameList = new ArrayList<String>();
+
+			// Loop through the elements and add the text to formnNameList
+			for (WebElement defaultName1 : defaultNamesElements) {
+				String defaultText = defaultName1.getText(); // Get text of the element
+				defaultNameList.add(defaultText); // Add text to the list
+				System.out.println("Default Name: " + defaultText); // This will print all form names
+			}
+
+			// Select a random element from the formnNameList
+			Random random = new Random();
+			int randomIndex = random.nextInt(defaultNameList.size()); // Get random index
+			String randomText = defaultNameList.get(randomIndex); // Get text at the random index
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(randomText);
+
+			// Print the randomly selected form name text
+			System.out.println("Randomly selected defaultName: " + randomText);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstDefaultNameText1 = firstDefaultName.getText();
+			System.out.println("firstDefaultNameText :" + firstDefaultNameText1);
+
+			assertEquals(firstDefaultNameText1, randomText);
+
+		default:
+
+			break;
 		}
-
-		// Select a random element from the formnNameList
-		Random random = new Random();
-		int randomIndex = random.nextInt(defaultNameList.size()); // Get random index
-		String randomText = defaultNameList.get(randomIndex); // Get text at the random index
-
-		searchTextfield.clear();
-		searchTextfield.sendKeys(randomText);
-
-		// Print the randomly selected form name text
-		System.out.println("Randomly selected defaultName: " + randomText);
-
-		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
-		assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
-
-		searchButton.click();
-
-		String firstDefaultNameText = firstDefaultName.getText();
-		System.out.println("firstDefaultNameText :" + firstDefaultNameText);
-
-		assertEquals(firstDefaultNameText, randomText);
 
 	}
 
 	List<String> displayNameList = new ArrayList<String>();
 
-	public void SearchByDisplayName() {
+	public void SearchByDisplayName(String selectDisplayName) throws Throwable {
 
-		// Loop through the elements and add the text to formnNameList
-		for (WebElement displayName : displayNamesElements) {
-			String displayText = displayName.getText(); // Get text of the element
-			displayNameList.add(displayText); // Add text to the list
-			System.out.println("Default Name: " + displayText); // This will print all form names
+		switch (selectDisplayName) {
+
+		case "givenValue":
+
+			// extract all FormName options and Store In Prop file by "FormName"
+			PropertieFileUtil.extractAllAndStore(displayNamesElements, "DisplayNames");
+
+			String displayName = PropertieFileUtil.getSingleTextFromPropertiesFile("DisplayNames10");
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(displayName);
+
+			// Print the randomly selected form name text
+			System.out.println("Randomly selected displayName: " + displayName);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstDisplayNameText = firstDefaultName.getText();
+			System.out.println("firstDisplayNameText :" + firstDisplayNameText);
+
+			assertEquals(firstDisplayNameText, displayName);
+
+			break;
+
+		case "random":
+
+			// Loop through the elements and add the text to formnNameList
+			for (WebElement displayName1 : displayNamesElements) {
+				String displayText = displayName1.getText(); // Get text of the element
+				displayNameList.add(displayText); // Add text to the list
+				System.out.println("Default Name: " + displayText); // This will print all form names
+			}
+
+			// Select a random element from the formnNameList
+			Random random = new Random();
+			int randomIndex = random.nextInt(displayNameList.size()); // Get random index
+			String randomText = displayNameList.get(randomIndex); // Get text at the random index
+
+			searchTextfield.clear();
+			searchTextfield.sendKeys(randomText);
+
+			// Print the randomly selected form name text
+			System.out.println("Randomly selected displayName: " + randomText);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
+
+			searchButton.click();
+
+			String firstDisplayNameText1 = firstDefaultName.getText();
+			System.out.println("firstDisplayNameText1 :" + firstDisplayNameText1);
+
+			assertEquals(firstDisplayNameText1, randomText);
+
+		default:
+			break;
 		}
-
-		// Select a random element from the formnNameList
-		Random random = new Random();
-		int randomIndex = random.nextInt(displayNameList.size()); // Get random index
-		String randomText = displayNameList.get(randomIndex); // Get text at the random index
-
-		searchTextfield.clear();
-		searchTextfield.sendKeys(randomText);
-
-		// Print the randomly selected form name text
-		System.out.println("Randomly selected displayName: " + randomText);
-
-		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
-		assertTrue(searchButton.isEnabled(), "searchButton is not enabled");
-
-		searchButton.click();
-
-		String firstDisplayNameText = firstDefaultName.getText();
-		System.out.println("firstDisplayNameText :" + firstDisplayNameText);
-
-		assertEquals(firstDisplayNameText, randomText);
 
 	}
 
 	public void cleatfilter() {
+
 		String beforesearchtextfieldInputValue = searchTextfield.getAttribute("value");
 		System.out.println("searchtextfieldInputValue :" + beforesearchtextfieldInputValue);
 
@@ -383,7 +509,11 @@ public class Menusetup extends TestBase {
 
 	}
 
-	public Menusetup ClickOnEdit(String DefaultName) {
+//	public Menusetup ClickOnEdit(String DefaultName) {
+//		return ClickOnEditOptionBasedOnDefaultName(DefaultName);
+//	}
+
+	public Menusetup ClickOnEditOptionBasedOnDefaultName(String DefaultName) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 		for (WebElement row : rows) {
 			WebElement usernameColumn = row.findElement(By.xpath("./td[2]"));
@@ -397,53 +527,10 @@ public class Menusetup extends TestBase {
 		return this;
 	}
 
-//	public boolean menusSetupEdit() {
-//
-//		userStatus menusSetup = new userStatus();
-//		menusSetup.inputFieldIsDisplayed(formNameEdit);
-//
-//		// Check if the element is enabled
-//		if (formNameEdit.isEnabled()) {
-//			System.out.println("The form_name element is enabled.");
-//			assertTrue(formNameEdit.isEnabled(), "Element is enabled.");
-//			return false; // Return false if enabled
-//
-//		}
-//		return True; // Return true if displayed but not enabled
-//
-//	}
-
-//	public boolean menusSetupEdit() {
-//
-//		// Form name
-//		// Check if the formNameEdit element is displayed
-//		userStatus menusSetup = new userStatus();
-//		menusSetup.inputFieldIsDisplayed(formNameEdit);
-//		menusSetup.checkthroughAsterisk(formNameEdit, false);
-//
-//		formNameEdit.getAttribute(Random);
-//		
-//		// Check if the element is enabled
-//		if (formNameEdit.isEnabled()) {
-//			System.out.println(formNameEdit.isEnabled());
-//			System.out.println("The form_name element is enabled.");
-//
-//			return false; // Return false if the element is enabled
-//		} else {
-//			System.out.println("The form_name element is not enabled.");
-//			return true; // Return true if the element is not enabled
-//		}
-//		
-//
-//	}
-
 	public void formNameEdit() {
 
-		// Form name
-		// Check if the formNameEdit element is displayed
-		userStatus menusSetup = new userStatus();
-		menusSetup.inputFieldIsDisplayed(formNameEdit);
-		menusSetup.checkthroughAsterisk(formNameEdit, false);
+		userStatus.inputFieldIsDisplayed(formNameEdit);
+		userStatus.checkthroughAsterisk(formNameEdit, false);
 
 		// Check if the element is enabled
 		if (formNameEdit.isEnabled()) {
@@ -469,10 +556,9 @@ public class Menusetup extends TestBase {
 	public void defautNameEdit() {
 		// Default name
 		// Check if the DefaultEdit element is displayed
-		userStatus menusSetup1 = new userStatus();
 
-		menusSetup1.inputFieldIsDisplayed(defaultNameEdit);
-		menusSetup1.checkthroughAsterisk(defaultNameEdit, false);
+		userStatus.inputFieldIsDisplayed(defaultNameEdit);
+		userStatus.checkthroughAsterisk(defaultNameEdit, false);
 
 		// Check if the element is enabled
 		if (defaultNameEdit.isEnabled()) {
@@ -496,12 +582,9 @@ public class Menusetup extends TestBase {
 	}
 
 	public void displayNameEdit(String textToEnter) {
-		// Dislay name
-		// Check if the displayEdit element is displayed
-		userStatus menusSetup2 = new userStatus();
 
-		menusSetup2.inputFieldIsDisplayed(displayNameEdit);
-		menusSetup2.checkthroughAsterisk(displayNameEdit, false);
+		userStatus.inputFieldIsDisplayed(displayNameEdit);
+		userStatus.checkthroughAsterisk(displayNameEdit, false);
 
 		// Check if the element is enabled
 		if (displayNameEdit.isEnabled()) {
@@ -550,6 +633,10 @@ public class Menusetup extends TestBase {
 	}
 
 	public void enterDispalyNameInEditMenuSetup(String EnterDispalyNameRealedToDefaultName) {
+		enterDispalyNameInEditMenuSetupAndVerifyinSideMenu(EnterDispalyNameRealedToDefaultName);
+	}
+
+	public void enterDispalyNameInEditMenuSetupAndVerifyinSideMenu(String EnterDispalyNameRealedToDefaultName) {
 
 		assertTrue(verifyEditMenusSetup.isDisplayed(), "verifyEditMenusSetup is not displayed");
 
@@ -579,15 +666,9 @@ public class Menusetup extends TestBase {
 				"after edit dipalyed name is not changeand not contains in side menu");
 	}
 
-	/////////////////////////////////////////////////// Negative///////////////////////////////////////////////////////
-
-	userStatus userStatus = new userStatus();
-	SmsTemplate smsTemplate = new SmsTemplate();
+//======================== Negative=======================================================
 
 	public void theUserwithoutEnteringMandatoryFieldandclickOnUpdate() {
-
-		// navigateTomenuSetup();
-		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		editOption.click();
 		assertTrue(verifyEditMenusSetup.isDisplayed(), "verifyEditMenusSetup");
@@ -598,17 +679,13 @@ public class Menusetup extends TestBase {
 		assertTrue(updateButton.isDisplayed(), "updateButton is not displayed");
 		updateButton.click();
 
-		assertTrue(displayNameErrorMessage.isDisplayed(), "displayNameErrorMessage is not displayed");
-		
-		updateSuccessfullyPopup.isDisplayed();
-		ContinueButtonEdit.click();
+		assertTrue(displayNameErrorMessage.isDisplayed(), "Failed: displayNameErrorMessage is not displayed");
+
+		cancelButton.click();
 
 	}
 
 	public void TheUserCanEditDisplayNameToEmojisAandUpadte() {
-
-		//navigateTomenuSetup();
-		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		editOption.click();
 		assertTrue(verifyEditMenusSetup.isDisplayed(), "verifyEditMenusSetup");
@@ -622,15 +699,14 @@ public class Menusetup extends TestBase {
 		SendDataUtils.sendKeysWithJSExecutor(displayNameEdit, enterEmojisString);
 		updateButton.click();
 
-		assertTrue(somethingWentWrongErrorMesg.isDisplayed(),
-				"TestFaile:Somethingwent wrong is not dispaleyd and it is Updated");
-		
+		assertTrue(displayNameErrorMessage.isDisplayed(), "Failed: displayNameErrorMessage is not displayed");
 
+		cancelButton.click();
 	}
 
 	public void theUserCanEditDisplyenameCharcterToOnlySpecialCharacterandUpdate() throws InterruptedException {
 
-		//navigateTomenuSetup();
+		// navigateTomenuSetup();
 		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		editOption.click();
@@ -644,37 +720,76 @@ public class Menusetup extends TestBase {
 		assertTrue(updateButton.isDisplayed(), "updateButton is not displayed");
 		updateButton.click();
 
-		Thread.sleep(2000);
-		System.out.println(updateSuccessfullyPopup.getText());
+		// Step 2: Check if update was wrongly successful (negative case)
+		if (updateSuccessfullyPopup.isDisplayed()) {
+			System.out.println("❌ Test Failed: updateSuccessfullyPopup is displayed with message: "
+					+ updateSuccessfullyPopup.getText());
 
-		Assert.assertFalse(ContinueButtonEdit.isDisplayed(), " updateSuccessfullyPopup is not displayed");
+			// Click Continue button to close popup
+			assertTrue(ContinueButtonEdit.isDisplayed(), "❌ ContinueButtonEdit is not displayed");
+			ContinueButtonEdit.click();
 
-		ContinueButtonEdit.click();
+			// Fail the test
+			Assert.fail(" updateSuccessfullyPopup should not be displayed. Test failed.");
+		}
+
+		// Step 3: If error message is shown, that's expected, click cancel
+		if (displayNameErrorMessage.isDisplayed()) {
+			System.out.println(" displayNameErrorMessage is displayed");
+
+			assertTrue(cancelButton.isDisplayed(), " cancelButton is not displayed");
+			cancelButton.click();
+		} else {
+			Assert.fail("displayNameErrorMessage is not displayed. Test failed.");
+		}
 	}
 
 	public void usercanEnterCharactermorethanchracterLimits() throws InterruptedException {
 
-		//navigateTomenuSetup();
-		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
+		// Step 1: Navigate and setup
+		softAssert.assertTrue(verifyMenusSetup.isDisplayed(), "❌ navigateTomenuSetup is not displayed");
 
 		editOption.click();
-		assertTrue(verifyEditMenusSetup.isDisplayed(), "verifyEditMenusSetup");
-		displayNameEdit.clear();
-		displayNameEdit.sendKeys("A".repeat(300));
+		softAssert.assertTrue(verifyEditMenusSetup.isDisplayed(), "❌ verifyEditMenusSetup is not displayed");
 
-		assertTrue(updateButton.isDisplayed(), "updateButton is not displayed");
+		displayNameEdit.clear();
+		displayNameEdit.sendKeys("A".repeat(500));
+
+		softAssert.assertTrue(updateButton.isDisplayed(), "❌ updateButton is not displayed");
 		updateButton.click();
 
-		Thread.sleep(2000);
-		System.out.println(updateSuccessfullyPopup.getText());
+		// If success popup appears → Test should fail
+		if (updateSuccessfullyPopup.isDisplayed()) {
+			System.out.println("updateSuccessfullyPopup is displayed – this is a failure case.");
+			softAssert.fail("updateSuccessfullyPopup should not be displayed.");
 
-		Assert.assertFalse(ContinueButtonEdit.isDisplayed(), " updateSuccessfullyPopup is not displayed");
+			if (ContinueButtonEdit.isDisplayed()) {
+				// ContinueButtonEdit.click();
+				jsClick(ContinueButtonEdit);
+			} else {
+				softAssert.fail(" ContinueButtonEdit is not displayed.");
+			}
+		}
 
-		ContinueButtonEdit.click();
+		// If error message appears → Test is behaving correctly
+		if (displayNameErrorMessage.isDisplayed()) {
+			System.out.println("displayNameErrorMessage is displayed as expected.");
+
+			if (cancelButton.isDisplayed()) {
+				cancelButton.click();
+			} else {
+				softAssert.fail(" cancelButton is not displayed.");
+			}
+		} else {
+			softAssert.fail("displayNameErrorMessage is not displayed.");
+		}
+
+		// Collect all assertion results
+		softAssert.assertAll();
 	}
 
 	public void tryToSearchByWithoutEnteringAnyData() {
-		//navigateTomenuSetup();
+
 		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		assertTrue(searchTextfield.isDisplayed(), "searcTextfield not dispalyed");
@@ -697,42 +812,43 @@ public class Menusetup extends TestBase {
 	}
 
 	String emoji = "😂😂";
+
 	public void tryToSearchThroughEmojisInsearchTextfield() {
 
-		//navigateTomenuSetup();
+		// navigateTomenuSetup();
 		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		assertTrue(searchTextfield.isDisplayed(), "searcTextfield not dispalyed");
-		
+
 		SendDataUtils.sendKeysWithJSExecutor(searchTextfield, emoji);
 
 		searchButton.click();
 
-		assertTrue(noRecordsFound.isDisplayed(), "No Recors found is not dispalyed");
+		assertTrue(searchFieldErrorMessage.isDisplayed(), "Failed: searchFieldErrorMessageis not dispalyed");
+
+		clearallFilters.click();
 
 	}
 
 	public void SearchThroughInvalidCharacterInSearchTextfield() {
 
-		navigateTomenuSetup();
 		assertTrue(verifyMenusSetup.isDisplayed(), "navigateTomenuSetup is not displayed");
 
 		assertTrue(searchTextfield.isDisplayed(), "searcTextfield not dispalyed");
-		smsTemplate.searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield, searchButton, noRecordsFound,
-				clearallFilters);
+		fieldVerificationUtils.searchInvalidCreatedTemplateInSearchFieldUTILITY(searchTextfield, searchButton,
+				noRecordsFound, clearallFilters);
 	}
 
 	public void searchThroughSpacesInSearchTextfield() {
 
-		navigateTomenuSetup();
-		smsTemplate.searchThroughSpacesInSearchTextfielUTILITY(searchTextfield, searchButton, noRecordsFound,
+		fieldVerificationUtils.searchThroughSpacesInSearchTextfielUTILITY(searchTextfield, searchButton, noRecordsFound,
 				clearallFilters);
 	}
 
 	SkipReason skipReason = new SkipReason();
 
 	public void searchThroughEmojiInSearchField() {
-		navigateTomenuSetup();
+
 		skipReason.searchThroughEmojisInSearchTextfieldUTILITY(searchTextfield, emoji, searchButton, noRecordsFound);
 		clearallFilters.click();
 

@@ -155,7 +155,7 @@ public class FakeData {
 		return randomLastName;
 	}
 
-	public  void firstName() {
+	public void firstName() {
 		// Create a Faker instance
 		Faker faker = new Faker();
 
@@ -265,6 +265,11 @@ public class FakeData {
 		} while (generatedNumbers.contains(uniqueNumber));
 		generatedNumbers.add(uniqueNumber);
 		return uniqueNumber;
+	}
+
+	public static int generateTwoDigitNumber() {
+		Faker faker = new Faker();
+		return faker.number().numberBetween(10, 100);
 	}
 
 	/**
@@ -377,4 +382,42 @@ public class FakeData {
 	public static boolean generateRandomBoolean() {
 		return faker.bool().bool();
 	}
+
+//	====================================================
+
+	public static String generateCompanyLikeSiteName() {
+		return siteName();
+	}
+
+	public static String siteName() {
+		String company = faker.company().name();
+		// Clean up to remove symbols/spaces and limit length
+		company = company.replaceAll("[^a-zA-Z]", "").trim();
+
+		if (company.length() > 12) {
+			company = company.substring(0, 12);
+		}
+
+		return "App" + company;
+	}
+
+	// Generate Random Url
+	public static String siteURL() {
+		String company = faker.company().name();
+
+		// Clean up to allow lowercase alphanumeric only (no symbols/spaces)
+		company = company.replaceAll("[^a-zA-Z]", "").toLowerCase();
+
+		if (company.length() > 12) {
+			company = company.substring(0, 12);
+		}
+
+		return "https://www." + company + ".com";
+	}
+
+//	public static void main(String[] args) {
+//		for (int i = 0; i < 10; i++) {
+//			System.out.println(generateCompanyLikeSiteName());
+//		}
+//	}
 }

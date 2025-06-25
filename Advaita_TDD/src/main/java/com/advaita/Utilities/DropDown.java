@@ -5,18 +5,19 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
@@ -337,7 +338,8 @@ public class DropDown extends TestBase {
 
 		System.out.println("currentSelectedOption : " + currentSelectedOption.getText());
 		// Validate using TestNG Assert
-		softAssert.assertEquals(currentSelectedOption.getText(), optionToSelect, "The selected option is not as expected.");
+		softAssert.assertEquals(currentSelectedOption.getText(), optionToSelect,
+				"The selected option is not as expected.");
 
 		boolean isValid = currentSelectedOption.getText().equals(optionToSelect);
 
@@ -432,6 +434,172 @@ public class DropDown extends TestBase {
 		String labelXPath = String.format("//label[contains(text(), '%s')]", currentLabelText);
 		WebElement labelElement = driver.findElement(By.xpath(labelXPath));
 		assertTrue(labelElement.getText().contains("*"), "The label does not contain the star mark (*)");
+	}
+
+	// <<<<<<<< Dropdown UTILS_New
+
+	public void dropdownUtils(WebElement dropdownElement, String expectedOptionText) throws Throwable {
+		// Step 1: Initialize WebDriverWait to handle dynamic waits
+		// Step 2: Ensure the dropdown element is visible and clickable
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
+
+		// Step 3: Initialize Select object with the provided dropdown element
+		Select dropdown = new Select(dropdownElement);
+
+		// Step 4: Retrieve all options in the dropdown
+		List<WebElement> allDropdownOptions = dropdown.getOptions();
+
+		// Step 5: Loop through each dropdown option and compare with expectedOptionText
+		boolean isOptionClicked = false;
+		for (WebElement option : allDropdownOptions) {
+			try {
+				String dropdownValue = option.getText();
+
+				// Compare expectedOptionText with the dropdown option value
+				if (dropdownValue.equals(expectedOptionText)) {
+					// Assert that the correct dropdown value has been found
+					assertEquals(dropdownValue, expectedOptionText, "Dropdown value did not match!");
+
+					// Wait until the option is clickable and click it
+					wait.until(ExpectedConditions.elementToBeClickable(option));
+					option.click();
+
+					// Step 8: Break the loop once the match is found and clicked
+					isOptionClicked = true;
+					break;
+				}
+			} catch (StaleElementReferenceException e) {
+				// Re-fetch the options in case of a StaleElementReferenceException
+				allDropdownOptions = dropdown.getOptions();
+			}
+		}
+
+		Thread.sleep(2000);
+		// Assert that the option has been clicked
+		assertTrue(isOptionClicked, "No matching dropdown option found and clicked.");
+	}
+
+	// Select Dropdown Based On Value
+	public String selectFromDropdownByText(WebElement dropdownElement, String visibleText) {
+
+		Select select = new Select(dropdownElement);
+		List<WebElement> options = select.getOptions();
+
+		System.out.println("Dropdown options:");
+		boolean found = false;
+
+		for (WebElement option : options) {
+			String text = option.getText().trim();
+			System.out.println("- " + text);
+			if (text.equalsIgnoreCase(visibleText.trim())) {
+				select.selectByVisibleText(text);
+				System.out.println("Selected: " + text);
+				found = true;
+				break;
+			}
+		}
+
+		// Assert after loop
+		Assert.assertTrue(found, "Value '" + visibleText + "' not found in dropdown options.");
+		return visibleText;
+	}
+
+	// Random Select From Dropdwon
+	public static String selectRandomOption(WebElement dropdownElement) {
+		return selectRandomOptionFromDropdwon(dropdownElement);
+	}
+
+	// Random Select From Dropdwon
+	public static String selectRandomOptionFromDropdwon(WebElement dropdownElement) {
+		// Check if it's a real <select> tag
+		if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
+			Assert.fail("The provided WebElement is not a <select> dropdown.");
+		}
+
+		Select select = new Select(dropdownElement);
+		List<WebElement> allOptions = select.getOptions();
+		List<String> optionTexts = new ArrayList<>();
+
+		System.out.println("Total options found: " + allOptions.size());
+
+		for (WebElement option : allOptions) {
+			String text = option.getText().trim();
+			System.out.println("Found option: " + text);
+
+			if (!text.equalsIgnoreCase("select") && !text.toLowerCase().contains("choose") && !text.isEmpty()) {
+				optionTexts.add(text);
+			}
+		}
+
+		System.out.println("Valid options to select from: " + optionTexts);
+
+		if (optionTexts.isEmpty()) {
+			Assert.fail("No valid/selectable options found in the dropdown.");
+		}
+
+		// Pick a random text
+		Random random = new Random();
+		String randomOption = optionTexts.get(random.nextInt(optionTexts.size()));
+		System.out.println("Randomly selected option to choose: " + randomOption);
+
+		select.selectByVisibleText(randomOption);
+
+		String selectedText = select.getFirstSelectedOption().getText().trim();
+		System.out.println("Actually selected: " + selectedText);
+
+		Assert.assertEquals(selectedText, randomOption, "Dropdown selection mismatch.");
+		return selectedText;
+	}
+
+	String selectedFirstOptionFromDropdwon;
+
+	// For Verify Slected Option (UTILITY_Method)
+	public void checkForSelectedOptionsAfterSearched(WebElement dropdownElement, WebElement firstElementFromTable,
+			WebElement noEntriesElement) {
+		// Step 1: Get the selected option from dropdown
+		Select select = new Select(dropdownElement);
+		selectedFirstOptionFromDropdwon = select.getFirstSelectedOption().getText().trim();
+		System.out.println("Selected option from dropdown: " + selectedFirstOptionFromDropdwon);
+
+		// Step 2: Validate the first element from table is displayed
+		assertTrue(firstElementFromTable.isDisplayed(), "Test Failed: First element from table is not displayed");
+		String firstElementText = firstElementFromTable.getText().trim();
+
+		// Step 3: Compare dropdown value with first row text
+		assertEquals(firstElementText, selectedFirstOptionFromDropdwon,
+				"Test Failed: Selected dropdown option does not match first table row text");
+
+		// Step 4: Check for the 'noEntriesElement'
+		try {
+			if (noEntriesElement.isDisplayed()) {
+				System.out.println("There is no template related to this selected process.");
+			} else {
+				System.out.println("Template(s) are present related to this process.");
+			}
+		} catch (NoSuchElementException e) {
+			// If element is not found or stale, assume templates are present
+			System.out.println("Template(s) are present related to this process. (Handled by exception)");
+		}
+	}
+
+	//check all option should be Selectable from Dropdown
+	public void selectAllOptionsUTILITY(WebElement dropdownElement) {
+		Select select = new Select(dropdownElement);
+
+		// Get the number of options in the dropdown
+		int totalOptions = select.getOptions().size();
+
+		// Loop through each option by index to avoid stale element reference
+		for (int i = 0; i < totalOptions; i++) {
+			// Refetch the dropdown and its options in each iteration to avoid stale
+			// elements
+			select = new Select(dropdownElement); // Re-initialize Select
+			WebElement option = select.getOptions().get(i); // Fetch option by index
+
+			// Select by visible text
+			select.selectByVisibleText(option.getText());
+
+		}
 	}
 
 //	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -594,92 +762,91 @@ public class DropDown extends TestBase {
 		String cssValue = dropdown.getCssValue("position");
 		Assert.assertEquals(cssValue, "relative", "Dropdown is misaligned.");
 	}
-	
-	
+
 	/**
-     * Selects multiple options randomly (one, more than one, or all) from a Select2 multi-select dropdown.
-     * @param driver The WebDriver instance.
-     * @param questionContainer The WebElement containing the Select2 dropdown.
-     * @param random The Random instance for random selection.
-     */
-	public static void selectMultipleOptionsWithCustomSelection(WebDriver driver, WebElement questionContainer, Random random, int selectionType) {
-	    
+	 * Selects multiple options randomly (one, more than one, or all) from a Select2
+	 * multi-select dropdown.
+	 * 
+	 * @param driver            The WebDriver instance.
+	 * @param questionContainer The WebElement containing the Select2 dropdown.
+	 * @param random            The Random instance for random selection.
+	 */
+	public static void selectMultipleOptionsWithCustomSelection(WebDriver driver, WebElement questionContainer,
+			Random random, int selectionType) {
 
-	    // Find the Select2 input or trigger
-	    WebElement select2Trigger = questionContainer.findElement(By.className("select2-selection"));
-	    if (select2Trigger == null) {
-	        throw new RuntimeException("Select2 trigger not found in question container.");
-	    }
+		// Find the Select2 input or trigger
+		WebElement select2Trigger = questionContainer.findElement(By.className("select2-selection"));
+		if (select2Trigger == null) {
+			throw new RuntimeException("Select2 trigger not found in question container.");
+		}
 
-	    // Click the trigger to open the dropdown
-	    select2Trigger.click();
+		// Click the trigger to open the dropdown
+		select2Trigger.click();
 
-	    // Wait for the dropdown to be visible
-	    WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(
-	            By.className("select2-dropdown")));
+		// Wait for the dropdown to be visible
+		WebElement dropdown = wait
+				.until(ExpectedConditions.visibilityOfElementLocated(By.className("select2-dropdown")));
 
-	    // Find all options in the dropdown
-	    List<WebElement> options = dropdown.findElements(By.className("select2-results__option"));
-	    if (options.isEmpty()) {
-	        System.out.println("No options found in Select2 dropdown for question: " + questionContainer.getText());
-	        return;
-	    }
+		// Find all options in the dropdown
+		List<WebElement> options = dropdown.findElements(By.className("select2-results__option"));
+		if (options.isEmpty()) {
+			System.out.println("No options found in Select2 dropdown for question: " + questionContainer.getText());
+			return;
+		}
 
-	    int totalOptions = options.size();
-	    System.out.println("Total options available: " + totalOptions);
+		int totalOptions = options.size();
+		System.out.println("Total options available: " + totalOptions);
 
-	    // Decide how many options to select based on the custom selectionType
-	    int optionsToSelect;
-	    switch (selectionType) {
-	        case 0: // Select exactly one option
-	            optionsToSelect = 1;
-	            System.out.println("Selecting exactly 1 option.");
-	            break;
-	        case 1: // Select more than one option (up to totalOptions)
-	            optionsToSelect = random.nextInt(totalOptions - 1) + 2; // Ensures at least 2 options
-	            System.out.println("Selecting " + optionsToSelect + " options (more than one).");
-	            break;
-	        case 2: // Select all options
-	            optionsToSelect = totalOptions;
-	            System.out.println("Selecting all " + totalOptions + " options.");
-	            break;
-	        default:
-	            throw new IllegalArgumentException("Invalid selectionType. Use 0 (one), 1 (more than one), or 2 (all).");
-	    }
+		// Decide how many options to select based on the custom selectionType
+		int optionsToSelect;
+		switch (selectionType) {
+		case 0: // Select exactly one option
+			optionsToSelect = 1;
+			System.out.println("Selecting exactly 1 option.");
+			break;
+		case 1: // Select more than one option (up to totalOptions)
+			optionsToSelect = random.nextInt(totalOptions - 1) + 2; // Ensures at least 2 options
+			System.out.println("Selecting " + optionsToSelect + " options (more than one).");
+			break;
+		case 2: // Select all options
+			optionsToSelect = totalOptions;
+			System.out.println("Selecting all " + totalOptions + " options.");
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid selectionType. Use 0 (one), 1 (more than one), or 2 (all).");
+		}
 
-	    // Ensure optionsToSelect doesn’t exceed totalOptions
-	    optionsToSelect = Math.min(optionsToSelect, totalOptions);
+		// Ensure optionsToSelect doesn’t exceed totalOptions
+		optionsToSelect = Math.min(optionsToSelect, totalOptions);
 
-	    // Shuffle the options to select randomly
-	    java.util.Collections.shuffle(options);
+		// Shuffle the options to select randomly
+		java.util.Collections.shuffle(options);
 
-	    // Select the specified number of options
-	    int selectedCount = 0;
-	    for (WebElement option : options) {
-	        if (selectedCount >= optionsToSelect) {
-	            break;
-	        }
-	        String optionText = option.getText();
+		// Select the specified number of options
+		int selectedCount = 0;
+		for (WebElement option : options) {
+			if (selectedCount >= optionsToSelect) {
+				break;
+			}
+			String optionText = option.getText();
 
-	        // Check if the option is already selected (aria-selected="true")
-	        boolean isSelected = "true".equals(option.getAttribute("aria-selected"));
-	        if (!isSelected) {
-	            actions.moveToElement(option).click().perform();
-	            System.out.println("Selected option: " + optionText);
-	            selectedCount++;
-	        } else {
-	            System.out.println("Option already selected: " + optionText);
-	        }
-	    }
-	    
-	    select2Trigger.click();
-	    
+			// Check if the option is already selected (aria-selected="true")
+			boolean isSelected = "true".equals(option.getAttribute("aria-selected"));
+			if (!isSelected) {
+				actions.moveToElement(option).click().perform();
+				System.out.println("Selected option: " + optionText);
+				selectedCount++;
+			} else {
+				System.out.println("Option already selected: " + optionText);
+			}
+		}
+
+		select2Trigger.click();
+
 //	    driver.findElement(By.xpath("//div[@class='page_body']")).click();
 
-	    // Optionally, close the dropdown
-	    // select2Trigger.click(); // Uncomment if closing is required
+		// Optionally, close the dropdown
+		// select2Trigger.click(); // Uncomment if closing is required
 	}
-
-
 
 }

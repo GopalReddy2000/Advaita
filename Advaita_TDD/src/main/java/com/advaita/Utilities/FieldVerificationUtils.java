@@ -7,6 +7,7 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
@@ -257,6 +258,60 @@ public class FieldVerificationUtils extends TestBase {
 	public static void testInputWithExtremelyLargeNumber(WebElement textField) {
 		textField.clear();
 		textField.sendKeys("999999999999999999999999"); // Extremely large numeric value
+	}
+
+	String invalidOptionDrpdown = "NonExistingOption";
+
+	public void searchInvalidCreatedTemplateInSearchFieldUTILITY(WebElement searchTextfieldElement,
+			WebElement searchButtonElement, WebElement noEntriesFoundElement, WebElement clearallFilterElement) {
+
+		assertTrue(searchTextfieldElement.isDisplayed(), "seachTextfield is not displayed");
+		searchTextfieldElement.sendKeys(invalidOptionDrpdown);
+
+		searchButtonElement.click();
+
+		if (noEntriesFoundElement.isDisplayed()) {
+			assertTrue(true, " Testcase pass: invalid option cant displayed");
+		} else {
+			assertTrue(false, " Testcase Fail:This page is refresh and  Created tempalted are displayed");
+		}
+
+		clearallFilterElement.click();
+	}
+
+	public void searchThroughSpacesInSearchTextfielUTILITY(WebElement searchtextfieldElement,
+			WebElement searchbuttonElement, WebElement noEntriesFoundElement, WebElement clearallFilterElement) {
+
+		String Spaces = "      ";
+
+		assertTrue(searchtextfieldElement.isDisplayed(), "searchtextfieldElement is not displayed");
+		searchtextfieldElement.sendKeys(Spaces);
+
+		searchbuttonElement.click();
+
+		if (noEntriesFoundElement.isDisplayed()) {
+			assertTrue(true, " Testcase pass: invalid option cant displayed");
+		} else {
+			assertTrue(false, " Testcase Fail:This page is refresh and  Created tempalted are displayed");
+		}
+
+		clearallFilterElement.click();
+
+	}
+
+	// Check Through Asterrisk
+	public void checkthroughAsterisk(WebElement elementLabel, boolean isMandatoryCheck) {
+
+		wait.until(ExpectedConditions.visibilityOf(elementLabel));
+		assertTrue(elementLabel.isDisplayed(), "Failed : Element lable is Not Dispalyed");
+		boolean hasAsterisk = elementLabel.getText().contains("*");
+
+		if (isMandatoryCheck) {
+			assertTrue(hasAsterisk, "This 'Element' field/label does not indicate it is mandatory.");
+			System.out.println("This 'Element' field is mandatory oone.");
+		} else {
+			System.out.println("Field is not mandatory.");
+		}
 	}
 
 }

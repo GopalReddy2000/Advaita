@@ -18,21 +18,24 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.PropertieFileUtil;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class CallLogSatgeView extends TestBase // Create_Class and extend base class
-{
-	public CallLogSatgeView() {
-		PageFactory.initElements(driver, this);
-	}
+public class CallLogSatgeView extends TestBase {
 
-	FakeData fake = new FakeData();
-
+	// Global Variables
 	public List<String> satgeNameList;
 	public List<String> interactionHistroyAdminprofileList;
 
+	public String retriveStageOptionFromPropFile;
+
 	public String stageNameText;
+
+	// Invalid dropdown Value
+	String invalidOptionDrpdownValue = "fffgfgfhgfh";
+	//
 
 	// userAccount
 	String userId = "Abhijit@trasccon.com";
@@ -147,6 +150,9 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 	@FindBy(xpath = "//img[@class='arrow-left']")
 	public WebElement backOptionLeftArrow;
 
+	@FindBy(xpath = "//tbody//tr/../..//th[text()='Trans_Unique_Id']")
+	public WebElement transUniqueId_Column;
+
 	// Stages Actions
 
 	@FindBy(xpath = "//button[text()='Save']")
@@ -199,13 +205,12 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 
 	@FindBy(xpath = "//select[@name='unique_field_names']")
 	public WebElement uniqueFieldsDropdwon;
-	
+
 	@FindBy(xpath = "//button[contains(@id, 'unique_multiselect_leftAll')]")
 	public WebElement leftAllButtonForUniqueFileds;
-	
+
 	@FindBy(xpath = "//button[@id='unique_multiselect_rightSelected']")
 	public WebElement RightSelectedButtonForUniqueFileds;
-	
 
 	@FindBy(id = "multiselect")
 	public WebElement stagesEvaluationFieldDropdown;
@@ -248,8 +253,6 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 	@FindBy(xpath = "//button[@id='unique_multiselect_leftAll']")
 	public WebElement leftAllButtonDatePicker;
 
- 
-	
 	@FindBy(xpath = "//tbody//tr[1]//td[6]//img[@title='Evulation Filter']")
 	public WebElement evaluationFilterActionsOptions;
 
@@ -289,6 +292,16 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 	@FindBy(name = "value_range_field_names")
 	public WebElement valueRangePickerElement;
 
+	public CallLogSatgeView() {
+		PageFactory.initElements(driver, this);
+	}
+
+	// References Class
+	FakeData fake = new FakeData();
+	DropDown dropDown = new DropDown();
+	PropertieFileUtil propertieFileUtil = new PropertieFileUtil();
+
+	// Scenarious
 	int satgeNameSize = 0;
 
 	public void navigatetoStage() {
@@ -334,9 +347,44 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 
 	}
 
+	public void verifyTheUserIsAbleToselectOptionsFromStageDropdownAndVerify() throws Throwable {
+
+		PropertieFileUtil.extractAllDropdownOptions(SearchStages, "SearchStage"); // Store all Option From Propfile
+
+		retriveStageOptionFromPropFile = PropertieFileUtil.getSingleTextFromPropertiesFile("SearchStage2");
+		System.err.println("retriveStageOptionFromPropFile" + retriveStageOptionFromPropFile);
+
+		// select Option From Dropdown
+		Select select = new Select(SearchStages);
+		select.selectByVisibleText(retriveStageOptionFromPropFile);
+
+		String firstSelectedOption_Stage = select.getFirstSelectedOption().getText();
+
+		assertEquals(firstSelectedOption_Stage, retriveStageOptionFromPropFile,
+				"Failed Selected Options Not Matched With Retrice Options From PropFile");
+
+		assertTrue(searchButton.isDisplayed(), "searchButton si not Dispalyed");
+		searchButton.click();
+
+	}
+
+	public void selectRandomValueFrom() {
+		selectRandomValueFromSearchStageDropdown();
+	}
+
+	public void selectRandomValueFromSearchStageDropdown() {
+
+		assertTrue(SearchStages.isDisplayed(), "SearchStages is not Displayed");
+
+		DropDown.selectRandomOptionFromDropdwon(SearchStages);
+		searchButton.click();
+
+	}
+
 	public void verifyTheUserAbleselectAllOptionFromDropdown() {
 
 		selectAllOptionsUTILITY(SearchStages);
+		clearAllFiltersButton_Table.click();
 
 	}
 
@@ -355,6 +403,23 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		System.out.println("afterSelectFirstOption " + afterSelectFirstOption);
 
 		assertEquals(beforeSelectFirstOption, beforeSelectFirstOption);
+
+	}
+
+	public void verifyAnyDisposityHappenenINThatSelectedSelectedStage() throws Throwable {
+
+//		String retriveStageOption = PropertieFileUtil.getSingleTextFromPropertiesFile("SearchStage2");
+
+		try {
+
+			verifyTheUserIsAbleToselectOptionsFromStageDropdownAndVerify();
+
+			assertTrue(transUniqueId_Column.isDisplayed(), "transUniqueId_Column is not Displayed");
+			System.out.println("Pass :Disposition happened In this Stages");
+
+		} catch (NoSuchElementException e) {
+			System.out.println("Failed:TransUnqueId is not Displayed ,No dispostion Happended In this Stages");
+		}
 
 	}
 
@@ -553,9 +618,9 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		softAssert.assertAll();
 	}
 
-	//Delete
+	// Delete
 	public void deleteStage() {
-		
+
 		wait.until(ExpectedConditions.elementToBeClickable(duplicateStageOption));
 		assertTrue(duplicateStageOption.isDisplayed(), "duplicateStageOptionis not displayed");
 		duplicateStageOption.click();
@@ -564,14 +629,14 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		wait.until(ExpectedConditions.visibilityOfAllElements(ConformationMessagePopup));
 		assertTrue(ConformationMessagePopup.isDisplayed(), "ConformationMessagePopup is not displayed");
 		continueButton.click();
-		
+
 		fetchStageNameList(); // Fetch All the stage name
-		
+
 		stageNameText = stageName.getText();
 		assertTrue(satgeNameList.contains(stageNameText), "stageNameText is not contains In this satgeNameListArray");
-		
+
 		assertTrue(deleteStagesOption.isDisplayed(), "deleteStagesOptionis not displayed");
-		
+
 //		navigateTo_AlchemyModule();
 //		navigateToCallLogStageView();
 //		
@@ -581,11 +646,9 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 //		
 //		assertTrue(!csvSearchStagesDropdownLists.contains(stageNameText) && !stageNameText.contains("Copy of"),
 //				"Test failed: After deletedo only stages is Displayed in searchStages Call log stageView page ");
-		
-		
-		
+
 	}
-	
+
 	// Dulpicate Stages
 	public void userisAbleTOCreateDulicateStageAndThisStageShouldShouldbeDisplayedInCallLogStageView() {
 
@@ -629,7 +692,6 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 	// Edit Stages
 	public void userCanEditStageNameAndSeeInCSVSearchDropdown() {
 
-	
 		String beforeEditStagesNameText = stageName.getText();
 		System.out.println("beforeEditStagesNameText:" + beforeEditStagesNameText);
 
@@ -845,8 +907,6 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		}
 	}
 
-	String invalidOptionDrpdownValue = "12345";
-
 	public void selectanInvalidValueForDropdownVUTILITY(WebElement dropdownElement) {
 
 		try {
@@ -859,17 +919,15 @@ public class CallLogSatgeView extends TestBase // Create_Class and extend base c
 		} catch (NoSuchElementException e) {
 			// If the exception is thrown, this is the expected behavior, so the test should
 			// pass
-			Assert.assertTrue(true, "Test case passed: invalidOptionDrpdownValue '12345' could not be selected.");
+			Assert.assertTrue(true, "Test case passed: invalidOptionDrpdownValue  could not be selected.");
 		}
 	}
 
-	public void F() {
-
-		selectanInvalidOptionFromDropdownUTILITY(SearchStages);
-
+	public void selectInvalidValueFromDropdown() {
+		selectInvalidOptionFromSearchStageDropdown();
 	}
 
-	public void selectInvalidValueFromDropdown() {
+	public void selectInvalidOptionFromSearchStageDropdown() {
 
 		selectanInvalidValueForDropdownVUTILITY(SearchStages);
 	}

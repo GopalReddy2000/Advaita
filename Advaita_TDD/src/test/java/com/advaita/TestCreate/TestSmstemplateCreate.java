@@ -1,19 +1,13 @@
 package com.advaita.TestCreate;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.QuestionSelector;
 import com.advaita.WorkFlowDesign.PageObject.Disposition;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
-import com.advaita.alchemyPageObject.CallLogSatgeView;
 import com.advaita.alchemyPageObject.SmsTemplate;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -72,18 +66,18 @@ public class TestSmstemplateCreate extends TestBase {
 
 	}
 
-	@Test
+	@Test(priority = 1, enabled = true)
 	public void CreateSmsTemplate() throws Throwable {
-		smstemplate.NavigateToFetchprocess();
-
-		smstemplate.navigatetoStage_verifySMS();
-		// smstemplate.navigateTo_AlchemyModule(); //"DontOpen"
+		// smstemplate.NavigateToFetchprocess();
+		// smstemplate.navigatetoStage_verifySMS();
+//		// smstemplate.navigateTo_AlchemyModule(); //"DontOpen"
 		smstemplate.navigateto_SmsTemplateTab();
 		smstemplate.CreateSmstemplate();
-		smstemplate.selectProcessDropdown();
-		smstemplate.SelectSubProcessDropdown();
+		smstemplate.selectProcess();
+		smstemplate.SelectSubProcess();
 		smstemplate.selectSubSubProcess();
 		smstemplate.selectStages();
+		smstemplate.selectApiName();
 		smstemplate.SmsTemplateName();
 		smstemplate.disposition();
 		smstemplate.fromNumber();
@@ -92,8 +86,14 @@ public class TestSmstemplateCreate extends TestBase {
 		smstemplate.message();
 		smstemplate.remarksField();
 		smstemplate.variables();
-		smstemplate.createButton();
-		// smstemplate.verifyCreatedMessage();
+		smstemplate.selectStageField();
+		smstemplate.EnterDefaultValue();
+
+		verifyTheUserIsAbleTOaddMutipleRows();
+		verifyTheUserIsableTOdeleteRows();
+
+		// smstemplate.createButtonAndVerifySuccessPopupAndContinue();
+
 		// smstemplate.userManagement_create("wyzmindz_solutions", "wyzmindz",
 		// "solutions"); //old one
 //		smstemplate.userManagement_create();
@@ -101,16 +101,109 @@ public class TestSmstemplateCreate extends TestBase {
 //		smstemplate.logoutAmdin();
 		// smstemplate.loginas_UserCredentials();
 
-		// table
-//		smstemplate.searchThrough_processes();
-//		smstemplate.ClearFilters();
-//		smstemplate.SearchThroughSearchField();
-//		//smstemplate.Delete_createdSmsTemplate();
-//		
+	}
 
-		// edit
-		// smstemplate.Edit_smsTemplated();
+	@Test(priority = 3, enabled = true)
+	public void verifyTheUserIsAbleTOaddMutipleRows() {
 
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.CreateSmstemplate();
+		smstemplate.addMultipleRows(5);
+
+	}
+
+	@Test(priority = 4, enabled = true)
+	public void verifyTheUserIsableTOdeleteRows() {
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.CreateSmstemplate();
+		smstemplate.addMultipleRows(5);
+		smstemplate.deleteMultipleRows(4);
+
+	}
+
+	@Test(priority = 2, enabled = true)
+	public void verifyTheCreatedSmsTemplate() throws Throwable {
+
+		CreateSmsTemplate();
+		smstemplate.verifyCreatedSmsTemplate();
+	}
+
+	// Edit
+	@Test(priority = 5, enabled = true)
+	public void verifyTheUserisAbletoeditSmsTemplate() throws Throwable {
+
+		smstemplate.Edit_smsTemplated();
+	}
+
+	// Table
+	@Test(priority = 6, enabled = true)
+	public void verifyTheUSerIsableTosearchThroughProcss() throws Throwable {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.searchThroughProcess();
+		smstemplate.clickOnSearchButton();
+
+		smstemplate.verifyselectedProcessShouldMatchWithProcess();
+
+	}
+
+	@Test(priority = 7, enabled = true)
+	public void verifyTheUSerIsableTosearchThroughSubProcss() throws Throwable {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.searchThroughProcess();
+		smstemplate.searchThroughSubProcess();
+		smstemplate.clickOnSearchButton();
+
+		smstemplate.verifyselectedSubProcessShouldMatchWithSubProcess();
+
+	}
+
+	@Test(priority = 8, enabled = true)
+	public void verifyTheUSerIsableTosearchThroughSubSubProcss() throws Throwable {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.searchThroughProcess();
+		smstemplate.searchThroughSubProcess();
+		smstemplate.searchThroughSubSubProcess();
+		smstemplate.clickOnSearchButton();
+
+		smstemplate.verifyselectedSubSubProcessShouldMatchWithSubSubProcess();
+
+	}
+
+	@Test(priority = 9, enabled = true)
+	public void verifyTheUSerIsableTosearchThroughStages() throws Throwable {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.searchThroughProcess();
+		smstemplate.searchThroughSubProcess();
+		smstemplate.searchThroughSubSubProcess();
+		smstemplate.clickOnSearchButton();
+		smstemplate.searchThroughStages();
+
+		smstemplate.verifyselectedSubSubProcessShouldMatchWithStages();
+
+	}
+
+	@Test(priority = 10, enabled = true)
+	public void searchTroughTemplatenameOnSearchTextfield() throws Throwable {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.searchThroughSeachTextfield();
+	}
+
+	@Test(priority = 11, enabled = true)
+	public void verifyTheUSerisAbleToClearFilters() {
+
+		smstemplate.ClearFilters();
+	}
+
+	@Test(priority = 12, enabled = true)
+	public void DeleteSmsTempaleAndVerifyTheDeletedOne() {
+
+		smstemplate.navigateto_SmsTemplateTab();
+		smstemplate.Delete_createdSmsTemplate();
 	}
 
 	public void endToEndSMSThroughStageField() throws Throwable {
@@ -122,68 +215,40 @@ public class TestSmstemplateCreate extends TestBase {
 
 	}
 
-	@Test(priority = 2)
-	public void endToEndSMSThroughSystemName() throws Throwable {
-		// smstemplate.SystemName_create();
-
-		smstemplate.NavigateToFetchprocess();
-		smstemplate.navigatetoStage_verifySMS();
-		smstemplate.navigateto_SmsTemplateTab();
-		smstemplate.CreateSmstemplate();
-		smstemplate.selectProcessDropdown();
-		smstemplate.SelectSubProcessDropdown();
-		smstemplate.selectSubSubProcess();
-		smstemplate.selectStages();
-		smstemplate.SmsTemplateName();
-		smstemplate.disposition();
-		smstemplate.fromNumber();
-		smstemplate.toNumberSourceSystemNames();
-		smstemplate.toNumberSystemNames();
-		smstemplate.message();
-		smstemplate.remarksField();
-		smstemplate.createButton();
-
-	}
-
-//Auto Sms 
+	// Auto Sms_Mapping
 	@Test
 	public void Disposition() throws Throwable {
-		verifyAddFormFieldSetInCreateFieldSet(); // CreateDisposition
-		smstemplate.verifyCreatedDispositionQuestionset();
-		smstemplate.navigatetoStage_verifySMS();
-		smstemplate.stagesDispositionClick();
-		smstemplate.selectSearchProcesses();
+
+		smstemplate.createDispositionQuestionSet();// Create Disposition
+		smstemplate.verifyDispositionQuestionSet(); // verify Created Question Set_Disposition
+
+		// smstemplate.navigatetoStage_verifySMS();
+
+		smstemplate.stagesDispositionClick(); // Search stages and Do Disposition Mapping
+		smstemplate.selectProcesses();
 		smstemplate.selectStagesDisposition();
 		smstemplate.selectDispositionQuestionSet();
+		smstemplate.selectFormName();
+		smstemplate.clickAndsaveOnDispositionMapingPage();
 
-		smstemplate.saveStagesDisposition();
-		smstemplate.VeriftTheUserIsAbleToDoAutoSMSMapping();
-		smstemplate.addAutoSmsMapping();
+		// smstemplate.VeriftTheUserIsAbleToDoAutoSMSMapping();
+		smstemplate.naviagteToAutoSmsMappingAndAddSmstemplate();
+		// smstemplate.selectSmsTemplateAndClickOnAddForAutoSMSMapping();
 	}
 
-	public void verifyAddFormFieldSetInCreateFieldSet() throws Throwable {
-
-		homePage.clickOnDisposition();
-
-		String questionSetNameString = "Employee Status";
-		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
-
-		// Drop Down
-		List<String> sector = Arrays.asList("Pending", "complete", "under process");
-		masterFieldSet.addQuestions(0).addDropDownRelatedQuestions("What is the current status of the employee ?", 1, // Section
-				1, // Question
-				MastersFieldSets.DROP_DOWN, sector);
-
-		disposition.saveRecord();
-
-	}
-
+	@Test
 	public void autoSMSMapping() throws Throwable {
-		smstemplate.VeriftTheUserIsAbleToDoAutoSMSMapping();
-		smstemplate.addAutoSmsMapping();
+		verifyTheUserIsAbalToDoAutoSMSMapping();
 	}
 
-/////////////////////////////////////////// Negative Testing /////////////////////////////////////////////////////////////
+	// Auto SMS Mapping
+	@Test
+	public void verifyTheUserIsAbalToDoAutoSMSMapping() throws Throwable {
+
+		smstemplate.naviagteToAutoSmsMappingAndAddSmstemplate();
+	}
+
+//------------------------- Negative Testing--------------------------------- (Pending)
 
 	@Test
 	public void verifyWithoutSelectingAnyFieldAndCrete() {
@@ -319,7 +384,7 @@ public class TestSmstemplateCreate extends TestBase {
 		smstemplate.disableSmsActionsAndCheckItIsVisibleOrNot();
 	}
 
-	// @AfterTest
+//	@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();

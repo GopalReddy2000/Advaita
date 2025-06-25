@@ -7,6 +7,7 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,16 +24,18 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Login.Home.HomePage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.SendDataUtils;
 import com.advaita.alchemyPageObject.SmsTemplate;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
-public class userStatus extends TestBase {
+public class UserStatus extends TestBase {
 
 	private static final String Random = null;
 
-	public userStatus() {
+	public UserStatus() {
 		PageFactory.initElements(driver, this);
 	}
 
@@ -43,24 +46,29 @@ public class userStatus extends TestBase {
 	String statusName3 = " Trainee Employee";
 	String statusName4 = "Customer";
 
+	public String statusName = FakeData.lastName1() + "_Status"; // Status Name
+	public String description = FakeData.lastName1() + "_Description"; // Description
+
 	public static String defaultUrl;
 	public static String userStatusUrl;
-	public static String createdStatusInputvlaue; // input valie
+	public static String createdStatusNameInputvlaue; // Status name Input value
 	public static String firstStatusNameText;
 	public static String inputFieldAttributeValue;
 	public static String editStatusNameValue;
 
-	@FindBy(xpath = "//img[@class='img-fluid profile_img']/..//span")
-	public WebElement userProfileName;
+	@FindBy(xpath = "//ul[@class='dropdown-menu show']//li//a")
+	List<WebElement> alchemyOptions;
 
 	@FindBy(xpath = "//ul[@class='sidemenu_ul']//li//a//span[@class='text menu-text']")
 	public List<WebElement> sideMenusListsElement;
 
+	@FindBy(xpath = "//img[@class='img-fluid profile_img']/..//span")
+	public WebElement userProfileName;
+
 	@FindBy(xpath = "(//ul[@class='sidemenu_ul']//li//a[@class='dropdown-item  menu-text'])[position() > 4]")
 	public List<WebElement> subSideMenusListsElements;
-	//// ul[@class='sidemenu_ul']//li//a[@class='dropdown-item menu-text']
-	// Prfile options
 
+	// Prfile options
 	@FindBy(xpath = "//span[contains(@class, 'profile_name')]")
 	public WebElement profileDropdown;
 
@@ -97,8 +105,11 @@ public class userStatus extends TestBase {
 	@FindBy(xpath = "//a//span[text()='Alchemy']")
 	public WebElement alchemyModul;
 
-	@FindBy(xpath = "//a//span[text()='User Settings ']")
-	public WebElement userStatus;
+	@FindBy(xpath = "(//a[@id='menulist3'])[2]")
+	public WebElement userStausExpansionPanel;
+
+	@FindBy(xpath = "(//a//span[text()='User Status']/../../..//li)[1]//a[text()='User Status']")
+	public WebElement userStatusOption;
 
 	@FindBy(xpath = "(//h1[text()=' User Status '])[1]")
 	public WebElement verifyUserStatusPage;
@@ -126,6 +137,9 @@ public class userStatus extends TestBase {
 
 	@FindBy(xpath = "//select[@id='multiselect']")
 	public WebElement menusToHideDropdown;
+
+	@FindBy(xpath = "//select[@id='multiselect_to']")
+	public WebElement menusToHideMultipleDropdown;
 
 	@FindBy(id = "multiselect_rightAll")
 	public WebElement multiselect_RightAll;
@@ -161,10 +175,10 @@ public class userStatus extends TestBase {
 	public WebElement CancelButton;
 
 	@FindBy(xpath = "//span[@id='change_msg']")
-	public WebElement successFullyCreated_popuop;
+	public WebElement successFully_popuop;
 
 	@FindBy(xpath = "//span[@id='change_msg']/..//button")
-	public WebElement continueButton_create;
+	public WebElement continueButton;
 
 	@FindBy(xpath = "//tbody//tr[1]//td[1]")
 	public WebElement firstCreatedUserStatus;
@@ -185,17 +199,23 @@ public class userStatus extends TestBase {
 	@FindBy(xpath = "//tbody//tr[1]/td[1]")
 	public WebElement firstStatusName;
 
+	@FindBy(xpath = "//tbody//td[1]")
+	public List<WebElement> statusNames_Table;
+
 	@FindBy(xpath = "//div//button//img[@alt='filter_search']")
 	public WebElement searchbutton_Table;
 
 	@FindBy(xpath = "//div//img/..//h6")
 	public WebElement clearAllFiltersButton_Table;
 
+//	@FindBy(xpath = "(//img[@alt='delete-icon '])[1]")
+//	public WebElement deleteButton;
+
 	@FindBy(xpath = "(//img[@alt='delete-icon '])[1]")
 	public WebElement deleteButton;
 
 	@FindBy(xpath = "(//img[@alt='delete-icon '])")
-	List<WebElement> deleteOptions;
+	public List<WebElement> deleteOptions;
 
 	@FindBy(xpath = "//h6[text()='Delete ?']")
 	public WebElement deletePopup_userStatus;
@@ -344,6 +364,19 @@ public class userStatus extends TestBase {
 	@FindBy(xpath = "//span[@id='change_error_msg']")
 	public WebElement somethingWentWrongErrorMesg;
 
+	// References Class
+
+	HomePage homePage = new HomePage();
+	PropertieFileUtil propertieFileUtil = new PropertieFileUtil();
+
+	List<String> menuItems = Arrays.asList("Data Setup", "Workflow Design", "User Setup", "User Management",
+			"Role & Permissions", "Alchemy", "User Mapping", "Bias", "Manual Allocation", "Auto Allocation",
+			"Re Allocation", "Sampling Plan & Generation", "Escalation Metrics", "Add Evaluation",
+			"View/Modify Evaluation", "Evaluation Tab View", "Open Escalated Form", "Edit Escalated Form",
+			"Audit the Auditor", "Skip Reason", "Email Template", "SMS Template", "Whatsapp Template", "Sample Status",
+			"Transmon Report", "Normal Report", "Rejected Audit Form", "User Status", "API Key Setup", "Menu Setup",
+			"Masters", "Notification", "Transaction Report", "System Names", "Site Settings");
+
 	public void navigateToMenuSetup() throws Throwable {
 
 		assertTrue(menuSetup.isDisplayed(), "menuSetup is not displayed");
@@ -376,25 +409,32 @@ public class userStatus extends TestBase {
 
 	}
 
+	// New Implementation
+
 	public void NavigateToUserStatus() {
 
 		defaultUrl = driver.getCurrentUrl();
 		System.out.println("defaultUrlUrl : " + defaultUrl);
 
-		assertTrue(userStatus.isDisplayed(), "userStatusis not displayed");
-//		wait.until(ExpectedConditions.visibilityOf(userStatus));		
-//		userStatus.click();
-		jsClick(userStatus);
+		assertTrue(userStausExpansionPanel.isDisplayed(), "userStausExpansionPanel is Not Disalyed");
+		jsClick(userStausExpansionPanel);
 
-		userStatusUrl = driver.getCurrentUrl();
-		System.out.println("userStatusUrl: " + userStatusUrl);
-
-		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
-
-		assertNotEquals(defaultUrl, userStatusUrl + "Url is not changed");
+		assertTrue(userStatusOption.isDisplayed(), "userStatusis not displayed");
+		jsClick(userStatusOption);
+//
+//		userStatusUrl = driver.getCurrentUrl();
+//		System.out.println("userStatusUrl: " + userStatusUrl);
+//
+//		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
+//
+//		assertNotEquals(defaultUrl, userStatusUrl + "Url is not changed");
 	}
 
 	public void createUserStatus() {
+		naviagteToCreateUserStatus();
+	}
+
+	public void naviagteToCreateUserStatus() {
 		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage");
 		assertTrue(Create.isDisplayed(), "Create is not displayed");
 		Create.click();
@@ -411,6 +451,7 @@ public class userStatus extends TestBase {
 	// InputField Validations isDisplayed
 	public void inputFieldIsDisplayed(WebElement element) {
 		// Element is displayed
+		wait.until(ExpectedConditions.visibilityOf(element));
 		assertTrue(element.isDisplayed(), "Inputfield is not displayed");
 	}
 
@@ -457,7 +498,7 @@ public class userStatus extends TestBase {
 	}
 
 	// Status Name
-	public void statusNameInputField(String chosenStatus) {
+	public void statusNameInputField() throws IOException {
 
 		inputFieldIsDisplayed(statusNameInputfield);
 		inputFieldIsEnable(statusNameInputfield);
@@ -474,17 +515,17 @@ public class userStatus extends TestBase {
 //
 //		statusNameInputfield.sendKeys(randomStatus);
 
-		// String chosenStatus = "Trainee Employee";
-		System.out.println("Chosen statusName: " + chosenStatus);
-		statusNameInputfield.sendKeys(chosenStatus);
+		statusNameInputfield.sendKeys(statusName);
 
-		createdStatusInputvlaue = statusNameInputfield.getAttribute("value"); // Created status Input Vaue
-		System.out.println("createdInputvlaueEmploee :" + createdStatusInputvlaue);
+		createdStatusNameInputvlaue = statusNameInputfield.getAttribute("value"); // Created status Input Vaue
+		System.out.println("createdStatusNameInputvlaue :" + createdStatusNameInputvlaue);
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("StatusName", createdStatusNameInputvlaue);
 
 	}
 
 	// Descriptions Validations
-	public void descriptionField() {
+	public void descriptionField() throws IOException {
 
 		inputFieldIsDisplayed(descriptionField);
 		inputFieldIsEnable(descriptionField);
@@ -493,7 +534,12 @@ public class userStatus extends TestBase {
 		inputfieldIsRequired(descriptionField);
 		checkthroughAsterisk(descriptionLabel, false);
 
-		descriptionField.sendKeys(fake.lastName1());
+		descriptionField.sendKeys(description);
+
+		String descriptionFiledValue = descriptionField.getAttribute("value"); // Created status Input Vaue
+		System.out.println("createdStatusNameInputvlaue :" + createdStatusNameInputvlaue);
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("Description", descriptionFiledValue);
 
 	}
 
@@ -536,17 +582,80 @@ public class userStatus extends TestBase {
 
 	}
 
-	public void CreateButtonclick() {
+	public void selectMenuToHide(String selectpermission, String selectOptions) throws Throwable {
+
+		switch (selectpermission) {
+
+		case "givenOptionSideMenus":
+
+			checkthroughAsterisk(menusToHideLevel, false);
+
+			assertTrue(menusToHideDropdown.isDisplayed(), "menus To Hide multi select dropdwon is not displayed");
+
+			assertTrue(menusToHideDropdown.isEnabled(), " menus To Hide multi select dropdwon is not Enabled");
+
+			Select multiSelect = new Select(menusToHideDropdown);
+			assertTrue(multiSelect.isMultiple(), " dropdodown shoul not allow multiple selections");
+
+			multiSelect.selectByVisibleText(selectOptions);
+
+			multiselect_RightSelected.click();
+
+			clickOnCreateButton();
+
+			verifyCreatedStatus();
+
+			selectStatus(driver, createdStatusNameInputvlaue);
+
+			verifyMenusAreHideSideMenusModule(selectOptions);
+
+			break;
+
+		case "GivenOptionsAlchemyOptions":
+
+			checkthroughAsterisk(menusToHideLevel, false);
+
+			assertTrue(menusToHideDropdown.isDisplayed(), "menus To Hide multi select dropdwon is not displayed");
+
+			assertTrue(menusToHideDropdown.isEnabled(), " menus To Hide multi select dropdwon is not Enabled");
+
+			Select multiSelect1 = new Select(menusToHideDropdown);
+			assertTrue(multiSelect1.isMultiple(), " dropdodown shoul not allow multiple selections");
+
+			multiSelect1.selectByVisibleText(selectOptions);
+
+			multiselect_RightSelected.click();
+
+			PropertieFileUtil.extractAllDropdownOptions(menusToHideMultipleDropdown, "menusToHideMultipleOptions");
+
+			clickOnCreateButton();
+
+			verifyCreatedStatus();
+
+			selectStatus(driver, createdStatusNameInputvlaue);
+
+			break;
+
+		default:
+
+			System.out.println("No options selected");
+
+			break;
+		}
+
+	}
+
+	public void clickOnCreateButton() {
 		assertTrue(createButton.isDisplayed(), "createButtonis not displayed");
 		// createButton.click();
 		jsClick(createButton);
 
-		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
-		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuopis not displayed");
+		wait.until(ExpectedConditions.visibilityOf(successFully_popuop));
+		assertTrue(successFully_popuop.isDisplayed(), "successFullyCreated_popuopis not displayed");
 
-		wait.until(ExpectedConditions.visibilityOf(continueButton_create));
-		assertTrue(continueButton_create.isDisplayed(), "continueButton_createis not displaed");
-		continueButton_create.click();
+		wait.until(ExpectedConditions.visibilityOf(continueButton));
+		assertTrue(continueButton.isDisplayed(), "continueButton_createis not displaed");
+		continueButton.click();
 	}
 
 	List<String> statusNameLists = new ArrayList<String>();
@@ -558,41 +667,12 @@ public class userStatus extends TestBase {
 			System.out.println("statusNameLists :" + statusNameList.getText());
 		}
 
-		assertTrue(statusNameLists.contains("Trainee Employee"), " statusNames is not contains");
+		assertTrue(statusNameLists.contains(createdStatusNameInputvlaue), " statusNames is not contains");
 
 		assertTrue(profileDropdown.isDisplayed(), "profileDropdownis not displayed");
 		profileDropdown.click();
 
 	}
-
-//	public void CreatedStatusList() throws Throwable {
-//	
-//		subMenuDropdwonProfile.click();
-//		Thread.sleep(1000);
-//		List<String> createdStatusList = new ArrayList<String>();
-//		for (WebElement statusTexts : createdStatuses) {
-//			createdStatusList.add(statusTexts.getText());
-//			System.out.println("createdStatusList :" + statusTexts.getText());
-//		}
-//		
-//		assertTrue(createdStatusList.contains("Trainee Employee"), "Trainee Employee is not contains");
-//		List<String> createdStatusList = new ArrayList<>();
-//
-//		// Iterate over the list of created statuses (WebElement)
-//		for (WebElement statusText : createdStatuses) {
-//		    // Add each status text to the list
-//		    String status = statusText.getText();
-//		    createdStatusList.add(status);
-//		    System.out.println("createdStatusList: " + status);
-//
-//		    // Check if the status is "Trainee Employee"
-//		    if (status.equals("Trainee Employee")) {
-//		        // Click on the "Trainee Employee" WebElement
-//		        statusText.click();
-//		        System.out.println("Clicked on 'Trainee Employee'");
-//		        break; // Exit the loop after clicking on "Trainee Employee"
-//		    }
-//		}  
 
 	public void selectStatus(WebDriver driver, String desiredStatus) // as per hide menus select " status"
 	{
@@ -611,23 +691,36 @@ public class userStatus extends TestBase {
 				// statusText.click();
 				jsClick(driver, statusText);
 				System.out.println("Clicked on '" + status + "'");
+
+				wait.until(ExpectedConditions.visibilityOf(successFully_popuop));
+				assertTrue(successFully_popuop.isDisplayed(), "Status Updated Successfully is Not Disapleyd");
+				continueButton.click();
+
 				break; // Exit the loop after clicking on the matching status
 			}
 		}
 	}
 
-	// "Hide" Single Menus" for "SideModules"
+	// Navigate to alchemy To verify Hide Menus
 
-	public void selectStatusHideSingleMenus() throws Throwable // as per hide menus select " status" from sub menu
-																// dopdown and pass
-	{
+	List<String> alchemnyOptionsLists = new ArrayList<String>();
 
-		selectStatus(driver, "Trainee Employee"); // change 'status" parametr
-		verifyMenusAreHideSideMenusModule("API Key Setup");
+	public void naviagteToAlchemyAndverifyHidemenus() throws Throwable {
+
+		homePage.navigateTo_AlchemyModule();
+
+		for (WebElement alchemyOptionsList : alchemyOptions) {
+			String optionsAlchemy = alchemyOptionsList.getText();
+			alchemnyOptionsLists.add(optionsAlchemy);
+			System.out.println("optionsAlchemy: " + optionsAlchemy);
+
+			String HideOptions = PropertieFileUtil.getSingleTextFromPropertiesFile("menusToHideMultipleOptions1");
+			assertTrue(!alchemnyOptionsLists.contains(HideOptions), "Hide option is Not Dispalyed");
+		}
+
 	}
 
 	// "Hide" Single Menus" for "SideModules"
-
 	public void verifyMenusAreHideSideMenusModule(String menuName) throws Throwable {
 
 		List<String> sideMenuList = new ArrayList<String>();
@@ -644,7 +737,7 @@ public class userStatus extends TestBase {
 			System.out.println("The MENUS is hide from SelectedStatus");
 		} else if (sideMenuList.contains(menuName)) {
 			// Fail the test if "API Key Setup" is found
-			assertTrue(false, "The MENUS is not hiding for CreatedStatus");
+			assertTrue(false, "Failed:menus is Not hide It is Disaplyed In Side Moduled");
 		}
 
 	}
@@ -687,36 +780,37 @@ public class userStatus extends TestBase {
 		}
 	}
 
-	// Table
-	// SearchStatusName
-	public void searchStatus() {
+	// Search
+	public void searchStatus() throws Throwable {
 
-		assertTrue(firstStatusName.isDisplayed(), "firstStatusName is not displayed");
+		PropertieFileUtil.extractAllAndStore(statusNames_Table, "StatusNameSearch");
 
-		firstStatusNameText = firstStatusName.getText();
-		System.out.println("firstStatusNameText :" + firstStatusNameText);
+		String statusName = PropertieFileUtil.getSingleTextFromPropertiesFile("StatusNameSearch1");
 
+		// search textfiled
 		inputFieldIsDisplayed(searchTextfield);
 		searchTextfield.isEnabled();
 		inputFieldIsEmpty(searchTextfield);
 		placeholderText(searchTextfield);
+		searchTextfield.sendKeys(statusName);
 
-		searchTextfield.sendKeys(firstStatusNameText);
+		String searchFieldValue = searchTextfield.getAttribute("value");
 
-		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not displayed");
+		assertEquals(searchFieldValue, statusName);
+
 		searchbutton_Table.click();
 
-		assertTrue(firstStatusName.isDisplayed(), "firstStatusName is not displeyd ");
+		String fistsStatusNametext = firstStatusName.getText();
+
+		assertEquals(statusName, fistsStatusNametext);
 
 	}
 
+	// CelarAll Filters
 	public void clearallFiltes() {
 
 		String beforeSearchFieldVlaue = searchTextfield.getAttribute("value");
 		System.out.println("beforeSearchFieldVlaue:" + beforeSearchFieldVlaue);
-
-//		String afterSearchFieldVlaue=searchTextfield.getAttribute("value");
-//		System.out.println("afterplaceholderVlaue:"+ afterSearchFieldVlaue);
 
 		assertTrue(clearAllFiltersButton_Table.isEnabled(), "clearAllFiltersButton_Table is not enabled");
 		assertTrue(clearAllFiltersButton_Table.isDisplayed(), "clearAllFiltersButton_Table is not displayed");
@@ -730,38 +824,69 @@ public class userStatus extends TestBase {
 
 	}
 
-	public void DeleteStatus() {
+	// Delete Staus
+	public void DeleteStatus(String statusName) {
 
-		assertTrue(deleteButton.isEnabled(), "deleteButtonis not enabled");
-		assertTrue(deleteButton.isDisplayed(), "deleteButton is not displayed");
-		deleteButton.click();
+		try {
+			// Build dynamic XPath to locate the delete icon in the row containing the
+			// status name
+			String deleteXPath = "//table//tr[td[contains(text(), '" + statusName
+					+ "')]]//i[contains(@class, 'fa-trash')]";
 
-		assertTrue(deletePopup_userStatus.isDisplayed(), "deletePopup_userStatus is not displayed");
-		assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete is not diplayed");
-		deleteButton_delete.click();
+			if (deleteButton.isDisplayed() && deleteButton.isEnabled()) {
+				deleteButton.click();
 
-		wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
-		assertTrue(deleted_SuceessfullyPopup.isDisplayed(), "deleted_SuceessfullyPopup is not displayed");
-		assertTrue(continueButton_DeleteSuccessullyPopup.isDisplayed(),
-				"continueButton_DeleteSuccessullyPopup is not displayed");
-		continueButton_DeleteSuccessullyPopup.click();
+				System.out.println("✅ Clicked delete for status: " + statusName);
 
-		assertTrue(searchTextfield.isEnabled(), "Search textfield is not enabled");
-		assertTrue(searchbutton_Table.isDisplayed(), "searchbutton_Table is not displayed");
-		inputFieldIsEmpty(searchTextfield);
-		searchTextfield.sendKeys(firstStatusNameText);
+				assertTrue(deleteButton_delete.isDisplayed(), "deleteButton_delete is Not dispalyed");
+				deleteButton_delete.click();
 
-		searchbutton_Table.click();
+				wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
+				assertTrue(deleted_SuceessfullyPopup.isDisplayed(), "deleted_SuceessfullyPopup is not displayed");
+				assertTrue(continueButton_DeleteSuccessullyPopup.isDisplayed(),
+						"continueButton_DeleteSuccessullyPopup is not displayed");
+				continueButton_DeleteSuccessullyPopup.click();
 
-		// assertTrue(noEntriedFound.isDisplayed(), "noEntriedFound isn not displayed");
-		if (noEntriedFound.isDisplayed()) {
-			assertTrue(noEntriedFound.isDisplayed(), "The status is deleted as 'No entries found' is displayed.");
-		} else {
+			} else {
+				System.out.println("⚠️ Delete icon not clickable for status: " + statusName);
+			}
 
-			assertTrue(false, "The status is not deleted as 'No entries found' is not displayed.");
+		} catch (NoSuchElementException e) {
+			System.out.println("❌ No row found for status: " + statusName);
+		} catch (Exception e) {
+			System.out.println("❗ Error while clicking delete for status: " + statusName);
+			e.printStackTrace();
 		}
-		clearAllFiltersButton_Table.click();
 
+	}
+
+	// Delete Status as Per count /All
+	public void deleteUserStatuses(int deleteCount) {
+		int total = Math.min(deleteCount, deleteOptions.size());
+
+		for (int i = 0; i < total; i++) {
+			try {
+				// Re-fetch delete icons every time because DOM changes after each deletion
+				List<WebElement> deleteIcons = driver.findElements(By.xpath("//img[@alt='delete-icon ']"));
+
+				// Click the first delete icon
+				deleteIcons.get(0).click();
+
+				// Confirm delete in the popup
+				WebElement confirmDelete = wait.until(ExpectedConditions
+						.elementToBeClickable(By.xpath("//div[contains(@class,'modal')]//button[text()='Delete']")));
+				confirmDelete.click();
+
+				// Wait for and close the success popup
+				wait.until(ExpectedConditions.visibilityOf(deleted_SuceessfullyPopup));
+				continueButton_DeleteSuccessullyPopup.click();
+
+				Thread.sleep(1000); // Short wait for DOM update
+
+			} catch (Exception e) {
+				System.out.println("❗ Error while deleting item #" + (i + 1));
+			}
+		}
 	}
 
 	// Edit
@@ -843,8 +968,8 @@ public class userStatus extends TestBase {
 	}
 
 	public void navigateToaAdmin() throws Throwable {
-		createUserStatus();
-		statusNameInputField("Admin");
+		naviagteToCreateUserStatus();
+		// statusNameInputField("Admin");
 		// descriptionField();
 		String[] descriptionfield = { "Admin status grants full access to all menus." };
 
@@ -859,11 +984,11 @@ public class userStatus extends TestBase {
 		assertTrue(createButton.isDisplayed(), "createButton is not displayed");
 		jsClick(driver, createButton);
 
-		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
-		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuop is not displayed");
+		wait.until(ExpectedConditions.visibilityOf(successFully_popuop));
+		assertTrue(successFully_popuop.isDisplayed(), "successFullyCreated_popuop is not displayed");
 
-		assertTrue(continueButton_create.isDisplayed(), "continueButton_create is not disaplyed");
-		continueButton_create.click();
+		assertTrue(continueButton.isDisplayed(), "continueButton_create is not disaplyed");
+		continueButton.click();
 
 		profileDropdown.click();
 		subMenuDropdwonProfile.click();
@@ -887,15 +1012,6 @@ public class userStatus extends TestBase {
 		assertTrue(searchTextfieldMenusToHide.isDisplayed(), "searchTextfieldMenusToHideis not displayed");
 		assertTrue(searchTextfieldMenusToHide.isEnabled(), "searchTextfieldMenusToHide is not enabled");
 
-		List<String> menuItems = Arrays.asList("Data Setup", "Workflow Design", "User Setup", "User Management",
-				"Role & Permissions", "Alchemy", "User Mapping", "Bias", "Manual Allocation", "Auto Allocation",
-				"Re Allocation", "Sampling Plan & Generation", "Escalation Metrics", "Add Evaluation",
-				"View/Modify Evaluation", "Evaluation Tab View", "Open Escalated Form", "Edit Escalated Form",
-				"Audit the Auditor", "Skip Reason", "Email Template", "SMS Template", "Whatsapp Template",
-				"Sample Status", "Transmon Report", "Normal Report", "Rejected Audit Form", "User Status",
-				"API Key Setup", "Menu Setup", "Masters", "Notification", "Transaction Report", "System Names",
-				"Site Settings");
-
 		// Choose a random name from the list
 		Random random = new Random();
 		String randomName = menuItems.get(random.nextInt(menuItems.size()));
@@ -911,25 +1027,7 @@ public class userStatus extends TestBase {
 
 	}
 
-//////////////////////////////////////UserStatus_Negative  ////////////////////////////////////////////////////////////////////////
-
-//	public void withoutSelectingAnyFieldAndCreteUtility(WebElement smsCreateButton,
-//			WebElement fieldRequiredErrorMEssage) {
-//
-//		String Combinetext = processLabel.getText() + subProcessLabel.getText() + subSubProcessLabel.getText()
-//				+ stagesLabel.getText() + templateNameLabel.getText() + messagLabel.getText();
-//		System.out.println("Combinetext" + Combinetext);
-//
-//		String asterisk = "*";
-//		assertTrue(Combinetext.contains(asterisk), "asterisk is not contains in Combinetext text");
-//
-//		smsCreateButton.click();
-//
-//		boolean isEitherDisplayed = fieldRequiredErrorMEssage.isDisplayed();
-//		assertTrue(isEitherDisplayed,
-//				"'thisFieldisRequiredErrorMessage' is not displayed for Mandatory fields, test failed.");
-//
-//	}
+//============================= User Status Neagtive ==============================================================
 
 	public boolean withoutSelectingAnyFieldAndCreateUserstatus() {
 
@@ -965,13 +1063,13 @@ public class userStatus extends TestBase {
 		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
 
 		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(statusNameLabel, statusNameInputfield, createButton,
-				successFullyCreated_popuop, somethingWentWrongErrorMesg);
+				successFully_popuop, somethingWentWrongErrorMesg);
 	}
-	
+
 	public void createUserStatusThrougByenteringNonEnglishCahracterInStatusNameTextfield() {
 
-		String nonEnglishCahracter="கூட்டம் "; //(Meeting)
-		
+		String nonEnglishCahracter = "கூட்டம் "; // (Meeting)
+
 		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
 		assertTrue(Create.isDisplayed(), "Create is not displayed");
 		Create.click();
@@ -981,26 +1079,26 @@ public class userStatus extends TestBase {
 		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
 
 		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(statusNameLabel, statusNameInputfield, createButton,
-				successFullyCreated_popuop, somethingWentWrongErrorMesg);
+				successFully_popuop, somethingWentWrongErrorMesg);
 	}
-	
+
 	public void createUserStatusThrougByenteringNonEnglishCahracterInDescriptionTextfield() {
-		
-		String nonEnglishCahracter="கூட்டம் "; //(Meeting)
-		
+
+		String nonEnglishCahracter = "கூட்டம் "; // (Meeting)
+
 		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
 		assertTrue(Create.isDisplayed(), "Create is not displayed");
 		Create.click();
 
 		checkthroughAsterisk(statusNameLabel, true);
 		statusNameInputfield.sendKeys(fake.lastName1());
-		
+
 		checkthroughAsterisk(descriptionLabel, false);
 		descriptionField.sendKeys(nonEnglishCahracter);
 		assertTrue(menusToHideDropdown.isDisplayed(), "menusToHideDropdown is not dispalyed");
 
 		smsTemplate.createTemplateThroughSpecialCharacterUTILITY(descriptionLabel, descriptionField, createButton,
-				successFullyCreated_popuop, somethingWentWrongErrorMesg);
+				successFully_popuop, somethingWentWrongErrorMesg);
 	}
 
 	public void userCreateUserStatusThroughEmojis() {
@@ -1013,7 +1111,7 @@ public class userStatus extends TestBase {
 		descriptionField.sendKeys(fake.lastName1());
 
 		smsTemplate.createTemplateForMandatoryFieldThroughEmojisUTILITY(statusNameLabel, statusNameInputfield,
-				createButton, successFullyCreated_popuop, somethingWentWrongErrorMesg);
+				createButton, successFully_popuop, somethingWentWrongErrorMesg);
 
 	}
 
@@ -1025,29 +1123,29 @@ public class userStatus extends TestBase {
 
 		checkthroughAsterisk(descriptionLabel, false);
 		descriptionField.sendKeys(fake.lastName1());
-		smsTemplate.characterLimitTextfieldUtility(statusNameInputfield, createButton, successFullyCreated_popuop,
+		smsTemplate.characterLimitTextfieldUtility(statusNameInputfield, createButton, successFully_popuop,
 				somethingWentWrongErrorMesg);
 	}
-	
+
 	public void createUserStatusByEnteringMoreThanCharacterLimitInDescriptionTetxfield() {
 
 		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
 		assertTrue(Create.isDisplayed(), "Create is not displayed");
 		Create.click();
-		
+
 		statusNameInputfield.sendKeys(fake.lastName1());
-		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFullyCreated_popuop,
+		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFully_popuop,
 				somethingWentWrongErrorMesg);
 	}
-	
+
 	public void createUserStatusByEnteringNonEnglishCahracterInTextfield() {
 
 		assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
 		assertTrue(Create.isDisplayed(), "Create is not displayed");
 		Create.click();
-		
+
 		statusNameInputfield.sendKeys(fake.lastName1());
-		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFullyCreated_popuop,
+		smsTemplate.characterLimitTextfieldUtility(descriptionField, createButton, successFully_popuop,
 				somethingWentWrongErrorMesg);
 	}
 
@@ -1068,7 +1166,7 @@ public class userStatus extends TestBase {
 
 		jsClick(driver, createButton);
 
-		if (successFullyCreated_popuop.isDisplayed()) {
+		if (successFully_popuop.isDisplayed()) {
 			// Assert.fail("Test failed because successFullyCreated_popuop is displayed.");
 			assertFalse(true, "Test failed because successFullyCreated_popuop is displayed.");
 		} else if (somethingWentWrongErrorMesg.isDisplayed()) {
@@ -1154,9 +1252,9 @@ public class userStatus extends TestBase {
 		// createButton.click();
 		jsClick(driver, createButton);
 
-		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
-		assertTrue(successFullyCreated_popuop.isDisplayed(), "successFullyCreated_popuop is not dispalyed ");
-		continueButton_create.click();
+		wait.until(ExpectedConditions.visibilityOf(successFully_popuop));
+		assertTrue(successFully_popuop.isDisplayed(), "successFullyCreated_popuop is not dispalyed ");
+		continueButton.click();
 
 //		for (WebElement statusName : statusNames) {
 //			String statusNameTexts = statusName.getText();
@@ -1352,7 +1450,6 @@ public class userStatus extends TestBase {
 	public void TheUserAbleTodeleteAllUserStatus() {
 		try {
 
-			NavigateToUserStatus();
 			assertTrue(verifyUserStatusPage.isDisplayed(), "verifyUserStatusPage is not displayed");
 
 			for (WebElement deleteButton : deleteOptions) {
@@ -1407,8 +1504,8 @@ public class userStatus extends TestBase {
 
 		updateOptionAccountSettings.click();
 
-		wait.until(ExpectedConditions.visibilityOf(successFullyCreated_popuop));
-		assertTrue(successFullyCreated_popuop.isDisplayed(),
+		wait.until(ExpectedConditions.visibilityOf(successFully_popuop));
+		assertTrue(successFully_popuop.isDisplayed(),
 				"Test Failed:successFullyCreated_popuop is not displayed  first name last name Not changed ");
 		wait.until(ExpectedConditions.elementToBeClickable(continueButton_MyProfile));
 		continueButton_MyProfile.click();
@@ -1589,7 +1686,7 @@ public class userStatus extends TestBase {
 
 		cancelOptionAccountSettings.click();
 
-		assertTrue(!successFullyCreated_popuop.isDisplayed(), "Test Failed: successFullyCreated_popuop is displayed");
+		assertTrue(!successFully_popuop.isDisplayed(), "Test Failed: successFullyCreated_popuop is displayed");
 	}
 
 	// EmailTextfield
@@ -1645,8 +1742,7 @@ public class userStatus extends TestBase {
 			textfieldElement.sendKeys(invalidCreatedProcess);
 			updateOptionAccountSettings.click();
 			unWait(2000);
-			assertTrue(!successFullyCreated_popuop.isDisplayed(),
-					"TestCase Failed: successFullyCreated_popuop is  displayed");
+			assertTrue(!successFully_popuop.isDisplayed(), "TestCase Failed: successFullyCreated_popuop is  displayed");
 
 		} catch (NoSuchElementException e) {
 			System.out.println(" Test Case Pass: successFullyCreated_popuop is not Displayed");

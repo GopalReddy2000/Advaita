@@ -9,6 +9,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -19,7 +20,8 @@ public class TestMetaDataCreate extends TestBase {
 
 	Faker faker = new Faker();
 
-	public String metaDataName = "Test " + faker.name().firstName();
+	// public String metaDataName = "Test " + faker.name().firstName();
+	public String metaDataName = "Emplyee Record Details" + " metadaData";
 
 //	public String num = "7";
 //	public String metaDataName = "Test Single MetaData" + num;
@@ -30,6 +32,7 @@ public class TestMetaDataCreate extends TestBase {
 
 	LoginPage loginPage;
 	HomePage homePage;
+
 	HomePage hp;
 	MetaData metaData;
 
@@ -63,11 +66,7 @@ public class TestMetaDataCreate extends TestBase {
 		htmlReporter.config().setTimelineEnabled(true);
 		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-
-
 	}
-	
-
 
 	@Test(priority = 1)
 	public void verifyCreateMetaData() throws Throwable {
@@ -75,6 +74,8 @@ public class TestMetaDataCreate extends TestBase {
 		test = reports.createTest("verifyCreateMetaData");
 		hp.clickOnProcessManagementCreate();
 		metaData.createMetaData(metaDataName);
+
+		//PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", metaDataName);
 
 	}
 
@@ -90,67 +91,50 @@ public class TestMetaDataCreate extends TestBase {
 	}
 
 	@Test
-	public void testEmptyDropdown()
-	{
+	public void testEmptyDropdown() {
 		metaData.validateDatasetDropdown(metaData.selectProcessDropDown);
 
 	}
 
-	@DataProvider(name="metaDataDropdowns")
-	public Object[][] dropdowns()
-	{
-		return new Object[][]{
-				{metaData.selectProcessDropDown},
-				{metaData.selectSubProcessDropDown},
-				{metaData.selectSubSubProcessDropDown},
-				{metaData.selectDataSetDropDown}
-		};
+	@DataProvider(name = "metaDataDropdowns")
+	public Object[][] dropdowns() {
+		return new Object[][] { { metaData.selectProcessDropDown }, { metaData.selectSubProcessDropDown },
+				{ metaData.selectSubSubProcessDropDown }, { metaData.selectDataSetDropDown } };
 	}
 
 	@Test(dataProvider = "invalidRecordNameData")
-	public void setMetaDataName(String metaDataName,String errorMessage)
-	{
-		metaData. navToMetadataTable()
-		.metaDataTextBox(metaDataName,errorMessage);
+	public void setMetaDataName(String metaDataName, String errorMessage) {
+		metaData.navToMetadataTable().metaDataTextBox(metaDataName, errorMessage);
 	}
-
-
 
 	@DataProvider(name = "invalidRecordNameData")
 	public Object[][] invalidRecordNameData() {
-		return new Object[][] {
-				{"", "This field is required."},
-				{"   ", "Record name cannot be just spaces."},
-				{"a".repeat(258), "Record name cannot exceed 255 characters."},
-				{"ƀ Ɓ Ƃ ƃ Ƅ ƅ Ɔ Ƈ ƈ Ɖ Ɗ Ƌ", "Record name cannot contain Unicode characters."},
-				{"#Record$", "Record name cannot contain special characters."},
-				{"123456", "Record name cannot be numeric only."},
-				{"!!!@@@", "Record name cannot be only special characters."},
-				{"SELECT * FROM records", "Invalid input detected."},
-				{"<record>Test</record>", "Invalid input detected."},
-				{"record    name", "Record name cannot contain consecutive spaces."},
-				{"DemoEmpJ Details MetaData", "Metadata Name Already Exists"}
-		};
+		return new Object[][] { { "", "This field is required." }, { "   ", "Record name cannot be just spaces." },
+				{ "a".repeat(258), "Record name cannot exceed 255 characters." },
+				{ "ƀ Ɓ Ƃ ƃ Ƅ ƅ Ɔ Ƈ ƈ Ɖ Ɗ Ƌ", "Record name cannot contain Unicode characters." },
+				{ "#Record$", "Record name cannot contain special characters." },
+				{ "123456", "Record name cannot be numeric only." },
+				{ "!!!@@@", "Record name cannot be only special characters." },
+				{ "SELECT * FROM records", "Invalid input detected." },
+				{ "<record>Test</record>", "Invalid input detected." },
+				{ "record    name", "Record name cannot contain consecutive spaces." },
+				{ "DemoEmpJ Details MetaData", "Metadata Name Already Exists" } };
 	}
 
-
-	/*public void getResult(ITestResult result) throws IOException, Throwable {
-		if (result.getStatus() == ITestResult.FAILURE) {
-			// Mark the test as failed in the ExtentReports
-			test.fail(result.getThrowable());
-			// Add screenshot to ExtentReports
-			String screenshotPath = ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
-			test.addScreenCaptureFromPath(screenshotPath);
-
-			// Add logs
-			test.log(Status.FAIL, "Test failed at " + new Date());
-
-			// Add custom HTML block
-			test.log(Status.INFO, MarkupHelper.createCodeBlock("<div>Custom HTML block</div>"));
-		}
-		// Close ExtentReports
-		reports.flush();
-	}*/
+	/*
+	 * public void getResult(ITestResult result) throws IOException, Throwable { if
+	 * (result.getStatus() == ITestResult.FAILURE) { // Mark the test as failed in
+	 * the ExtentReports test.fail(result.getThrowable()); // Add screenshot to
+	 * ExtentReports String screenshotPath =
+	 * ScreenShorts.captureScreenshot(result.getMethod().getMethodName());
+	 * test.addScreenCaptureFromPath(screenshotPath);
+	 * 
+	 * // Add logs test.log(Status.FAIL, "Test failed at " + new Date());
+	 * 
+	 * // Add custom HTML block test.log(Status.INFO,
+	 * MarkupHelper.createCodeBlock("<div>Custom HTML block</div>")); } // Close
+	 * ExtentReports reports.flush(); }
+	 */
 
 	@AfterMethod
 	public void tearDown() {

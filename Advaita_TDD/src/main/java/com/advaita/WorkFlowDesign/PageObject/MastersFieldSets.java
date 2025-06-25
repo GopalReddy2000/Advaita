@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class MastersFieldSets extends TestBase {
 
 	FakeData fake = new FakeData();
 
-	public static final String masterURL = mainURl+"en/masters/masters_question_sets/";
+	public static final String masterURL = mainURl + "en/masters/masters_question_sets/";
 	public static String existingFieldSetRecord;
 	public static int existingFieldSetRecordCount;
 
@@ -1407,7 +1408,7 @@ public class MastersFieldSets extends TestBase {
 //	##################################################################################################################################
 //	##################################################################################################################################
 
-	public void verifyEnterQuestionSetName(String questionSetName) {
+	public void verifyEnterQuestionSetName(String questionSetName) throws IOException {
 
 		String text = driver.findElement(By.xpath("//label[normalize-space()='QUESTION SET *']")).getText();
 		char lastChar = text.charAt(text.length() - 1);
@@ -1417,6 +1418,8 @@ public class MastersFieldSets extends TestBase {
 
 		questionSetNameFieldElement.clear();
 		questionSetNameFieldElement.sendKeys(questionSetName);
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("DispositionQuestionSet", questionSetName);
 
 	}
 
@@ -1761,7 +1764,7 @@ public class MastersFieldSets extends TestBase {
 
 		// ✅ Save all stored questions to file after the loop is complete
 		PropertieFileUtil.saveToFile();
-		
+
 		unWait(1);
 		MasterFormPage.loadStoredQuestions();
 
@@ -1821,7 +1824,7 @@ public class MastersFieldSets extends TestBase {
 		case MULTIPLE_CHOICE:
 			Map.Entry<String, List<String>> questionAndOptions = Questions
 					.generateGenuineQuestionAndOptionsForDropDown(questionIndex, randomizeQuestions);
-			
+
 			return new AbstractMap.SimpleEntry<>(questionAndOptions.getKey(),
 					questionAndOptions.getValue().toArray(new String[0]));
 		default:
@@ -1955,7 +1958,6 @@ public class MastersFieldSets extends TestBase {
 
 		}
 		actions.sendKeys(Keys.ENTER).build().perform();
-		
 
 	}
 
@@ -2035,7 +2037,7 @@ public class MastersFieldSets extends TestBase {
 	public void handleLabel_Date_TimeQuestion(int sectionIndex, int questionIndex, String maxLength) throws Throwable {
 
 //		SendDataUtils.clearAndSendKeys(DynamicXpath.QuestionMaxLength(sectionIndex, questionIndex + 1), maxLength);
-		
+
 		try {
 
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
@@ -2045,8 +2047,7 @@ public class MastersFieldSets extends TestBase {
 			// TODO: handle exception
 			System.out.println("Exception : " + e);
 		}
-		
-		
+
 	}
 
 //	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

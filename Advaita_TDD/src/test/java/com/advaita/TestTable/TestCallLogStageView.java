@@ -1,7 +1,5 @@
 package com.advaita.TestTable;
 
-import javax.swing.text.Utilities;
-
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -18,7 +16,6 @@ import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.github.javafaker.Faker;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
-import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 
 public class TestCallLogStageView extends TestBase {
 	Faker faker = new Faker();
@@ -32,7 +29,7 @@ public class TestCallLogStageView extends TestBase {
 	LoginPage loginPage;
 	HomePage homePage;
 
-	public CallLogSatgeView CallLogStageView;
+	public CallLogSatgeView callLogStageView;
 
 	public TestCallLogStageView() // constructor
 	{
@@ -56,84 +53,110 @@ public class TestCallLogStageView extends TestBase {
 		reports.setSystemInfo("user", "Gopal");
 		reports.setSystemInfo("Browser", "Chrome");
 
-		// Configuration to change look and feel
-		htmlReporter.config().setDocumentTitle("Extent Report for MetaData");
-		htmlReporter.config().setReportName("TEST Advaita-MetaData");
-		htmlReporter.config().setTheme(Theme.STANDARD);
-		htmlReporter.config().setTimelineEnabled(true);
-		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
+//		// Configuration to change look and feel
+//		htmlReporter.config().setDocumentTitle("Extent Report for MetaData");
+//		htmlReporter.config().setReportName("TEST Advaita-MetaData");
+//		htmlReporter.config().setTheme(Theme.STANDARD);
+//		htmlReporter.config().setTimelineEnabled(true);
+//		htmlReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 
-		CallLogStageView = new CallLogSatgeView();
+		callLogStageView = new CallLogSatgeView();
 
 		// Extract from Propery File
 		String stage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
 
 	}
 
-	@Test(priority = 1)
-	public void SearchStages_table() {
+	@Test(priority = 1, enabled = true)
+	public void SearchStages_table() throws Throwable {
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.fetchStageNameList();
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
+		callLogStageView.navigatetoStage();
+		callLogStageView.fetchStageNameList();
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
 
-		CallLogStageView.verifyTheUserAbleselectAllOptionFromDropdown();
+		// CallLogStageView.SelectStagesFromCallLogStagesViewDropdown(); // Needto
+		// implememnt in This Method (itemperpage)
+		// after fixed
 
-		CallLogStageView.ClearAllFilter(); // Clear all filter
+//		callLogStageView.logout();
+//		callLogStageView.userLogin();
+//		callLogStageView.itemperpage();
+	}
 
-		CallLogStageView.SelectStagesFromCallLogStagesViewDropdown(); // Needto implememnt in This Method (itemperpage)
-																		// after fixed
+	@Test(priority = 2, enabled = true, dependsOnMethods = { "SearchStages_table" })
+	public void verifyTheUserIsableToSelectStageFromCallLogStageViewPage() throws Throwable {
 
-//		CallLogStageView.logout();
-//		CallLogStageView.userLogin();		
-		CallLogStageView.itemperpage();
+		callLogStageView.verifyTheUserIsAbleToselectOptionsFromStageDropdownAndVerify();
+	}
+
+	@Test(priority = 3, enabled = true, dependsOnMethods = "SearchStages_table")
+	public void verifyTheUSerIsABleTOselectRandomValueFromSearchStageDropdown() {
+
+		callLogStageView.selectRandomValueFromSearchStageDropdown();
+	}
+
+	@Test(priority = 4, enabled = true, dependsOnMethods = { "SearchStages_table" })
+	public void verifyTheUserIsAbleToclearFilter() {
+
+		callLogStageView.ClearAllFilter(); // Clear all filter
+	}
+
+	@Test(priority = 5, enabled = true, dependsOnMethods = "SearchStages_table")
+	public void verifyTheUserIsAbleToSelectAllTheOptionsFromSearchStageDropdown() {
+
+		callLogStageView.verifyTheUserAbleselectAllOptionFromDropdown();
+	}
+
+	@Test(priority = 6, enabled = true, dependsOnMethods = "SearchStages_table")
+	public void verifyTheUserIsAbleTocheckAnyDispositionHappenInThatparticularSatges() throws Throwable {
+
+		callLogStageView.verifyAnyDisposityHappenenINThatSelectedSelectedStage();
 	}
 
 	// ################################## Negative ########################
 
-	@Test
+	@Test(enabled = true, dependsOnMethods = "verifyTheUserIsAbleToclearFilter")
 	public void selectInvalidOptionFromDropdownByVisibleText() {
 
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.selectInvalidValueFromDropdown();
+		callLogStageView.selectInvalidOptionFromSearchStageDropdown();
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void selectInvalidValueFromDropdownInCLSV() {
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.selectInvalidValueFromDropdown();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.selectInvalidOptionFromSearchStageDropdown();
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void verifysearchStageisSingleSingleSelectOrMultiselect() throws Throwable {
 
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.singleSlectOrMultiSelect();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.singleSlectOrMultiSelect();
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void VerifytheuserDeselectinsearchStagesDropdowninCSLV() {
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.VerifytheuserDeselectinsearchStagesDropdowninCSLV();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.VerifytheuserDeselectinsearchStagesDropdowninCSLV();
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void VerifyWithoutSelectProcessClickOnSearch() {
 
-		CallLogStageView.VerifyWithoutSelectingStageClickOnSearch();
+		callLogStageView.VerifyWithoutSelectingStageClickOnSearch();
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void EndToEndCallLogStageView() {
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.verifyTheUserAbleselectAllOptionFromDropdown();
+		callLogStageView.navigatetoStage();
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.verifyTheUserAbleselectAllOptionFromDropdown();
 	}
 
 	// <============== Stages Actions
@@ -157,120 +180,120 @@ public class TestCallLogStageView extends TestBase {
 			"stageID", "processID", "subProcessID", "subSubProcess" };
 
 	// Delete
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAbleToDeleteTheDeleteTheSatgesAndCheckItIsnOtDispalyedInCSVSearchStagesDrodpown() {
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.deleteStage();
+		callLogStageView.navigatetoStage();
+		callLogStageView.deleteStage();
 
 	}
 
 	// Dulpicate Stage
-	@Test
+	@Test(enabled = true)
 	public void VerifyuserisAbleTOCreateDulicateStageAndThisStageShouldShouldbeDisplayedInCallLogStageView() {
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.userisAbleTOCreateDulicateStageAndThisStageShouldShouldbeDisplayedInCallLogStageView();
+		callLogStageView.navigatetoStage();
+		callLogStageView.userisAbleTOCreateDulicateStageAndThisStageShouldShouldbeDisplayedInCallLogStageView();
 	}
 
 	// Edit Stages
-	@Test
+	@Test(enabled = true)
 	public void verifyUserCanEditStageNameAndSeeItInCSVSearchDropdown() {
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.userCanEditStageNameAndSeeInCSVSearchDropdown();
-		CallLogStageView.searchStage("Student Information Stages");
+		callLogStageView.navigatetoStage();
+		callLogStageView.userCanEditStageNameAndSeeInCSVSearchDropdown();
+		callLogStageView.searchStage("Student Information Stages");
 
 	}
 
 	// Evaluation Field
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAbleToAddEvaluationFireldsAndViewdInCallLogStageViewPage() {
 		// CallLogStageView.userIsAbleToAddStageEvaluationFieldsAndViewdInCallLogStageViewPage();
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.searchStage("Student Information Stages");
-		CallLogStageView.CaptureSearchedStageText();
+		callLogStageView.navigatetoStage();
+		callLogStageView.searchStage("Student Information Stages");
+		callLogStageView.CaptureSearchedStageText();
 
-		CallLogStageView.SelectValuesFromDropdowns(CallLogStageView.evaluationFieldOptions,
-				CallLogStageView.verifyStagesEvaluationElement, CallLogStageView.leftAllButton,
-				CallLogStageView.stagesEvaluationFieldDropdown, CallLogStageView.RightSelectedButton,
+		callLogStageView.SelectValuesFromDropdowns(callLogStageView.evaluationFieldOptions,
+				callLogStageView.verifyStagesEvaluationElement, callLogStageView.leftAllButton,
+				callLogStageView.stagesEvaluationFieldDropdown, callLogStageView.RightSelectedButton,
 				"Trans Unique Id");
 
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.fetchSearchDropdownValues();
-		CallLogStageView.selectStagesAndChecAddedkEvaluationFieldInCallLogStageView("Trans Unique Id");
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.fetchSearchDropdownValues();
+		callLogStageView.selectStagesAndChecAddedkEvaluationFieldInCallLogStageView("Trans Unique Id");
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAbleToAddStaticEvaluationFireldsAndViewdInCallLogStageViewPage() { // need ti update
 																									// after fixed
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.searchStage("Student Information Stages");
-		CallLogStageView.CaptureSearchedStageText();
+		callLogStageView.navigatetoStage();
+		callLogStageView.searchStage("Student Information Stages");
+		callLogStageView.CaptureSearchedStageText();
 
-		CallLogStageView.SelectValuesFromDropdowns(CallLogStageView.evaluationFieldOptions,
-				CallLogStageView.verifyStaticEvaluationElement,
-				CallLogStageView.leftAllButtonStaticEvaluationStageField,
-				CallLogStageView.staticEvaluationFieldDropdown,
-				CallLogStageView.rightSelectedButtonStaticEvaluationStageField, "TicketId");
+		callLogStageView.SelectValuesFromDropdowns(callLogStageView.evaluationFieldOptions,
+				callLogStageView.verifyStaticEvaluationElement,
+				callLogStageView.leftAllButtonStaticEvaluationStageField,
+				callLogStageView.staticEvaluationFieldDropdown,
+				callLogStageView.rightSelectedButtonStaticEvaluationStageField, "TicketId");
 
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.fetchSearchDropdownValues();
-		CallLogStageView.selectStagesAndChecAddedkEvaluationFieldInCallLogStageView("TicketId");
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.fetchSearchDropdownValues();
+		callLogStageView.selectStagesAndChecAddedkEvaluationFieldInCallLogStageView("TicketId");
 
 	}
 
 	// Filter
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAddFiltersAndViewdInCallLogStageViewPage() {
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.searchStage("Student Information Stages");
-		CallLogStageView.CaptureSearchedStageText();
+		callLogStageView.navigatetoStage();
+		callLogStageView.searchStage("Student Information Stages");
+		callLogStageView.CaptureSearchedStageText();
 
-		CallLogStageView.SelectValuesFromDropdowns(CallLogStageView.evaluationFilterActionsOptions,
-				CallLogStageView.dropdwonLabelElement, CallLogStageView.leftAllButton, CallLogStageView.dropdownElement,
-				CallLogStageView.RightSelectedButton, "Trans Unique Id");
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.selectStagesAndCheckAddedkFiltersAreDisplayedInCallLogStageView("Trans Unique Id");
+		callLogStageView.SelectValuesFromDropdowns(callLogStageView.evaluationFilterActionsOptions,
+				callLogStageView.dropdwonLabelElement, callLogStageView.leftAllButton, callLogStageView.dropdownElement,
+				callLogStageView.RightSelectedButton, "Trans Unique Id");
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.selectStagesAndCheckAddedkFiltersAreDisplayedInCallLogStageView("Trans Unique Id");
 	}
 
 	// Stage History Field
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAddStageHistoryFiledsAndViewdInAuditPage() {
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.searchStage("Student Information Stages");
-		CallLogStageView.CaptureSearchedStageText();
+		callLogStageView.navigatetoStage();
+		callLogStageView.searchStage("Student Information Stages");
+		callLogStageView.CaptureSearchedStageText();
 
-		CallLogStageView.SelectValuesFromDropdowns(CallLogStageView.stagesHistoryFieldsOptions,
-				CallLogStageView.verifyHistoryFileds, CallLogStageView.leftAllButton,
-				CallLogStageView.historyFieldsDropdwon, CallLogStageView.RightSelectedButton, "Trans Unique Id");
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.selectStagesAndCheckAddedkstageHistoryFieldAreDisplayedInCallLogStageView("Trans Unique Id");
+		callLogStageView.SelectValuesFromDropdowns(callLogStageView.stagesHistoryFieldsOptions,
+				callLogStageView.verifyHistoryFileds, callLogStageView.leftAllButton,
+				callLogStageView.historyFieldsDropdwon, callLogStageView.RightSelectedButton, "Trans Unique Id");
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.selectStagesAndCheckAddedkstageHistoryFieldAreDisplayedInCallLogStageView("Trans Unique Id");
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAddStageuniqueFiledsAndViewdInAuditPage() { // need to Update after Fixed
 
-		CallLogStageView.navigatetoStage();
-		CallLogStageView.searchStage("Student Information Stages");
-		CallLogStageView.CaptureSearchedStageText();
+		callLogStageView.navigatetoStage();
+		callLogStageView.searchStage("Student Information Stages");
+		callLogStageView.CaptureSearchedStageText();
 
-		CallLogStageView.SelectValuesFromDropdowns(CallLogStageView.stagesHistoryFieldsOptions,
-				CallLogStageView.verifyUniuqeFields, CallLogStageView.leftAllButtonForUniqueFileds,
-				CallLogStageView.uniqueFieldsDropdwon, CallLogStageView.RightSelectedButtonForUniqueFileds,
+		callLogStageView.SelectValuesFromDropdowns(callLogStageView.stagesHistoryFieldsOptions,
+				callLogStageView.verifyUniuqeFields, callLogStageView.leftAllButtonForUniqueFileds,
+				callLogStageView.uniqueFieldsDropdwon, callLogStageView.RightSelectedButtonForUniqueFileds,
 				"Trans Unique Id");
-		CallLogStageView.navigateTo_AlchemyModule();
-		CallLogStageView.navigateToCallLogStageView();
-		CallLogStageView.selectStagesAndCheckAddedkstageHistoryFieldAreDisplayedInCallLogStageView("Trans Unique Id");
+		callLogStageView.navigateTo_AlchemyModule();
+		callLogStageView.navigateToCallLogStageView();
+		callLogStageView.selectStagesAndCheckAddedkstageHistoryFieldAreDisplayedInCallLogStageView("Trans Unique Id");
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void verifyTheUserIsAbleToDoActionsAndCheckInCSVEndToEnd() {
 
 		VerifyuserisAbleTOCreateDulicateStageAndThisStageShouldShouldbeDisplayedInCallLogStageView();

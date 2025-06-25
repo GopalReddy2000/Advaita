@@ -17,6 +17,7 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.ScreenShorts;
 import com.aventstack.extentreports.ExtentReports;
@@ -76,7 +77,7 @@ public class TestDataSetCreate extends TestBase {
 		dataset = new DataSet();
 
 	}
-	
+
 	HomePage hp = new HomePage();
 
 //	@Test(priority = 1)
@@ -95,27 +96,29 @@ public class TestDataSetCreate extends TestBase {
 		test = reports.createTest("verifyCreateNewDataset");
 		hp.clickOnProcessManagementCreate();
 
-		final String dataSetName = "Emplyee DetailsABCDEFGHIJ";
+		final String dataSetName = "Emplyee Record Details";
 		// Data for multiple rows
 		List<Map<String, String>> fieldData = List.of(
-			    Map.of("FieldName", "How do you handle work stress", "Type", "Text Area", "MaxLength", "50", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "What skills do you want to learn", "Type", "Text Area", "MaxLength", "500", "IsMandatory", "No"),
-			    
-			    // 20 Additional Questions (All Text Area Type)
-			    Map.of("FieldName", "What motivates you at work?", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "How do you define success?", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "No"),
-			    Map.of("FieldName", "What challenges do you face?", "Type", "Text Area", "MaxLength", "300", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "How do you stay productive?", "Type", "Text Area", "MaxLength", "250", "IsMandatory", "No"),
-			    Map.of("FieldName", "What makes a great workplace?", "Type", "Text Area", "MaxLength", "400", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "How do you handle feedback?", "Type", "Text Area", "MaxLength", "300", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "What inspires you daily?", "Type", "Text Area", "MaxLength", "250", "IsMandatory", "No"),
-			    Map.of("FieldName", "How do you manage tight deadlines?", "Type", "Text Area", "MaxLength", "350", "IsMandatory", "Yes"),
-			    Map.of("FieldName", "What leadership qualities do you admire?", "Type", "Text Area", "MaxLength", "500", "IsMandatory", "No")
-	
-			);
+				Map.of("FieldName", "EmployeeName", "Type", "Text Area", "MaxLength", "30", "IsMandatory", "Yes"),
+				Map.of("FieldName", "Employee Number", "Type", "Number", "MaxLength", "10", "IsMandatory", "No"),
+				Map.of("FieldName", "Mobile Number", "Type", "Number", "MaxLength", "10", "IsMandatory", "No"),
+				Map.of("FieldName", "WhatApp number", "Type", "Text Area", "MaxLength", "10", "IsMandatory", "No"));
+
+		// 20 Additional Questions (All Text Area Type)
+//			    Map.of("FieldName", "What motivates you at work?", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "Yes"),
+//			    Map.of("FieldName", "How do you define success?", "Type", "Text Area", "MaxLength", "200", "IsMandatory", "No"),
+//			    Map.of("FieldName", "What challenges do you face?", "Type", "Text Area", "MaxLength", "300", "IsMandatory", "Yes"),
+//			    Map.of("FieldName", "How do you stay productive?", "Type", "Text Area", "MaxLength", "250", "IsMandatory", "No"),
+//			    Map.of("FieldName", "What makes a great workplace?", "Type", "Text Area", "MaxLength", "400", "IsMandatory", "Yes"),
+//			    Map.of("FieldName", "How do you handle feedback?", "Type", "Text Area", "MaxLength", "300", "IsMandatory", "Yes"),
+//			    Map.of("FieldName", "What inspires you daily?", "Type", "Text Area", "MaxLength", "250", "IsMandatory", "No"),
+//			    Map.of("FieldName", "How do you manage tight deadlines?", "Type", "Text Area", "MaxLength", "350", "IsMandatory", "Yes"),
+//			    Map.of("FieldName", "What leadership qualities do you admire?", "Type", "Text Area", "MaxLength", "500", "IsMandatory", "No")
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
 
 	}
 

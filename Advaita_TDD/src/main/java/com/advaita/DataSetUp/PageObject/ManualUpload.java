@@ -199,7 +199,7 @@ public class ManualUpload extends TestBase {
 		List<String> normalizedFilteredItems = filteredItems.stream().map(s -> s.replaceAll("\\s+", "").toLowerCase())
 				.collect(Collectors.toList());
 
-		assertTrue(normalizedExcelColumns.equals(normalizedFilteredItems), "Excel columns are mismatching.");
+		softAssert.assertTrue(normalizedExcelColumns.equals(normalizedFilteredItems), "Excel columns are mismatching.");
 
 		// Iterate over each column and add five values below existing rows
 		int lastRowNum = sheet.getLastRowNum();

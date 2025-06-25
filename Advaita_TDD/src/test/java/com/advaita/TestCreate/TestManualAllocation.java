@@ -41,18 +41,18 @@ import Advaita_TDD.Advaita_TDD.Questions;
 
 public class TestManualAllocation extends TestBase {
 
-	static String employeeName = "DemoI";
+	static String employeeName = "AJP";
 
 	// Run Test Based on Boolean
-	final boolean processRun = false;
-	final boolean dataSetRun = false;
-	final boolean metaDataRun = false;
-	final boolean manualUploadRun = false;
+	final boolean processRun = true;
+	final boolean dataSetRun = true;
+	final boolean metaDataRun = true;
+	final boolean manualUploadRun = true;
 	final boolean nonMeasurableRun = false;
-	final boolean stageRun = false;
+	final boolean stageRun = true;
 	final boolean userRun = false;
-	final boolean samplingPlanRun = false;
-	final boolean manualAllocationRun = true;
+	final boolean samplingPlanRun = true;
+	final boolean manualAllocationRun = false;
 
 	Faker faker = new Faker();
 //	public String num = "24";
@@ -155,10 +155,10 @@ public class TestManualAllocation extends TestBase {
 		List<Map<String, String>> allQuestions = Questions.generateEmployeeQuestions();
 		// Define the types and order of questions you want to select
 		// Character,Text Area,Date Time,Date,Number,Boolean,HyperLink
-		List<String> types = Arrays.asList("Text Area", "Character", "HyperLink");
+		List<String> types = Arrays.asList("Text Area", "Character", "Number","HyperLink");
 
 		// Select questions based on types and order
-		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 5, true);
+		List<Map<String, String>> selectedQuestions = QuestionSelector.selectQuestions(allQuestions, types, 10, true);
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
 				.createDataSetButtonAndConfirmation();
@@ -246,8 +246,8 @@ public class TestManualAllocation extends TestBase {
 //		stages.verifyAddAndRemoveBlockInSectionB(4).selectMetaDataInAddBlockSectionB(2, true, false);
 		stages.addSection(1, measurableRadio, nonMeasurableRadio, viewCheckBoxAddSection);
 
-//		String viewCheckBox[] = { Stages.voiceCall,Stages.whatsAppCall };
-		String viewCheckBox[] = { "all" };
+		String viewCheckBox[] = { Stages.voiceCall,Stages.sms };
+//		String viewCheckBox[] = { "all" };
 
 		String toggleButtonOptions[] = { Stages.assignedTo, Stages.showSkipAudit, Stages.showDisposition,
 				Stages.showSmsHistory, Stages.showSmsHistory, Stages.openSample };
