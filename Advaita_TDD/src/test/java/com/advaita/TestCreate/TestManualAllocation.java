@@ -73,6 +73,8 @@ public class TestManualAllocation extends TestBase {
 	SamplingPlanAndGenerationPage SPAG;
 	ManualAllocationPage manualAllocationPage;
 	ReAllocationPage reAllocation;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public TestManualAllocation() {
 		super();
@@ -178,7 +180,7 @@ public class TestManualAllocation extends TestBase {
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
 				.createDataSetButtonAndConfirmation();
-		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"dataSetName", dataSetName);
 
 	}
 
@@ -187,7 +189,7 @@ public class TestManualAllocation extends TestBase {
 
 		test = reports.createTest("verifynewCreateMetaData");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"metaData", metaDataName);
 		homePage.clickOnProcessManagementCreate();
 
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
@@ -205,7 +207,7 @@ public class TestManualAllocation extends TestBase {
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 		int addNumberOfRecord = 70;
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
 				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
@@ -249,7 +251,7 @@ public class TestManualAllocation extends TestBase {
 
 		String stageName = stage;
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("stage", stageName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"stage", stageName);
 
 		boolean measurableRadio = false;
 		boolean nonMeasurableRadio = true;
@@ -326,11 +328,11 @@ public class TestManualAllocation extends TestBase {
 
 		String samplingName = sampling;
 
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile("metaData");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
+		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"metaData");
 
 		SPAG.createSamplingPlan(processValue, subProcessValue, subSubProcessValue, stages, metaData)
 				.generalTabSPAG(samplingName).generalTabToggleButton("allSample");
@@ -348,10 +350,10 @@ public class TestManualAllocation extends TestBase {
 		int sampleNo = 10;
 
 		String toogle = "normalAudit";
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 //		String allocationType = "call"; 
 
@@ -371,11 +373,11 @@ public class TestManualAllocation extends TestBase {
 
 		test = reports.createTest("verifyReAllocationCreate");
 
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile("designation");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
+		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"designation");
 //		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
 //		String userName2 = PropertieFileUtil.getSingleTextFromPropertiesFile("userName2");
 

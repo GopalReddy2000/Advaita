@@ -3,24 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-<<<<<<< HEAD
-      <class name="com.TestuserStatus.TestuserStatusCreate">
+      <class name="com.TestApiKeySetup.TestApiKeySetup">
         <methods>
-          <include name="VerifyTheUserIsableToNaviagteUserStatus"/>
-          <include name="CreateUserStatusAndVerfiyHideMenuForALchemy"/>
+          <include name="createApiKeyDynamically"/>
           <include name="setUp"/>
         </methods>
-      </class> <!-- com.TestuserStatus.TestuserStatusCreate -->
-=======
-      <class name="com.advaita.TestCreate.TestManualAllocation">
-        <methods>
-          <include name="verifyAutoGenerateQuestionCreateNewDatasetWithSpecifyingType"/>
-          <include name="tearDown"/>
-          <include name="getResult"/>
-          <include name="setUp"/>
-        </methods>
-      </class> <!-- com.advaita.TestCreate.TestManualAllocation -->
->>>>>>> 82ba1f32e239094f91c4d8da570f681703a5bfe3
+      </class> <!-- com.TestApiKeySetup.TestApiKeySetup -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

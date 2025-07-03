@@ -34,6 +34,8 @@ public class TestMenusSetup extends TestBase {
 	Menusetup menusetup;
 	PropertieFileUtil propertieFileUtil;
 
+	private  String menuSetup_Path6 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\menuSetup.properties";
+	
 	public TestMenusSetup() {
 		super();
 
@@ -152,7 +154,7 @@ public class TestMenusSetup extends TestBase {
 			"verifyTheUserAbeltoClearAllFilters" })
 	public void VerifyAfterEditDisplayNameShouldReflectInSideMenuBasedonDefaultNameIts() throws IOException {
 
-		String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile("DefaultNames1");
+		String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile(menuSetup_Path6,"DefaultNames1");
 		String fakeDisplayname = fake.lastName1();
 
 		menusetup.ClickOnEditOptionBasedOnDefaultName(defaultName);
@@ -181,7 +183,7 @@ public class TestMenusSetup extends TestBase {
 
 		menusetup.navigateToEditMenuSetup();
 
-		String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile("DefaultNames1");
+		String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile(menuSetup_Path6,"DefaultNames1");
 		String fakeDisplayname = fake.lastName1();
 
 		menusetup.displayNameEdit(fakeDisplayname);

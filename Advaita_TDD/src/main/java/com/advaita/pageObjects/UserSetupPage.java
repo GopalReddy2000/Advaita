@@ -456,6 +456,8 @@ public class UserSetupPage extends TestBase {
 
 	@FindBy(id = "downloadButton")
 	public static WebElement stageFilters;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public int getRandomIndex(List<WebElement> element) {
 		if (element.size() > 0) {
@@ -1933,12 +1935,12 @@ public class UserSetupPage extends TestBase {
 					String username = props.getProperty(keyStr).trim();
 					searchTheUser(username);
 					clickUserActionIcon(username, "map");
-					String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+					String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
 					assertTrue(isProcessSelected(processValue), "process is not available in admin process section.");
 
-					String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-					String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-					String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+					String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+					String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+					String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 					selectProcessHierarchy(processValue, subProcessValue, subSubProcessValue, stages);
 
 					saveAndConfirmation();
@@ -1980,10 +1982,10 @@ public class UserSetupPage extends TestBase {
 				clickUserActionIcon(username, "map");
 
 				// Load mapping values
-				String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-				String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-				String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-				String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+				String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+				String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+				String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+				String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 				// Verify process selected
 //				assertTrue(isProcessSelected(processValue), "Process is not available in admin process section.");

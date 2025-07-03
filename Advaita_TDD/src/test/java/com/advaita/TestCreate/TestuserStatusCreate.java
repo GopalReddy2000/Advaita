@@ -35,6 +35,8 @@ public class TestuserStatusCreate extends TestBase {
 	UserStatus userStatus;
 	UserSetupPage userSetupPage;
 
+	private static final String userStatus_Path7 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\userStatus.Properties";
+
 	public TestuserStatusCreate() throws Exception {
 		super();
 
@@ -95,7 +97,7 @@ public class TestuserStatusCreate extends TestBase {
 	public void createuserStatus() {
 		userStatus.naviagteToCreateUserStatus();
 		// userStatus1.statusNameInputField();
-	//	userStatus.descriptionField();
+		// userStatus.descriptionField();
 	}
 
 	// @Test(priority = 5)
@@ -112,13 +114,14 @@ public class TestuserStatusCreate extends TestBase {
 		userStatus.navigateToMenuSetup();
 		userStatus.callLogatTabViewClick();
 		userStatus.naviagteToCreateUserStatus();
-		//userStatus.statusNameInputField("Trainee Employee1");
+		// userStatus.statusNameInputField("Trainee Employee1");
 		userStatus.descriptionField();
 		userStatus.selectMenusToHideDropdwon();
 		userStatus.clickOnCreateButton();
 		userStatus.verifyCreatedStatus();
 //		userStatus1.CreatedStatusList();
-	//	userStatus.selectStatusHideSingleMenus(); // select "status"with Single "Hide" menus
+		// userStatus.selectStatusHideSingleMenus(); // select "status"with Single
+		// "Hide" menus
 //		userStatus1.selectStatusHideMultipleMenus(); //Select "Status" with multiple "Hide Menus"			
 	}
 
@@ -279,12 +282,12 @@ public class TestuserStatusCreate extends TestBase {
 
 	// END To END_User Status
 
-	String processName = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-	String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-	String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-	String stage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+	String processName = PropertieFileUtil.getSingleTextFromPropertiesFile(userStatus_Path7,"process");
+	String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(userStatus_Path7,"subProcess");
+	String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(userStatus_Path7,"subSubProcess");
+	String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(userStatus_Path7,"stage");
 
-	String newPassword = PropertieFileUtil.getSingleTextFromPropertiesFile("Newpassword");
+	String newPassword = PropertieFileUtil.getSingleTextFromPropertiesFile(userStatus_Path7,"Newpassword");
 
 	String userName = "das " + "Abhijit@wyzminz.com";
 	String commmonPassword = "Qwerty@123";

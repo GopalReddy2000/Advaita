@@ -130,6 +130,9 @@ public class Menusetup extends TestBase {
 	SmsTemplate smsTemplate = new SmsTemplate();
 
 	FieldVerificationUtils fieldVerificationUtils = new FieldVerificationUtils();
+	
+	private static final String menuSetup_Path6 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\menuSetup.properties";
+
 
 	public void navigateTouserSetup() { // Need To implememnt
 		userSetupPage.navToUserCreatePage();
@@ -267,7 +270,7 @@ public class Menusetup extends TestBase {
 		case "givenValue":
 
 			// extract all FormName options and Store In Prop file by "FormName"
-			PropertieFileUtil.extractAllAndStore(formNamesElements, "FormName");
+			PropertieFileUtil.extractAllAndStore(menuSetup_Path6,formNamesElements, "FormName");
 
 			String fornName = PropertieFileUtil.getSingleTextFromPropertiesFile("FormName1");
 
@@ -347,7 +350,7 @@ public class Menusetup extends TestBase {
 		case "givenValue":
 
 			// extract all FormName options and Store In Prop file by "FormName"
-			PropertieFileUtil.extractAllAndStore(defaultNamesElements, "DefaultNames");
+			PropertieFileUtil.extractAllAndStore(menuSetup_Path6,defaultNamesElements, "DefaultNames");
 
 			String defaultName = PropertieFileUtil.getSingleTextFromPropertiesFile("DefaultNames1");
 
@@ -417,7 +420,7 @@ public class Menusetup extends TestBase {
 		case "givenValue":
 
 			// extract all FormName options and Store In Prop file by "FormName"
-			PropertieFileUtil.extractAllAndStore(displayNamesElements, "DisplayNames");
+			PropertieFileUtil.extractAllAndStore(menuSetup_Path6,displayNamesElements, "DisplayNames");
 
 			String displayName = PropertieFileUtil.getSingleTextFromPropertiesFile("DisplayNames10");
 

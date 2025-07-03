@@ -23,6 +23,8 @@ public class EscalationMatrixTest extends TestBase{
 	LoginPage loginPage;
 	HomePage homePage;
 	EscalationMatrixPage escalationMatrixPage;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	EscalationMatrixTest() throws IOException {
 		super();
@@ -85,10 +87,10 @@ public class EscalationMatrixTest extends TestBase{
 		}
 	}
 
-	String process= PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-	String subProcess= PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-	String subSubProcess= PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-	String stageName= PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+	String process= PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+	String subProcess= PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
+	String subSubProcess= PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
+	String stageName= PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 	String superAdmin="Capture_admin";
 	String agent="JamesAgent";

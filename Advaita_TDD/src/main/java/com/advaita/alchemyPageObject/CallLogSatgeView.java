@@ -33,6 +33,8 @@ public class CallLogSatgeView extends TestBase {
 
 	public String stageNameText;
 
+	private static final String callLogStageView_Path5 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\callLogStageView.properties";
+
 	// Invalid dropdown Value
 	String invalidOptionDrpdownValue = "fffgfgfhgfh";
 	//
@@ -349,9 +351,9 @@ public class CallLogSatgeView extends TestBase {
 
 	public void verifyTheUserIsAbleToselectOptionsFromStageDropdownAndVerify() throws Throwable {
 
-		PropertieFileUtil.extractAllDropdownOptions(SearchStages, "SearchStage"); // Store all Option From Propfile
+		PropertieFileUtil.extractAllDropdownOptions(callLogStageView_Path5,SearchStages, "SearchStage"); // Store all Option From Propfile
 
-		retriveStageOptionFromPropFile = PropertieFileUtil.getSingleTextFromPropertiesFile("SearchStage2");
+		retriveStageOptionFromPropFile = PropertieFileUtil.getSingleTextFromPropertiesFile(callLogStageView_Path5,"SearchStage2");
 		System.err.println("retriveStageOptionFromPropFile" + retriveStageOptionFromPropFile);
 
 		// select Option From Dropdown

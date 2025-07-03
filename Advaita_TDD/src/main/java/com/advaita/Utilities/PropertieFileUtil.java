@@ -20,7 +20,7 @@ public class PropertieFileUtil {
 	private static final String PROPERTIES_FILE_PATH = "src/main/resources/ProcessText.properties";
 	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
-	//
+
 	private static final String PROPERTIES_FILE_ApiKey_PATH3 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\apiKey.properties";
 
 	private static final String PROPERTIES_FILE_SiteSettings_PATH4 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\SiteSettings.properties";
@@ -30,12 +30,16 @@ public class PropertieFileUtil {
 	private static final String menuSetup_Path6 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\menuSetup.properties";
 
 	private static final String userStatus_Path7 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\userStatus.Properties";
+	
+	private static final String siteSetting_Path9 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\SiteSettings.properties";
+
+	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
 
 	// Method to store a single key-value pair in a properties file
-	public static void storeSingleTextInPropertiesFile(String key, String value) throws IOException {
+	public static void storeSingleTextInPropertiesFile(String FilePath, String key, String value) throws IOException {
 
 		// Load existing properties if they exist
-		try (InputStream input = new FileInputStream(userStatus_Path7)) {
+		try (InputStream input = new FileInputStream(FilePath)) {
 			properties.load(input);
 		} catch (FileNotFoundException e) {
 			System.out.println("Properties file not found. Creating a new one.");
@@ -45,7 +49,7 @@ public class PropertieFileUtil {
 		properties.setProperty(key, value);
 
 		// Store the updated properties in a file
-		try (FileOutputStream output = new FileOutputStream(userStatus_Path7)) {
+		try (FileOutputStream output = new FileOutputStream(FilePath)) {
 			properties.store(output, "Updated Properties");
 
 			// Print the key and its stored value
@@ -55,13 +59,13 @@ public class PropertieFileUtil {
 
 	// Method to refresh and retrieve text from the properties file (case
 	// insensitive)
-	public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
+	public static String getSingleTextFromPropertiesFile(String FilePath, String tagKey) throws IOException {
 
 		Properties properties = new Properties();
 		Map<String, String> lowerCaseProperties = new HashMap<>();
 
 		// Refresh: Load the properties file to ensure it's the latest version
-		try (InputStream input = new FileInputStream(userStatus_Path7)) {
+		try (InputStream input = new FileInputStream(FilePath)) {
 			// Load the properties from file
 			properties.load(input);
 
@@ -102,7 +106,7 @@ public class PropertieFileUtil {
 		}
 
 		// Store the properties in a file
-		try (FileOutputStream output = new FileOutputStream(userStatus_Path7)) {
+		try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_ApiKey_PATH3)) {
 			properties.store(output, "Tag Texts from the Web Page");
 			System.out.println("Text stored in properties file successfully.");
 		}
@@ -134,11 +138,12 @@ public class PropertieFileUtil {
 //===================================================================================	
 
 	// Extract all the text and store in properties file with dynamic key prefix
-	public static void extractAllAndStore(List<WebElement> elements, String keyPrefix) throws IOException {
+	public static void extractAllAndStore(String FilePath, List<WebElement> elements, String keyPrefix)
+			throws IOException {
 		Properties properties = new Properties();
 
 		// Load existing properties if the file exists
-		try (InputStream input = new FileInputStream(userStatus_Path7)) {
+		try (InputStream input = new FileInputStream(FilePath)) {
 			properties.load(input);
 		} catch (FileNotFoundException e) {
 			System.out.println("Properties file not found. Creating a new one.");
@@ -154,23 +159,25 @@ public class PropertieFileUtil {
 		}
 
 		// Save all to properties file
-		try (FileOutputStream output = new FileOutputStream(userStatus_Path7)) {
+		try (FileOutputStream output = new FileOutputStream(FilePath)) {
 			properties.store(output, "Stored all extracted data with prefix: " + keyPrefix);
-			System.out.println("All data stored successfully in file: " + userStatus_Path7);
+			System.out.println("All data stored successfully in file: " + FilePath);
 		}
 	}
 
 	// Extract all Store all Options From DropdownOption
 
-	public static void extractDropdownOptions(WebElement dropdownElement, String keyPrefix) throws IOException {
-		extractAllDropdownOptions(dropdownElement, keyPrefix);
+	public static void extractDropdownOptions(String FilePath, WebElement dropdownElement, String keyPrefix)
+			throws IOException {
+		extractAllDropdownOptions(FilePath, dropdownElement, keyPrefix);
 	}
 
-	public static void extractAllDropdownOptions(WebElement dropdownElement, String keyPrefix) throws IOException {
+	public static void extractAllDropdownOptions(String FilePath, WebElement dropdownElement, String keyPrefix)
+			throws IOException {
 		Properties properties = new Properties();
 
 		// Load existing properties if they exist
-		try (InputStream input = new FileInputStream(userStatus_Path7)) {
+		try (InputStream input = new FileInputStream(FilePath)) {
 			properties.load(input);
 		} catch (FileNotFoundException e) {
 			System.out.println("Properties file not found. Creating a new one.");
@@ -192,20 +199,20 @@ public class PropertieFileUtil {
 		}
 
 		// Store updated properties
-		try (FileOutputStream output = new FileOutputStream(userStatus_Path7)) {
+		try (FileOutputStream output = new FileOutputStream(FilePath)) {
 			properties.store(output, "Dropdown Options Extracted with key prefix: " + keyPrefix);
-			System.out.println("Dropdown data stored successfully in: " + userStatus_Path7);
+			System.out.println("Dropdown data stored successfully in: " + PROPERTIES_FILE_ApiKey_PATH3);
 		}
 	}
 
 	// Extract all Store all Options From DropdownOption
-	public static void extractAndStoreTwoTextValueLists(List<WebElement> elements1, String prefix1,
+	public static void extractAndStoreTwoTextValueLists(String FilePath, List<WebElement> elements1, String prefix1,
 			List<WebElement> elements2, String prefix2) throws IOException {
 
 		Properties properties = new Properties();
 
 		// Load existing properties if the file exists
-		try (InputStream input = new FileInputStream(userStatus_Path7)) {
+		try (InputStream input = new FileInputStream(FilePath)) {
 			properties.load(input);
 		} catch (FileNotFoundException e) {
 			System.out.println("Properties file not found. A new one will be created.");
@@ -236,9 +243,9 @@ public class PropertieFileUtil {
 		}
 
 		// Save to properties file
-		try (FileOutputStream output = new FileOutputStream(userStatus_Path7)) {
+		try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_ApiKey_PATH3)) {
 			properties.store(output, "Stored from two text field lists with prefixes");
-			System.out.println("✅ Data stored in: " + userStatus_Path7);
+			System.out.println("✅ Data stored in: " + PROPERTIES_FILE_ApiKey_PATH3);
 		}
 	}
 
@@ -321,5 +328,99 @@ public class PropertieFileUtil {
 		}
 		return questionsMap;
 	}
+	
+	
+	
+	//New 
+	public static void storeSingleTextInPropertiesFile(String key, String value) throws IOException {
+
+		// Load existing properties if they exist
+
+		try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
+
+		properties.load(input);
+
+		} catch (FileNotFoundException e) {
+
+		System.out.println("Properties file not found. Creating a new one.");
+
+		}
+
+		// Add the key-value pair to the properties object
+
+		properties.setProperty(key, value);
+
+		// Store the updated properties in a file
+
+		try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_PATH2)) {
+
+		properties.store(output, "Updated Properties");
+
+		// Print the key and its stored value
+
+		System.out.println("Key: '" + key + "' Value: '" + value + "' stored in properties file successfully.");
+
+		}
+
+		}
+
+		// Method to refresh and retrieve text from the properties file (case insensitive)
+
+		public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
+
+		Properties properties = new Properties();
+
+		Map<String, String> lowerCaseProperties = new HashMap<>();
+
+		// Refresh: Load the properties file to ensure it's the latest version
+
+		try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
+
+		// Load the properties from file
+
+		properties.load(input);
+
+		// Store properties in a Map with lowercase keys for case-insensitive lookup
+
+		for (String key : properties.stringPropertyNames()) {
+
+		lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
+
+		}
+
+		} catch (FileNotFoundException e) {
+
+		System.out.println("Properties file not found. Please ensure the file path is correct.");
+
+		return null; // Return null if the file doesn't exist
+
+		} catch (IOException e) {
+
+		System.out.println("An error occurred while reading the properties file.");
+
+		throw e; // Re-throw the exception if reading fails
+
+		}
+
+		// Retrieve the specific tag value based on the provided key (case insensitive)
+
+		String tagText = lowerCaseProperties.get(tagKey.toLowerCase());
+
+		if (tagText != null) {
+
+		System.out.println("Retrieved value: " + tagText);
+
+		return tagText; // Return the value if found
+
+		} else {
+
+		System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
+
+		return null; // Return null if the key is not found
+
+		}
+
+		}
+	
 
 }

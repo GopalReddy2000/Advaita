@@ -28,6 +28,8 @@ public class SiteSettings extends TestBase {
 	public String expectedValue = "Advaitha";
 	public String extractSiteNameValue = "Advaitha";
 
+	private static final String siteSetting_Path9 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\SiteSettings.properties";
+
 	// Elements
 
 	@FindBy(xpath = "//img[@class='img-fluid icon_before_heading']")
@@ -161,9 +163,9 @@ public class SiteSettings extends TestBase {
 		String siteNameValue = siteNameTextfield.getAttribute("value");
 		System.out.println("siteNameValue :" + siteNameValue);
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("SiteName", siteNameValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(siteSetting_Path9,"SiteName", siteNameValue);
 
-		extractSiteNameValue = PropertieFileUtil.getSingleTextFromPropertiesFile("SiteName");
+		extractSiteNameValue = PropertieFileUtil.getSingleTextFromPropertiesFile(siteSetting_Path9,"SiteName");
 
 		String currentValueSiteName = siteNameTextfield.getAttribute("value");
 
@@ -277,7 +279,7 @@ public class SiteSettings extends TestBase {
 
 		String siteNameValue = siteNameTextfield.getAttribute("value");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("UpdatedSiteName", siteNameValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(siteSetting_Path9,"UpdatedSiteName", siteNameValue);
 
 	}
 
@@ -299,7 +301,7 @@ public class SiteSettings extends TestBase {
 
 	public void verifyTheSiteName() throws Throwable {
 
-		String enteredSiteName = PropertieFileUtil.getSingleTextFromPropertiesFile("UpdatedSiteName");
+		String enteredSiteName = PropertieFileUtil.getSingleTextFromPropertiesFile(siteSetting_Path9,"UpdatedSiteName");
 
 		String actualGetTitle = driver.getTitle();
 		System.out.println("actualGetTile :" + actualGetTitle);
@@ -393,7 +395,7 @@ public class SiteSettings extends TestBase {
 
 		// Store both lists in properties file with prefixes like MenuName1, MenuURL1,
 		// etc.
-		PropertieFileUtil.extractAndStoreTwoTextValueLists(nameFields, "MenuName", urlFields, "MenuURL");
+		PropertieFileUtil.extractAndStoreTwoTextValueLists(siteSetting_Path9,nameFields, "MenuName", urlFields, "MenuURL");
 
 //		ClickOnSaveAndVerifyConformationMesgsse(); // Save and Verify Conformation Messge
 //		homePage.navigateTo_AlchemyModule();

@@ -19,6 +19,8 @@ public class SamplingPlanAndGenerationTest extends TestBase {
 	HomePage homePage;
 	SamplingPlanAndGenerationPage SPAG;
 
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
+
 	public SamplingPlanAndGenerationTest() throws IOException {
 	}
 
@@ -36,47 +38,42 @@ public class SamplingPlanAndGenerationTest extends TestBase {
 	}
 
 	// Global variables (instance variables)
-	private String process=PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-	private String subProcess=PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-	private String subSubprocess=PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-	private String stages= PropertieFileUtil.getSingleTextFromPropertiesFile("samplingStage");
-	private String samplingPlaneName= lastName2()+" Samples";
-	private String fromDate="01-10-2024";
-	private String toDate="11-11-2024";
-	private String samplingTo="Admin";
-	private String totalDataCall="15";
-	private String allSampleCondition="yes";
-	private String needCondition="no";
-	private String needScheduling="no";
-
+	private String process = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+	private String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
+	private String subSubprocess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
+	private String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"samplingStage");
+	private String samplingPlaneName = lastName2() + " Samples";
+	private String fromDate = "01-10-2024";
+	private String toDate = "11-11-2024";
+	private String samplingTo = "Admin";
+	private String totalDataCall = "15";
+	private String allSampleCondition = "yes";
+	private String needCondition = "no";
+	private String needScheduling = "no";
 
 	@Test(invocationCount = 1)
 	public void createSampling() {
-		SPAG
-				.navToCreate()
-				.createSampling(process, subProcess, subSubprocess, stages,
-						samplingPlaneName, samplingTo, totalDataCall,
-						allSampleCondition, needCondition, needScheduling)
-				.sampleValidations(stages,process,subProcess,subSubprocess)
+		SPAG.navToCreate()
+				.createSampling(process, subProcess, subSubprocess, stages, samplingPlaneName, samplingTo,
+						totalDataCall, allSampleCondition, needCondition, needScheduling)
+				.sampleValidations(stages, process, subProcess, subSubprocess)
 
 		;
 	}
 
-
 	@Test
-	public void validateDropdowns(){
+	public void validateDropdowns() {
 		SPAG.validateDropdowns();
 	}
 
-
 	@Test
-	public void validateRecordPerPage(){
+	public void validateRecordPerPage() {
 		SPAG.navigateWithinAlchemy(SamplingPlanAndGenerationPage.samplingPlanAndGeneration);
 		SPAG.validateRecordsPerPage();
 	}
 
 	@Test
-	public void validatePagination(){
+	public void validatePagination() {
 		SPAG.navigateWithinAlchemy(SamplingPlanAndGenerationPage.samplingPlanAndGeneration);
 		SPAG.validatePagination();
 	}

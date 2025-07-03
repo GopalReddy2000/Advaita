@@ -87,6 +87,8 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public String createdDispositionQuestionSetText;
 
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
+
 	// ---------------Elements------------------
 	// Entirebody Click
 	@FindBy(tagName = "body")
@@ -859,7 +861,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// 2nd Way Using Properties File
 		fieldVerificationUtils.checkthroughAsterisk(processLabel, true);
 
-		selectProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		selectProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
 
 		dropDown.dropdownUtils(ProcessDropdown, selectProcess);
 		System.out.println("selectProcess :" + selectProcess);
@@ -873,7 +875,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// 2nd Way Using Properties File
 		fieldVerificationUtils.checkthroughAsterisk(subProcessLabel, true);
 
-		selectSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		selectSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
 
 		dropDown.dropdownUtils(SubProcessDropdown, selectSubProcess);
 
@@ -886,7 +888,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// 2nd Way Using Properties File
 		fieldVerificationUtils.checkthroughAsterisk(subSubProcessLabel, true);
 
-		selectSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		selectSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
 
 		dropDown.dropdownUtils(SubsubProcessDropdown, selectSubSubProcess);
 	}
@@ -899,7 +901,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// 2nd Way Using Properties File
 		fieldVerificationUtils.checkthroughAsterisk(stagesLabel, true);
 
-		selectStagesDropdown = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		selectStagesDropdown = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 		dropDown.dropdownUtils(smsStages, selectStagesDropdown);
 	}
@@ -909,7 +911,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// 2nd Way Using Properties File
 		fieldVerificationUtils.checkthroughAsterisk(apiKeyNameLabel, true);
 
-		String selectApiName = PropertieFileUtil.getSingleTextFromPropertiesFile("ApiName");
+		String selectApiName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"ApiName");
 		System.out.println("selectApiName :" + selectApiName);
 
 		dropDown.dropdownUtils(apikeyName, selectApiName);
@@ -942,7 +944,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		// Capture TemplateName_Sms and Store In Properti File
 		String smsTemplateNameValue = smsTemplateName.getAttribute("value");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("SmsTemplateName", smsTemplateNameValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"SmsTemplateName", smsTemplateNameValue);
 	}
 
 	public void disposition() {
@@ -1507,7 +1509,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(processDropdown_Table.isDisplayed(), "processDropdown_Table is not Displayed");
 		assertTrue(processDropdown_Table.isEnabled(), "processDropdown_Table is noT Enabled");
 
-		String processDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String processDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
 		dropDown.dropdownUtils(processDropdown_Table, processDropdownTable);
 
 	}
@@ -1517,7 +1519,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(subprocessDropdown_Table.isDisplayed(), "SubprocessDropdown_Table is not Displayed");
 		assertTrue(subprocessDropdown_Table.isEnabled(), "processDropdown_Table is noT Enabled");
 
-		String SubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		String SubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
 		dropDown.dropdownUtils(subprocessDropdown_Table, SubProcessDropdownTable);
 
 	}
@@ -1526,7 +1528,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(subSubProcessDropdown_Table.isDisplayed(), "subSubProcessDropdown_Table is not Displayed");
 		assertTrue(subSubProcessDropdown_Table.isEnabled(), "subSubProcessDropdown_Table is noT Enabled");
 
-		String subSubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		String subSubProcessDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
 		dropDown.dropdownUtils(subSubProcessDropdown_Table, subSubProcessDropdownTable);
 
 	}
@@ -1536,7 +1538,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 		assertTrue(StagesDropdown_table.isDisplayed(), "StagesDropdown_table is not Displayed");
 		assertTrue(StagesDropdown_table.isEnabled(), "subSubProcessDropdown_Table is noT Enabled");
 
-		String stagesDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String stagesDropdownTable = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 		dropDown.dropdownUtils(StagesDropdown_table, stagesDropdownTable);
 	}
 
@@ -1613,7 +1615,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	// Search Through search Field
 	public void searchThroughSeachTextfield() throws Throwable {
-		String templateName = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
+		String templateName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"SmsTemplateName");
 
 		assertTrue(seachTextfield_SmsTemplate.isDisplayed(), "seachTextfield_SmsTemplate i snot Displayed");
 		seachTextfield_SmsTemplate.sendKeys(templateName);
@@ -1786,7 +1788,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	// verify Created Disposition set
 	public void verifyDispositionQuestionSet() throws Throwable {
 
-		createdDispositionQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("DispositionQuestionSet");
+		createdDispositionQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"DispositionQuestionSet");
 
 		assertTrue(Disposition.searchBox.isDisplayed(), "searchBox is not Displayed");
 		assertTrue(Disposition.searchBox.isEnabled(), "searchBox is not Enabled");
@@ -1847,7 +1849,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		navigateToStages(); // naviagte To Stages
 
-		String searchedStages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String searchedStages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 		assertTrue(searchTextfield_Stages.isDisplayed(), "searchTextfieldStages is not displayed");
 		searchTextfield_Stages.sendKeys(searchedStages);
@@ -1859,20 +1861,20 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 	public void selectProcesses() throws Throwable {
 
-		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String process = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
 		dropdownUtils(processDropdown_Table, process);
 
-		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
 		dropdownUtils(subprocessDropdown_Table, subProcess);
 
-		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
 		dropdownUtils(subSubProcessDropdown_Table, subSubProcess);
 
 	}
 
 	public void selectStagesDisposition() throws Throwable {
 
-		String sealectStage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String sealectStage = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 		dropdownUtils(StagesDropdown_table, sealectStage);
 
 	}
@@ -1938,7 +1940,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 	// Select Sms temaplte In Auto Sms Mapping Page
 	public void selectSmsTemplateAndClickOnAddForAutoSMSMapping() throws Throwable {
 
-		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
+		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"SmsTemplateName");
 		dropdownUtils(autoSmsTemplatDropdown, selectQuestionSet);
 
 //		assertTrue(addButtonInAutoSmsMappingPage.isDisplayed(), "addButtonInAutoSmsMappingPage is Not displayed");
@@ -1969,7 +1971,7 @@ public class SmsTemplate extends TestBase // Create_Class and extend base class
 
 		naviagteToAutoSmsMappingAndAddSmstemplate();// Naviagte To autom sms Mapping Page
 
-		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile("SmsTemplateName");
+		String selectQuestionSet = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"SmsTemplateName");
 		dropdownUtils(autoSmsTemplatDropdown, selectQuestionSet);
 
 		for (WebElement templateNamesInAutoSmsMapingPage : listOfAddedTemplateNames) {

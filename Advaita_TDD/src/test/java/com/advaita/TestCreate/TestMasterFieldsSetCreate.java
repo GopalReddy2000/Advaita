@@ -42,6 +42,8 @@ public class TestMasterFieldsSetCreate extends TestBase {
 
 	MastersFieldSets masterFieldSet;
 
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
+
 	public TestMasterFieldsSetCreate() {
 		super();
 	}
@@ -246,8 +248,8 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.verifyFieldSetCreateButton();
 		// Set the question set name
 		String questionSetNameString = "Test Question";
-		
-		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
+
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"fieldSetName", questionSetNameString);
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
@@ -291,16 +293,17 @@ public class TestMasterFieldsSetCreate extends TestBase {
 		masterFieldSet.questionField("1", "1", "Test Question", "10").saveMasterFieldSet();
 
 	}
+
 	@Test(priority = 20)
 	public void verifySections() throws Throwable {
-		
+
 		// Create the test in ExtentReports
 		test = reports.createTest("verifySections");
-		
+
 		verifyTabsForFieldSetCreate();
 		verifyFieldSetCreateButton();
 		masterFieldSet.questionSetFieldTest(" ");
-		
+
 	}
 
 	@AfterMethod

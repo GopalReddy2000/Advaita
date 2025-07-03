@@ -363,6 +363,10 @@ public class UserStatus extends TestBase {
 
 	@FindBy(xpath = "//span[@id='change_error_msg']")
 	public WebElement somethingWentWrongErrorMesg;
+	
+	
+	
+	private static final String userStatus_Path7 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\userStatus.Properties";
 
 	// References Class
 
@@ -626,7 +630,7 @@ public class UserStatus extends TestBase {
 
 			multiselect_RightSelected.click();
 
-			PropertieFileUtil.extractAllDropdownOptions(menusToHideMultipleDropdown, "menusToHideMultipleOptions");
+			PropertieFileUtil.extractAllDropdownOptions(userStatus_Path7,menusToHideMultipleDropdown, "menusToHideMultipleOptions");
 
 			clickOnCreateButton();
 
@@ -783,7 +787,7 @@ public class UserStatus extends TestBase {
 	// Search
 	public void searchStatus() throws Throwable {
 
-		PropertieFileUtil.extractAllAndStore(statusNames_Table, "StatusNameSearch");
+		PropertieFileUtil.extractAllAndStore(userStatus_Path7,statusNames_Table, "StatusNameSearch");
 
 		String statusName = PropertieFileUtil.getSingleTextFromPropertiesFile("StatusNameSearch1");
 

@@ -46,6 +46,8 @@ public class MastersEndToEnd extends TestBase {
 	MasterMenusPage masterMenusPage;
 	MasterFormPage masterForm;
 	MastersAdd mastersAdd;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public MastersEndToEnd() {
 		super();
@@ -91,7 +93,7 @@ public class MastersEndToEnd extends TestBase {
 		masterFieldSet.verifyFieldSetCreateButton();
 		// Set the question set name
 		String questionSetNameString = "TestQueSet" + index;
-		PropertieFileUtil.storeSingleTextInPropertiesFile("fieldSetName", questionSetNameString);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"fieldSetName", questionSetNameString);
 		masterFieldSet.verifyEnterQuestionSetName(questionSetNameString);
 		// Specify the question types (e.g., DropDown = 4, TextBox = 10, Short Answer =
 		// 3)
@@ -117,13 +119,13 @@ public class MastersEndToEnd extends TestBase {
 		String formName = "TestMF" + index;
 		String secName = "TestSec";
 
-		String fieldSetName = PropertieFileUtil.getSingleTextFromPropertiesFile("fieldSetName");
+		String fieldSetName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"fieldSetName");
 
 		masterForm.navigateToMasterForm2();
 		masterForm.createButtonMasterForm();
 		masterForm.formNameField(formName).processSelection().addPrimarySectionsDynamically(secName, fieldSetName)
 				.validateMasterFormQuestions();
-		PropertieFileUtil.storeSingleTextInPropertiesFile("formName", formName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"formName", formName);
 
 //		List<String> sections = Arrays.asList("TestA", "TestB");
 //		masterForm.addMultipleSectionsDynamically(sections, fieldSetName); 
@@ -136,12 +138,12 @@ public class MastersEndToEnd extends TestBase {
 		test = reports.createTest("verifyCreateMasterMenu");
 
 		String formMenu = "TestMM" + index;
-		String formName = PropertieFileUtil.getSingleTextFromPropertiesFile("formName");
+		String formName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"formName");
 
 		masterMenusPage.navigateToMasterMenus();
 		masterMenusPage.verifyCreateMasterMenuButton().verifyMasterFormDropDown(formName, formMenu)
 				.masterMenuSaveButton();
-		PropertieFileUtil.storeSingleTextInPropertiesFile("formMenu", formMenu);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"formMenu", formMenu);
 
 	}
 
@@ -149,7 +151,7 @@ public class MastersEndToEnd extends TestBase {
 	public void verifyCreateMastersAdd() throws Throwable {
 		test = reports.createTest("verifyCreateMastersAdd");
 		MastersAdd.loadStoredQuestions();// Load the questions from the properties file
-		String formMenu = PropertieFileUtil.getSingleTextFromPropertiesFile("formMenu");
+		String formMenu = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"formMenu");
 		mastersAdd.navigateToMastersAdd(formMenu).validateAndInteractAddForm(); // Validate and interact with the form
 
 	}

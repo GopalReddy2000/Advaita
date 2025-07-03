@@ -9,7 +9,6 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.MetaData;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
-import com.advaita.Utilities.PropertieFileUtil;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;

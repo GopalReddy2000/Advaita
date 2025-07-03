@@ -27,7 +27,6 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.DataSetUp.PageObject.DataSet;
 import com.advaita.DataSetUp.PageObject.ManualUpload;
 import com.advaita.DataSetUp.PageObject.MetaData;
-import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.QuestionSelector;
 import com.advaita.Utilities.SendDataUtils;
 import com.advaita.WorkFlowDesign.PageObject.MastersFieldSets;
@@ -418,7 +417,7 @@ public class NotificationTemplate extends TestBase {
 		dataSet.enterFieldNameAndValidations(fieldData);
 		dataSet.createDataSetButtonAndConfirmation();
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataset);
+		//PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataset);
 
 	}
 

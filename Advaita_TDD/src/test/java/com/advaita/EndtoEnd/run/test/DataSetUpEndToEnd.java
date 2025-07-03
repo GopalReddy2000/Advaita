@@ -51,6 +51,8 @@ public class DataSetUpEndToEnd extends TestBase {
 	ManualUpload manualUpload;
 
 	ProcessPage process;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public DataSetUpEndToEnd() {
 		super();
@@ -140,7 +142,7 @@ public class DataSetUpEndToEnd extends TestBase {
 		test = reports.createTest("verifynewCreateMetaData");
 //		HomePage.clickOnProcessManagementCreate();
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"metaData", metaDataName);
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
 				.verifyCreatedMetaDataCheckUniqueIdAndRole(true, false)
 				.verifySaveButtonAndConfirmationInUpadteMetaData().verifyExecuteUpadtedMetaData();
@@ -156,7 +158,7 @@ public class DataSetUpEndToEnd extends TestBase {
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 		int addNumberOfRecord = 15;
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"no.OfRecord", String.valueOf(addNumberOfRecord));
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
 				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()

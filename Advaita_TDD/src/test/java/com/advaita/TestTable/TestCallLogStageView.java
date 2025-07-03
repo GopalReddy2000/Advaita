@@ -30,6 +30,8 @@ public class TestCallLogStageView extends TestBase {
 
 	public CallLogSatgeView callLogStageView;
 
+	private static final String callLogStageView_Path5 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\callLogStageView.properties";
+
 	public TestCallLogStageView() // constructor
 	{
 		super();
@@ -62,7 +64,7 @@ public class TestCallLogStageView extends TestBase {
 		callLogStageView = new CallLogSatgeView();
 
 		// Extract from Propery File
-		String stage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(callLogStageView_Path5,"stage");
 
 	}
 

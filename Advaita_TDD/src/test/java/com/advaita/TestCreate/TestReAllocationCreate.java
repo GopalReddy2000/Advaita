@@ -57,6 +57,8 @@ public class TestReAllocationCreate extends TestBase {
 
 	ReAllocationPage reAllocation;
 
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
+
 	public TestReAllocationCreate() {
 		super();
 	}
@@ -155,7 +157,7 @@ public class TestReAllocationCreate extends TestBase {
 
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(selectedQuestions)
 				.createDataSetButtonAndConfirmation();
-		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"dataSetName", dataSetName);
 
 	}
 
@@ -164,7 +166,7 @@ public class TestReAllocationCreate extends TestBase {
 
 		test = reports.createTest("verifynewCreateMetaData");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("metaData", metaDataName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"metaData", metaDataName);
 		homePage.clickOnProcessManagementCreate();
 
 		metaData.navigateToMetaData().createNewMetaData(metaDataName).verifyCreateButtonAndConfirmation()
@@ -182,11 +184,10 @@ public class TestReAllocationCreate extends TestBase {
 		ArrayList<String> labels = dataset.getLabelNamesFromProperties();
 		int addNumberOfRecord = 25;
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("no.OfRecord", String.valueOf(addNumberOfRecord));
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"no.OfRecord", String.valueOf(addNumberOfRecord));
 
 		manualUpload.navigateToManualUpload().createNewManualUpload(manualUploadName)
-				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(),
-						addNumberOfRecord)
+				.formatDownloadAndUpdateAndUpload(labels, Questions.generateEmployeeQuestions(), addNumberOfRecord)
 				.fillOtherFildsForUploadedFile(remark).createButtonAndConfirmation()
 				.valiadtionsAfterCreationOfManualUpload(dataSetName, manualUploadName, remark, addNumberOfRecord);
 
@@ -227,7 +228,7 @@ public class TestReAllocationCreate extends TestBase {
 
 		String stageName = employeeName + " Stage";
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("stage", stageName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"stage", stageName);
 
 		boolean measurableRadio = false;
 		boolean nonMeasurableRadio = true;
@@ -262,10 +263,10 @@ public class TestReAllocationCreate extends TestBase {
 
 		test = reports.createTest("verifyUserCreateAndUserMapping");
 
-		String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
-		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String process = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subProcess");
+		String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subSubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 
 		userSetUp.navToUserCreatePage();
 
@@ -294,7 +295,7 @@ public class TestReAllocationCreate extends TestBase {
 				.singleGroupSelect(ManualAllocationPage.selectGroup).clickOnGroupCreateButton();
 
 		// Store userName in properties file
-		PropertieFileUtil.storeSingleTextInPropertiesFile("userName" + userIndex, username);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"userName" + userIndex, username);
 
 		// Perform user mapping
 //		userSetUp.userMappingRecord2(username).userMappingProcess(process, subProcess, subSubProcess, stages);
@@ -309,11 +310,11 @@ public class TestReAllocationCreate extends TestBase {
 
 		String samplingName = employeeName + " SN";
 
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile("metaData");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
+		String metaData = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"metaData");
 
 		SPAG.createSamplingPlan(processValue, subProcessValue, subSubProcessValue, stages, metaData)
 				.generalTabSPAG(samplingName).generalTabToggleButton("all").saveSamplingAndGetConfirmation();
@@ -328,12 +329,12 @@ public class TestReAllocationCreate extends TestBase {
 		test = reports.createTest("verifyManualAllocationCreate");
 
 		String toogle = "normalAudit";
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
 		String allocationType = "call";
-		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
+		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"userName1");
 
 		manualAllocationPage.navigateToAlchemyManualAllocation().allocationMethodToggleButton(toogle)
 				.selectProcess_subProcess_SubSubProcess_StagesDropdown(processValue, subProcessValue,
@@ -345,13 +346,13 @@ public class TestReAllocationCreate extends TestBase {
 	@Test(priority = 10, enabled = reAllocationRun)
 	public void verifyReAllocationCreate() throws Throwable {
 
-		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
-		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subprocess");
-		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile("subsubProcess");
-		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
-		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile("designation");
-		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile("userName1");
-		String userName2 = PropertieFileUtil.getSingleTextFromPropertiesFile("userName2");
+		String processValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"process");
+		String subProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subprocess");
+		String subSubProcessValue = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"subsubProcess");
+		String stages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"stage");
+		String designation = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"designation");
+		String userName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"userName1");
+		String userName2 = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"userName2");
 
 		// ToUsers We can give multiple
 		List<String> toUsers = Arrays.asList(userName2);

@@ -3,6 +3,7 @@ package com.advaita.pageObjects;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -10,164 +11,186 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.LoginPage;
+import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.FetchDataFromInputTagWithJS;
+import com.advaita.Utilities.FieldVerificationUtils;
+import com.advaita.Utilities.PropertieFileUtil;
 
-public class EmailTemplatePage extends TestBase{
+public class EmailTemplatePage extends TestBase {
 
-	public EmailTemplatePage()
-	{
+	public EmailTemplatePage() {
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(id="text_search")
+	@FindBy(id = "text_search")
 	WebElement searchInputField;
 
-	@FindBy(xpath="//select[@id='process_search']")
+	@FindBy(xpath = "//select[@id='process_search']")
 	WebElement searchProcessDropdown;
 
-	@FindBy(xpath="//select[@id='sub_process_search']")
+	@FindBy(xpath = "//select[@id='sub_process_search']")
 	WebElement searchSubProcessDropdown;
 
-	@FindBy(xpath="//select[@id='s_sub_process_search']")
+	@FindBy(xpath = "//select[@id='s_sub_process_search']")
 	WebElement searchSubSubProcessDropdown;
 
-	@FindBy(xpath="//select[@id='stage_search']")
+	@FindBy(xpath = "//select[@id='stage_search']")
 	WebElement searchStageDropdown;
 
-	@FindBy(xpath="//img[@alt='filter_search']/parent::button")
+	@FindBy(xpath = "//img[@alt='filter_search']/parent::button")
 	WebElement searchButton;
 
-	@FindBy(xpath="//h6[text()='Clear All Filters']")
+	@FindBy(xpath = "//h6[text()='Clear All Filters']")
 	WebElement clearAllFilter;
 
-	@FindBy(linkText  ="+ Create")
+	@FindBy(linkText = "+ Create")
 	WebElement create;
 
-	@FindBy(xpath ="//select[@id='page-size-select']")
+	@FindBy(xpath = "//h2[text()='Create Email Template']")
+	public WebElement verifyCreateEmailTemplate;
+
+	@FindBy(xpath = "//select[@id='page-size-select']")
 	WebElement pageSizeSelect;
 
-	@FindBy(xpath="//select[@id='process']")
+	@FindBy(xpath = "//label[text()='Process*']")
+	public WebElement processDropdownLabel;
+
+	@FindBy(xpath = "//select[@id='process']")
 	WebElement processDropdown;
 
-	@FindBy(xpath="//select[@id='sub_process']")
+	@FindBy(xpath = "//label[text()='Sub Process*']")
+	public WebElement subProcessDropdownLabel;
+
+	@FindBy(xpath = "//select[@id='sub_process']")
 	WebElement subProcessDropdown;
 
-	@FindBy(xpath="//select[@id='s_sub_process']")
+	@FindBy(xpath = "//label[text()='Sub Sub Process*']")
+	public WebElement subSubProcessDropdownLabel;
+
+	@FindBy(xpath = "//select[@id='s_sub_process']")
 	WebElement subSubProcessDropdown;
 
-	@FindBy(xpath="//select[@id='stage_name_id']")
+	@FindBy(xpath = "//label[text()='Stages*']")
+	public WebElement stagesLabel;
+
+	@FindBy(xpath = "//select[@id='stage_name_id']")
 	WebElement stageDropdown;
 
-	@FindBy(xpath="//input[@name='template_name']")
+	@FindBy(xpath = "//label[text()='API Key Name*']")
+	public WebElement apiKeyNameLabel;
+
+	@FindBy(id = "api_name")
+	public WebElement apiNameDropdown;
+
+	@FindBy(xpath = "//input[@name='template_name']")
 	WebElement inputTemplateName;
 
-	@FindBy(xpath="//input[@name='from_email']")
-	public
-	WebElement inputFromMail;
+	@FindBy(xpath = "//input[@name='from_email']")
+	public WebElement inputFromMail;
 
-	@FindBy(xpath="//select[@id='to_email']")
+	@FindBy(xpath = "//select[@id='to_email']")
 	public WebElement toMailDropdown;
 
-	@FindBy(xpath="//textarea[@name='cc_email']")
+	@FindBy(xpath = "//textarea[@name='cc_email']")
 	public WebElement inputCCMail;
 
-	@FindBy(xpath="//textarea[@name='bcc_email']")
+	@FindBy(xpath = "//textarea[@name='bcc_email']")
 	public WebElement inputBCCMail;
 
-	@FindBy(xpath="//textarea[@name='remarks']")
+	@FindBy(xpath = "//textarea[@name='remarks']")
 	WebElement inputRemarks;
 
-	@FindBy(xpath="//input[@name='disposition']")
+	@FindBy(xpath = "//input[@name='disposition']")
 	WebElement inputDisposition;
 
-	@FindBy(xpath="//input[@name='subject']")
+	@FindBy(xpath = "//input[@name='subject']")
 	WebElement inputSubject;
 
-	@FindBy(xpath="(//span[text()='Paragraph'])[1]")
+	@FindBy(xpath = "(//span[text()='Paragraph'])[1]")
 	WebElement paragraghDropdown;
 
-	@FindBy(xpath="//input[contains(@name,'sub_variable_name')]")
+	@FindBy(xpath = "//input[contains(@name,'sub_variable_name')]")
 	List<WebElement> inputSubjectVariable;
 
-	@FindBy(xpath="//select[contains(@name,'subvar_stage')]")
+	@FindBy(xpath = "//select[contains(@name,'subvar_stage')]")
 	List<WebElement> subjectStageDropdown;
 
-	@FindBy(xpath="//input[contains(@name,'subvar_default_')]")
+	@FindBy(xpath = "//input[contains(@name,'subvar_default_')]")
 	List<WebElement> inputSubjectDefaultValue;
 
-	@FindBy(xpath="//label[text()='Subject Variables']//following-sibling::*//img")
+	@FindBy(xpath = "//label[text()='Subject Variables']//following-sibling::*//img")
 	WebElement subjectDeleteButton;
 
-	@FindBy(xpath="//label[text()='Subject Variables']//following-sibling::*//a")
+	@FindBy(xpath = "//label[text()='Subject Variables']//following-sibling::*//a")
 	WebElement subjectAddRow;
 
-	@FindBy(xpath="//select[contains(@name,'stage_field')and not(contains(@name,'subvar'))]")
+	@FindBy(xpath = "//select[contains(@name,'stage_field')and not(contains(@name,'subvar'))]")
 	List<WebElement> templateStageDropdown;
 
-	@FindBy(xpath="//select[@name='stage_field_name_2']")
+	@FindBy(xpath = "//select[@name='stage_field_name_2']")
 	WebElement templateStageDropdown2;
 
-	@FindBy(xpath="//input[contains(@name,'temp_variable_name')]")
-	List <WebElement> inputTemplateVarField;
+	@FindBy(xpath = "//input[contains(@name,'temp_variable_name')]")
+	List<WebElement> inputTemplateVarField;
 
-	@FindBy(xpath="//input[not(contains(@name,'subvar')) and contains(@name,'default')]")
+	@FindBy(xpath = "//input[not(contains(@name,'subvar')) and contains(@name,'default')]")
 	List<WebElement> inputTemplateDefaultField;
 
-
-	@FindBy(xpath="//div[@class='col-md-12']//img")
+	@FindBy(xpath = "//div[@class='col-md-12']//img")
 	WebElement bodyDeleteButton;
 
-	@FindBy(xpath="//div[@class='col-md-12']//a")
+	@FindBy(xpath = "//div[@class='col-md-12']//a")
 	WebElement bodyVarAddRow;
 
-	@FindBy(id="manual_id")
+	@FindBy(id = "manual_id")
 	WebElement templateCreate;
 
-	@FindBy(xpath="//button[@id='manual_id']//following-sibling::button")
+	@FindBy(xpath = "//button[@id='manual_id']//following-sibling::button")
 	WebElement templateCancel;
 
-	@FindBy(xpath="//span[text()='Alchemy']")
+	@FindBy(xpath = "//span[text()='Alchemy']")
 	WebElement alchemy;
 
-	@FindBy(linkText ="Email Template")
+	@FindBy(linkText = "Email Template")
 	WebElement emailTemplate;
 
-	@FindBy(id="from_email-error")
+	@FindBy(id = "from_email-error")
 	WebElement errorElement;
 
-	@FindBy(xpath="//div[@role='textbox']")
+	@FindBy(xpath = "//div[@role='textbox']")
 	WebElement inputMessage;
 
-	//	Call Log Tab View
-	@FindBy(linkText ="Call Log Tab View")
+	// Call Log Tab View
+	@FindBy(linkText = "Call Log Tab View")
 	WebElement callLogTabView;
 
-	@FindBy(xpath ="//button[contains(normalize-space(), 'Insurance Stage')]")
+	@FindBy(xpath = "//button[contains(normalize-space(), 'Insurance Stage')]")
 	WebElement insuranceStage;
 
-	@FindBy(xpath ="//tbody//td[1]//img")
+	@FindBy(xpath = "//tbody//td[1]//img")
 	WebElement eyeButton;
 
-	@FindBy(xpath ="//img[contains(@class,'email')]")
+	@FindBy(xpath = "//img[contains(@class,'email')]")
 	WebElement emailButton;
 
-	@FindBy(xpath ="//select[@id='select_type_id_email']")
+	@FindBy(xpath = "//select[@id='select_type_id_email']")
 	WebElement selectEmailDrp;
 
-	@FindBy(xpath ="//button[@id='email_form_submit_btn']")
+	@FindBy(xpath = "//button[@id='email_form_submit_btn']")
 	WebElement send;
 
-	@FindBy(xpath ="//button[@id='email_form_submit_btn']//following-sibling::button")
+	@FindBy(xpath = "//button[@id='email_form_submit_btn']//following-sibling::button")
 	WebElement emailCancel;
 
-	@FindBy(xpath ="//tbody//td[8]")
+	@FindBy(xpath = "//tbody//td[8]")
 	WebElement custEmail;
 
-	@FindBy(xpath ="//h3[text()='Success']//following-sibling::button")
+	@FindBy(xpath = "//h3[text()='Success']//following-sibling::button")
 	WebElement continueButton;
 
 	@FindBy(xpath = "//button[text()='Delete']")
@@ -179,6 +202,12 @@ public class EmailTemplatePage extends TestBase{
 	@FindBy(css = "img.arrow-left")
 	WebElement custPageBack;
 
+	// References Class
+	FieldVerificationUtils fieldVerificationUtils = new FieldVerificationUtils();
+	DropDown dropDown = new DropDown();
+
+	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
+
 //	public EmailTemplatePage navigationToAdmin() {
 //		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 //
@@ -188,118 +217,104 @@ public class EmailTemplatePage extends TestBase{
 //		return this;
 //	}
 
-	public EmailTemplatePage navigation()
-	{
-
+	public EmailTemplatePage navigation() {
 
 		try {
 			jsClick(emailTemplate);
 
-		}catch (NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			alchemy.click();
 			jsClick(emailTemplate);
 		}
 		return this;
 	}
 
-	public EmailTemplatePage InputTemplateField(String tempalteName)
-	{
+	public EmailTemplatePage InputTemplateField(String tempalteName) {
 		inputTemplateName.sendKeys(tempalteName);
 		return this;
 	}
 
-	public EmailTemplatePage validateEmail(WebElement element,String Email)
-	{
+	public EmailTemplatePage validateEmail(WebElement element, String Email) {
 		try {
 			create.click();
 			element.sendKeys(Email);
 			assertTrue(errorElement.getText().contains("Please enter a valid email address."));
-		}catch (NoSuchElementException e) {
-			assertTrue(false,"Error message element not found.");
+		} catch (NoSuchElementException e) {
+			assertTrue(false, "Error message element not found.");
 		}
 		return this;
 	}
 
-	public EmailTemplatePage validateDropdowns()
-	{
+	public EmailTemplatePage validateDropdowns() {
 		jsClick(emailTemplate);
 		create.click();
-		//		dropdownUtil(processDropdown,processExpectedOptions);
+		// dropdownUtil(processDropdown,processExpectedOptions);
 		unWait(1);
-		dropdownUtil(processDropdown,"AJP");
-		selectByVisibleText(processDropdown,"AJP");
+		dropdownUtil(processDropdown, "AJP");
+		selectByVisibleText(processDropdown, "AJP");
 		unWait(1);
-		dropdownUtil(subProcessDropdown,"Sub AJP");
-		selectByVisibleText(subProcessDropdown,"Sub AJP");
+		dropdownUtil(subProcessDropdown, "Sub AJP");
+		selectByVisibleText(subProcessDropdown, "Sub AJP");
 		unWait(1);
-		dropdownUtil(subSubProcessDropdown,"Sub Sub AJP");
-		selectByVisibleText(subSubProcessDropdown,"Sub Sub AJP");
+		dropdownUtil(subSubProcessDropdown, "Sub Sub AJP");
+		selectByVisibleText(subSubProcessDropdown, "Sub Sub AJP");
 		unWait(1);
-		dropdownUtil(stageDropdown,"Insurance Stage");
-		selectByVisibleText(stageDropdown,"Insurance Stage");
+		dropdownUtil(stageDropdown, "Insurance Stage");
+		selectByVisibleText(stageDropdown, "Insurance Stage");
 		unWait(1);
-		dropdownUtil(subjectStageDropdown.get(0),"Name Of the Customer");
+		dropdownUtil(subjectStageDropdown.get(0), "Name Of the Customer");
 		unWait(1);
-		dropdownUtil(templateStageDropdown.get(0),"Name Of the Customer");
+		dropdownUtil(templateStageDropdown.get(0), "Name Of the Customer");
 
 		return this;
 	}
 
-	public void selectByVisibleText(WebElement select, String Value)
-	{
-		Select subSubProcessDrp=new Select(select);
+	public void selectByVisibleText(WebElement select, String Value) {
+		Select subSubProcessDrp = new Select(select);
 		subSubProcessDrp.selectByVisibleText(Value);
 
 	}
 
-	public EmailTemplatePage smsTemplate()
-	{
+	public EmailTemplatePage smsTemplate() {
 		navigateWithinAlchemy(driver.findElement(By.linkText("SMS Template")));
-		selectByVisibleText(searchProcessDropdown,"DemoEmpH P");
+		selectByVisibleText(searchProcessDropdown, "DemoEmpH P");
 //		unWaitInMilli(400);
-		selectByVisibleText(searchSubProcessDropdown,"DemoEmpH S P");
+		selectByVisibleText(searchSubProcessDropdown, "DemoEmpH S P");
 //		unWaitInMilli(400);
-		selectByVisibleText(searchSubSubProcessDropdown,"DemoEmpH S S P");
+		selectByVisibleText(searchSubSubProcessDropdown, "DemoEmpH S S P");
 //		unWaitInMilli(400);
-		selectByVisibleText(searchStageDropdown,"DemoEmpH Stage");
-
+		selectByVisibleText(searchStageDropdown, "DemoEmpH Stage");
 
 		return this;
 	}
 
+	public void printoptions(WebElement dropdown) {
+		Select ProcessDrp = new Select(dropdown);
 
-
-
-	public void printoptions(WebElement dropdown)
-	{
-		Select ProcessDrp=new Select(dropdown);
-
-		for(WebElement options:ProcessDrp.getOptions())
-		{
+		for (WebElement options : ProcessDrp.getOptions()) {
 			System.out.println(options.getText());
 		}
 	}
 
-	public EmailTemplatePage createEmailTemplate(
-			String Process,String SubProcess,String SubSubProcess,String Stage,String TemplateName,
-			String fromMail,String toMail,String CCMail,String BCC,String Subject,String Message)
-	{
+	public EmailTemplatePage createEmailTemplate(String Process, String SubProcess, String SubSubProcess, String Stage,
+			String TemplateName, String fromMail, String toMail, String CCMail, String BCC, String Subject,
+			String Message) {
 		jsClick(emailTemplate);
 		create.click();
-		//		dropdownUtil(processDropdown,processExpectedOptions);
+		// dropdownUtil(processDropdown,processExpectedOptions);
 		unWait(1);
-		selectByVisibleText(processDropdown,Process);
+		selectByVisibleText(processDropdown, Process);
 		unWait(1);
-		selectByVisibleText(subProcessDropdown,SubProcess);
+		selectByVisibleText(subProcessDropdown, SubProcess);
 		unWait(1);
-		selectByVisibleText(subSubProcessDropdown,SubSubProcess);
+		selectByVisibleText(subSubProcessDropdown, SubSubProcess);
 		unWait(1);
-		selectByVisibleText(stageDropdown,Stage);
+		selectByVisibleText(stageDropdown, Stage);
 		unWait(1);
 
 		inputTemplateName.sendKeys(TemplateName);
 		inputFromMail.sendKeys(fromMail);
-		selectByVisibleText(toMailDropdown,toMail);
+		selectByVisibleText(toMailDropdown, toMail);
 		inputCCMail.sendKeys(CCMail);
 		inputBCCMail.sendKeys(BCC);
 		inputSubject.sendKeys(Subject);
@@ -309,17 +324,18 @@ public class EmailTemplatePage extends TestBase{
 		unWait(1);
 		continueButton.click();
 
-		//		selectByVisibleText(subjectStageDropdown,"Name Of the Customer");
-		//		unWait(1);
-		//		selectByVisibleText(templateStageDropdown,"Name Of the Customer");
+		// selectByVisibleText(subjectStageDropdown,"Name Of the Customer");
+		// unWait(1);
+		// selectByVisibleText(templateStageDropdown,"Name Of the Customer");
 
 		return this;
 	}
+
 	String CustomerEmail;
 	String NameOfTheCustomer;
 	String phoneNumber;
-	public EmailTemplatePage navigateToCustomerProfile(String UserName)
-	{
+
+	public EmailTemplatePage navigateToCustomerProfile(String UserName) {
 		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
 
 		LoginPage.usernameField.sendKeys(UserName);
@@ -328,49 +344,45 @@ public class EmailTemplatePage extends TestBase{
 
 		callLogTabView.click();
 		insuranceStage.click();
-		NameOfTheCustomer=driver.findElement(By.xpath("//tbody//td[5]")).getText();
-		phoneNumber=driver.findElement(By.xpath("//tbody//td[7]")).getText();
+		NameOfTheCustomer = driver.findElement(By.xpath("//tbody//td[5]")).getText();
+		phoneNumber = driver.findElement(By.xpath("//tbody//td[7]")).getText();
 		unWait(1);
-		CustomerEmail=custEmail.getText();
+		CustomerEmail = custEmail.getText();
 		eyeButton.click();
 
 		return this;
 	}
 
-	public String getFirstSelectedOption(WebElement webelement)
-	{
-		Select option= new Select(webelement);
+	public String getFirstSelectedOption(WebElement webelement) {
+		Select option = new Select(webelement);
 		return option.getFirstSelectedOption().getText();
 	}
 
-	FetchDataFromInputTagWithJS inputTagText= new FetchDataFromInputTagWithJS();
+	FetchDataFromInputTagWithJS inputTagText = new FetchDataFromInputTagWithJS();
 
-	public EmailTemplatePage verifyTemplate(String TemplateName,
-											String fromMail,String CCMail,String BCC,String Subject,String Message)
-	{
+	public EmailTemplatePage verifyTemplate(String TemplateName, String fromMail, String CCMail, String BCC,
+			String Subject, String Message) {
 		emailButton.click();
 		unWait(1);
 		selectByVisibleText(selectEmailDrp, TemplateName);
 		unWait(1);
-		String actualfromMail= inputTagText.dataPrintFromInputtag(inputFromMail,"fromMail");
-		String actualCCMail=inputTagText.dataPrintFromInputtag(inputCCMail,"CCMail");
-		String actualBCC=inputTagText.dataPrintFromInputtag(inputBCCMail,"BCC");
-		String actualSubject=inputTagText.dataPrintFromInputtag(inputSubject,"Subject");
+		String actualfromMail = inputTagText.dataPrintFromInputtag(inputFromMail, "fromMail");
+		String actualCCMail = inputTagText.dataPrintFromInputtag(inputCCMail, "CCMail");
+		String actualBCC = inputTagText.dataPrintFromInputtag(inputBCCMail, "BCC");
+		String actualSubject = inputTagText.dataPrintFromInputtag(inputSubject, "Subject");
 
-		assertEquals(getFirstSelectedOption(selectEmailDrp),TemplateName);
-		assertEquals(fromMail,actualfromMail);
+		assertEquals(getFirstSelectedOption(selectEmailDrp), TemplateName);
+		assertEquals(fromMail, actualfromMail);
 		unWait(1);
-		assertEquals(CustomerEmail,getFirstSelectedOption(toMailDropdown));
-		assertEquals(CCMail,actualCCMail);
-		assertEquals(BCC,actualBCC);
-		assertEquals(Subject,actualSubject);
-		//		assertEquals(Message,inputMessage.getText());
+		assertEquals(CustomerEmail, getFirstSelectedOption(toMailDropdown));
+		assertEquals(CCMail, actualCCMail);
+		assertEquals(BCC, actualBCC);
+		assertEquals(Subject, actualSubject);
+		// assertEquals(Message,inputMessage.getText());
 		send.click();
 		jsClick(custPageBack);
 		return this;
 	}
-
-
 
 	public EmailTemplatePage actionRecord(String nameToDelete, String action) {
 
@@ -384,31 +396,31 @@ public class EmailTemplatePage extends TestBase{
 
 			if (usernameColumn.getText().contains(nameToDelete)) {
 				switch (action) {
-					case "Delete":
-						try {
-							WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
-							jsClick(deleteButton);
+				case "Delete":
+					try {
+						WebElement deleteButton = row.findElement(By.xpath(".//td//div//img[@alt='delete-icon ']"));
+						jsClick(deleteButton);
 
-							confirmDeleteButton.click();
-							unWait(2);
-							continueButton.click();
-							System.out.println(nameToDelete + " Successfully Deleted");
-						} catch (Exception e) {
-							System.out.println("Failed to delete the record: " + e.getMessage());
-						}
-						break;
+						confirmDeleteButton.click();
+						unWait(2);
+						continueButton.click();
+						System.out.println(nameToDelete + " Successfully Deleted");
+					} catch (Exception e) {
+						System.out.println("Failed to delete the record: " + e.getMessage());
+					}
+					break;
 
-					case "Edit":
-						try {
-							WebElement editButton = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
-							jsClick(editButton);
-						} catch (Exception e) {
-							System.out.println("Failed to edit the record: " + e.getMessage());
-						}
-						break;
+				case "Edit":
+					try {
+						WebElement editButton = row.findElement(By.xpath(".//td//img[@alt='table-edit']"));
+						jsClick(editButton);
+					} catch (Exception e) {
+						System.out.println("Failed to edit the record: " + e.getMessage());
+					}
+					break;
 
-					default:
-						System.out.println("Invalid action: " + action);
+				default:
+					System.out.println("Invalid action: " + action);
 				}
 				// Once the action is performed, exit the loop
 				break;
@@ -418,36 +430,36 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
-	public void EditInput(WebElement element, String value)
-	{
+	public void EditInput(WebElement element, String value) {
 		element.clear();
 		element.sendKeys(value);
 	}
 
-	public EmailTemplatePage editTemplate(String ToEdit, String editFromMail, String editToMail, String editBCCMail, String editCCMail, String EditSubject) {
+	public EmailTemplatePage editTemplate(String ToEdit, String editFromMail, String editToMail, String editBCCMail,
+			String editCCMail, String EditSubject) {
 		if (ToEdit.equals(null)) {
 			System.out.println("ToEdit parameter cannot be null");
 		}
 
 		switch (ToEdit) {
-			case "From":
-				EditInput(inputFromMail, editFromMail);
-				break;
-			case "To":
-				selectByVisibleText(toMailDropdown, editToMail);
-				break;
-			case "BCC":
-				EditInput(inputBCCMail, editBCCMail);
-				break;
-			case "CC":
-				EditInput(inputCCMail, editCCMail);
-				break;
-			case "Subject":
-				EditInput(inputSubject, EditSubject);
-				break;
-			default:
-				// Handle unexpected values of ToEdit
-				throw new IllegalArgumentException("Unexpected value: " + ToEdit);
+		case "From":
+			EditInput(inputFromMail, editFromMail);
+			break;
+		case "To":
+			selectByVisibleText(toMailDropdown, editToMail);
+			break;
+		case "BCC":
+			EditInput(inputBCCMail, editBCCMail);
+			break;
+		case "CC":
+			EditInput(inputCCMail, editCCMail);
+			break;
+		case "Subject":
+			EditInput(inputSubject, EditSubject);
+			break;
+		default:
+			// Handle unexpected values of ToEdit
+			throw new IllegalArgumentException("Unexpected value: " + ToEdit);
 		}
 		jsClick(templateCreate);
 		unWait(1);
@@ -456,15 +468,8 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
-	public EmailTemplatePage validateEditedTemplate(
-			String templateName,
-			String toEdit,
-			String fromMail,
-			String editToMail,
-			String ccMail,
-			String bcc,
-			String subject
-	) {
+	public EmailTemplatePage validateEditedTemplate(String templateName, String toEdit, String fromMail,
+			String editToMail, String ccMail, String bcc, String subject) {
 		// Click the email button
 		emailButton.click();
 		unWait(1);
@@ -485,20 +490,20 @@ public class EmailTemplatePage extends TestBase{
 
 		// Switch case to check the edited field
 		switch (toEdit) {
-			case "From":
-				assertEquals(fromMail, actualFromMail);
-				break;
-			case "BCC":
-				assertEquals(bcc, actualBCC);
-				break;
-			case "CC":
-				assertEquals(ccMail, actualCCMail);
-				break;
-			case "Subject":
-				assertEquals(subject, actualSubject);
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid value for 'toEdit': " + toEdit);
+		case "From":
+			assertEquals(fromMail, actualFromMail);
+			break;
+		case "BCC":
+			assertEquals(bcc, actualBCC);
+			break;
+		case "CC":
+			assertEquals(ccMail, actualCCMail);
+			break;
+		case "Subject":
+			assertEquals(subject, actualSubject);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid value for 'toEdit': " + toEdit);
 		}
 
 		// Click send button and navigate back
@@ -509,7 +514,7 @@ public class EmailTemplatePage extends TestBase{
 	}
 
 	public EmailTemplatePage variables(String valueType, String inputVariable, String variable1, String variable2,
-									   String selectValue1, String selectValue2, String defaultValue1, String defaultValue2) {
+			String selectValue1, String selectValue2, String defaultValue1, String defaultValue2) {
 		try {
 			jsClick(emailTemplate);
 			create.click();
@@ -541,23 +546,23 @@ public class EmailTemplatePage extends TestBase{
 			inputTemplateVarField.get(1).sendKeys(variable2);
 
 			switch (valueType) {
-				case "Stage":
-					selectByVisibleText(subjectStageDropdown.get(0), selectValue1);
-					selectByVisibleText(subjectStageDropdown.get(1), selectValue2);
-					selectByVisibleText(templateStageDropdown.get(0), selectValue1);
-					selectByVisibleText(templateStageDropdown.get(1), selectValue2);
-					break;
+			case "Stage":
+				selectByVisibleText(subjectStageDropdown.get(0), selectValue1);
+				selectByVisibleText(subjectStageDropdown.get(1), selectValue2);
+				selectByVisibleText(templateStageDropdown.get(0), selectValue1);
+				selectByVisibleText(templateStageDropdown.get(1), selectValue2);
+				break;
 
-				case "Default":
-					inputSubjectDefaultValue.get(0).sendKeys(defaultValue1);
-					inputSubjectDefaultValue.get(1).sendKeys(defaultValue2);
-					inputTemplateDefaultField.get(0).sendKeys(defaultValue1);
-					inputTemplateDefaultField.get(1).sendKeys(defaultValue2);
-					break;
+			case "Default":
+				inputSubjectDefaultValue.get(0).sendKeys(defaultValue1);
+				inputSubjectDefaultValue.get(1).sendKeys(defaultValue2);
+				inputTemplateDefaultField.get(0).sendKeys(defaultValue1);
+				inputTemplateDefaultField.get(1).sendKeys(defaultValue2);
+				break;
 
-				default:
-					System.out.println("Invalid valueType: " + valueType);
-					break;
+			default:
+				System.out.println("Invalid valueType: " + valueType);
+				break;
 			}
 		} catch (Exception e) {
 			System.out.println("An error occurred while creating the email template: " + e.getMessage());
@@ -575,7 +580,6 @@ public class EmailTemplatePage extends TestBase{
 	}
 
 	public EmailTemplatePage verifyVaribles() {
-
 
 		// Click the email button
 		emailButton.click();
@@ -598,9 +602,155 @@ public class EmailTemplatePage extends TestBase{
 		return this;
 	}
 
+//===================================================================================================================
 
+	public void navigatetoCraeteAndVerify() {
+		navigatetoCreateAndVerify();
+	}
 
+	public void navigatetoCreateAndVerify() {
 
+		assertTrue(create.isDisplayed(), "create is not Dislayed");
+		create.click();
 
+		wait.until(ExpectedConditions.visibilityOf(verifyCreateEmailTemplate));
+		assertTrue(verifyCreateEmailTemplate.isDisplayed(), "verifyCreateEmailTemplate is not displayed");
+
+	}
+
+	// Process Select Process
+	public void selectProcess(String selectProcess) throws Throwable {
+
+		switch (selectProcess) {
+		case "givenprocessname":
+
+			fieldVerificationUtils.checkthroughAsterisk(processDropdownLabel, true);
+
+			// Fetch Data FDrom Prperties File
+			String process = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"process");
+
+			// select Process Dropdown
+			dropDown.dropdownUtils(processDropdown, process);
+
+			break;
+
+		case "randomprocess":
+
+			fieldVerificationUtils.checkthroughAsterisk(processDropdownLabel, true);
+
+			// select Process Dropdown
+			DropDown.selectRandomOptionFromDropdwon(processDropdown);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void selectSubProcess(String selectSubProcess) throws Throwable {
+
+		switch (selectSubProcess) {
+
+		case "givenSubprocessname":
+
+			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
+
+			// Fetch Data FDrom Prperties File
+			String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"subProcess");
+
+			// select Process Dropdown
+			dropDown.dropdownUtils(subProcessDropdown, subProcess);
+
+			break;
+
+		case "randomSubprocess":
+
+			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
+
+			// select SubProcess Dropdown
+			dropDown.selectRandomOptionFromDropdwon(subProcessDropdown);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void selectSubSubProcess(String selectSubSubProcess) throws Throwable {
+
+		switch (selectSubSubProcess) {
+		case "givensubsubprocessname":
+
+			fieldVerificationUtils.checkthroughAsterisk(subSubProcessDropdownLabel, true);
+
+			// Fetch Data FDrom Prperties File
+			String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"subSubProcess");
+
+			// select Process Dropdown
+			dropDown.dropdownUtils(subSubProcessDropdown, subSubProcess);
+
+			break;
+
+		case "randomSubSubprocess":
+
+			fieldVerificationUtils.checkthroughAsterisk(subSubProcessDropdownLabel, true);
+
+			// select SubProcess Dropdown
+			dropDown.selectRandomOptionFromDropdwon(subSubProcessDropdown);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void selectStages(String givenStageName) throws Throwable {
+
+		switch (givenStageName) {
+
+		case "givenStageName":
+
+			fieldVerificationUtils.checkthroughAsterisk(stagesLabel, true);
+
+			// Fetch Data FDrom Prperties File
+			String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"stage");
+
+			// select Process Dropdown
+			dropDown.dropdownUtils(stageDropdown, stage);
+
+			break;
+
+		case "randomStage":
+
+			fieldVerificationUtils.checkthroughAsterisk(stagesLabel, true);
+
+			// select SubProcess Dropdown
+			DropDown.selectRandomOptionFromDropdwon(stageDropdown);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void apiKyeName() throws Throwable {
+
+		fieldVerificationUtils.checkthroughAsterisk(apiKeyNameLabel, true);
+
+		assertTrue(apiNameDropdown.isDisplayed(), "apiNameDropdown is not Displayed");
+
+		PropertieFileUtil.extractAllDropdownOptions(emailTemplate_Path8,apiNameDropdown, "ApiKeyName");
+
+		 PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,CustomerEmail);
+
+	}
 
 }

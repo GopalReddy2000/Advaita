@@ -46,6 +46,8 @@ public class TestDataSetCreate extends TestBase {
 	HomePage homePage;
 
 	DataSet dataset;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public TestDataSetCreate() {
 		super();
@@ -118,7 +120,7 @@ public class TestDataSetCreate extends TestBase {
 		dataset.navigateToDataSetup().createNewDataSet(dataSetName).enterFieldNameAndValidations(fieldData)
 				.createDataSetButtonAndConfirmation();
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("dataSetName", dataSetName);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_PATH2,"dataSetName", dataSetName);
 
 	}
 

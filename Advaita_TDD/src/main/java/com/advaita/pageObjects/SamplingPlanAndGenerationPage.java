@@ -140,6 +140,8 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 
 	@FindBy(xpath = "//span[@id='generated_sample']")
 	public WebElement sampleCount;
+	
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 	public SamplingPlanAndGenerationPage navToCreate() {
 		navigateWithinAlchemy(samplingPlanAndGeneration);
@@ -395,7 +397,7 @@ public class SamplingPlanAndGenerationPage extends TestBase {
 		// Assertion to verify status is "Completed"
 		assertEquals(statusText, "Completed", "Status did not update to 'Completed'!");
 
-		assertEquals(sampleCount.getText(), PropertieFileUtil.getSingleTextFromPropertiesFile("no.OfRecord"),
+		assertEquals(sampleCount.getText(), PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,"no.OfRecord"),
 				"Generated sample count is incorrect!");
 
 		continueButton2.click();

@@ -9,11 +9,8 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
-import javax.xml.xpath.XPath;
 
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -50,6 +47,8 @@ public class ApiKeySetup extends TestBase {
 	String fieldValue = FakeData.lastName1() + "_FV";
 
 	String selectedFirstOptionFromDropdwon;
+
+	private static final String PROPERTIES_FILE_ApiKey_PATH3 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\apiKey.properties";
 
 	// <<<<<<<<<< Elements
 
@@ -361,7 +360,7 @@ public class ApiKeySetup extends TestBase {
 		String apiNameValue = apiNametextfield.getAttribute("value");
 		System.out.println("apiNameValue :" + apiNameValue);
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("ApiName", apiNameValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"ApiName", apiNameValue);
 
 	}
 
@@ -382,7 +381,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(processDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String process = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+			String process = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"process");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(ProcessDropdown, process);
@@ -421,7 +420,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+			String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"subProcess");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(subProcessDropdown, subProcess);
@@ -459,7 +458,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+			String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"subSubProcess");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(subSubProcessDropdown, subSubProcess);
@@ -498,7 +497,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(stageLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String stage = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+			String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"stage");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(stageDropdown, stage);
@@ -540,9 +539,9 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(keyForDropdown, "KeyFor");
+			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
 
-			String selectKeyFor = PropertieFileUtil.getSingleTextFromPropertiesFile("KeyFor2");
+			String selectKeyFor = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"KeyFor2");
 
 			dropDown.selectFromDropdownByText(keyForDropdown, selectKeyFor);
 
@@ -553,7 +552,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(keyForDropdown, "KeyFor");
+			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
 
 			DropDown.selectRandomOptionFromDropdwon(keyForDropdown);
 
@@ -571,9 +570,9 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(authTypeLabel, true);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(authTpeDropdown, "AuthType");
+		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
 
-		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile("AuthType6");
+		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"AuthType6");
 		System.out.println("authType :" + authType);
 
 		dropDown.selectFromDropdownByText(authTpeDropdown, authType);
@@ -591,9 +590,9 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(authTypeLabel, true);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(authTpeDropdown, "AuthType");
+		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
 
-		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile(AuthType);
+		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,AuthType);
 		System.out.println("authType :" + authType);
 
 		dropDown.selectFromDropdownByText(authTpeDropdown, authType);
@@ -682,9 +681,9 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(methodTypeLabel, false);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(methodTypeDropdown, "MethodType");
+			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,methodTypeDropdown, "MethodType");
 
-			String selectMethodType = PropertieFileUtil.getSingleTextFromPropertiesFile("MethodType4");
+			String selectMethodType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"MethodType4");
 			dropDown.selectFromDropdownByText(methodTypeDropdown, selectMethodType);
 
 			break;
@@ -694,7 +693,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(keyForDropdown, "MethodType");
+			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "MethodType");
 
 			DropDown.selectRandomOptionFromDropdwon(methodTypeDropdown);
 
@@ -738,7 +737,7 @@ public class ApiKeySetup extends TestBase {
 
 		apiUrlTextfield.sendKeys(Url);
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("APIURl", Url);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"APIURl", Url);
 
 	}
 
@@ -870,7 +869,7 @@ public class ApiKeySetup extends TestBase {
 
 		String Captured_apiNameText = Created_apiName.getText();
 
-		String apiName = PropertieFileUtil.getSingleTextFromPropertiesFile("Api_Name");
+		String apiName = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"Api_Name");
 
 		assertEquals(Captured_apiNameText, apiName, "Actaul result not Match With Expected Result(ApiName");
 
@@ -940,7 +939,7 @@ public class ApiKeySetup extends TestBase {
 
 	public void selectProcessInApiTablePage() throws IOException {
 
-		String selectProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("process");
+		String selectProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"process");
 
 		dropDown.selectFromDropdownByText(searchProcess, selectProcess);
 
@@ -948,21 +947,21 @@ public class ApiKeySetup extends TestBase {
 
 	public void selectSubProcessInApiTablePage() throws Throwable {
 
-		String selectSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subProcess");
+		String selectSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"subProcess");
 
 		dropDown.selectFromDropdownByText(searchSubProcess, selectSubProcess);
 	}
 
 	public void selectSubSubProcessInApiTablePage() throws IOException {
 
-		String selectSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile("subSubProcess");
+		String selectSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"subSubProcess");
 
 		dropDown.selectFromDropdownByText(searchSubSubProcess, selectSubSubProcess);
 	}
 
 	public void searchThroughStages() throws IOException {
 
-		String selectstages = PropertieFileUtil.getSingleTextFromPropertiesFile("stage");
+		String selectstages = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"stage");
 
 		dropDown.selectFromDropdownByText(searchStages, selectstages);
 	}
@@ -1054,7 +1053,7 @@ public class ApiKeySetup extends TestBase {
 			String tokenValue = token.getAttribute("value");
 
 			// 5. Store in properties file
-			PropertieFileUtil.storeSingleTextInPropertiesFile("BearerToken", tokenValue);
+			PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"BearerToken", tokenValue);
 		} catch (Exception e) {
 			System.err.println("Error handling Bearer token: " + e.getMessage());
 		}
@@ -1138,7 +1137,7 @@ public class ApiKeySetup extends TestBase {
 		String captured0AuthValue = tokenOAuth2.getAttribute("value");
 
 		// Step 4: Store in properties file
-		PropertieFileUtil.storeSingleTextInPropertiesFile("OAuth2.0", captured0AuthValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"OAuth2.0", captured0AuthValue);
 
 		return captured0AuthValue;
 	}
@@ -1152,7 +1151,7 @@ public class ApiKeySetup extends TestBase {
 
 		String key = keyTextfield.getAttribute("value");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("key", key);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"key", key);
 
 	}
 
@@ -1164,7 +1163,7 @@ public class ApiKeySetup extends TestBase {
 
 		String Value = valueTextfield.getAttribute("value");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("Value", Value);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"Value", Value);
 
 	}
 
@@ -1173,9 +1172,9 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(addToDrodownlabel, false);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(addToDropdown, "AddTo");
+		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,addToDropdown, "AddTo");
 
-		String addTo = PropertieFileUtil.getSingleTextFromPropertiesFile("AddTo3");
+		String addTo = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"AddTo3");
 
 		dropDown.selectFromDropdownByText(addToDropdown, addTo);
 
@@ -1199,7 +1198,7 @@ public class ApiKeySetup extends TestBase {
 
 		String userNameValue = userName.getAttribute("value");
 
-		PropertieFileUtil.storeSingleTextInPropertiesFile("UserNameBasicAuth", userNameValue);
+		PropertieFileUtil.storeSingleTextInPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"UserNameBasicAuth", userNameValue);
 	}
 
 	public void enterPassword() {

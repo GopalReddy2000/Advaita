@@ -5,6 +5,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
@@ -511,44 +513,56 @@ public class DropDown extends TestBase {
 
 	// Random Select From Dropdwon
 	public static String selectRandomOptionFromDropdwon(WebElement dropdownElement) {
-		// Check if it's a real <select> tag
-		if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
-			Assert.fail("The provided WebElement is not a <select> dropdown.");
-		}
+	    // Validate that the element is a dropdown
+	    if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
+	        Assert.fail("Provided WebElement is not a <select> element.");
+	    }
 
-		Select select = new Select(dropdownElement);
-		List<WebElement> allOptions = select.getOptions();
-		List<String> optionTexts = new ArrayList<>();
+	    // Wait until the dropdown is visible and enabled (optional if you already wait elsewhere)
+	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
 
-		System.out.println("Total options found: " + allOptions.size());
+	    Select select = new Select(dropdownElement);
+	    List<WebElement> allOptions = select.getOptions();
+	    List<String> validOptions = new ArrayList<>();
 
-		for (WebElement option : allOptions) {
-			String text = option.getText().trim();
-			System.out.println("Found option: " + text);
+	    System.out.println("Total options found: " + allOptions.size());
 
-			if (!text.equalsIgnoreCase("select") && !text.toLowerCase().contains("choose") && !text.isEmpty()) {
-				optionTexts.add(text);
-			}
-		}
+	    for (WebElement option : allOptions) {
+	        String text = option.getText().trim();
+	        boolean isSelectable = option.isDisplayed() && option.isEnabled();
 
-		System.out.println("Valid options to select from: " + optionTexts);
+	        if (isSelectable &&
+	            !text.equalsIgnoreCase("select") &&
+	            !text.toLowerCase().contains("choose") &&
+	            !text.isEmpty()) {
+	            validOptions.add(text);
+	        }
+	    }
 
-		if (optionTexts.isEmpty()) {
-			Assert.fail("No valid/selectable options found in the dropdown.");
-		}
+	    System.out.println("Filtered valid options: " + validOptions);
 
-		// Pick a random text
-		Random random = new Random();
-		String randomOption = optionTexts.get(random.nextInt(optionTexts.size()));
-		System.out.println("Randomly selected option to choose: " + randomOption);
+	    if (validOptions.isEmpty()) {
+	        Assert.fail("No valid/selectable options found in dropdown.");
+	    }
 
-		select.selectByVisibleText(randomOption);
+	    // Randomly select from valid options
+	    String randomOption = validOptions.get(new Random().nextInt(validOptions.size()));
+	    System.out.println("Attempting to select: " + randomOption);
 
-		String selectedText = select.getFirstSelectedOption().getText().trim();
-		System.out.println("Actually selected: " + selectedText);
+	    try {
+	        select.selectByVisibleText(randomOption);
+	    } catch (NoSuchElementException e) {
+	        Assert.fail("The random option '" + randomOption + "' was not found in the dropdown at selection time.");
+	    }
 
-		Assert.assertEquals(selectedText, randomOption, "Dropdown selection mismatch.");
-		return selectedText;
+	    // Validate selection
+	    String selected = select.getFirstSelectedOption().getText().trim();
+	    System.out.println("Selected value after interaction: " + selected);
+
+	    Assert.assertEquals(selected, randomOption, "Dropdown selection mismatch.");
+
+	    return selected;
 	}
 
 	String selectedFirstOptionFromDropdwon;
@@ -582,7 +596,7 @@ public class DropDown extends TestBase {
 		}
 	}
 
-	//check all option should be Selectable from Dropdown
+	// check all option should be Selectable from Dropdown
 	public void selectAllOptionsUTILITY(WebElement dropdownElement) {
 		Select select = new Select(dropdownElement);
 
