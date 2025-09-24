@@ -5,6 +5,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -20,6 +21,8 @@ import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.FetchDataFromInputTagWithJS;
 import com.advaita.Utilities.FieldVerificationUtils;
 import com.advaita.Utilities.PropertieFileUtil;
+
+import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class EmailTemplatePage extends TestBase {
 
@@ -84,14 +87,23 @@ public class EmailTemplatePage extends TestBase {
 	@FindBy(xpath = "//label[text()='API Key Name*']")
 	public WebElement apiKeyNameLabel;
 
+	@FindBy(xpath = "//label[text()='Template Name*']")
+	public WebElement inputTemplateNameLabel;
+
 	@FindBy(id = "api_name")
 	public WebElement apiNameDropdown;
 
 	@FindBy(xpath = "//input[@name='template_name']")
 	WebElement inputTemplateName;
 
+	@FindBy(xpath = "//label[text()='From*']")
+	public WebElement inputFromMailLabel;
+
 	@FindBy(xpath = "//input[@name='from_email']")
 	public WebElement inputFromMail;
+
+	@FindBy(xpath = "//select[@id='emailtype']")
+	public WebElement toNumberSource;
 
 	@FindBy(xpath = "//select[@id='to_email']")
 	public WebElement toMailDropdown;
@@ -108,8 +120,23 @@ public class EmailTemplatePage extends TestBase {
 	@FindBy(xpath = "//input[@name='disposition']")
 	WebElement inputDisposition;
 
+	@FindBy(xpath = "//label[text()='Email For*']")
+	WebElement emailForLabel;
+
+	@FindBy(id = "Emailfor")
+	public WebElement emailFordropdown;
+
+	@FindBy(xpath = "//label[text()='Subject*']")
+	public WebElement subjectLabel;
+
 	@FindBy(xpath = "//input[@name='subject']")
 	WebElement inputSubject;
+
+	@FindBy(xpath = "//label[text()='Level']")
+	public WebElement lavelLabel;
+
+	@FindBy(xpath = "(//input[@class='select2-search__field'])[1]")
+	public WebElement levelOption;
 
 	@FindBy(xpath = "(//span[text()='Paragraph'])[1]")
 	WebElement paragraghDropdown;
@@ -203,10 +230,15 @@ public class EmailTemplatePage extends TestBase {
 	WebElement custPageBack;
 
 	// References Class
+	FakeData fakeData = new FakeData();
+
 	FieldVerificationUtils fieldVerificationUtils = new FieldVerificationUtils();
+
 	DropDown dropDown = new DropDown();
+	Random random = new Random();
 
 	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
+	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
 //	public EmailTemplatePage navigationToAdmin() {
 //		driver.get("https://test.capture.autosherpas.com/en/myprofile/login/");
@@ -604,6 +636,8 @@ public class EmailTemplatePage extends TestBase {
 
 //===================================================================================================================
 
+	public String cc_BCC_PlaceholderText = "Enter comma seperated email without space for multiple emails (Ex. abc@gmail.com,xyz@gmail.com)";
+
 	public void navigatetoCraeteAndVerify() {
 		navigatetoCreateAndVerify();
 	}
@@ -627,7 +661,7 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(processDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String process = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"process");
+			String process = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2, "process");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(processDropdown, process);
@@ -658,7 +692,7 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"subProcess");
+			String subProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2, "subProcess");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(subProcessDropdown, subProcess);
@@ -670,7 +704,7 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subProcessDropdownLabel, true);
 
 			// select SubProcess Dropdown
-			dropDown.selectRandomOptionFromDropdwon(subProcessDropdown);
+			DropDown.selectRandomOptionFromDropdwon(subProcessDropdown);
 
 			break;
 
@@ -688,7 +722,8 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subSubProcessDropdownLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"subSubProcess");
+			String subSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2,
+					"subSubProcess");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(subSubProcessDropdown, subSubProcess);
@@ -700,7 +735,7 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(subSubProcessDropdownLabel, true);
 
 			// select SubProcess Dropdown
-			dropDown.selectRandomOptionFromDropdwon(subSubProcessDropdown);
+			DropDown.selectRandomOptionFromDropdwon(subSubProcessDropdown);
 
 			break;
 
@@ -719,7 +754,7 @@ public class EmailTemplatePage extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(stagesLabel, true);
 
 			// Fetch Data FDrom Prperties File
-			String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,"stage");
+			String stage = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_PATH2, "stage");
 
 			// select Process Dropdown
 			dropDown.dropdownUtils(stageDropdown, stage);
@@ -741,16 +776,209 @@ public class EmailTemplatePage extends TestBase {
 
 	}
 
-	public void apiKyeName() throws Throwable {
+	public void selectApiKyeName() throws Throwable {
 
 		fieldVerificationUtils.checkthroughAsterisk(apiKeyNameLabel, true);
 
 		assertTrue(apiNameDropdown.isDisplayed(), "apiNameDropdown is not Displayed");
 
-		PropertieFileUtil.extractAllDropdownOptions(emailTemplate_Path8,apiNameDropdown, "ApiKeyName");
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(emailTemplate_Path8, apiNameDropdown, "ApiKeyName");
 
-		 PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,CustomerEmail);
+		String apikyeName = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8, "ApiKeyName2");
 
+		// select Process Dropdown
+		dropDown.dropdownUtils(apiNameDropdown, apikyeName);
+
+	}
+
+	public void enterTemplateName() {
+
+		fieldVerificationUtils.checkthroughAsterisk(inputTemplateNameLabel, true);
+
+		assertTrue(inputTemplateName.isDisplayed(), "inputTemplateName is not Displayed");
+
+		inputTemplateName.sendKeys(fakeData.generateTemplateName());
+
+	}
+
+	public void EnterFromMailID() {
+
+		fieldVerificationUtils.checkthroughAsterisk(inputFromMailLabel, true);
+
+		assertTrue(inputFromMail.isDisplayed(), "inputFromMail is not Displayed");
+
+		inputFromMail.sendKeys(fakeData.generateEmailId());
+
+	}
+
+	public void toEmailSource(String selectToEmailSource) throws Throwable {
+
+		switch (selectToEmailSource) {
+		case "SelectmanuallyToNumberSource":
+
+			// Fetch Data from Prperties File
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(emailTemplate_Path8, toNumberSource, "toNumberSource");
+
+			String selectToNumberSource = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8,
+					"toNumberSource1");
+
+			dropDown.dropdownUtils(toNumberSource, selectToNumberSource);
+
+			break;
+
+		case "random":
+
+			// select SubProcess Dropdown
+			DropDown.selectRandomOptionFromDropdwon(toNumberSource);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void toMmail() throws Throwable {
+
+		// Fetch Data from Prperties File
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(emailTemplate_Path8, toMailDropdown, "toMail");
+
+		String toMail = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8, "toMail6");
+
+		dropDown.dropdownUtils(toMailDropdown, toMail);
+	}
+
+	public void enterCC() {
+
+		fieldVerificationUtils.verifyPlaceholder(inputCCMail, cc_BCC_PlaceholderText);
+
+		inputCCMail.clear();
+		inputCCMail.sendKeys(fakeData.generateMultipleEmailIds(3));
+
+	}
+
+	public void enterbcc() {
+
+		fieldVerificationUtils.verifyPlaceholder(inputBCCMail, cc_BCC_PlaceholderText);
+
+		inputBCCMail.clear();
+		inputBCCMail.sendKeys(fakeData.generateMultipleEmailIds(1));
+
+	}
+
+	public void remarksTextfield() {
+
+		assertTrue(inputRemarks.isDisplayed(), "inputRemarks is not Dispalyed");
+		inputRemarks.isEnabled();
+		inputRemarks.clear();
+		inputRemarks.sendKeys(FakeData.lastName1() + "_Remarks");
+
+	}
+
+	public void disposition() {
+
+		assertTrue(inputDisposition.isDisplayed(), "inputDisposition is not displayed");
+
+		inputDisposition.isEnabled();
+		inputDisposition.clear();
+
+		inputDisposition.sendKeys(FakeData.lastName1() + "_Disposition");
+
+	}
+
+	public void selectEmailForDropdown(String SelectEmailFor) throws Throwable {
+
+		switch (SelectEmailFor) {
+		
+		case "SelectmanuallyEmailFor":
+
+			// Fetch Data from Prperties File
+			fieldVerificationUtils.checkthroughAsterisk(emailForLabel, true);
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(emailTemplate_Path8, emailFordropdown, "emailFor");
+
+			String emailFor = PropertieFileUtil.getSingleTextFromPropertiesFile(emailTemplate_Path8, "emailFor2");
+
+			dropDown.dropdownUtils(emailFordropdown, emailFor);
+
+			break;
+
+		case "random":
+
+			// select SubProcess Dropdown
+			fieldVerificationUtils.checkthroughAsterisk(emailForLabel, true);
+			DropDown.selectRandomOptionFromDropdwon(emailFordropdown);
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	public void subject() {
+
+		fieldVerificationUtils.checkthroughAsterisk(subjectLabel, true);
+
+		inputSubject.isEnabled();
+		subjectLabel.clear();
+		subjectLabel.sendKeys(fakeData.lastName1() + "_Subject");
+	}
+
+	public void handleSelect2RolesDropdown(String mode, String... manualOptions) {
+
+		try {
+			// Step 1: Click to open the Select2 dropdown
+			WebElement dropdownTrigger = wait.until(
+					ExpectedConditions.elementToBeClickable(By.xpath("//span[@id='select2-mailToRoles-container']")));
+			dropdownTrigger.click();
+
+			// Step 2: Wait for dropdown options to be visible
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("select2-results")));
+
+			// Step 3: Switch case for Random or Manual selection
+			switch (mode.toLowerCase()) {
+			case "random":
+				List<WebElement> allOptions = driver.findElements(By.xpath(
+						"//ul[@class='select2-results__options']/li[not(contains(@class, 'select2-results__option--select-all'))]"));
+				int randIndex = random.nextInt(allOptions.size());
+				WebElement randomOption = allOptions.get(randIndex);
+				System.out.println("Randomly selected: " + randomOption.getText());
+				randomOption.click();
+				break;
+
+			case "manual":
+				for (String option : manualOptions) {
+					// Type in the search box
+					// WebElement searchBox =
+					// driver.findElement(By.xpath("//input[@class='select2-search__field']"));
+					lavelLabel.clear();
+					lavelLabel.sendKeys(option);
+					Thread.sleep(500); // slight wait for filter
+
+					WebElement matchedOption = wait.until(ExpectedConditions.elementToBeClickable(
+							By.xpath("//li[contains(@class,'select2-results__option') and text()='" + option + "']")));
+					matchedOption.click();
+					System.out.println("Manually selected: " + option);
+				}
+				break;
+
+			default:
+				System.out.println("Invalid mode. Use 'random' or 'manual'.");
+			}
+
+			// Optional: Validation - print selected items
+			List<WebElement> selectedItems = driver
+					.findElements(By.xpath("//li[contains(@class,'select2-selection__choice')]"));
+			for (WebElement selected : selectedItems) {
+				System.out.println("Selected role: " + selected.getText());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Dropdown interaction failed!");
+		}
 	}
 
 }

@@ -2,15 +2,19 @@ package com.advaita.DataSetUp.PageObject;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -19,6 +23,8 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.ClickUtilities;
+import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.PropertieFileUtil;
 
@@ -195,7 +201,7 @@ public class ProcessPage extends TestBase {
 	public static WebElement updateSubSubProcessSuceessMassgage;
 
 	@FindBy(xpath = "//table[@class='process_table w-100']/tbody/tr[1]/td[1]//span")
-	public static WebElement fetchCreatedRecord;
+	public static WebElement fetchFirstCreatedRecord;
 
 	@FindBy(id = "dataset_name")
 	public static WebElement dataSetNameField;
@@ -274,6 +280,9 @@ public class ProcessPage extends TestBase {
 	@FindBy(xpath = "//table//tbody//tr//td[@class='process_status']//span") // table//tbody//tr//td[4]
 	List<WebElement> statusLists;
 
+	@FindBy(xpath = "//table//tbody//tr//td[@class='process_status']//span") // table//tbody//tr//td[4]
+	public WebElement status;
+
 	@FindBy(xpath = "//a[text()='Process Setup']")
 	public static WebElement processSetupOption;
 
@@ -334,12 +343,58 @@ public class ProcessPage extends TestBase {
 	@FindBy(id = "search_s_sub_process-error")
 	public WebElement errorMessageSubSubProceess_ProcessSetup;
 
+	// New_Archive Process ,UnArchiveProcess
+	@FindBy(xpath = "(//ul[@id='pills-tab'])[2]//button")
+	public List<WebElement> subProcessesTab;
+
+	@FindBy(xpath = "(//tbody//tr//td)[5]//div//button")
+	public WebElement archiveActionButton;
+
+	@FindBy(xpath = "//tbody//tr[1]//td[5]//img[@alt='unarchive']")
+	public WebElement unArchiveActionButton;
+
+	@FindBy(xpath = "//h6[text()='Archive?']")
+	public WebElement archivePopup;
+
+	@FindBy(xpath = "(//h6[text()='Archive?']/..//button)[2]")
+	public WebElement archivePopupOptions;
+
+	@FindBy(xpath = "(//h6[text()='Archive?']/..//button)[1]")
+	public WebElement cancelPopupOption_archive;
+
+	@FindBy(xpath = "//h6[text()='Unarchive?']")
+	public WebElement unArchivePopup;
+
+	@FindBy(xpath = "(//h6[text()='Unarchive?']/..//button)[2]")
+	public WebElement unArchivePopupOptions;
+
+	@FindBy(xpath = "//h6[text()='Unarchive?']/..//button[1]")
+	public WebElement cancelPopupOption_UnArchive;
+
+	@FindBy(id = "change_msg")
+	public WebElement successfullyMesagePopup;
+
+	@FindBy(xpath = "//h6[text()='Delete ?']")
+	public WebElement deletePopup;
+
+	@FindBy(xpath = "//h6[text()='Delete ?']/..//button")
+	public List<WebElement> deletePopupOptions;
+
+	@FindBy(xpath = ".//td[1]")
+	public List<WebElement> archivePorcessList;
+
+	// Refrences Class We used
 	FakeData fake = new FakeData();
+	PropertieFileUtil propertieFileUtil = new PropertieFileUtil();
+	ClickUtilities clickUtilities = new ClickUtilities();
 
 	public ProcessPage() {
 
 		PageFactory.initElements(driver, this);
 	}
+
+	// FilePath
+	String dataSetup_FilePath = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\datSetup_process.properties";
 
 	// Create
 	public ProcessPage createProcess1(String processName, String processDesc) throws Throwable {
@@ -374,7 +429,7 @@ public class ProcessPage extends TestBase {
 //		continuElement.click();
 		PropertieFileUtil.storeSingleTextInPropertiesFile("process", processName);
 		unWait(1);
-		
+
 		return this;
 
 	}
@@ -422,12 +477,12 @@ public class ProcessPage extends TestBase {
 //		continuElement.click();
 		PropertieFileUtil.storeSingleTextInPropertiesFile("subProcess", subprocessfield);
 		unWait(1);
-		
+
 		return this;
 
 	}
 
-	public ProcessPage navToProcess(){
+	public ProcessPage navToProcess() {
 		DataSetUpButton.click();
 		processTab.click();
 		return this;
@@ -674,7 +729,7 @@ public class ProcessPage extends TestBase {
 
 	public void tablePage() throws Throwable {
 
-		String searchText = fetchCreatedRecord.getText();
+		String searchText = fetchFirstCreatedRecord.getText();
 
 		searchBar.clear();
 		searchBar.sendKeys(searchText);
@@ -707,62 +762,260 @@ public class ProcessPage extends TestBase {
 		Pagination.paginate(driver, rightArrowOfPagination, leftArrowOfPagination);
 
 	}
-	// ===========================================================================================
 
-	// verify user is able to search process
+	// ProcessName
+	public String deleteProcessName;
 
-	public void TablePage1() {
-		assertTrue(searchBar.isDisplayed(), "searchBar is not displayed");
-		searchBar.sendKeys("dfgdgdf");
+	public void searchThroughProcess(String searchProcess) throws Throwable {
+
+		switch (searchProcess) {
+
+		case "searchManually": {
+
+			PropertieFileUtil.extractAllAndStore(dataSetup_FilePath, processLists, "process");
+
+			assertTrue(searchBar.isDisplayed(), "searchBar is not displayed");
+			searchBar.isEnabled();
+			searchBar.clear();
+
+			deleteProcessName = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath, "process1");
+
+			searchBar.sendKeys(deleteProcessName);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			searchButton.click();
+
+			assertEquals(fetchFirstCreatedRecord.getText(), deleteProcessName,
+					"Not Matched With Searched Process Name");
+
+			break;
+
+		}
+
+		case "randomely": {
+
+			try {
+				// Load properties file
+				Properties props = new Properties();
+
+				FileInputStream fis = new FileInputStream(dataSetup_FilePath);
+
+				props.load(fis);
+
+				// Collect all values
+				List<String> values = new ArrayList<>();
+				for (String key : props.stringPropertyNames()) {
+					values.add(props.getProperty(key));
+				}
+
+				// Pick random value
+				String randomValue = values.get(new Random().nextInt(values.size()));
+
+				// Enter into search box
+
+				searchBar.clear();
+				searchBar.sendKeys(randomValue);
+
+				assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+				searchButton.click();
+
+				// Check for "No Entries Found" element
+				List<WebElement> noEntryElements = driver.findElements(By.id("noEntriesFound"));
+				if (!noEntryElements.isEmpty() && noEntryElements.get(0).isDisplayed()) {
+					System.out.println("No created process available in this name: " + randomValue);
+				} else {
+					// Fetch first created record
+					WebElement fetchFirstCreatedRecord = driver.findElement(By.id("fetchFirstCreatedRecord"));
+					String fetchedText = fetchFirstCreatedRecord.getText().trim();
+
+					if (fetchedText.equalsIgnoreCase(randomValue)) {
+						System.out.println("Process is available in this name: " + randomValue);
+					} else {
+						System.out.println("Mismatch: searched for " + randomValue + ", but got " + fetchedText);
+					}
+				}
+
+			} catch (IOException | NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+			break;
+		}
+
+		case "partailName":
+
+			try {
+				// Load properties file
+				Properties props = new Properties();
+				FileInputStream fis = new FileInputStream(dataSetup_FilePath);
+				props.load(fis);
+
+				// Collect all values
+				List<String> values = new ArrayList<>();
+				for (String key : props.stringPropertyNames()) {
+					values.add(props.getProperty(key));
+				}
+
+				// Pick random value
+				String fullValue = values.get(new Random().nextInt(values.size()));
+
+				// Extract partial string (first 3–6 characters randomly)
+				int endIdx = Math.min(6, fullValue.length());
+				int startIdx = new Random().nextInt(Math.max(1, endIdx - 2));
+				String partialValue = fullValue.substring(startIdx, endIdx);
+
+				// Enter partial value into search box
+				searchBar.clear();
+				searchBar.sendKeys(partialValue);
+
+				assertTrue(searchButton.isDisplayed(), "Search button is not displayed");
+				searchButton.click();
+
+				// Check for "No Entries Found" element
+				List<WebElement> noEntryElements = driver.findElements(By.id("noEntriesFound"));
+				if (!noEntryElements.isEmpty() && noEntryElements.get(0).isDisplayed()) {
+					System.out.println(" No created process available in this name (partial): " + partialValue);
+				} else {
+					WebElement fetchFirstCreatedRecord = driver.findElement(By.id("fetchFirstCreatedRecord"));
+					String fetchedText = fetchFirstCreatedRecord.getText().trim();
+
+					if (fetchedText.toLowerCase().contains(partialValue.toLowerCase())) {
+						System.out
+								.println(" PASS: Partial value '" + partialValue + "' found in result: " + fetchedText);
+					} else {
+						System.out.println(
+								" FAIL: Partial value '" + partialValue + "' NOT found in result: " + fetchedText);
+					}
+				}
+
+			} catch (IOException | NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+			break;
+
+		default:
+
+			System.out.println("no Options Present  ");
+
+			break;
+		}
+
+	}
+
+	public void searchRandomPartialData(String dataSetup_FilePath) {
+		try {
+			// Load properties file
+			Properties props = new Properties();
+			FileInputStream fis = new FileInputStream(dataSetup_FilePath);
+			props.load(fis);
+
+			// Collect all values
+			List<String> values = new ArrayList<>();
+			for (String key : props.stringPropertyNames()) {
+				values.add(props.getProperty(key));
+			}
+
+			// Pick random value
+			String fullValue = values.get(new Random().nextInt(values.size()));
+
+			// Extract partial string (first 3–6 characters randomly)
+			int endIdx = Math.min(6, fullValue.length());
+			int startIdx = new Random().nextInt(Math.max(1, endIdx - 2)); // avoid 0-length
+			String partialValue = fullValue.substring(startIdx, endIdx);
+
+			// Enter partial value into search box
+			searchBar.clear();
+			searchBar.sendKeys(partialValue);
+
+			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+			searchButton.click();
+
+			// Check for "No Entries Found" element
+			List<WebElement> noEntryElements = driver.findElements(By.id("noEntriesFound"));
+			if (!noEntryElements.isEmpty() && noEntryElements.get(0).isDisplayed()) {
+				System.out.println("No created process available in this name: " + partialValue);
+			} else {
+				WebElement fetchFirstCreatedRecord = driver.findElement(By.id("fetchFirstCreatedRecord"));
+				String fetchedText = fetchFirstCreatedRecord.getText().trim();
+
+				if (fetchedText.toLowerCase().contains(partialValue.toLowerCase())) {
+					System.out.println(
+							"Process related to partial name '" + partialValue + "' is available: " + fetchedText);
+				} else {
+					System.out.println(
+							"Partial mismatch: searched for '" + partialValue + "', but got '" + fetchedText + "'");
+				}
+			}
+
+		} catch (IOException | NoSuchElementException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void SearchCreatedProcesbySelctingStatus_Active() {
+		searchedThroughStatus();
+	}
+
+	public void searchedThroughStatus() {
+		assertTrue(StatusDropdown_table.isDisplayed(), "StatusDropdown_table is not displayed");
+		Select select = new Select(StatusDropdown_table);
+		select.selectByVisibleText("Active");
 
 		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
 		searchButton.click();
+
+		// Table valiadtion
+		WebElement table = driver.findElement(By.cssSelector("table.process_table tbody"));
+
+		// Get all rows in the table
+		List<WebElement> rows = table.findElements(By.tagName("tr"));
+
+		// Flag to check the validation status
+		boolean allStatusesActive = true;
+
+		// Iterate through each row and validate the status column
+		for (int i = 0; i < rows.size(); i++) {
+			// Locate the status cell in the fourth column of the current row
+			WebElement statusCell = rows.get(i).findElements(By.tagName("td")).get(3);
+
+			// Get the status text
+			String statusText = statusCell.getText().trim();
+
+			System.out.println();
+
+			assertNotNull(statusText);
+
+			// Check if the status is not "Active"
+			if ("Active".equals(statusText)) {
+				System.out.println("Validation failed at row " + (i + 1) + ". Status: " + statusText);
+				allStatusesActive = false;
+			}
+		}
+
+		// Print the final validation result
+		if (allStatusesActive) {
+			System.out.println("All statuses are Active.");
+		} else {
+			System.out.println("There are rows with status not set to Active.");
+		}
+
 	}
 
-	// verify the user is able to clear filter
+	public void clearFliter() {
 
-	public void clearfilter_tablePage() {
+		assertTrue(clearButton.isDisplayed(), "Clear button is not displayed");
 
-		assertTrue(searchBar.isDisplayed(), "searchBar is not displayed");
-		searchBar.sendKeys("dfgdgdf");
-
-		assertTrue(clearButton.isDisplayed(), "clearButton is not displayed");
 		clearButton.click();
 
-		if (driver.getCurrentUrl().equals("https://pkt-test.transmonqa.in/en/data_management/process/")) {
-			System.out.println(driver.getCurrentUrl()
-					+ "pass:Search Textfil is cleared and all created process is displayed in project Management page");
-		}
+		// Verify that the search bar is cleared
 
-		else {
-			System.out.println(driver.getCurrentUrl()
-					+ "Fail:Search Textfil is not cleared and all created process not in displayed in project Management page");
-		}
-
+		wait.until(ExpectedConditions.visibilityOf(searchBar));
+		String searchValue = searchBar.getAttribute("value");
+		assertEquals(searchValue, "", "Failed: After clicking clear, search text field is not empty");
 	}
 
-//Create ProcessSetUp  ==Pending
-
-	// public void ProcessSetup()
-//	{
-//	 //verify the user is able to click on process setup and save
-//		
-//		WebElement ProcessSetup=driver.findElement(By.id("createProcessSetup"));
-//		assertTrue(ProcessSetup.isDisplayed(), "ProcessSetup is not displayed"); //processSetup element
-//		ProcessSetup.click();
-//		
-//		WebElement processSetupText=driver.findElement(By.id("//h5[@id='addModalLabel']"));
-//		assertTrue(processSetupText.isDisplayed(), "processSetupText is not displayed ");
-//		processSetupText.getText();
-//		
-//		WebElement processSetup_SaveButton=driver.findElement(By.id("saveButton"));
-//		assertTrue(processSetup_SaveButton.isDisplayed(), "processSetup_SaveButton is not displayed");
-//		processSetup_SaveButton.click();
-//	}
-
-	// verify the user is able to click on created process dropdown to access the
-	// sub list
-
+	// Naviagte To SubList
 	public void clickonProcessDropDownToacessSubList_Tablepage() {
 
 		WebElement processRecordDropdown_tablePage = driver
@@ -840,53 +1093,6 @@ public class ProcessPage extends TestBase {
 			System.out
 					.println("Mismatch! Displayed: " + totalProcessesDisplayed + ", Counted: " + totalProcessesCounted);
 		}
-	}
-
-	// verify the user is search created process by selecting status dropdown
-	// active Status
-	public void SearchCreatedProcesbySelctingStatus_Active() {
-		assertTrue(StatusDropdown_table.isDisplayed(), "StatusDropdown_table is not displayed");
-		Select select = new Select(StatusDropdown_table);
-		select.selectByVisibleText("Active");
-
-		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
-		searchButton.click();
-
-		// Table valiadtion
-		WebElement table = driver.findElement(By.cssSelector("table.process_table tbody"));
-
-		// Get all rows in the table
-		List<WebElement> rows = table.findElements(By.tagName("tr"));
-
-		// Flag to check the validation status
-		boolean allStatusesActive = true;
-
-		// Iterate through each row and validate the status column
-		for (int i = 0; i < rows.size(); i++) {
-			// Locate the status cell in the fourth column of the current row
-			WebElement statusCell = rows.get(i).findElements(By.tagName("td")).get(3);
-
-			// Get the status text
-			String statusText = statusCell.getText().trim();
-
-			System.out.println();
-
-			assertNotNull(statusText);
-
-			// Check if the status is not "Active"
-			if ("Active".equals(statusText)) {
-				System.out.println("Validation failed at row " + (i + 1) + ". Status: " + statusText);
-				allStatusesActive = false;
-			}
-		}
-
-		// Print the final validation result
-		if (allStatusesActive) {
-			System.out.println("All statuses are Active.");
-		} else {
-			System.out.println("There are rows with status not set to Active.");
-		}
-
 	}
 
 	// verify the user is search created process by selecting status dropdown
@@ -981,8 +1187,20 @@ public class ProcessPage extends TestBase {
 
 	}
 
-	// ProcessSetup
+	// ============================== Process Setup===============
+
 	// Verify the user is able to do "active" single process only
+
+	public void naviagteToProcessSetupaAndVerifyPage() {
+
+		assertTrue(processSetupOption.isDisplayed(), "processSetupOption is not dispalyed");
+
+		processSetupOption.click();
+
+		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
+		assertTrue(processSetupPopup.isDisplayed(), "FAILED : processSetupPopup is Not Displayed");
+
+	}
 
 	public void allActiveProcesss() {
 		assertTrue(processSetupOption.isDisplayed(), "processSetupOption is not dispalyed");
@@ -1000,7 +1218,7 @@ public class ProcessPage extends TestBase {
 //		
 //		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
 //		continuButtonProcessSetup.click();
-//		
+
 		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcess));
 		assertTrue(cancelButtonProcess.isDisplayed(), "cancelButtonProcessSetupis not displayed");
 		cancelButtonProcess.click();
@@ -1031,13 +1249,16 @@ public class ProcessPage extends TestBase {
 
 	}
 
-	public void SingleProcessOnly() throws Throwable {
+	String selectedProcess;
 
+	public void SingleProcessOnly(String selectProcessSetUpManualley) throws Throwable {
+		
 		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
 		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
 
 		if (singleProcessToggleButton.isEnabled()) {
 			System.out.println(" singleProcessToggleButton is ENABLED");
+
 		} else if (!singleProcessToggleButton.isEnabled()) {
 			System.out.println("singleProcessToggleButton is DISABLED");
 
@@ -1045,78 +1266,65 @@ public class ProcessPage extends TestBase {
 
 		singleProcessToggleButton.click();
 
-		// SelectProcess
-		List<String> ProcessListsTexts = new ArrayList<String>();
-		Select processDropdownLists = new Select(searchProcess);
+		switch (selectProcessSetUpManualley) {
 
-		// Get all options from the dropdown
-		List<WebElement> options = processDropdownLists.getOptions();
+		case "selectManualley": {
 
-		// Start the loop from the second option (index 1) to exclude the first option
+			// extract all aoptions From Dropdown and Store In Prop file by "key name"
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchProcess, "searchProcess");
+			String selectSerchProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath,
+					"searchProcess7");
+			DropDown.selectFromDropdownByText(searchProcess, selectSerchProcess);
 
-		for (int i = 1; i < options.size(); i++) {
-			WebElement processDropdowOptions = options.get(i);
-			System.out.println("processDropdowOptionsTexts : " + processDropdowOptions.getText());
-			ProcessListsTexts.add(processDropdowOptions.getText());
-		}
+			unWait(1);
 
-		String beforeSelectedProcessOption = processDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectedProcessOption :" + beforeSelectedProcessOption);
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchSubProcess,
+					"searchSubProcess");
+			String selectSerchSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath,
+					"searchSubProcess2");
+			DropDown.selectFromDropdownByText(searchSubProcess, selectSerchSubProcess);
 
-		processDropdownLists.selectByIndex(1);
-		// processDropdownLists.selectByVisibleText(" ");
-		// processDropdownLists.selectByValue(" ");
+			unWait(1);
 
-		String afterSelectedProcessOption = processDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("afterSelectedProcessOption :" + afterSelectedProcessOption);
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchSubSubProcess,
+					"searchSubSubProcess");
+			String selectSerchSubSubProcess = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath,
+					"searchSubSubProcess2");
+			DropDown.selectFromDropdownByText(searchSubSubProcess, selectSerchSubSubProcess);
 
-		assertNotEquals(beforeSelectedProcessOption, afterSelectedProcessOption);
-
-		assertEquals(ProcessListsTexts, beforeProcessListText);
-
-		// SearchSubProcess
-		List<String> subProcessListsTexts = new ArrayList<String>();
-		Select subProcessDropdownLists = new Select(searchSubProcess);
-		for (WebElement subProcessDropdowOptions : subProcessDropdownLists.getOptions()) {
-			System.out.println("SubprocessDropdowOptionsTexts : " + subProcessDropdowOptions.getText());
-			subProcessListsTexts.add(subProcessDropdowOptions.getText());
-		}
-
-		String beforeSelectedSubProcessOption = subProcessDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectedSubProcessOption :" + beforeSelectedSubProcessOption);
-
-		Thread.sleep(1000);
-		subProcessDropdownLists.selectByIndex(1);
-		// subProcessDropdownLists.selectByVisibleText(" ");
-		// subProcessDropdownLists.selectByValue("");
-
-		String afterSelectedSubProcessOption = subProcessDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("afterSelectedSubProcessOption :" + afterSelectedSubProcessOption);
-
-		assertNotEquals(beforeSelectedSubProcessOption, afterSelectedSubProcessOption);
-
-		// SearchSubSubProcess
-		List<String> subSubProcessListsTexts = new ArrayList<String>();
-		Select subSubProcessDropdownLists = new Select(searchSubSubProcess);
-		for (WebElement subSubProcessDropdowOptions : subSubProcessDropdownLists.getOptions()) {
-			System.out.println("SubSubprocessDropdowOptionsTexts : " + subSubProcessDropdowOptions.getText());
-			subSubProcessListsTexts.add(subSubProcessDropdowOptions.getText());
+			break;
 
 		}
 
-		String beforeSelectedSubSubProcessOption = subSubProcessDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("beforeSelectedSubSubProcessOption :" + beforeSelectedSubSubProcessOption);
+		case "randomely": {
 
-		Thread.sleep(1000);
-		subSubProcessDropdownLists.selectByIndex(1);
-//		subSubProcessDropdownLists.selectByVisibleText("");
-//		subSubProcessDropdownLists.selectByValue("");
+			// extract all aoptions From Dropdown and Store In Prop file by "key name"
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchProcess, "searchProcess");
+			DropDown.selectRandomOptionFromDropdwon(searchProcess);
 
-		String afterSelectedSubSubProcessOption = subSubProcessDropdownLists.getFirstSelectedOption().getText();
-		System.out.println("afterSelectedSubSubProcessOption :" + afterSelectedSubSubProcessOption);
+			Select select = new Select(searchProcess);
+			selectedProcess = select.getFirstSelectedOption().getText();
 
-		assertNotEquals(beforeSelectedSubSubProcessOption, afterSelectedSubSubProcessOption);
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchSubProcess,
+					"searchSubProcess");
+			DropDown.selectRandomOptionFromDropdwon(searchSubProcess);
 
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(dataSetup_FilePath, searchSubSubProcess,
+					"searchSubSubProcess");
+			DropDown.selectRandomOptionFromDropdwon(searchSubSubProcess);
+
+			break;
+		}
+
+		default:
+			throw new IllegalArgumentException("Unexpected value: ");
+		}
+
+		// capture the First Selected option
+		Select select = new Select(searchProcess);
+		selectedProcess = select.getFirstSelectedOption().getText();
+
+		// save and Continue
 		assertTrue(saveButton_processSetup.isDisplayed(), "saveButton_processSetup is not dispplayed");
 		saveButton_processSetup.click();
 
@@ -1127,8 +1335,13 @@ public class ProcessPage extends TestBase {
 		assertTrue(continuButtonProcessSetup.isDisplayed(), "continuButtonProcessSetupis not dispalyed");
 		continuButtonProcessSetup.click();
 
-		singleActiveValidateStaus();
+		// search
+		searchBar.sendKeys(selectedProcess);
 
+		assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
+		searchButton.click();
+
+		singleActiveValidateStaus();
 	}
 
 	public void singleActiveValidateStaus() {
@@ -1148,8 +1361,8 @@ public class ProcessPage extends TestBase {
 		// Assert that only one "Active" status is present
 		Assert.assertEquals(activeCount, 0, "Only one 'Active' status should be displayed.");
 	}
-	
-////////////////////////////////////// Negative /////////////////////////////////////////////////////////////////////	
+
+//=============================== Neagtive =====================================================
 
 	public void checkthroughAsterisk(WebElement elementLabel, boolean isMandatoryCheck) {
 
@@ -1471,7 +1684,6 @@ public class ProcessPage extends TestBase {
 		wait.until(ExpectedConditions.elementToBeClickable(saveButton));
 		saveButton.click();
 
-
 		try {
 			assertTrue(!updateProcessSuceessMassgage.isDisplayed(),
 					"Test Failed : updateProcessSuceessMassgage is displayed");
@@ -1564,7 +1776,8 @@ public class ProcessPage extends TestBase {
 		clearButton.click();
 	}
 
-	// Negative For ProcessSetUp
+	// ======================================================================
+	// Process Setup
 
 	public void withoutSelectingProcesseAndcLickOnSave() {
 
@@ -1696,6 +1909,449 @@ public class ProcessPage extends TestBase {
 				"Expected all error messages to be displayed.");
 		cancelButtonProcessSetup.click();
 
+	}
+
+	// 28.7.25
+	// ====================== New Funcanality====================================
+	// Archive Process
+
+	List<String> SubProcessestabs = List.of("Archived Process", "Unarchived Process");
+	List<String> archivePopupButtons = List.of("Cancel", "Archive");
+	List<String> deletePopupButtons = List.of("Cancel", "Delete");
+
+	public void navigateToArciveProcess() {
+		navigateToArchiveProcess();
+	}
+
+	public void navigateToArchiveProcess() {
+
+		ClickUtilities.clickIfMatch(subProcessesTab, "Archived Process");
+
+	}
+
+	public void navigateToUnArchiveProcess() {
+
+		ClickUtilities.clickIfMatch(subProcessesTab, "Unarchived Process");
+
+	}
+
+	// Archive Action in UnArchive Tab
+	public void archiveAction() {
+
+		assertTrue(archiveActionButton.isDisplayed(), "archive Button is not Displayed");
+
+		archiveActionButton.isEnabled();
+
+		archiveActionButton.click();
+
+	}
+
+	public void verifyArchivePopupAfterClick() throws Throwable {
+
+		// ClickUtilities.clickIfMatch(archivePopupOptions, "Archive");
+		wait.until(ExpectedConditions.visibilityOf(archivePopupOptions));
+		assertTrue(archivePopupOptions.isDisplayed(), "archivePopupOptions is not Displayed");
+
+	}
+
+	// Utility
+	public void verifyTotalProcessDecrementsAfterArchive() throws InterruptedException {
+		// Step 1: Check element is visible
+		Assert.assertTrue(TotalProcess.isDisplayed(), "TotalProcess element is not displayed.");
+
+		// Step 2: Get initial total process count
+		int beforeCount = extractProcessCount(TotalProcess.getText());
+		System.out.println("Before Archive: " + beforeCount);
+
+		// Step 3: Perform the archive operation
+		archivePopupOptions.click();
+
+		// Step 4: Wait for the UI update (adjust the wait logic as per your application
+		// behavior)
+		Thread.sleep(2000); // Replace with WebDriverWait if needed
+
+		// Step 5: Get updated total process count
+		int afterCount = extractProcessCount(TotalProcess.getText());
+		System.out.println("After Archive: " + afterCount);
+
+		// Step 6: Verify the count has decreased by 1
+		Assert.assertEquals(afterCount, beforeCount - 1, "Total process count should decrement by 1 after archive.");
+	}
+
+	// Utility to extract integer from text like "Total Process : 48"
+	private int extractProcessCount(String text) {
+		String[] parts = text.split(":");
+		return Integer.parseInt(parts[1].trim());
+	}
+
+	public void clickOnArchiveOptionAndVerifyInArchiveTab() throws Throwable {
+
+		wait.until(ExpectedConditions.visibilityOf(archivePopupOptions));
+		archivePopupOptions.click();
+
+		wait.until(ExpectedConditions.visibilityOf(clearButton));
+		jsClick(clearButton);
+
+		// verifyTotalProcessDecrementsAfterArchive(); (need to implement )
+
+		// Check Process Count should 0 After Archive
+		searchBar.sendKeys(deleteProcessName);
+		searchButton.click();
+
+		try {
+			if (fetchFirstCreatedRecord.isDisplayed()) {
+				System.out.println("FAIL: The Process is still active and displayed.");
+			} else {
+				System.out.println("PASS: The Process is archived and displayed in the Archive tab.");
+			}
+		} catch (NoSuchElementException e) {
+			// Element not found means it's archived
+			System.out.println(
+					"PASS: The Process is archived and not found in the current tab (NoSuchElementException).");
+		}
+
+		/*
+		 * Need to Implement
+		 */
+
+//		String totalProcessText = TotalProcess.getText();  
+//
+//		// Extract the number from the text
+//		int totalProcessNumber = Integer.parseInt(totalProcessText.split(":")[1].trim());
+//
+//		// Assert the condition: Pass if 0, Fail if 1
+//		if (totalProcessNumber == 0) {
+//			Assert.assertTrue(true, "Total Process is 0, Test Passed");
+//		} else if (totalProcessNumber == 1) {
+//			Assert.fail("Total Process is 1, Test Failed");
+//		} else {
+//			Assert.fail("Unexpected value for Total Process: " + totalProcessNumber);
+//		}
+
+		/*
+		 * Need to Implement
+		 */
+
+		navigateToArchiveProcess();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+		// Get all process rows dynamically
+		List<WebElement> processRows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+		boolean isProcessFound = false;
+
+		for (WebElement row : processRows) {
+			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+			String rowStatus = row.findElement(By.xpath(".//td[4]")).getText().trim(); // status column
+
+			if (rowProcessName.toLowerCase().contains(deleteProcessName.toLowerCase())) {
+				isProcessFound = true;
+
+				if (rowStatus.equalsIgnoreCase("Inactive")) {
+					System.out
+							.println("✅ PASS: Process '" + deleteProcessName + "' is archived with status 'Inactive'");
+				} else {
+					System.out.println("❌ FAIL: Process '" + deleteProcessName + "' found, but status is '" + rowStatus
+							+ "' (Expected: Inactive)");
+				}
+
+				break; // No need to continue once found
+			}
+		}
+
+		if (!isProcessFound) {
+			System.out.println("❌ FAIL: Process '" + deleteProcessName + "' not found in archive list.");
+		}
+
+	}
+
+	// UnArchive
+
+	public void unArchiveAction() {
+		try {
+			if (unArchiveActionButton.isDisplayed()) {
+				if (unArchiveActionButton.isEnabled()) {
+					unArchiveActionButton.click();
+					System.out.println("✅ unArchive button clicked successfully.");
+				} else {
+					System.out.println("⚠️ unArchive button is disabled.");
+				}
+			} else {
+				System.out.println("⚠️ unArchive button is not displayed.");
+			}
+		} catch (NoSuchElementException | StaleElementReferenceException e) {
+			System.out.println("Skipped unArchive action: Button not available or DOM changed. " + e.getMessage());
+		} catch (Exception e) {
+			System.out.println(" Unexpected error during unArchive action: " + e.getMessage());
+		}
+	}
+
+	public void verifyUnArchivePopupAfterClickAndContinue() throws Throwable {
+
+		wait.until(ExpectedConditions.visibilityOf(unArchivePopup));
+		assertTrue(unArchivePopupOptions.isDisplayed(), "archivePopupOptions is not Displayed");
+		unArchivePopupOptions.click();
+		wait.until(ExpectedConditions.visibilityOf(continueButton));
+		continueButton.click();
+
+	}
+
+	public void clickOnUnArchiveOptionAndVerifyInUnArchiveTab() throws Throwable {
+
+//		wait.until(ExpectedConditions.visibilityOf(clearButton));
+//		jsClick(clearButton);
+//
+//		// Step 1: Search for the archived process in active tab
+//		searchBar.sendKeys(process);
+//		searchButton.click();
+
+		// Check Archived Process should nOt be Present in Archive Tab
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+		// Step 2: Check that process is not present in active process list
+		List<WebElement> activeRows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+		boolean isPresentInActiveList = false;
+
+		for (WebElement row : activeRows) {
+			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+			if (rowProcessName.equalsIgnoreCase(deleteProcessName)) {
+				isPresentInActiveList = true;
+				break;
+			}
+		}
+
+		if (!isPresentInActiveList) {
+			System.out.println("✅ PASS: Archived process '" + deleteProcessName + "' not present in active list.");
+		} else {
+			System.out.println("❌ FAIL: Archived process '" + deleteProcessName + "' is still visible in active list.");
+		}
+
+		// Step 3: Navigate to UnArchive tab
+		navigateToUnArchiveProcess();
+
+//		// Search for the archived process in active tab
+		searchBar.sendKeys(deleteProcessName);
+		searchButton.click();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+		// Step 4: Find the process in unarchive list with status = Active
+		List<WebElement> unarchivedRows = driver.findElements(By.xpath("//table/tbody/tr"));
+		boolean isProcessFoundInArchive = false;
+
+		for (WebElement row : unarchivedRows) {
+			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+			String rowStatus = row.findElement(By.xpath(".//td[4]")).getText().trim(); // Status column
+
+			if (rowProcessName.equalsIgnoreCase(deleteProcessName)) {
+				isProcessFoundInArchive = true;
+
+				if (rowStatus.equalsIgnoreCase("Active")) {
+					System.out.println(
+							"✅ PASS: Process '" + deleteProcessName + "' found in Unarchive tab with status 'Active'");
+				} else {
+					System.out.println("❌ FAIL: Process '" + deleteProcessName
+							+ "' found in Unarchive tab, but status is '" + rowStatus + "' (Expected: Active)");
+				}
+
+				break;
+			}
+		}
+
+		if (!isProcessFoundInArchive) {
+			System.out.println("❌ FAIL: Process '" + deleteProcessName + "' not found in archive tab.");
+		}
+	}
+
+	// Delete
+	public void deleteProcessByNameFromArchive(String processName) {
+		try {
+			List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+			boolean processFound = false;
+
+			for (WebElement row : rows) {
+				String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+
+				if (rowProcessName.equalsIgnoreCase(processName)) {
+					processFound = true;
+
+					try {
+						WebElement deleteIcon = row.findElement(By.xpath("//table//tbody//td[5]//img[2]"));
+						if (deleteIcon.isDisplayed() && deleteIcon.isEnabled()) {
+							deleteIcon.click();
+							assertTrue(deletePopup.isDisplayed(), "❌ Delete popup not displayed.");
+							ClickUtilities.clickIfMatch(deletePopupOptions, "Delete");
+
+							System.out.println("✅ Process '" + processName + "' found and deleted.");
+						} else {
+							System.out.println("⚠️ Delete icon not clickable for process: '" + processName + "'");
+						}
+					} catch (NoSuchElementException e) {
+						System.out.println("⚠️ Delete icon not found for process: '" + processName + "'");
+					}
+					break;
+				}
+			}
+
+			if (!processFound) {
+				System.out.println("❌ Process '" + processName + "' not found in the archive table.");
+			}
+		} catch (Exception e) {
+			System.out.println("⚠️ Exception in deleteProcessByNameFromArchive: " + e.getMessage());
+		}
+	}
+
+	public void deleteRandomProcessFromArchive() {
+
+		try {
+			// Fetch all visible rows in the archive table
+			List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+			if (rows.isEmpty()) {
+				System.out.println("⚠️ No processes found in the archive list.");
+				return;
+			}
+
+			// Pick one random row
+			Random random = new Random();
+			int randomIndex = random.nextInt(rows.size());
+			WebElement selectedRow = rows.get(randomIndex);
+
+			// Get the process name from the selected row (1st column)
+			String selectedProcessName = selectedRow.findElement(By.xpath(".//td[1]")).getText().trim();
+
+			// Locate the delete icon using your preferred locator
+			WebElement deleteIcon = selectedRow.findElement(By.xpath("//table//tbody//td[5]//img[2]"));
+
+			if (deleteIcon.isDisplayed() && deleteIcon.isEnabled()) {
+				deleteIcon.click();
+
+				// Wait and click on the "Delete" option from the popup
+				assertTrue(deletePopup.isDisplayed(), "❌ Delete popup not displayed.");
+				ClickUtilities.clickIfMatch(deletePopupOptions, "Delete");
+
+				System.out.println("✅ Randomly deleted process: '" + selectedProcessName + "'");
+			} else {
+				System.out.println("⚠️ Delete icon not clickable for process: '" + selectedProcessName + "'");
+			}
+
+		} catch (Exception e) {
+			System.out.println("❌ Exception occurred in deleteRandomProcessFromArchive: " + e.getMessage());
+		}
+	}
+
+	public void deleteProcessesFromArchive(int count) {
+		int deletedCount = 0;
+
+		try {
+			while (deletedCount < count) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("No archive process present in the table.");
+					break;
+				}
+
+				WebElement row = rows.get(0); // Always take the first row
+				String processName = "";
+
+				try {
+					processName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+
+					WebElement deleteIcon = row.findElement(By.xpath("//table//tbody//td[5]//img[2]"));
+
+					if (deleteIcon.isDisplayed() && deleteIcon.isEnabled()) {
+						deleteIcon.click();
+
+						try {
+							wait.until(ExpectedConditions.visibilityOf(deletePopup));
+
+							if (deletePopup.isDisplayed()) {
+								ClickUtilities.clickIfMatch(deletePopupOptions, "Delete");
+								System.out.println("Deleted Process: " + processName);
+								deletedCount++;
+							} else {
+								System.out.println("Delete popup not displayed for: " + processName);
+							}
+
+						} catch (NoSuchElementException e) {
+							System.out.println("Delete popup not found for: " + processName);
+						}
+
+					} else {
+						System.out.println("Delete button not visible or enabled for: " + processName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("Delete icon or process name not found. Skipping row.");
+				}
+
+				Thread.sleep(1000); // optional wait for UI refresh
+			}
+
+			System.out.println("Total Processes Deleted: " + deletedCount);
+
+		} catch (Exception e) {
+			System.out.println("Exception occurred during deletion: " + e.getMessage());
+		}
+	}
+
+	public void deleteAllArchivedProcesses() {
+		int deletedCount = 0;
+
+		try {
+			while (true) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("✅ No archive process present in the table. Deletion complete.");
+					break;
+				}
+
+				WebElement row = rows.get(0); // Always pick the first row
+				String processName = "";
+
+				try {
+					processName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+
+					WebElement deleteIcon = row.findElement(By.xpath("//table//tbody//td[5]//img[2]"));
+
+					if (deleteIcon.isDisplayed() && deleteIcon.isEnabled()) {
+						deleteIcon.click();
+
+						try {
+							wait.until(ExpectedConditions.visibilityOf(deletePopup));
+
+							if (deletePopup.isDisplayed()) {
+								ClickUtilities.clickIfMatch(deletePopupOptions, "Delete");
+								System.out.println("Deleted Process: " + processName);
+								deletedCount++;
+							} else {
+								System.out.println(" Delete popup not displayed for: " + processName);
+							}
+
+						} catch (NoSuchElementException e) {
+							System.out.println("⚠️ Delete popup not found for: " + processName);
+						}
+
+					} else {
+						System.out.println("⚠️ Delete button not visible or enabled for: " + processName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("⚠️ Process name or delete icon not found. Skipping row.");
+				}
+
+				Thread.sleep(1000); // Allow UI refresh after deletion
+			}
+
+			System.out.println("✅ Total Processes Deleted: " + deletedCount);
+
+		} catch (Exception e) {
+			System.out.println("⚠️ Exception occurred during deletion: " + e.getMessage());
+		}
 	}
 
 }

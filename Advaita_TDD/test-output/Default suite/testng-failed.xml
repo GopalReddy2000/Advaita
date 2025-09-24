@@ -3,12 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.TestApiKeySetup.TestApiKeySetup">
+      <class name="com.advaita.TestTable.TestProcessTable">
         <methods>
-          <include name="createApiKeyDynamically"/>
           <include name="setUp"/>
+          <include name="verifyTheUserIsAbleTotoDeleteArchiveProcess"/>
+          <include name="NaviageToProcessManagementPage"/>
         </methods>
-      </class> <!-- com.TestApiKeySetup.TestApiKeySetup -->
+      </class> <!-- com.advaita.TestTable.TestProcessTable -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

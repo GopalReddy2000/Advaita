@@ -13,10 +13,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.asserts.SoftAssert;
 
 import com.advaita.BaseClass.TestBase;
 
 public class FieldVerificationUtils extends TestBase {
+
+	SoftAssert softAssert = new SoftAssert();
 
 	public static void verifyTextField(WebElement field, String labelText, String fieldValue, boolean isRequired,
 			boolean isEnabled, int timeoutInSeconds) {
@@ -85,6 +88,17 @@ public class FieldVerificationUtils extends TestBase {
 		// Verify entered text
 		String enteredText = field.getAttribute("value");
 		assertEquals(enteredText, fieldValue, "field is not correctly entered in the field.");
+	}
+
+	// verify Place Holder
+	public void verifyPlaceholder(WebElement element, String expectedValue) {
+
+		String actualValue = element.getAttribute("placeholder");
+		System.out.println("📌 Placeholder found: " + actualValue);
+
+		softAssert.assertEquals(actualValue, expectedValue, "❌ Placeholder does not match expected value!");
+
+		softAssert.assertAll(); // Report all soft assertion failures
 	}
 
 //	$$$$$$$$$$$$$$$$$$$$$$$$ Negative Test Scripts $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

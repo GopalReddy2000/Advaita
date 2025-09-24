@@ -3,9 +3,11 @@ package com.advaita.Utilities;
 import static org.testng.Assert.assertTrue;
 
 import java.time.Duration;
+import java.util.List;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -241,11 +243,88 @@ public class ClickUtilities extends TestBase {
 		js.executeScript("arguments[0].scrollIntoView(true);", element);
 
 	}
+
 	public static void scrollToViewAndClick(WebElement element) {
 //		
 		scrollToViewElement(element);
 		click(driver, element);
-		
+
 	}
+
+//================================ New Click Utilities=======================================
+
+	// Click on Give text /PropertifilrText
+	// Handles List<WebElement>, single WebElement, List<String>, or single String
+	public static void clickIfMatch(Object source, String matchText) {
+	    if (matchText == null || matchText.trim().isEmpty() || source == null) {
+	        System.out.println("[clickIfMatch] Invalid input: empty value or source");
+	        return;
+	    }
+
+	    String target = matchText.trim().toLowerCase();
+	    boolean clickedOrMatched = false;
+
+	    if (source instanceof List<?>) {
+	        List<?> list = (List<?>) source;
+
+	        for (Object item : list) {
+	            if (item instanceof WebElement) {
+	                WebElement el = (WebElement) item;
+	                for (int attempt = 0; attempt < 2; attempt++) {
+	                    try {
+	                        String text = el.getText().trim().toLowerCase();
+	                        if (text.equals(target)) {
+	                            el.click();
+	                            System.out.println("[clickIfMatch] Clicked WebElement with text: " + el.getText().trim());
+	                            clickedOrMatched = true;
+	                            break;
+	                        }
+	                        break;
+	                    } catch (StaleElementReferenceException e) {
+	                        System.out.println("[clickIfMatch] Caught stale element, retrying... (" + (attempt + 1) + ")");
+	                        // Possibly re-fetch the list or element here if needed
+	                    }
+	                }
+	                if (clickedOrMatched) break;
+
+	            } else if (item instanceof String) {
+	                String text = ((String) item).trim().toLowerCase();
+	                if (text.equals(target)) {
+	                    System.out.println("[clickIfMatch] Matched String: " + text);
+	                    clickedOrMatched = true;
+	                    break;
+	                }
+	            }
+	        }
+
+	    } else if (source instanceof WebElement) {
+	        WebElement el = (WebElement) source;
+	        for (int attempt = 0; attempt < 2; attempt++) {
+	            try {
+	                String text = el.getText().trim().toLowerCase();
+	                if (text.equals(target)) {
+	                    el.click();
+	                    System.out.println("[clickIfMatch] Clicked WebElement with text: " + el.getText().trim());
+	                    clickedOrMatched = true;
+	                }
+	                break;
+	            } catch (StaleElementReferenceException e) {
+	                System.out.println("[clickIfMatch] Caught stale element, retrying WebElement... (" + (attempt + 1) + ")");
+	                // Consider re-finding the element here if needed
+	            }
+	        }
+
+	    } else if (source instanceof String) {
+	        String text = ((String) source).trim().toLowerCase();
+	        if (text.equals(target)) {
+	            System.out.println("[clickIfMatch] Matched String: " + text);
+	            clickedOrMatched = true;
+	        }
+	    }
+
+	    if (!clickedOrMatched) {
+	        System.out.println("[clickIfMatch] No match found for: " + matchText);
+	    }
+	}	
 
 }

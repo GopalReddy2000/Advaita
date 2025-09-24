@@ -20,7 +20,6 @@ public class PropertieFileUtil {
 	private static final String PROPERTIES_FILE_PATH = "src/main/resources/ProcessText.properties";
 	private static final String PROPERTIES_FILE_PATH2 = "src/main/resources/SingleTextExtract.properties";
 
-
 	private static final String PROPERTIES_FILE_ApiKey_PATH3 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\apiKey.properties";
 
 	private static final String PROPERTIES_FILE_SiteSettings_PATH4 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\SiteSettings.properties";
@@ -30,7 +29,7 @@ public class PropertieFileUtil {
 	private static final String menuSetup_Path6 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\menuSetup.properties";
 
 	private static final String userStatus_Path7 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\userStatus.Properties";
-	
+
 	private static final String siteSetting_Path9 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\SiteSettings.properties";
 
 	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
@@ -165,14 +164,128 @@ public class PropertieFileUtil {
 		}
 	}
 
+	// extract all and Cick it
+	public static void extractAllAndStoreAndClick(String filePath, List<WebElement> elements, String keyPrefix,
+			String extractKey) throws IOException {
+		Properties properties = new Properties();
+
+		// Load existing properties if the file exists
+		try (InputStream input = new FileInputStream(filePath)) {
+			properties.load(input);
+		} catch (FileNotFoundException e) {
+			System.out.println("Properties file not found. Creating a new one.");
+		}
+
+		// Step 1: Store element text into properties with dynamic keys
+		for (int i = 0; i < elements.size(); i++) {
+			String key = keyPrefix + (i + 1);
+			String value = elements.get(i).getText().trim();
+			properties.setProperty(key, value);
+			System.out.println("Stored key: " + key + " with value: " + value);
+		}
+
+		// Step 2: Save to file
+		try (FileOutputStream output = new FileOutputStream(filePath)) {
+			properties.store(output, "Stored all extracted data with prefix: " + keyPrefix);
+			System.out.println("All data stored successfully in file: " + filePath);
+		}
+
+		// Step 3: Reload property to fetch the value you want to click
+		try (InputStream input = new FileInputStream(filePath)) {
+			properties.load(input);
+		}
+
+		String targetText = properties.getProperty(extractKey);
+		if (targetText == null) {
+			System.out.println("Key '" + extractKey + "' not found in properties file.");
+			return;
+		}
+
+		System.out.println("Clicking element with text: " + targetText);
+
+		// Step 4: Find matching element and click it
+		boolean clicked = false;
+		for (WebElement element : elements) {
+			if (element.getText().trim().equalsIgnoreCase(targetText.trim())) {
+				element.click();
+				System.out.println("Clicked element with text: " + targetText);
+				clicked = true;
+				break;
+			}
+		}
+
+		if (!clicked) {
+			System.out.println("No element found matching text: " + targetText);
+		}
+	}
+
+	// Click on Give text /PropertifilrText
+	// Handles List<WebElement>, single WebElement, List<String>, or single String
+	public static void clickIfMatch(Object source, String matchText) {
+		if (matchText == null || matchText.trim().isEmpty() || source == null) {
+			System.out.println("[clickIfMatch] Invalid input: empty value or source");
+			return;
+		}
+
+		String target = matchText.trim().toLowerCase();
+		boolean clickedOrMatched = false;
+
+		if (source instanceof List<?>) {
+			List<?> list = (List<?>) source;
+
+			for (Object item : list) {
+				if (item instanceof WebElement) {
+					WebElement el = (WebElement) item;
+					String text = el.getText().trim().toLowerCase();
+					if (text.equals(target)) {
+						el.click();
+						System.out.println("[clickIfMatch] Clicked WebElement with text: " + el.getText().trim());
+						clickedOrMatched = true;
+						break;
+					}
+				} else if (item instanceof String) {
+					String text = ((String) item).trim().toLowerCase();
+					if (text.equals(target)) {
+						System.out.println("[clickIfMatch] Matched String: " + text);
+						clickedOrMatched = true;
+						break;
+					}
+				}
+			}
+		} else if (source instanceof WebElement) {
+			WebElement el = (WebElement) source;
+			String text = el.getText().trim().toLowerCase();
+			if (text.equals(target)) {
+				el.click();
+				System.out.println("[clickIfMatch] Clicked WebElement with text: " + el.getText().trim());
+				clickedOrMatched = true;
+			}
+		} else if (source instanceof String) {
+			String text = ((String) source).trim().toLowerCase();
+			if (text.equals(target)) {
+				System.out.println("[clickIfMatch] Matched String: " + text);
+				clickedOrMatched = true;
+			}
+		}
+
+		if (!clickedOrMatched) {
+			System.out.println("[clickIfMatch] No match found for: " + matchText);
+		}
+	}
+
 	// Extract all Store all Options From DropdownOption
 
 	public static void extractDropdownOptions(String FilePath, WebElement dropdownElement, String keyPrefix)
 			throws IOException {
-		extractAllDropdownOptions(FilePath, dropdownElement, keyPrefix);
+		extractAllDropdownOptionsAndStore(FilePath, dropdownElement, keyPrefix);
 	}
 
 	public static void extractAllDropdownOptions(String FilePath, WebElement dropdownElement, String keyPrefix)
+			throws IOException {
+		extractAllDropdownOptionsAndStore(FilePath, dropdownElement, keyPrefix);
+	}
+
+	public static void extractAllDropdownOptionsAndStore(String FilePath, WebElement dropdownElement, String keyPrefix)
 			throws IOException {
 		Properties properties = new Properties();
 
@@ -328,21 +441,20 @@ public class PropertieFileUtil {
 		}
 		return questionsMap;
 	}
-	
-	
-	
-	//New 
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	// New
 	public static void storeSingleTextInPropertiesFile(String key, String value) throws IOException {
 
 		// Load existing properties if they exist
 
 		try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
 
-		properties.load(input);
+			properties.load(input);
 
 		} catch (FileNotFoundException e) {
 
-		System.out.println("Properties file not found. Creating a new one.");
+			System.out.println("Properties file not found. Creating a new one.");
 
 		}
 
@@ -354,19 +466,20 @@ public class PropertieFileUtil {
 
 		try (FileOutputStream output = new FileOutputStream(PROPERTIES_FILE_PATH2)) {
 
-		properties.store(output, "Updated Properties");
+			properties.store(output, "Updated Properties");
 
-		// Print the key and its stored value
+			// Print the key and its stored value
 
-		System.out.println("Key: '" + key + "' Value: '" + value + "' stored in properties file successfully.");
-
-		}
+			System.out.println("Key: '" + key + "' Value: '" + value + "' stored in properties file successfully.");
 
 		}
 
-		// Method to refresh and retrieve text from the properties file (case insensitive)
+	}
 
-		public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
+	// Method to refresh and retrieve text from the properties file (case
+	// insensitive)
+
+	public static String getSingleTextFromPropertiesFile(String tagKey) throws IOException {
 
 		Properties properties = new Properties();
 
@@ -376,29 +489,29 @@ public class PropertieFileUtil {
 
 		try (InputStream input = new FileInputStream(PROPERTIES_FILE_PATH2)) {
 
-		// Load the properties from file
+			// Load the properties from file
 
-		properties.load(input);
+			properties.load(input);
 
-		// Store properties in a Map with lowercase keys for case-insensitive lookup
+			// Store properties in a Map with lowercase keys for case-insensitive lookup
 
-		for (String key : properties.stringPropertyNames()) {
+			for (String key : properties.stringPropertyNames()) {
 
-		lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
+				lowerCaseProperties.put(key.toLowerCase(), properties.getProperty(key));
 
-		}
+			}
 
 		} catch (FileNotFoundException e) {
 
-		System.out.println("Properties file not found. Please ensure the file path is correct.");
+			System.out.println("Properties file not found. Please ensure the file path is correct.");
 
-		return null; // Return null if the file doesn't exist
+			return null; // Return null if the file doesn't exist
 
 		} catch (IOException e) {
 
-		System.out.println("An error occurred while reading the properties file.");
+			System.out.println("An error occurred while reading the properties file.");
 
-		throw e; // Re-throw the exception if reading fails
+			throw e; // Re-throw the exception if reading fails
 
 		}
 
@@ -408,19 +521,18 @@ public class PropertieFileUtil {
 
 		if (tagText != null) {
 
-		System.out.println("Retrieved value: " + tagText);
+			System.out.println("Retrieved value: " + tagText);
 
-		return tagText; // Return the value if found
+			return tagText; // Return the value if found
 
 		} else {
 
-		System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
+			System.out.println("SingleText with key '" + tagKey + "' not found in properties file.");
 
-		return null; // Return null if the key is not found
-
-		}
+			return null; // Return null if the key is not found
 
 		}
-	
+
+	}
 
 }

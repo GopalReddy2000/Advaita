@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -63,22 +64,22 @@ public class FakeData {
 
 	// Helper method to generate a value under maxLength (retrying if too long)
 	private String generateValidValue(Supplier<String> generator, int maxLength) {
-	    String value;
-	    int maxTries = 10; // avoid infinite loop
-	    int tries = 0;
-	    do {
-	        value = generator.get();
-	        tries++;
-	    } while (value.length() > maxLength && tries < maxTries);
+		String value;
+		int maxTries = 10; // avoid infinite loop
+		int tries = 0;
+		do {
+			value = generator.get();
+			tries++;
+		} while (value.length() > maxLength && tries < maxTries);
 
-	    // Optional safety: If still too long after maxTries, truncate
-	    if (value.length() > maxLength) {
-	        value = value.substring(0, maxLength);
-	    }
+		// Optional safety: If still too long after maxTries, truncate
+		if (value.length() > maxLength) {
+			value = value.substring(0, maxLength);
+		}
 
-	    return value;
+		return value;
 	}
-	
+
 	// Generate or reuse a Process
 	public String getProcess() {
 		if (!processes.isEmpty() && random.nextBoolean()) {
@@ -165,7 +166,8 @@ public class FakeData {
 		if (!nonMeasurableList.isEmpty() && random.nextBoolean()) {
 			return nonMeasurableList.get(random.nextInt(nonMeasurableList.size()));
 		}
-		String nonMeasurable = generateValidValue(() -> faker.science().element() + " Non-Measurable Set", 20);;
+		String nonMeasurable = generateValidValue(() -> faker.science().element() + " Non-Measurable Set", 20);
+		;
 		String nonMeasurableSet = capitalizeWords(nonMeasurable);
 		nonMeasurableList.add(nonMeasurableSet);
 		return nonMeasurableSet;
@@ -181,7 +183,8 @@ public class FakeData {
 		if (!fieldSetList.isEmpty() && random.nextBoolean()) {
 			return fieldSetList.get(random.nextInt(fieldSetList.size()));
 		}
-		String fieldSet1 = generateValidValue(() -> faker.book().genre() + " Field Set", 20);;
+		String fieldSet1 = generateValidValue(() -> faker.book().genre() + " Field Set", 20);
+		;
 //		String fieldSet1 = faker.book().genre() + " Field Set";
 		String fieldSet = capitalizeWords(fieldSet1);
 		fieldSetList.add(fieldSet);
@@ -198,7 +201,8 @@ public class FakeData {
 		if (!masterFormList.isEmpty() && random.nextBoolean()) {
 			return masterFormList.get(random.nextInt(masterFormList.size()));
 		}
-		String form = generateValidValue(() -> faker.app().name() + " Master Form", 20);;
+		String form = generateValidValue(() -> faker.app().name() + " Master Form", 20);
+		;
 		String masterForm = capitalizeWords(form);
 		masterFormList.add(masterForm);
 		return masterForm;
@@ -214,7 +218,8 @@ public class FakeData {
 		if (!masterMenuList.isEmpty() && random.nextBoolean()) {
 			return masterMenuList.get(random.nextInt(masterMenuList.size()));
 		}
-		String menu = generateValidValue(() -> faker.food().dish() + " Menu", 20);;
+		String menu = generateValidValue(() -> faker.food().dish() + " Menu", 20);
+		;
 		String masterMenu = capitalizeWords(menu);
 		masterMenuList.add(masterMenu);
 		return masterMenu;
@@ -230,7 +235,8 @@ public class FakeData {
 		if (!samplingNameList.isEmpty() && random.nextBoolean()) {
 			return samplingNameList.get(random.nextInt(samplingNameList.size()));
 		}
-		String sampling = generateValidValue(() -> faker.science().unit() + " Sampling", 20);;
+		String sampling = generateValidValue(() -> faker.science().unit() + " Sampling", 20);
+		;
 		String samplingName = capitalizeWords(sampling);
 		samplingNameList.add(samplingName);
 		return samplingName;
@@ -246,7 +252,8 @@ public class FakeData {
 		if (!metaDataList.isEmpty() && random.nextBoolean()) {
 			return metaDataList.get(random.nextInt(metaDataList.size()));
 		}
-		String meta = generateValidValue(() -> faker.lorem().word() + " Meta Data", 20);;
+		String meta = generateValidValue(() -> faker.lorem().word() + " Meta Data", 20);
+		;
 		String metaData = capitalizeWords(meta);
 		metaDataList.add(metaData);
 		return metaData;
@@ -262,7 +269,8 @@ public class FakeData {
 		if (!manualUploadNameList.isEmpty() && random.nextBoolean()) {
 			return manualUploadNameList.get(random.nextInt(manualUploadNameList.size()));
 		}
-		String manualUpload = generateValidValue(() -> faker.file().fileName() + " Upload", 20);;
+		String manualUpload = generateValidValue(() -> faker.file().fileName() + " Upload", 20);
+		;
 		String manualUploadName = capitalizeWords(manualUpload);
 		manualUploadNameList.add(manualUploadName);
 		return manualUploadName;
@@ -692,4 +700,86 @@ public class FakeData {
 //			System.out.println(generateCompanyLikeSiteName());
 //		}
 //	}
+
+	// Random Template name
+	// 1. Generate a random Template Name (only name, no prefix or number)
+	public static String generateTemplateName() {
+		String templateName = faker.app().name().replaceAll("\\s+", ""); // Removes spaces
+		System.out.println("Generated Template Name: " + templateName);
+		return templateName;
+	}
+
+	// 2. Generate a random Email ID (e.g., john.doe492@domain.com)
+	private static final Faker faker1 = new Faker(new Locale("en"));
+
+	public static String generateEmailId() {
+		// Generate raw names
+		String firstName = faker1.name().firstName().toLowerCase().replaceAll("[^a-z]", "");
+		String lastName = faker1.name().lastName().toLowerCase().replaceAll("[^a-z]", "");
+		int randomNum = faker1.number().numberBetween(100, 999);
+		String domain = "gmail.com"; // Force Gmail-style domain
+
+		// Handle empty name cases after cleaning
+		if (firstName.isEmpty())
+			firstName = "user";
+		if (lastName.isEmpty())
+			lastName = "mail";
+
+		// Combine username
+		String username = firstName + "." + lastName + randomNum;
+
+		// Ensure username starts with a letter
+		if (!Character.isLetter(username.charAt(0))) {
+			username = "a" + username;
+		}
+
+		// Enforce Gmail’s 6–30 character rule
+		if (username.length() > 30) {
+			username = username.substring(0, 30);
+		} else if (username.length() < 6) {
+			username += faker1.number().digits(6 - username.length());
+		}
+
+		// Final email
+		String email = username + "@" + domain;
+		System.out.println("Generated Email ID: " + email);
+		return email;
+	}
+
+	public static String generateMultipleEmailIds(int count) {
+		List<String> emails = new ArrayList<>();
+
+		for (int i = 0; i < count; i++) {
+			String firstName = faker.name().firstName().toLowerCase().replaceAll("[^a-z]", "");
+			String lastName = faker.name().lastName().toLowerCase().replaceAll("[^a-z]", "");
+			int randomNum = 100 + random.nextInt(900); // 100–999
+
+			if (firstName.isEmpty())
+				firstName = "user";
+			if (lastName.isEmpty())
+				lastName = "mail";
+
+			String username = firstName + "." + lastName + randomNum;
+
+			// Trim to max 30 chars, min 6
+			if (username.length() > 30)
+				username = username.substring(0, 30);
+			if (username.length() < 6)
+				username += random.nextInt(999);
+
+			// Ensure it starts with a letter
+			if (!Character.isLetter(username.charAt(0))) {
+				username = "a" + username;
+			}
+
+			String email = username + "@gmail.com";
+			emails.add(email);
+		}
+
+		// Join with "," and no spaces
+		String result = String.join(",", emails);
+		System.out.println("Generated Emails: " + result);
+		return result;
+	}
+
 }

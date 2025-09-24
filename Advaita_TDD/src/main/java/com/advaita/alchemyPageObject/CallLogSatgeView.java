@@ -351,7 +351,7 @@ public class CallLogSatgeView extends TestBase {
 
 	public void verifyTheUserIsAbleToselectOptionsFromStageDropdownAndVerify() throws Throwable {
 
-		PropertieFileUtil.extractAllDropdownOptions(callLogStageView_Path5,SearchStages, "SearchStage"); // Store all Option From Propfile
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(callLogStageView_Path5,SearchStages, "SearchStage"); // Store all Option From Propfile
 
 		retriveStageOptionFromPropFile = PropertieFileUtil.getSingleTextFromPropertiesFile(callLogStageView_Path5,"SearchStage2");
 		System.err.println("retriveStageOptionFromPropFile" + retriveStageOptionFromPropFile);

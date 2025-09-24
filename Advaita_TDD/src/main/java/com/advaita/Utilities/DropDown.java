@@ -7,6 +7,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -482,7 +483,7 @@ public class DropDown extends TestBase {
 	}
 
 	// Select Dropdown Based On Value
-	public String selectFromDropdownByText(WebElement dropdownElement, String visibleText) {
+	public static String selectFromDropdownByText(WebElement dropdownElement, String visibleText) {
 
 		Select select = new Select(dropdownElement);
 		List<WebElement> options = select.getOptions();
@@ -511,58 +512,121 @@ public class DropDown extends TestBase {
 		return selectRandomOptionFromDropdwon(dropdownElement);
 	}
 
-	// Random Select From Dropdwon
+//	// Random Select From Dropdwon
+//	public static String selectRandomOptionFromDropdwon(WebElement dropdownElement) {
+//	    // Validate that the element is a dropdown
+//	    if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
+//	        Assert.fail("Provided WebElement is not a <select> element.");
+//	    }
+//
+//	    // Wait until the dropdown is visible and enabled (optional if you already wait elsewhere)
+//	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+//	    wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
+//
+//	    Select select = new Select(dropdownElement);
+//	    List<WebElement> allOptions = select.getOptions();
+//	    List<String> validOptions = new ArrayList<>();
+//
+//	    System.out.println("Total options found: " + allOptions.size());
+//
+//	    for (WebElement option : allOptions) {
+//	        String text = option.getText().trim();
+//	        boolean isSelectable = option.isDisplayed() && option.isEnabled();
+//
+//	        if (isSelectable &&
+//	            !text.equalsIgnoreCase("select") &&
+//	            !text.toLowerCase().contains("choose") &&
+//	            !text.isEmpty()) {
+//	            validOptions.add(text);
+//	        }
+//	    }
+//
+//	    System.out.println("Filtered valid options: " + validOptions);
+//
+//	    if (validOptions.isEmpty()) {
+//	        Assert.fail("No valid/selectable options found in dropdown.");
+//	    }
+//
+//	    // Randomly select from valid options
+//	    String randomOption = validOptions.get(new Random().nextInt(validOptions.size()));
+//	    System.out.println("Attempting to select: " + randomOption);
+//
+//	    try {
+//	        select.selectByVisibleText(randomOption);
+//	    } catch (NoSuchElementException e) {
+//	        Assert.fail("The random option '" + randomOption + "' was not found in the dropdown at selection time.");
+//	    }
+//
+//	    // Validate selection
+//	    String selected = select.getFirstSelectedOption().getText().trim();
+//	    System.out.println("Selected value after interaction: " + selected);
+//
+//	    Assert.assertEquals(selected, randomOption, "Dropdown selection mismatch.");
+//
+//	    return selected;
+//	}
+
+	// Utility: Randomly select a valid option from a <select> dropdown WebElement
 	public static String selectRandomOptionFromDropdwon(WebElement dropdownElement) {
-	    // Validate that the element is a dropdown
-	    if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
-	        Assert.fail("Provided WebElement is not a <select> element.");
-	    }
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-	    // Wait until the dropdown is visible and enabled (optional if you already wait elsewhere)
-	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	    wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
+		// Wait until dropdown is visible and clickable
+		wait.until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(dropdownElement)));
+		wait.until(ExpectedConditions.elementToBeClickable(dropdownElement));
 
-	    Select select = new Select(dropdownElement);
-	    List<WebElement> allOptions = select.getOptions();
-	    List<String> validOptions = new ArrayList<>();
+		// Ensure element is <select>
+		if (!dropdownElement.getTagName().equalsIgnoreCase("select")) {
+			Assert.fail("Provided WebElement is not a <select> element.");
+		}
 
-	    System.out.println("Total options found: " + allOptions.size());
+		Select select = new Select(dropdownElement);
+		List<WebElement> allOptions = select.getOptions();
+		List<String> validOptions = new ArrayList<>();
 
-	    for (WebElement option : allOptions) {
-	        String text = option.getText().trim();
-	        boolean isSelectable = option.isDisplayed() && option.isEnabled();
+		System.out.println("Total options found: " + allOptions.size());
 
-	        if (isSelectable &&
-	            !text.equalsIgnoreCase("select") &&
-	            !text.toLowerCase().contains("choose") &&
-	            !text.isEmpty()) {
-	            validOptions.add(text);
-	        }
-	    }
+		for (int i = 1; i < allOptions.size(); i++) { // start from index 1 to skip first
+			WebElement option = allOptions.get(i);
+			String text = option.getText().trim();
+			boolean isSelectable = option.isDisplayed() && option.isEnabled();
 
-	    System.out.println("Filtered valid options: " + validOptions);
+			if (isSelectable && !text.toLowerCase().contains("choose") && !text.isEmpty()) {
+				validOptions.add(text);
+			}
+		}
 
-	    if (validOptions.isEmpty()) {
-	        Assert.fail("No valid/selectable options found in dropdown.");
-	    }
+		System.out.println("Filtered valid options (excluding first): " + validOptions);
 
-	    // Randomly select from valid options
-	    String randomOption = validOptions.get(new Random().nextInt(validOptions.size()));
-	    System.out.println("Attempting to select: " + randomOption);
+		if (validOptions.isEmpty()) {
+			Assert.fail("No valid/selectable options found in dropdown.");
+		}
 
-	    try {
-	        select.selectByVisibleText(randomOption);
-	    } catch (NoSuchElementException e) {
-	        Assert.fail("The random option '" + randomOption + "' was not found in the dropdown at selection time.");
-	    }
+		// Select randomly from the filtered list
+		String randomOption = validOptions.get(new Random().nextInt(validOptions.size()));
+		System.out.println("🔹 Attempting to select option: " + randomOption);
 
-	    // Validate selection
-	    String selected = select.getFirstSelectedOption().getText().trim();
-	    System.out.println("Selected value after interaction: " + selected);
+		try {
+			dropdownElement.click(); // optional UI trigger
+			Thread.sleep(300); // short UI wait
 
-	    Assert.assertEquals(selected, randomOption, "Dropdown selection mismatch.");
+			Select refreshedSelect = new Select(dropdownElement);
+			refreshedSelect.selectByVisibleText(randomOption);
 
-	    return selected;
+			// Confirm selection
+			String selected = refreshedSelect.getFirstSelectedOption().getText().trim();
+			System.out.println("✅ Selected option: " + selected);
+
+			Assert.assertEquals(selected, randomOption, "Dropdown selection mismatch.");
+			return selected;
+
+		} catch (StaleElementReferenceException | NoSuchElementException e) {
+			Assert.fail("Dropdown interaction failed: " + e.getMessage());
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			Assert.fail("Thread interrupted during dropdown interaction: " + e.getMessage());
+		}
+
+		return null;
 	}
 
 	String selectedFirstOptionFromDropdwon;
@@ -861,6 +925,149 @@ public class DropDown extends TestBase {
 
 		// Optionally, close the dropdown
 		// select2Trigger.click(); // Uncomment if closing is required
+	}
+
+	// New
+	/**
+	 * Selects options from a multi-select dropdown using Select class and clicks
+	 * right arrow.
+	 *
+	 * @param selectElement The <select multiple> dropdown WebElement
+	 * @param rightArrow    The right arrow WebElement to click after selection
+	 * @param selections    List of option texts to select, or use ["__ALL__"] to
+	 *                      select all
+	 * @return List of actually selected visible texts
+	 */
+
+	public static List<String> selectFromMultiSelectAndClickRightArrow(WebElement selectElement, WebElement rightArrow,
+			List<String> selections) {
+		List<String> selectedTexts = new ArrayList<>();
+
+		if (selectElement == null || selections == null || selections.isEmpty()) {
+			System.out.println("[selectFromMultiSelectAndClickRightArrow] Invalid input.");
+			return selectedTexts;
+		}
+
+		Select multiSelect = new Select(selectElement);
+
+		if (!multiSelect.isMultiple()) {
+			System.out.println("[selectFromMultiSelectAndClickRightArrow] Provided select is not a multi-select box.");
+			return selectedTexts;
+		}
+
+		List<WebElement> allOptions = multiSelect.getOptions();
+
+		if (allOptions.isEmpty()) {
+			System.out.println("[selectFromMultiSelectAndClickRightArrow] No options found.");
+			return selectedTexts;
+		}
+
+		boolean isAll = selections.size() == 1 && selections.get(0).equalsIgnoreCase("__ALL__");
+
+		for (WebElement option : allOptions) {
+			String text = option.getText().trim();
+			if (isAll || selections.stream().anyMatch(sel -> sel.trim().equalsIgnoreCase(text))) {
+				try {
+					multiSelect.selectByVisibleText(text);
+					selectedTexts.add(text);
+					System.out.println("[selectFromMultiSelectAndClickRightArrow] Selected: " + text);
+				} catch (Exception e) {
+					System.out.println("[selectFromMultiSelectAndClickRightArrow] Could not select '" + text + "': "
+							+ e.getMessage());
+				}
+			}
+		}
+
+		if (selectedTexts.isEmpty()) {
+			System.out.println("[selectFromMultiSelectAndClickRightArrow] No matching options selected.");
+			return selectedTexts;
+		}
+
+		// Click right arrow
+		if (rightArrow != null && rightArrow.isDisplayed() && rightArrow.isEnabled()) {
+			try {
+				rightArrow.click();
+				System.out.println("[selectFromMultiSelectAndClickRightArrow] Clicked right arrow.");
+			} catch (Exception e) {
+				System.out.println(
+						"[selectFromMultiSelectAndClickRightArrow] Error clicking right arrow: " + e.getMessage());
+			}
+		} else {
+			System.out.println("[selectFromMultiSelectAndClickRightArrow] Right arrow not clickable.");
+		}
+
+		return selectedTexts;
+	}
+
+//	List.of("Apple")→
+//
+//	Select one
+//
+//	List.of("Apple","Mango")→
+//	Select multiple
+//
+//	List.of("__ALL__")→
+//	Select all
+
+	// Randomely select DropdownOptions
+	public static List<String> selectRandomFromMultiSelectAndClickRightArrow(WebElement selectElement,
+			WebElement rightArrow, int countToSelect) {
+		List<String> selectedTexts = new ArrayList<>();
+
+		if (selectElement == null || countToSelect <= 0) {
+			System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] Invalid input.");
+			return selectedTexts;
+		}
+
+		Select multiSelect = new Select(selectElement);
+
+		if (!multiSelect.isMultiple()) {
+			System.out.println(
+					"[selectRandomFromMultiSelectAndClickRightArrow] Provided select is not a multi-select box.");
+			return selectedTexts;
+		}
+
+		List<WebElement> allOptions = multiSelect.getOptions();
+
+		if (allOptions.isEmpty()) {
+			System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] No options found.");
+			return selectedTexts;
+		}
+
+		// Ensure count to select doesn't exceed the list size
+		countToSelect = Math.min(countToSelect, allOptions.size());
+
+		// Shuffle and pick random options
+		List<WebElement> shuffled = new ArrayList<>(allOptions);
+		Collections.shuffle(shuffled);
+		List<WebElement> toSelect = shuffled.subList(0, countToSelect);
+
+		for (WebElement option : toSelect) {
+			try {
+				String text = option.getText().trim();
+				multiSelect.selectByVisibleText(text);
+				selectedTexts.add(text);
+				System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] Randomly selected: " + text);
+			} catch (Exception e) {
+				System.out
+						.println("[selectRandomFromMultiSelectAndClickRightArrow] Error selecting: " + e.getMessage());
+			}
+		}
+
+		// Click right arrow
+		if (rightArrow != null && rightArrow.isDisplayed() && rightArrow.isEnabled()) {
+			try {
+				rightArrow.click();
+				System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] Clicked right arrow.");
+			} catch (Exception e) {
+				System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] Error clicking right arrow: "
+						+ e.getMessage());
+			}
+		} else {
+			System.out.println("[selectRandomFromMultiSelectAndClickRightArrow] Right arrow not clickable.");
+		}
+
+		return selectedTexts;
 	}
 
 }

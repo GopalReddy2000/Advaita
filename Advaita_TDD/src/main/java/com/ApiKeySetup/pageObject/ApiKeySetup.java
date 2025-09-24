@@ -539,7 +539,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
 
 			String selectKeyFor = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"KeyFor2");
 
@@ -552,7 +552,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "KeyFor");
 
 			DropDown.selectRandomOptionFromDropdwon(keyForDropdown);
 
@@ -570,7 +570,7 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(authTypeLabel, true);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
 
 		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"AuthType6");
 		System.out.println("authType :" + authType);
@@ -590,7 +590,7 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(authTypeLabel, true);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,authTpeDropdown, "AuthType");
 
 		String authType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,AuthType);
 		System.out.println("authType :" + authType);
@@ -681,7 +681,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(methodTypeLabel, false);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,methodTypeDropdown, "MethodType");
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,methodTypeDropdown, "MethodType");
 
 			String selectMethodType = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"MethodType4");
 			dropDown.selectFromDropdownByText(methodTypeDropdown, selectMethodType);
@@ -693,7 +693,7 @@ public class ApiKeySetup extends TestBase {
 			fieldVerificationUtils.checkthroughAsterisk(keyForLabel, true);
 
 			// extract all aoptions From Dropdown and Store In Prop file by "key name"
-			PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "MethodType");
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,keyForDropdown, "MethodType");
 
 			DropDown.selectRandomOptionFromDropdwon(methodTypeDropdown);
 
@@ -1172,7 +1172,7 @@ public class ApiKeySetup extends TestBase {
 		fieldVerificationUtils.checkthroughAsterisk(addToDrodownlabel, false);
 
 		// extract all aoptions From Dropdown and Store In Prop file by "key name"
-		PropertieFileUtil.extractAllDropdownOptions(PROPERTIES_FILE_ApiKey_PATH3,addToDropdown, "AddTo");
+		PropertieFileUtil.extractAllDropdownOptionsAndStore(PROPERTIES_FILE_ApiKey_PATH3,addToDropdown, "AddTo");
 
 		String addTo = PropertieFileUtil.getSingleTextFromPropertiesFile(PROPERTIES_FILE_ApiKey_PATH3,"AddTo3");
 

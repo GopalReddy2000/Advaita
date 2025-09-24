@@ -1,5 +1,6 @@
 package com.advaita.TestTable;
 
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -24,7 +25,7 @@ public class TestProcessTable extends TestBase {
 	public String subProcessDesc = "Test Desc" + fake.lastName1();
 	public String subSubProcessName = "Test " + fake.lastName1();
 	public String subSubProcessDesc = "Test Desc" + fake.lastName1();
-	
+
 	// Use varaible For Negative Testing
 	String emojis = "(*/ω＼*)";
 	String SpecialCharcters = "!@#$%^&*";
@@ -75,35 +76,183 @@ public class TestProcessTable extends TestBase {
 
 	}
 
-	@Test(priority = 1)
+	@Test
+	public void NaviageToProcessManagementPage() {
+
+		homePage.clickOnProcessManagementCreate();
+
+	}
+
+	// @Test(dependsOnMethods = {"clickOnProcessManagementCreate"})
+	@Test
 	public void verifyProcessTable() throws Throwable {
 
 		homePage.clickOnProcessManagementCreate(); // clickOnProcessManagementCreate change to datasetup
-//		process.tablePage(3);
-//		process.TablePage1();
-//		process.clearfilter_tablePage();
-//		process.clickonProcessDropDownToacessSubList_Tablepage();
-//		process.clickonProcessDropDownAgainSubprocessDropdownToacessSubSubList_Tablepage();
-//		process.createdprocessNotificatedByclickingBellIcon();
-//	    process.HowmuchCreatedprocess();	
-//		process.SearchCreatedProcesbySelctingStatus_Active();
-//		process.SearchCreatedProcesbySelctingStatus_InAnctive();
-//		process.NavigateToNextTablePageClick_Rightarrow();
-//		process.NavigateToNextTablePageClick_leftarrow();
+		// process.tablePage(3);
+		// process.TablePage1();
+		process.clearFliter();
+		process.clickonProcessDropDownToacessSubList_Tablepage();
+		process.clickonProcessDropDownAgainSubprocessDropdownToacessSubSubList_Tablepage();
+		process.createdprocessNotificatedByclickingBellIcon();
+		process.HowmuchCreatedprocess();
+		process.searchedThroughStatus();
+		process.SearchCreatedProcesbySelctingStatus_InAnctive();
+		process.NavigateToNextTablePageClick_Rightarrow();
+		process.NavigateToNextTablePageClick_leftarrow();
 
 		// ProcessSetup
 		process.allActiveProcesss();
 		process.fetchProcessAndStatus();
-		process.SingleProcessOnly();
+		// process.SingleProcessOnly();
 
 //		test = reports.createTest("verifyProcessTable");
 //		process.tablePage();
 
 	}
 
-/////////////////////////////////////// Negative ///////////////////////////////////////////////////////////////////////
+	// Table Page
 
-	
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void veifyTheUserIsableTosearchThroughCraetedProcessManually() throws Throwable {
+
+		process.searchThroughProcess("searchManually");
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void veifyTheUserIsableTosearchThroughCraetedProcessRandomely() throws Throwable {
+
+		process.searchThroughProcess("randomely");
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void veifyTheUserIsableTosearchThroughCraetedProcessPartailName() throws Throwable {
+
+		process.searchThroughProcess("partailName");
+	}
+
+	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	public void clearFilterManualellySearched() {
+
+		process.clearFliter();
+
+	}
+
+	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessPartailName" })
+	public void clearFilterRandomelySearched() {
+
+		process.clearFliter();
+
+	}
+
+	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessByPartialNames" })
+	public void clearFilterPartialNameSearched() {
+
+		process.clearFliter();
+
+	}
+
+	@Test(dependsOnMethods = { "verifyTheUserIsAbleToNaviagteUnArchiveProcess" })
+	public void veifyTheUserIsableTosearchprocessInArchiveTab() throws Throwable {
+
+		// process.searchThroughProcess("searchManually");
+	}
+
+	// Process Setup
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserisDoProcessSetupManualley() throws Throwable {
+
+		process.naviagteToProcessSetupaAndVerifyPage();
+
+//			process.allActiveProcesss();
+//			process.fetchProcessAndStatus();
+		process.SingleProcessOnly("selectManualley");
+
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserisDoProcessSetupRandomely() throws Throwable {
+
+		process.naviagteToProcessSetupaAndVerifyPage();
+
+//		process.allActiveProcesss();
+//		process.fetchProcessAndStatus();
+		process.SingleProcessOnly("randomely");
+
+	}
+	// 28.7.25
+	// ====== New Funcanaltity ==========
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleToNaviagteArchiveProcess() {
+
+		process.navigateToArchiveProcess();
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleToNaviagteUnArchiveProcess() {
+
+		process.navigateToUnArchiveProcess();
+	}
+
+	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	public void verifyTheUserIsAbelToDoArchiveProcess() throws Throwable {
+		verifyTheUserIsAbelToDoArchiveProcessAndVerifyInArchiveTab();
+	}
+
+	// Archive
+	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	public void verifyTheUserIsAbelToDoArchiveProcessAndVerifyInArchiveTab() throws Throwable {
+
+		process.archiveAction();
+		process.verifyArchivePopupAfterClick();
+		process.clickOnArchiveOptionAndVerifyInArchiveTab();
+
+	}
+
+	// Unarchive
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbelToUnArchiveProcessAndVerifyInUnArchiveTab() throws Throwable {
+
+		process.navigateToArchiveProcess();
+
+		process.unArchiveAction();
+		process.verifyUnArchivePopupAfterClickAndContinue();
+		process.clickOnUnArchiveOptionAndVerifyInUnArchiveTab();
+
+	}
+
+	// Delete process In Archive Tab
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleTotoDeleteArchiveProcessManualley() {
+
+		process.navigateToArchiveProcess();
+		process.deleteProcessByNameFromArchive("Beauty & Tools P");
+
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleTotoDeleteArchiveProcessRandomely() {
+
+		process.navigateToArchiveProcess();
+		process.deleteRandomProcessFromArchive();
+	}
+
+	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleTotoDeletemutipleProcess() {
+
+		process.navigateToArchiveProcess();
+		process.deleteProcessesFromArchive(1);
+	}
+
+	@Test(enabled = false, dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleTotoDeleteall() {
+
+		process.navigateToArchiveProcess();
+		process.deleteAllArchivedProcesses();
+	}
+
+	// ========================== Negative=========================================
 
 	@Test
 	public void verifyUserFilledAllDataINProcessesTabANdClickOnCancel() throws Throwable {
@@ -299,7 +448,7 @@ public class TestProcessTable extends TestBase {
 
 	}
 
-	////////////////////////////////////// Process SetUp Negative Scripts////////////////////////////////////////////////
+	// ======= Process Setup Negative Scripts===========
 
 	@Test
 	public void verifyTheUserwithoutSelectingProcesseAndcLickOnSave() {
@@ -346,6 +495,13 @@ public class TestProcessTable extends TestBase {
 //		reports.flush();
 //	}
 
+	
+	@Test
+	public void name() {
+		
+	}
+	
+	
 	// @AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();

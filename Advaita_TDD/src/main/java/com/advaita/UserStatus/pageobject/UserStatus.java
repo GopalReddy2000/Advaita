@@ -630,7 +630,7 @@ public class UserStatus extends TestBase {
 
 			multiselect_RightSelected.click();
 
-			PropertieFileUtil.extractAllDropdownOptions(userStatus_Path7,menusToHideMultipleDropdown, "menusToHideMultipleOptions");
+			PropertieFileUtil.extractAllDropdownOptionsAndStore(userStatus_Path7,menusToHideMultipleDropdown, "menusToHideMultipleOptions");
 
 			clickOnCreateButton();
 

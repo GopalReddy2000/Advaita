@@ -3,7 +3,6 @@ package com.advaita.TestClass;
 import java.awt.AWTException;
 
 import org.openqa.selenium.WebElement;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -12,8 +11,6 @@ import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
 import com.advaita.Login.Home.LoginPage;
 import com.advaita.pageObjects.EmailTemplatePage;
-
-import net.datafaker.transformations.sql.SqlTransformer.Case;
 
 public class EmailTemplateTest extends TestBase {
 	HomePage homePage;
@@ -42,6 +39,9 @@ public class EmailTemplateTest extends TestBase {
 
 		emailTemplatePage = new EmailTemplatePage();
 	}
+
+	// File Path
+	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
 
 	@Test
 	public void navigationTest() {
@@ -142,8 +142,6 @@ public class EmailTemplateTest extends TestBase {
 
 //===========================================================================================================================	
 
-	private static final String emailTemplate_Path8 = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\email.Properties";
-
 	String caseValue1_GivenProcess = "givenprocessname";
 	String caseValue1_GivenSubProcess = "givenSubprocessname";
 	String caseValue1_GivenSubSubProcess = "givensubsubprocessname";
@@ -168,7 +166,9 @@ public class EmailTemplateTest extends TestBase {
 
 	@Test(priority = 3, dependsOnMethods = { "verifyTheUserIsAbleToNaviagteCreateEmailtemplatePages" })
 
-	public void verfiyTheUserIsabletoCreateEmailtemplate() throws Throwable {
+	// Random Select
+
+	public void verfiyTheUserIsabletoCreateEmailtemplateRandomely() throws Throwable {
 
 		emailTemplatePage.selectProcess(caseValue2_randomProcess);
 
@@ -178,12 +178,69 @@ public class EmailTemplateTest extends TestBase {
 
 		emailTemplatePage.selectStages(caseValue_randomStage);
 
-		emailTemplatePage.selectStages(caseValue_randomStage);
-		
-		emailTemplatePage.apiKyeName();
+		emailTemplatePage.selectApiKyeName();
+
+		emailTemplatePage.enterTemplateName();
+
+		emailTemplatePage.EnterFromMailID();
+
+		emailTemplatePage.toEmailSource("random");
+
+		emailTemplatePage.toMmail();
+
+		emailTemplatePage.enterCC();
+
+		emailTemplatePage.enterbcc();
+
+		emailTemplatePage.enterbcc();
+
+		emailTemplatePage.remarksTextfield();
+
+		emailTemplatePage.disposition();
 	}
 
-	 @AfterTest
+	// Manually Create
+	@Test(priority = 4, dependsOnMethods = { "verifyTheUserIsAbleToNaviagteCreateEmailtemplatePages" })
+	public void verfiyTheUserIsabletoCreateEmailtemplateManuaally() throws Throwable {
+
+		emailTemplatePage.selectProcess(caseValue1_GivenProcess);
+
+		emailTemplatePage.selectSubProcess(caseValue2_randomSubProcess);
+
+		emailTemplatePage.selectSubSubProcess(caseValue1_GivenSubSubProcess);
+
+		emailTemplatePage.selectStages(caseValue_givenStage);
+
+		emailTemplatePage.selectApiKyeName();
+
+		emailTemplatePage.enterTemplateName();
+
+		emailTemplatePage.EnterFromMailID();
+
+		emailTemplatePage.toEmailSource("SelectmanuallyToNumberSource");
+
+		emailTemplatePage.toMmail();
+
+		emailTemplatePage.enterCC();
+
+		emailTemplatePage.enterbcc();
+
+		emailTemplatePage.enterbcc();
+
+		emailTemplatePage.remarksTextfield();
+
+		emailTemplatePage.disposition();
+
+		emailTemplatePage.selectEmailForDropdown("SelectmanuallyEmailFor");
+
+		emailTemplatePage.subject();
+
+		emailTemplatePage.handleSelect2RolesDropdown("manual", "1", "5");
+		//emailTemplatePage.handleSelect2RolesDropdown("random");
+
+	}
+
+	// @AfterTest
 	public void tearDown() {
 		driver.quit();
 	}

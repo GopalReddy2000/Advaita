@@ -1,5 +1,8 @@
 package com.advaita.pageObjects;
 
+import static org.testng.Assert.assertTrue;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,225 +16,235 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
+import com.advaita.Utilities.DropDown;
+import com.advaita.Utilities.PropertieFileUtil;
 
-public class StagesActions extends TestBase{
-	public StagesActions()
-	{
+public class StagesActions extends TestBase {
+	public StagesActions() {
 		PageFactory.initElements(driver, this);
 	}
 
-
-	@FindBy(xpath="//span[text()='Workflow Design']")
+	@FindBy(xpath = "//span[text()='Workflow Design']")
 	WebElement workFlowDesign;
 
-	@FindBy(xpath="//button[text()='Stages']")
+	@FindBy(xpath = "//button[text()='Stages']")
 	WebElement stagesTab;
 
-	@FindBy(xpath="//img[@title='Evaluation Fields']")
+	@FindBy(xpath = "//tr[1]//td[6]//img[@title='stage_settings_list']")
+	public WebElement stageSettingListOptions;
+
+	@FindBy(xpath = "//th[text()='Stage settings']")
+	public WebElement verifyStageSetiings;
+
+	@FindBy(xpath = "//img[@title='Evaluation Fields']")
 	public static WebElement stageEvaluationFields;
 
-	@FindBy(xpath="//input[@name='q']")
+	@FindBy(xpath = "//input[@name='q']")
 	public static WebElement evaluationMultiSearch;
 
-	@FindBy(xpath="//select[@id='multiselect']")
+	@FindBy(xpath = "//select[@id='multiselect']")
 	public static WebElement multiSelectDropdownFrom;
 
-	@FindBy(xpath="//select[@id='multiselect_to']")
+	@FindBy(xpath = "//select[@id='multiselect_to']")
 	public static WebElement multiSelectDropdownTo;
 
-	@FindBy(xpath="//button[@id='multiselect_rightAll']")
+	@FindBy(xpath = "//button[@id='multiselect_rightAll']")
 	WebElement allRightButton;
 
-	@FindBy(xpath="//button[@id='multiselect_rightSelected']")
+	@FindBy(xpath = "//button[@id='multiselect_rightSelected']")
 	WebElement singleRightButton;
 
-	@FindBy(xpath="//button[contains(@id,'rightSelected')]")
+	@FindBy(xpath = "//button[contains(@id,'rightSelected')]")
 	List<WebElement> SingleRightButton;
 
-	@FindBy(xpath="//button[@id='multiselect_leftSelected']")
+	@FindBy(xpath = "//button[@id='multiselect_leftSelected']")
 	WebElement singleLeftButton;
 
-	@FindBy(xpath="//button[contains(@id,'leftAll')]")
+	@FindBy(xpath = "//button[contains(@id,'leftAll')]")
 	List<WebElement> allLeftButton;
 
-	@FindBy(xpath="//button[@id='moveUp']")
+	@FindBy(xpath = "//button[@id='moveUp']")
 	WebElement moveUp;
 
-	@FindBy(id="moveDown")
+	@FindBy(id = "moveDown")
 	WebElement moveDown;
 
-	@FindBy(xpath="//button[text()='Save']")
+	@FindBy(xpath = "//button[text()='Save']")
 	WebElement save;
-	@FindBy(xpath="//button[@onClick='add_stagewise_disposition()']")
+	@FindBy(xpath = "//button[@onClick='add_stagewise_disposition()']")
 	WebElement dispositionSetSave;
 
-	@FindBy(xpath="//button[text()='Cancel']")
+	@FindBy(xpath = "//button[text()='Cancel']")
 	WebElement cancel;
 
-
-	@FindBy(xpath="//img[@title='Stage History Fields']")
+	@FindBy(xpath = "//img[@title='Stage History Fields']")
 	WebElement stageHistoryFields;
 
-	@FindBy(xpath="//img[@title='Evulation Filter']")
+	@FindBy(xpath = "//img[@title='Evulation Filter']")
 	WebElement stageEvaluationFilter;
 
-	@FindBy(xpath="//img[@title='Disposition']")
+	@FindBy(xpath = "//img[@title='Disposition']")
 	WebElement stageDispositionAction;
 
-	@FindBy(xpath="//img[@title='SOP']")
+	@FindBy(xpath = "//img[@title='SOP']")
 	WebElement stageSOP;
 
-	@FindBy(xpath="//img[@title='Report Fields']")
+	@FindBy(xpath = "//img[@title='Report Fields']")
 	WebElement stageReportsFields;
 
-	@FindBy(xpath="//img[@title='Schduler Filters']")
+	@FindBy(xpath = "//img[@title='Schduler Filters']")
 	WebElement stageSchedulerFilters;
 
-	@FindBy(xpath="//img[@title='Stage Process Fields']")
+	@FindBy(xpath = "//img[@title='Stage Process Fields']")
 	WebElement stageProcesFields;
 
-	@FindBy(xpath="//img[@title='Report Filters']")
+	@FindBy(xpath = "//img[@title='Report Filters']")
 	WebElement stageReportFilters;
 
-	@FindBy(xpath="//img[@title='Assign To Filter']")
+	@FindBy(xpath = "//img[@title='Assign To Filter']")
 	WebElement stageAssignToFilters;
 
-	@FindBy(xpath="//label[not(@class='drag-drop ')]")
+	@FindBy(xpath = "//label[not(@class='drag-drop ')]")
 	WebElement SOPName;
 
-	@FindBy(linkText="Call Log Tab View")
+	@FindBy(linkText = "Call Log Tab View")
 	WebElement callLogTabView;
 
-	@FindBy(linkText="Call Log Stage View")
+	@FindBy(linkText = "Call Log Stage View")
 	WebElement callLogStageView;
 
-	@FindBy(xpath ="//button[contains(normalize-space(), 'Insurance Stage')]")
+	@FindBy(xpath = "//button[contains(normalize-space(), 'Insurance Stage')]")
 	WebElement insuranceStage;
 
-	@FindBy(xpath ="//thead//tr/th")
+	@FindBy(xpath = "//thead//tr/th")
 	List<WebElement> evaluationFieldHeader;
 
-	@FindBy(xpath ="//thead[@class='orga_thead tabke_static']//th")
+	@FindBy(xpath = "//thead[@class='orga_thead tabke_static']//th")
 	List<WebElement> stageHistoryFieldHeader;
 
-	@FindBy(xpath ="//td//img[@alt='table-edit']")
+	@FindBy(xpath = "//td//img[@alt='table-edit']")
 	List<WebElement> recordEyeButton;
 
-	@FindBy(xpath ="//h6[text()='Stage History']")
+	@FindBy(xpath = "//h6[text()='Stage History']")
 	WebElement stageHistorySection;
 
-	@FindBy(xpath ="//select[@id='unique_multiselect']")
+	@FindBy(xpath = "//select[@id='unique_multiselect']")
 	WebElement datePickerDropdown;
 
-	@FindBy(xpath ="//select[@id='date_range_picker']")
+	@FindBy(xpath = "//select[@id='date_range_picker']")
 	WebElement dateRangerDropdown;
 
-	@FindBy(xpath ="//select[@id='muti_unique_multiselect']")
+	@FindBy(xpath = "//select[@id='muti_unique_multiselect']")
 	WebElement multiSelectDropdown;
 
-	@FindBy(xpath ="//select[not(contains(@id,'to'))]")
+	@FindBy(xpath = "//select[not(contains(@id,'to'))]")
 	public List<WebElement> fromMultiselectDropdown;
 
-	@FindBy(xpath ="//select[contains(@id,'to')]")
+	@FindBy(xpath = "//select[contains(@id,'to')]")
 	public List<WebElement> toMultiSelectDropdown;
 
-
-	@FindBy(xpath ="//select[@id='textbox_multiselect']")
+	@FindBy(xpath = "//select[@id='textbox_multiselect']")
 	WebElement textBoxDropdown;
 
-	@FindBy(xpath ="//select[@id='value_range_picker']")
+	@FindBy(xpath = "//select[@id='value_range_picker']")
 	WebElement valueRangeDropdown;
 
-	@FindBy(xpath ="//h6[text()='Local Filters']")
+	@FindBy(xpath = "//h6[text()='Local Filters']")
 	WebElement localFilterSection;
 
-	@FindBy(xpath ="//div[contains(@class,'local_filter_section')]//label")
+	@FindBy(xpath = "//div[contains(@class,'local_filter_section')]//label")
 	List<WebElement> localFilterHeaders;
 
-	@FindBy(id ="sopDocu")
+	@FindBy(id = "sopDocu")
 	WebElement sopDocUpload;
 
-	@FindBy(xpath ="//h6[text()='SOP Documents']")
+	@FindBy(xpath = "//h6[text()='SOP Documents']")
 	WebElement SOPDocumentSection;
 
-	@FindBy(xpath ="(//tbody)[1]//td[1]")
+	@FindBy(xpath = "(//tbody)[1]//td[1]")
 	List<WebElement> SOPRecords;
 
-	@FindBy(linkText ="Validation Status Report")
+	@FindBy(linkText = "Validation Status Report")
 	WebElement validationStatusReport;
 
-	@FindBy(xpath ="//select[@id='process_search']")
+	@FindBy(xpath = "//select[@id='process_search']")
 	WebElement processField;
 
-	@FindBy(xpath ="//select[@id='sub_process_search']")
+	@FindBy(xpath = "//select[@id='sub_process_search']")
 	WebElement subProcessField;
 
-	@FindBy(xpath ="//select[@id='s_sub_process_search']")
+	@FindBy(xpath = "//select[@id='s_sub_process_search']")
 	WebElement subSubProcessField;
 
-	@FindBy(xpath ="//select[@id='stage_search']")
+	@FindBy(xpath = "//select[@id='stage_search']")
 	WebElement stageSearch;
 
-	@FindBy(xpath ="//select[@id='disposition_stagewise']")
+	@FindBy(xpath = "//select[@id='disposition_stagewise']")
 	WebElement dispositionDropdown;
 
-	@FindBy(xpath ="//input[@name='from_date']")
+	@FindBy(xpath = "//input[@name='from_date']")
 	WebElement fromDate;
 
-	@FindBy(xpath ="//input[@name='to_date']")
+	@FindBy(xpath = "//input[@name='to_date']")
 	WebElement toDate;
 
-	@FindBy(xpath ="//img[@alt='filter_search' and @class='img-fluid']")
+	@FindBy(xpath = "//img[@alt='filter_search' and @class='img-fluid']")
 	WebElement searchButton;
 
-	@FindBy(xpath ="//tr//th")
+	@FindBy(xpath = "//tr//th")
 	List<WebElement> validationStatusReportHeaders;
 
-	@FindBy(xpath ="//table[@id='interaction-history']//th//span[1]")
+	@FindBy(xpath = "//table[@id='interaction-history']//th//span[1]")
 	List<WebElement> interactionFieldsHeader;
 
-	@FindBy(xpath ="//button[text()='Interaction History']")
+	@FindBy(xpath = "//button[text()='Interaction History']")
 	WebElement interactionHistory;
 
-	@FindBy(xpath ="//td[3]")
+	@FindBy(xpath = "//td[3]")
 	WebElement dispositionQuestionSet;
 
-	@FindBy(xpath ="//select[@id='stage_name_deposion']")
+	@FindBy(xpath = "//select[@id='stage_name_deposion']")
 	WebElement dispositionStage;
 
-	@FindBy(xpath ="//select[@id='assigned_to']")
+	@FindBy(xpath = "//select[@id='assigned_to']")
 	WebElement assignTo;
 
-	@FindBy(xpath ="//div[@class='disposition_question_section row']//label")
+	@FindBy(xpath = "//div[@class='disposition_question_section row']//label")
 	List<WebElement> dispositionQuestions;
 
+	//
+	@FindBy(xpath = "//input[@placeholder='Search']")
+	public WebElement searchTextfield;
 
+	@FindBy(xpath = "//td[1]//a")
+	public List<WebElement> stageSettingsList;
 
+	// Refrences class
+	PropertieFileUtil propertieFileUtil = new PropertieFileUtil();
+	
+	DropDown dropDown = new DropDown();
 
+	String stagesActionS_FilePath = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\stagesActions.properties";
 
-
-
-	public StagesActions navtoStages()
-	{
+	public StagesActions navtoStages() {
 		workFlowDesign.click();
 		stagesTab.click();
 		return this;
 	}
 
-	public StagesActions clickOnStageHistoryField(String recordName,String ActionButton)
-	{
+	public StagesActions clickOnStageHistoryField(String recordName, String ActionButton) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
 		for (WebElement row : rows) {
 
 			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
 
-			if (recordName.equals(usernameColumn.getText()) ) {
+			if (recordName.equals(usernameColumn.getText())) {
 
-				WebElement button = row.findElement(By.xpath(".//img[@title='"+ActionButton+"']"));
+				WebElement button = row.findElement(By.xpath(".//img[@title='" + ActionButton + "']"));
 				button.click();
 
-				System.out.println(recordName+" Successfully Clicked");
+				System.out.println(recordName + " Successfully Clicked");
 
 //				Assert.assertTrue(driver.getTitle().contains(ActionButton)); ;
 
@@ -241,62 +254,48 @@ public class StagesActions extends TestBase{
 		return this;
 	}
 
-	private void printOptions(WebElement element)
-	{
-		Select select=new Select(element);
-		for(WebElement elemnt:select.getOptions())
-		{
+	private void printOptions(WebElement element) {
+		Select select = new Select(element);
+		for (WebElement elemnt : select.getOptions()) {
 			System.out.println(elemnt.getText());
 		}
 
-
 	}
 
-	private void selectOptionsInMultiSelect(WebElement element,List<String> options )
-	{
+	private void selectOptionsInMultiSelect(WebElement element, List<String> options) {
 		allLeftButton.get(0).click();
-		Select select=new Select(element);
-		for(String option:options)
-		{
+		Select select = new Select(element);
+		for (String option : options) {
 			select.selectByVisibleText(option);
 			singleRightButton.click();
 		}
 		singleRightButton.click();
 	}
 
+	List<String> evaluationFieldOptions = List.of("Name Of the Customer", "Place of Living", "Phone Number", "Email ID",
+			"Is Primary", "Trans Unique Id");
 
-	List<String> evaluationFieldOptions = List.of(
-			"Name Of the Customer",
-			"Place of Living",
-			"Phone Number",
-			"Email ID",
-			"Is Primary",
-			"Trans Unique Id"
-	);
-
-
-	public StagesActions escalationFields(List<String>evaluationFieldOptions)
-	{
+	public StagesActions escalationFields(List<String> evaluationFieldOptions) {
 		allLeftButton.get(0).click();
-		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
+		selectOptionsInMultiSelect(multiSelectDropdownFrom, evaluationFieldOptions);
 //		singleRightButton.click();
 		saveRecord();
-
 
 		return this;
 	}
 
-	public StagesActions validateEvaluationFields(List<String>evaluationFieldOptions,String stageName){
+	public StagesActions validateEvaluationFields(List<String> evaluationFieldOptions, String stageName) {
 		navigateWithinAlchemy(callLogStageView);
-		selectByVisibleText(stageSearch,stageName);
+		selectByVisibleText(stageSearch, stageName);
 
 		int startIndex = 1;
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
-			String actualHeader =evaluationFieldHeader.get(startIndex +i).getText().trim();
+			String actualHeader = evaluationFieldHeader.get(startIndex + i).getText().trim();
 			System.out.println(actualHeader);
 			Assert.assertEquals(evaluationFieldOptions.get(i), actualHeader);
 			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
+				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - "
+						+ actualHeader);
 			} else {
 				System.out.println("Header matched: " + actualHeader);
 			}
@@ -304,8 +303,7 @@ public class StagesActions extends TestBase{
 		return this;
 	}
 
-	public StagesActions stageHistoryFields()
-	{
+	public StagesActions stageHistoryFields() {
 //		allLeftButton.get(0).click();
 //		// evaluationFieldOptions and stageHistoryOptions Field Options are same.
 //		selectOptionsInMultiSelect(multiSelectDropdownFrom,evaluationFieldOptions);
@@ -320,18 +318,18 @@ public class StagesActions extends TestBase{
 
 		js.executeScript("window.scrollTo(0, 1000);");
 
-		try{
+		try {
 			stageHistoryFieldHeader.get(0).getText();
-		}catch (NoSuchElementException e)
-		{
+		} catch (NoSuchElementException e) {
 			jsClick(stageHistorySection);
 		}
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
-			String actualHeader =evaluationFieldHeader.get(i).getText().trim();
+			String actualHeader = evaluationFieldHeader.get(i).getText().trim();
 			System.out.println(actualHeader);
 			softAssert.assertEquals(evaluationFieldOptions.get(i), actualHeader);
 			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
+				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - "
+						+ actualHeader);
 			} else {
 				System.out.println("Header matched: " + actualHeader);
 			}
@@ -340,8 +338,7 @@ public class StagesActions extends TestBase{
 		return this;
 	}
 
-
-	public void selectAndClickOptions( List<WebElement> dropdowns, List<String> options, List<WebElement> buttons) {
+	public void selectAndClickOptions(List<WebElement> dropdowns, List<String> options, List<WebElement> buttons) {
 		for (int i = 0; i < options.size(); i++) {
 			jsClick(allLeftButton.get(i));
 
@@ -356,27 +353,16 @@ public class StagesActions extends TestBase{
 		select.selectByVisibleText(option);
 	}
 
-
-
-	public StagesActions evaluationFilter(List<String>evaluationFieldOptions,String stageName)
-	{
-		selectAndClickOptions(
-				Arrays.asList(multiSelectDropdownFrom,
-						datePickerDropdown,
-						dateRangerDropdown,
-						multiSelectDropdown,
-						textBoxDropdown,
-						valueRangeDropdown),
-				evaluationFieldOptions,
-				SingleRightButton);
+	public StagesActions evaluationFilter(List<String> evaluationFieldOptions, String stageName) {
+		selectAndClickOptions(Arrays.asList(multiSelectDropdownFrom, datePickerDropdown, dateRangerDropdown,
+				multiSelectDropdown, textBoxDropdown, valueRangeDropdown), evaluationFieldOptions, SingleRightButton);
 
 		saveRecord();
 
 		navigateWithinAlchemy(callLogStageView);
-		selectByVisibleText(stageSearch,stageName);
+		selectByVisibleText(stageSearch, stageName);
 
 		// ****Filters Are Changed*********
-
 
 //		localFilterSection.click();
 //		List<String> actual = List.of();
@@ -395,11 +381,10 @@ public class StagesActions extends TestBase{
 		return this;
 	}
 
-	public StagesActions Sop()
-	{
+	public StagesActions Sop() {
 		sopDocUpload.sendKeys("C:/Users/W2390/IdeaProjects/Advaita/Advaita_TDD/SOPDocs/Newsletter.pdf");
 		saveRecord();
-		String uploadedSOP=SOPRecords.get(0).getText();
+		String uploadedSOP = SOPRecords.get(0).getText();
 		backButton.click();
 
 		navigateWithinAlchemy(callLogTabView);
@@ -409,25 +394,22 @@ public class StagesActions extends TestBase{
 		jsClick(SOPDocumentSection);
 		assert (SOPRecords.get(0).getText().equals(uploadedSOP));
 
-
 		return this;
 	}
 
-
-	public StagesActions SOPDelete(String recordName)
-	{
+	public StagesActions SOPDelete(String recordName) {
 		List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
 
 		for (WebElement row : rows) {
 
 			WebElement usernameColumn = row.findElement(By.xpath("./td[1]"));
 
-			if (recordName.equals(usernameColumn.getText()) ) {
+			if (recordName.equals(usernameColumn.getText())) {
 
 				WebElement button = row.findElement(By.cssSelector("img.delete_stages_sop"));
 				button.click();
 
-				System.out.println(recordName+" Successfully Clicked");
+				System.out.println(recordName + " Successfully Clicked");
 
 				break;
 			}
@@ -436,30 +418,19 @@ public class StagesActions extends TestBase{
 		navigateWithinAlchemy(callLogTabView);
 		insuranceStage.click();
 		recordEyeButton.get(0).click();
-		Assert.assertFalse(SOPRecords.contains(recordName),"Record still exists!");;
+		Assert.assertFalse(SOPRecords.contains(recordName), "Record still exists!");
+		;
 
 		return this;
 	}
 
-
-
 //	Write Code for SOP Delete
 
-	List<String> reportFieldsOptions = Arrays.asList(
-			"Name Of the Customer",
-			"Phone Number",
-			"tansUniqueId",
-			"AuditScore",
-			"ScoredValue",
-			"Remarks",
-			"Manager Review",
-			"Trans Unique Id"
-	);
+	List<String> reportFieldsOptions = Arrays.asList("Name Of the Customer", "Phone Number", "tansUniqueId",
+			"AuditScore", "ScoredValue", "Remarks", "Manager Review", "Trans Unique Id");
 
-	public StagesActions reportFields()
-	{
-		selectOptionsInMultiSelect(multiSelectDropdownFrom
-				,reportFieldsOptions);
+	public StagesActions reportFields() {
+		selectOptionsInMultiSelect(multiSelectDropdownFrom, reportFieldsOptions);
 		saveRecord();
 
 		navigateWithinAlchemy(validationStatusReport);
@@ -470,10 +441,11 @@ public class StagesActions extends TestBase{
 
 		int startIndex = 1;
 		for (int i = 0; i < reportFieldsOptions.size(); i++) {
-			String actualHeader =validationStatusReportHeaders.get(startIndex+i).getText().trim();
+			String actualHeader = validationStatusReportHeaders.get(startIndex + i).getText().trim();
 			Assert.assertEquals(reportFieldsOptions.get(i), actualHeader);
 			if (!actualHeader.equals(reportFieldsOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + reportFieldsOptions.get(i) + ", but found - " + actualHeader);
+				System.out.println(
+						"Header mismatch: Expected - " + reportFieldsOptions.get(i) + ", but found - " + actualHeader);
 			} else {
 				System.out.println("Header matched: " + actualHeader);
 			}
@@ -487,63 +459,48 @@ public class StagesActions extends TestBase{
 //		select.selectByVisibleText(toSelect);
 //	}
 
-	private void selectProcess()
-	{
-		selectByVisibleText(processField,"AJP");
-		selectByVisibleText(subProcessField,"Sub AJP");
-		selectByVisibleText(subSubProcessField,"Sub Sub AJP");
-		selectByVisibleText(stageSearch,"Insurance Stage");
+	private void selectProcess() {
+		selectByVisibleText(processField, "AJP");
+		selectByVisibleText(subProcessField, "Sub AJP");
+		selectByVisibleText(subSubProcessField, "Sub Sub AJP");
+		selectByVisibleText(stageSearch, "Insurance Stage");
 	}
 
-	List<String> stageProcessFieldsList = Arrays.asList(
-			"Name Of the Customer",
-			"Phone Number",
-			"To Stage Name",
-			"stageName",
-			"stageID",
-			"stageTransactionId"
-	);
+	List<String> stageProcessFieldsList = Arrays.asList("Name Of the Customer", "Phone Number", "To Stage Name",
+			"stageName", "stageID", "stageTransactionId");
 
-	public StagesActions stageProcessFields()
-	{
+	public StagesActions stageProcessFields() {
 
 //		selectOptionsInMultiSelect(multiSelectDropdownFrom,stageProcessFieldsList);
 //		saveRecord();
 
 		navigateWithinAlchemy(callLogTabView);
 		jsClick(insuranceStage);
-		jsClick(recordEyeButton.get(recordEyeButton.size()-1));
+		jsClick(recordEyeButton.get(recordEyeButton.size() - 1));
 		jsClick(interactionHistory);
 		unWait(1);
 		List<String> actualInteractionHeaders = new ArrayList<>();
 		for (int i = 0; i < stageProcessFieldsList.size(); i++) {
 			Object actualHeader = js.executeScript("return arguments[0].innerText;", interactionFieldsHeader.get(i));
-			String actualHeaders = (String)actualHeader;
+			String actualHeaders = (String) actualHeader;
 			System.out.println(actualHeaders);
 			actualInteractionHeaders.add(actualHeaders);
 			if (!actualHeader.equals(stageProcessFieldsList.get(i))) {
-				System.out.println("Header mismatch: Expected - " + stageProcessFieldsList.get(i) + ", but found - " + actualHeader);
+				System.out.println("Header mismatch: Expected - " + stageProcessFieldsList.get(i) + ", but found - "
+						+ actualHeader);
 			} else {
 				System.out.println("Header matched: " + actualHeader);
 			}
 
 //			Text() Is not Printing
 		}
-		Assert.assertTrue(actualInteractionHeaders.contains(stageProcessFieldsList) );
+		Assert.assertTrue(actualInteractionHeaders.contains(stageProcessFieldsList));
 		return this;
 	}
 
-	public StagesActions reportFilters()
-	{
-		selectAndClickOptions(
-				Arrays.asList(multiSelectDropdownFrom,
-						datePickerDropdown,
-						dateRangerDropdown,
-						multiSelectDropdown,
-						textBoxDropdown,
-						valueRangeDropdown),
-				evaluationFieldOptions,
-				SingleRightButton);
+	public StagesActions reportFilters() {
+		selectAndClickOptions(Arrays.asList(multiSelectDropdownFrom, datePickerDropdown, dateRangerDropdown,
+				multiSelectDropdown, textBoxDropdown, valueRangeDropdown), evaluationFieldOptions, SingleRightButton);
 		saveRecord();
 		navigateWithinAlchemy(validationStatusReport);
 		selectProcess();
@@ -552,10 +509,11 @@ public class StagesActions extends TestBase{
 		searchButton.click();
 		localFilterSection.click();
 		for (int i = 0; i < evaluationFieldOptions.size(); i++) {
-			String actualHeader =localFilterHeaders.get(i).getText().trim();
+			String actualHeader = localFilterHeaders.get(i).getText().trim();
 			System.out.println(actualHeader);
 			if (!actualHeader.equals(evaluationFieldOptions.get(i))) {
-				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - " + actualHeader);
+				System.out.println("Header mismatch: Expected - " + evaluationFieldOptions.get(i) + ", but found - "
+						+ actualHeader);
 			} else {
 				System.out.println("Header matched: " + actualHeader);
 			}
@@ -564,30 +522,94 @@ public class StagesActions extends TestBase{
 		return this;
 	}
 
-	public StagesActions disposition()
-	{
+	public StagesActions disposition() {
 		selectProcess();
 
-		Select select=new Select(dispositionDropdown);
+		Select select = new Select(dispositionDropdown);
 		select.selectByIndex(1);
 		dispositionSetSave.click();
-		String selectedOption=select.getFirstSelectedOption().getText();
-		Assert.assertEquals(dispositionQuestionSet.getText(),selectedOption);
+		String selectedOption = select.getFirstSelectedOption().getText();
+		Assert.assertEquals(dispositionQuestionSet.getText(), selectedOption);
 		backButton.click();
 		navigateWithinAlchemy(callLogTabView);
 		insuranceStage.click();
 		recordEyeButton.get(0).click();
 
-		selectOptionsInMultiSelect(dispositionStage,"Insurance Stage");
-		selectOptionsInMultiSelect(assignTo,"Capture_admin");
+		selectOptionsInMultiSelect(dispositionStage, "Insurance Stage");
+		selectOptionsInMultiSelect(assignTo, "Capture_admin");
 
-		Assert.assertEquals(dispositionQuestions.get(0).getText(),"Did you verify?");
+		Assert.assertEquals(dispositionQuestions.get(0).getText(), "Did you verify?");
 
 		return this;
 	}
 
+//NEW
+//============================================================================================================================
 
+	public void naviagtoStageActions(String EnterStageName) {
 
+		assertTrue(searchTextfield.isDisplayed(), "searchTextfield is nOt Displayed");
 
+		searchTextfield.sendKeys(EnterStageName);
+
+		searchButton.isDisplayed();
+
+		searchButton.click();
+
+		assertTrue(stageSettingListOptions.isDisplayed(), "stageSettingListOptions is Not Displayed");
+		stageSettingListOptions.click();
+
+		assertTrue(verifyStageSetiings.isDisplayed(), "Failed : Site setting page is not Displayed");
+
+	}
+
+	public void chooseStagesActionOption(String stageSettingsActions) throws IOException {
+
+		// PropertieFileUtil.extractAllAndStore(stagesActionS_FilePath,
+		// stageSettingsList, "stageSettingListActions");
+//
+//		// Step 1: Find all rows in the table
+//		List<WebElement> rows = driver.findElements(By.xpath("//tbody/../..//table//tr"));
+//
+//		boolean found = false;
+//
+//		for (WebElement row : rows) {
+//			try {
+//				// Step 2: Get the Stage Name text from the first <td>
+//				String stageName = row.findElement(By.xpath("./td[1]")).getText().trim();
+//
+//				// Step 3: Match with target name
+//				if (stageName.equalsIgnoreCase(targetStageName.trim())) {
+//
+//					// Step 4: Click on the "Settings" icon inside this row's last column
+//					WebElement settingsIcon = row.findElement(By.xpath(
+//							".//td[last()]//i[contains(@class, 'fa-cog') or contains(@class,'fa-gear') or contains(@class,'settings')]"));
+//					settingsIcon.click();
+//					System.out.println("Clicked Settings for Stage: " + stageName);
+//					found = true;
+//					break;
+//				}
+//
+//			} catch (Exception e) {
+//				System.out.println("Issue with row: " + e.getMessage());
+//			}
+//		}
+//
+//		if (!found) {
+//			System.out.println("Stage '" + targetStageName + "' not found!");
+//		}
+
+	}
+
+	public void chooseStagesActionOption() throws IOException {
+
+		String reportFileds = PropertieFileUtil.getSingleTextFromPropertiesFile(stagesActionS_FilePath,
+				"stageSettingsActions9");
+
+		PropertieFileUtil.clickIfMatch(stageSettingsList, reportFileds);
+		
+		//DropDown.selectMultipleOptionsWithCustomSelection(driver, , null, 0);
+
+	}
 
 }
