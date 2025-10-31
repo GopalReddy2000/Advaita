@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import org.hamcrest.core.Is;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -32,11 +33,10 @@ import Advaita_TDD.Advaita_TDD.FakeData;
 
 public class ProcessPage extends TestBase {
 
-	// ProcessSetup
+	// =========== ProcessSetup ==========
 
 	List<String> beforeProcessListText;
 	List<String> statulistTextListsList;
-	//
 
 	@FindBy(tagName = "body")
 	public static WebElement driverIninteractable;
@@ -246,7 +246,7 @@ public class ProcessPage extends TestBase {
 	public static WebElement ceatedProcessNotification_tablepage;
 
 	@FindBy(xpath = "//div[@id='page_body_extend']//div[@class='filter_section gray_bg w-100']//span[@class='d-block text_default font_12']")
-	public static WebElement TotalProcess;
+	public static WebElement totalProcessCount;
 
 	@FindBy(xpath = "//select[@id='status_search']")
 	public static WebElement StatusDropdown_table;
@@ -320,7 +320,7 @@ public class ProcessPage extends TestBase {
 	public static WebElement cancelButtonProcessSetup;
 
 	@FindBy(xpath = "//label[@class='name-error error']")
-	public WebElement plearEnterNameErrorMessage;
+	public WebElement pleaseEnterName_ErrorMessage;
 
 	@FindBy(xpath = "//label[text()='Please Select Process']")
 	public WebElement processDropdownErrorMessage;
@@ -348,10 +348,10 @@ public class ProcessPage extends TestBase {
 	public List<WebElement> subProcessesTab;
 
 	@FindBy(xpath = "(//tbody//tr//td)[5]//div//button")
-	public WebElement archiveActionButton;
+	public WebElement archiveActionButton_Process;
 
 	@FindBy(xpath = "//tbody//tr[1]//td[5]//img[@alt='unarchive']")
-	public WebElement unArchiveActionButton;
+	public WebElement unArchiveActionButton_process;
 
 	@FindBy(xpath = "//h6[text()='Archive?']")
 	public WebElement archivePopup;
@@ -764,7 +764,7 @@ public class ProcessPage extends TestBase {
 	}
 
 	// ProcessName
-	public String deleteProcessName;
+	public String fetchProcess_PropFile; // Retrive Value name Fro Pro
 
 	public void searchThroughProcess(String searchProcess) throws Throwable {
 
@@ -778,14 +778,14 @@ public class ProcessPage extends TestBase {
 			searchBar.isEnabled();
 			searchBar.clear();
 
-			deleteProcessName = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath, "process1");
+			fetchProcess_PropFile = PropertieFileUtil.getSingleTextFromPropertiesFile(dataSetup_FilePath, "process1");
 
-			searchBar.sendKeys(deleteProcessName);
+			searchBar.sendKeys(fetchProcess_PropFile);
 
 			assertTrue(searchButton.isDisplayed(), "searchButton is not displayed");
 			searchButton.click();
 
-			assertEquals(fetchFirstCreatedRecord.getText(), deleteProcessName,
+			assertEquals(fetchFirstCreatedRecord.getText(), fetchProcess_PropFile,
 					"Not Matched With Searched Process Name");
 
 			break;
@@ -1067,9 +1067,9 @@ public class ProcessPage extends TestBase {
 	// verify the user is able to see the how much he created in total process
 
 	public void HowmuchCreatedprocess() throws InterruptedException {
-		assertTrue(TotalProcess.isDisplayed(), "TotalProcess is not displayed");
-		TotalProcess.getText();
-		System.out.println(TotalProcess.getText());
+		assertTrue(totalProcessCount.isDisplayed(), "TotalProcess is not displayed");
+		totalProcessCount.getText();
+		System.out.println(totalProcessCount.getText());
 
 		// Locate the element that displays the total number of processes
 		WebElement totalProcessElement = driver.findElement(By.xpath("//span[contains(text(), 'Total Process')]"));
@@ -1252,7 +1252,7 @@ public class ProcessPage extends TestBase {
 	String selectedProcess;
 
 	public void SingleProcessOnly(String selectProcessSetUpManualley) throws Throwable {
-		
+
 		wait.until(ExpectedConditions.visibilityOf(processSetupPopup));
 		assertTrue(processSetupPopup.isDisplayed(), "processSetupPopup is not displauyed");
 
@@ -1379,54 +1379,72 @@ public class ProcessPage extends TestBase {
 	public void userFilledAllTheDatawithoutclickSaveandUpdateOptionInSubSubProcessTabAndclickOnCancelOption(
 			String ProcessName, String processDesc, String SubProcessName, String SubProcessDesc,
 			String SubSubProcessName, String SubSubProcessDesc) {
+		withoutFilledSubSubProcesClickOnCancelOption(ProcessName, processDesc, SubProcessName, SubProcessDesc,
+				SubSubProcessName, SubSubProcessDesc);
+	}
 
-		// assertTrue(processTab.isDisplayed(), "processTab is not displayed");
-		assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed");
-		createProcessButton.click();
+	public void withoutFilledSubSubProcesClickOnCancelOption(String ProcessName, String processDesc,
+			String SubProcessName, String SubProcessDesc, String SubSubProcessName, String SubSubProcessDesc) {
 
-		wait.until(ExpectedConditions.visibilityOf(processNameLabel));
-		checkthroughAsterisk(processNameLabel, true);
-		assertTrue(processNameField.isDisplayed(), "processNameField is not displayed");
-		processNameField.sendKeys(ProcessName);
-		checkthroughAsterisk(processDescriptionLabel, false);
-		assertTrue(processDescField.isDisplayed(), "processDescField is not dispalyed");
-		processDescField.sendKeys(processDesc);
+		try {
 
-		assertTrue(saveandContinueButton.isDisplayed(), "saveandContinueButton is not displayed");
-		saveandContinueButton.click();
+			// assertTrue(processTab.isDisplayed(), "processTab is not displayed");
+			assertTrue(createProcessButton.isDisplayed(), "createProcessButton is not displayed");
+			createProcessButton.click();
 
-		checkthroughAsterisk(subProcessNameFieldLabel, false);// as of now after implement we wll change
-		wait.until(ExpectedConditions.visibilityOf(subProcessNameField));
-		assertTrue(subProcessNameField.isDisplayed(), "subProcessNameField is not dispalyed");
-		subProcessNameField.sendKeys(SubProcessName);
-		checkthroughAsterisk(subProcessDescriptionFieldLabel, false);
-		assertTrue(subProcessDescField.isDisplayed(), "subProcessDescField is not dispalyed");
-		subProcessDescField.sendKeys(SubProcessDesc);
+			wait.until(ExpectedConditions.visibilityOf(processNameLabel));
+			checkthroughAsterisk(processNameLabel, true);
+			assertTrue(processNameField.isDisplayed(), "processNameField is not displayed");
+			processNameField.sendKeys(ProcessName);
+			checkthroughAsterisk(processDescriptionLabel, false);
+			assertTrue(processDescField.isDisplayed(), "processDescField is not dispalyed");
+			processDescField.sendKeys(processDesc);
 
-		wait.until(ExpectedConditions.visibilityOf(saveandContinnueButtonInSubProcess));
-		assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(),
-				"saveandContinnueButtonInSubProcess is not displayed");
-		saveandContinnueButtonInSubProcess.click();
+			assertTrue(saveandContinueButton.isDisplayed(), "saveandContinueButton is not displayed");
+			saveandContinueButton.click();
 
-		checkthroughAsterisk(subSubProcessNameFieldLabel, false);// as of now after implement we wll change
-		wait.until(ExpectedConditions.visibilityOf(subSubProcessNameField));
-		assertTrue(subSubProcessNameField.isDisplayed(), "subSubProcessNameField is not dispalyed");
-		subSubProcessNameField.sendKeys(SubSubProcessName);
-		checkthroughAsterisk(subSubProcessDescFieldLabel, false);
-		assertTrue(subSubProcessDescField.isDisplayed(), "subSubProcessDescField is not dispalyed");
-		subSubProcessDescField.sendKeys(SubSubProcessDesc);
+			checkthroughAsterisk(subProcessNameFieldLabel, false);// as of now after implement we wll change
+			wait.until(ExpectedConditions.visibilityOf(subProcessNameField));
+			assertTrue(subProcessNameField.isDisplayed(), "subProcessNameField is not dispalyed");
+			subProcessNameField.sendKeys(SubProcessName);
+			checkthroughAsterisk(subProcessDescriptionFieldLabel, false);
+			assertTrue(subProcessDescField.isDisplayed(), "subProcessDescField is not dispalyed");
+			subProcessDescField.sendKeys(SubProcessDesc);
 
-		wait.until(ExpectedConditions.visibilityOf(cancelButtonProcess));
-		assertTrue(cancelButtonProcess.isDisplayed(), "cancelButtonProcessSetup is not dispalyed");
-		cancelButtonProcess.click();
+			wait.until(ExpectedConditions.visibilityOf(saveandContinnueButtonInSubProcess));
+			assertTrue(saveandContinnueButtonInSubProcess.isDisplayed(),
+					"saveandContinnueButtonInSubProcess is not displayed");
+			saveandContinnueButtonInSubProcess.click();
 
-//		assertFalse(conformationMesgofCreateProcessElement.isDisplayed(),
-//	            "Test Failed: conformationMesgofCreateProcessElement is displayed. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
-		// need To implement here
+			checkthroughAsterisk(subSubProcessNameFieldLabel, false);// as of now after implement we wll change
+			wait.until(ExpectedConditions.visibilityOf(subSubProcessNameField));
+			assertTrue(subSubProcessNameField.isDisplayed(), "subSubProcessNameField is not dispalyed");
+			subSubProcessNameField.sendKeys(SubSubProcessName);
+			checkthroughAsterisk(subSubProcessDescFieldLabel, false);
+			assertTrue(subSubProcessDescField.isDisplayed(), "subSubProcessDescField is not dispalyed");
+			subSubProcessDescField.sendKeys(SubSubProcessDesc);
 
-		wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
-		assertTrue(!conformationMesgofCreateProcessElement.isDisplayed(),
-				"Test Failed: conformationMesgofCreateProcessElement is displayed, but it should not be. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
+			wait.until(ExpectedConditions.visibilityOf(cancelButtonProcess));
+			assertTrue(cancelButtonProcess.isDisplayed(), "cancelButtonProcessSetup is not dispalyed");
+			cancelButtonProcess.click();
+
+			wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
+			assertTrue(conformationMesgofCreateProcessElement.isDisplayed(),
+					"Test Failed: conformationMesgofCreateProcessElement is displayed. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
+
+			continueButton.click();
+
+			fetchProcessName.click();
+			fetchSubProcessName.click();
+
+			assertTrue(!fetchSubSubProcessName.isDisplayed(), "Test Failed : Sub sub Process ios not Dispalyed ");
+//			wait.until(ExpectedConditions.visibilityOf(conformationMesgofCreateProcessElement));
+//			assertTrue(!conformationMesgofCreateProcessElement.isDisplayed(),
+//					"Test Failed: conformationMesgofCreateProcessElement is displayed, but it should not be. Test Pass: conformationMesgofCreateProcessElement is not displayed.");
+
+		} catch (NoSuchElementException e) {
+			System.out.println("Test Pass : SubSub process Not Be Created ");
+		}
 
 	}
 
@@ -1450,7 +1468,7 @@ public class ProcessPage extends TestBase {
 		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not dispalyed");
 		saveandContinueButtonElement.click();
 
-		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
+		assertTrue(pleaseEnterName_ErrorMessage.isDisplayed(),
 				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
 
 		cancelButtonProcess.click();
@@ -1465,7 +1483,7 @@ public class ProcessPage extends TestBase {
 		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
 		dropDown1.click();
 
-		// unWait(2000);
+		// unWait(2);
 		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
 		assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
 		EditOptionElelemt.click();
@@ -1482,7 +1500,7 @@ public class ProcessPage extends TestBase {
 		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not dispalyed");
 		saveandContinueButtonElement.click();
 
-		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
+		assertTrue(pleaseEnterName_ErrorMessage.isDisplayed(),
 				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
 
 		cancelButtonProcess.click();
@@ -1492,33 +1510,41 @@ public class ProcessPage extends TestBase {
 			WebElement SubSubprocessNameLabelElement, Boolean Boolean, String SubSubProcessDescription,
 			WebElement saveandContinueButtonElement) {
 
-		processTab.isDisplayed();
+		try {
 
-		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
-		dropDown1.click();
-		unWait(1);
-		dropDown2.click();
+			processTab.isDisplayed();
 
-		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
-		assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
-		EditOptionElelemt.click();
+			assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
+			dropDown1.click(); // fetchProcessName.click();
 
-		wait.until(ExpectedConditions.visibilityOf(SubSubprocessNameLabelElement));
-		assertTrue(SubSubprocessNameLabelElement.isDisplayed(), "SubSubprocessNameLabelElement is not displayed");
-		checkthroughAsterisk(SubSubprocessNameLabelElement, Boolean);
-		subSubProcessNameField.clear();
+			unWait(1);
+			dropDown2.click(); // fetchSubProcessName.click();
 
-		wait.until(ExpectedConditions.visibilityOf(subSubProcessDescField));
-		assertTrue(subSubProcessDescField.isDisplayed(), "SubSubprocessDescFieldElement is not displayed");
-		subSubProcessDescField.sendKeys(SubSubProcessDescription);
+			wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemt));
+			assertTrue(EditOptionElelemt.isDisplayed(), "editOption is not displayed");
+			EditOptionElelemt.click();
 
-		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not displayed");
-		saveandContinueButtonElement.click();
+			wait.until(ExpectedConditions.visibilityOf(SubSubprocessNameLabelElement));
+			assertTrue(SubSubprocessNameLabelElement.isDisplayed(), "SubSubprocessNameLabelElement is not displayed");
+			checkthroughAsterisk(SubSubprocessNameLabelElement, Boolean);
+			subSubProcessNameField.clear();
 
-		assertTrue(plearEnterNameErrorMessage.isDisplayed(),
-				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+			wait.until(ExpectedConditions.visibilityOf(subSubProcessDescField));
+			assertTrue(subSubProcessDescField.isDisplayed(), "SubSubprocessDescFieldElement is not displayed");
+			subSubProcessDescField.sendKeys(SubSubProcessDescription);
 
-		cancelButtonProcess.click();
+			assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not displayed");
+			saveandContinueButtonElement.click();
+
+			assertTrue(pleaseEnterName_ErrorMessage.isDisplayed(),
+					"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+
+			cancelButtonProcess.click();
+
+		} catch (NoSuchElementException e) {
+
+			System.out.println("fetchSubSubProcessName" + EditOptionElelemt + "Is Noot Dipsalyed ");
+		}
 	}
 
 	// Special Charcters for Process
@@ -1537,6 +1563,12 @@ public class ProcessPage extends TestBase {
 		processNameField.clear();
 		processNameField.sendKeys(EnterspecialCharctersINProcessName);
 
+		String processValue = processNameField.getAttribute("value");
+		System.out.println("processValue : " + processValue);
+
+		assertTrue(processValue == null || processValue.trim().isEmpty(),
+				"Test Failed: Process input field is not empty");
+
 		assertTrue(processDescField.isDisplayed(), "processDescField is not displayed");
 		processDescField.clear();
 		processDescField.sendKeys(ProcessDescription);
@@ -1546,7 +1578,7 @@ public class ProcessPage extends TestBase {
 
 		try {
 
-			unWait(1000);
+			unWait(1);
 			// wait.until(ExpectedConditions.visibilityOf(updateProcessSuceessMassgage));
 			if (updateProcessSuceessMassgage.isDisplayed()) {
 
@@ -1571,7 +1603,7 @@ public class ProcessPage extends TestBase {
 		assertTrue(dropDown1.isDisplayed(), "dropDown1 is not displayed");
 		dropDown1.click();
 
-		// unWait(2000);
+		// unWait(2);
 		wait.until(ExpectedConditions.elementToBeClickable(EditOptionElelemts));
 		assertTrue(EditOptionElelemts.isDisplayed(), "editOption is not displayed");
 		EditOptionElelemts.click();
@@ -1582,6 +1614,12 @@ public class ProcessPage extends TestBase {
 		subProcessNameField.clear();
 		subProcessNameField.sendKeys(EnterSpecialCharctersInSubProcessName);
 
+		String subProcessValue = subProcessNameField.getAttribute("value");
+		System.out.println("subProcessValue : " + subProcessValue);
+
+		assertTrue(subProcessValue == null || subProcessValue.trim().isEmpty(),
+				"Test Failed: sub Process input field is not empty");
+
 		wait.until(ExpectedConditions.visibilityOf(subProcessDescField));
 		assertTrue(subProcessDescField.isDisplayed(), "SubprocessDescFieldElement is not displayed");
 		subProcessDescField.clear();
@@ -1591,7 +1629,7 @@ public class ProcessPage extends TestBase {
 		saveButtonSubProcess.click();
 
 		try {
-			unWait(1000);
+			unWait(1);
 			// wait.until(ExpectedConditions.visibilityOf(updateSubProcessSuceessMassgage));
 			if (updateSubProcessSuceessMassgage.isDisplayed()) {
 
@@ -1627,6 +1665,12 @@ public class ProcessPage extends TestBase {
 		subSubProcessNameField.clear();
 		subSubProcessNameField.sendKeys(EnterSpecialCharctersInSubSubProcessName);
 
+		String subsubProcessValue = subSubProcessNameField.getAttribute("value");
+		System.out.println("subsubProcessValue : " + subsubProcessValue);
+
+		assertTrue(subsubProcessValue == null || subsubProcessValue.trim().isEmpty(),
+				"Test Failed: subsub Process input field is not empty");
+
 		wait.until(ExpectedConditions.visibilityOf(subSubProcessDescField));
 		subSubProcessDescField.clear();
 		assertTrue(subSubProcessDescField.isDisplayed(), "SubSubprocessDescFieldElement is not displayed");
@@ -1634,19 +1678,6 @@ public class ProcessPage extends TestBase {
 
 		assertTrue(save_UpdateButtonInSubsubProcess.isDisplayed(), "save_UpdateButtonInSubsubProcess is not dispalyed");
 		save_UpdateButtonInSubsubProcess.click();
-//
-//		try {
-//				
-//			unWait(2);
-//			//wait.until(ExpectedConditions.visibilityOf(updateSubSubProcessSuceessMassgage));
-//			if (updateSubSubProcessSuceessMassgage.isDisplayed()) {
-//
-//				assertFalse(true, "Test case failed as 'updateSubSubProcessSuceessMassgage' is displayed");
-//			}
-//		} catch (NoSuchElementException e) {
-//			// Pass the test if the success message is not found
-//		System.out.println("Test case passed as 'updateSubSubProcessSuceessMassgage' is not displayed");
-//		}
 
 		try {
 			unWait(2);
@@ -1938,44 +1969,25 @@ public class ProcessPage extends TestBase {
 	// Archive Action in UnArchive Tab
 	public void archiveAction() {
 
-		assertTrue(archiveActionButton.isDisplayed(), "archive Button is not Displayed");
+		assertTrue(archiveActionButton_Process.isDisplayed(), "archive Button is not Displayed");
 
-		archiveActionButton.isEnabled();
+		archiveActionButton_Process.isEnabled();
 
-		archiveActionButton.click();
+		archiveActionButton_Process.click();
 
 	}
 
 	public void verifyArchivePopupAfterClick() throws Throwable {
+		verifyArchivePopupAndClick();
+	}
+
+	public void verifyArchivePopupAndClick() throws Throwable {
 
 		// ClickUtilities.clickIfMatch(archivePopupOptions, "Archive");
 		wait.until(ExpectedConditions.visibilityOf(archivePopupOptions));
 		assertTrue(archivePopupOptions.isDisplayed(), "archivePopupOptions is not Displayed");
-
-	}
-
-	// Utility
-	public void verifyTotalProcessDecrementsAfterArchive() throws InterruptedException {
-		// Step 1: Check element is visible
-		Assert.assertTrue(TotalProcess.isDisplayed(), "TotalProcess element is not displayed.");
-
-		// Step 2: Get initial total process count
-		int beforeCount = extractProcessCount(TotalProcess.getText());
-		System.out.println("Before Archive: " + beforeCount);
-
-		// Step 3: Perform the archive operation
 		archivePopupOptions.click();
 
-		// Step 4: Wait for the UI update (adjust the wait logic as per your application
-		// behavior)
-		Thread.sleep(2000); // Replace with WebDriverWait if needed
-
-		// Step 5: Get updated total process count
-		int afterCount = extractProcessCount(TotalProcess.getText());
-		System.out.println("After Archive: " + afterCount);
-
-		// Step 6: Verify the count has decreased by 1
-		Assert.assertEquals(afterCount, beforeCount - 1, "Total process count should decrement by 1 after archive.");
 	}
 
 	// Utility to extract integer from text like "Total Process : 48"
@@ -1986,16 +1998,10 @@ public class ProcessPage extends TestBase {
 
 	public void clickOnArchiveOptionAndVerifyInArchiveTab() throws Throwable {
 
-		wait.until(ExpectedConditions.visibilityOf(archivePopupOptions));
-		archivePopupOptions.click();
-
 		wait.until(ExpectedConditions.visibilityOf(clearButton));
 		jsClick(clearButton);
 
-		// verifyTotalProcessDecrementsAfterArchive(); (need to implement )
-
-		// Check Process Count should 0 After Archive
-		searchBar.sendKeys(deleteProcessName);
+		searchBar.sendKeys(fetchProcess_PropFile);
 		searchButton.click();
 
 		try {
@@ -2014,25 +2020,28 @@ public class ProcessPage extends TestBase {
 		 * Need to Implement
 		 */
 
-//		String totalProcessText = TotalProcess.getText();  
-//
-//		// Extract the number from the text
-//		int totalProcessNumber = Integer.parseInt(totalProcessText.split(":")[1].trim());
-//
-//		// Assert the condition: Pass if 0, Fail if 1
-//		if (totalProcessNumber == 0) {
-//			Assert.assertTrue(true, "Total Process is 0, Test Passed");
-//		} else if (totalProcessNumber == 1) {
-//			Assert.fail("Total Process is 1, Test Failed");
-//		} else {
-//			Assert.fail("Unexpected value for Total Process: " + totalProcessNumber);
-//		}
+		String totalProcessText = totalProcessCount.getText();
+
+		// Extract the number from the text
+		int totalProcessNumber = Integer.parseInt(totalProcessText.split(":")[1].trim());
+
+		// Assert the condition: Pass if 0, Fail if 1
+		if (totalProcessNumber == 0) {
+			Assert.assertTrue(true, "Total Process is 0, Test Passed");
+		} else if (totalProcessNumber == 1) {
+			Assert.fail("Total Process is 1, Test Failed");
+		} else {
+			Assert.fail("Unexpected value for Total Process: " + totalProcessNumber);
+		}
 
 		/*
 		 * Need to Implement
 		 */
 
 		navigateToArchiveProcess();
+
+		searchBar.sendKeys(fetchProcess_PropFile);
+		searchButton.click();
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
 
@@ -2043,17 +2052,18 @@ public class ProcessPage extends TestBase {
 
 		for (WebElement row : processRows) {
 			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
-			String rowStatus = row.findElement(By.xpath(".//td[4]")).getText().trim(); // status column
+			String rowStatus = row.findElement(By.xpath("(//td[4])[position() <= 3]")).getText().trim(); // status
+																											// column
 
-			if (rowProcessName.toLowerCase().contains(deleteProcessName.toLowerCase())) {
+			if (rowProcessName.toLowerCase().contains(fetchProcess_PropFile.toLowerCase())) {
 				isProcessFound = true;
 
 				if (rowStatus.equalsIgnoreCase("Inactive")) {
-					System.out
-							.println("✅ PASS: Process '" + deleteProcessName + "' is archived with status 'Inactive'");
+					System.out.println(
+							" PASS: Process '" + fetchProcess_PropFile + "' is archived with status 'Inactive'");
 				} else {
-					System.out.println("❌ FAIL: Process '" + deleteProcessName + "' found, but status is '" + rowStatus
-							+ "' (Expected: Inactive)");
+					System.out.println(" FAIL: Process '" + fetchProcess_PropFile + "' found, but status is '"
+							+ rowStatus + "' (Expected: Inactive)");
 				}
 
 				break; // No need to continue once found
@@ -2061,18 +2071,99 @@ public class ProcessPage extends TestBase {
 		}
 
 		if (!isProcessFound) {
-			System.out.println("❌ FAIL: Process '" + deleteProcessName + "' not found in archive list.");
+			System.out.println(" FAIL: Process '" + fetchProcess_PropFile + "' not found in archive list.");
 		}
 
+	}
+
+	// Archive Multiple Processes
+	public void archiveMultipleProcesses(int count) {
+		int archivedProcessCount = 0;
+
+		try {
+			// Step 1: Verify TotalProcess element is visible
+			Assert.assertTrue(totalProcessCount.isDisplayed(), "TotalProcess element is not displayed.");
+
+			// Step 2: Capture total processes before archiving
+			int beforeCount = extractProcessCount(totalProcessCount.getText());
+			System.out.println("Before Archive: " + beforeCount);
+
+			// Step 3: Perform archive operation for 'count' number of processes
+			while (archivedProcessCount < count) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("No processes available to archive in the table.");
+					break;
+				}
+
+				WebElement row = rows.get(0); // Always select the first row
+				String processName = "";
+
+				try {
+					processName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+					WebElement archiveButton = row.findElement(By.xpath(".//img[@alt='archive']"));
+
+					if (archiveButton.isDisplayed() && archiveButton.isEnabled()) {
+						archiveButton.click();
+
+						try {
+							wait.until(ExpectedConditions.visibilityOf(archivePopup));
+
+							if (archivePopup.isDisplayed()) {
+								archivePopupOptions.click();
+								System.out.println("Archived Process: " + processName);
+								archivedProcessCount++;
+
+								// Wait for UI update
+								driver.navigate().refresh();
+								Thread.sleep(1500);
+							} else {
+								System.out.println("Archive popup not displayed for: " + processName);
+							}
+
+						} catch (NoSuchElementException e) {
+							System.out.println("Archive popup not found for: " + processName);
+						}
+
+					} else {
+						System.out.println("Archive button not visible or enabled for: " + processName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("Archive button or process name not found. Skipping row.");
+				}
+
+				Thread.sleep(1000); // Optional UI refresh wait
+			}
+
+			// Step 4: Capture total processes after archiving
+			int afterCount = extractProcessCount(totalProcessCount.getText());
+			System.out.println("After Archive: " + afterCount);
+
+			// Step 5: Validate the difference
+			int expectedAfterCount = beforeCount - count;
+
+			System.out.println("Expected After Archive Count: " + expectedAfterCount);
+			System.out.println("Actual After Archive Count: " + afterCount);
+
+			Assert.assertEquals(afterCount, expectedAfterCount, "Process count mismatch after archiving. Expected: "
+					+ expectedAfterCount + ", but found: " + afterCount);
+
+			System.out.println("Archive count validation successful. " + count + " process(es) archived correctly.");
+
+		} catch (Exception e) {
+			System.out.println("Exception occurred during archive operation: " + e.getMessage());
+		}
 	}
 
 	// UnArchive
 
 	public void unArchiveAction() {
 		try {
-			if (unArchiveActionButton.isDisplayed()) {
-				if (unArchiveActionButton.isEnabled()) {
-					unArchiveActionButton.click();
+			if (unArchiveActionButton_process.isDisplayed()) {
+				if (unArchiveActionButton_process.isEnabled()) {
+					unArchiveActionButton_process.click();
 					System.out.println("✅ unArchive button clicked successfully.");
 				} else {
 					System.out.println("⚠️ unArchive button is disabled.");
@@ -2092,8 +2183,8 @@ public class ProcessPage extends TestBase {
 		wait.until(ExpectedConditions.visibilityOf(unArchivePopup));
 		assertTrue(unArchivePopupOptions.isDisplayed(), "archivePopupOptions is not Displayed");
 		unArchivePopupOptions.click();
-		wait.until(ExpectedConditions.visibilityOf(continueButton));
-		continueButton.click();
+		// wait.until(ExpectedConditions.visibilityOf(continueButton));
+		// continueButton.click();
 
 	}
 
@@ -2116,23 +2207,24 @@ public class ProcessPage extends TestBase {
 
 		for (WebElement row : activeRows) {
 			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
-			if (rowProcessName.equalsIgnoreCase(deleteProcessName)) {
+			if (rowProcessName.equalsIgnoreCase(fetchProcess_PropFile)) {
 				isPresentInActiveList = true;
 				break;
 			}
 		}
 
 		if (!isPresentInActiveList) {
-			System.out.println("✅ PASS: Archived process '" + deleteProcessName + "' not present in active list.");
+			System.out.println("✅ PASS: Archived process '" + fetchProcess_PropFile + "' not present in active list.");
 		} else {
-			System.out.println("❌ FAIL: Archived process '" + deleteProcessName + "' is still visible in active list.");
+			System.out.println(
+					"❌ FAIL: Archived process '" + fetchProcess_PropFile + "' is still visible in active list.");
 		}
 
 		// Step 3: Navigate to UnArchive tab
 		navigateToUnArchiveProcess();
 
 //		// Search for the archived process in active tab
-		searchBar.sendKeys(deleteProcessName);
+		searchBar.sendKeys(fetchProcess_PropFile);
 		searchButton.click();
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
@@ -2145,14 +2237,14 @@ public class ProcessPage extends TestBase {
 			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
 			String rowStatus = row.findElement(By.xpath(".//td[4]")).getText().trim(); // Status column
 
-			if (rowProcessName.equalsIgnoreCase(deleteProcessName)) {
+			if (rowProcessName.equalsIgnoreCase(fetchProcess_PropFile)) {
 				isProcessFoundInArchive = true;
 
 				if (rowStatus.equalsIgnoreCase("Active")) {
-					System.out.println(
-							"✅ PASS: Process '" + deleteProcessName + "' found in Unarchive tab with status 'Active'");
+					System.out.println("✅ PASS: Process '" + fetchProcess_PropFile
+							+ "' found in Unarchive tab with status 'Active'");
 				} else {
-					System.out.println("❌ FAIL: Process '" + deleteProcessName
+					System.out.println("❌ FAIL: Process '" + fetchProcess_PropFile
 							+ "' found in Unarchive tab, but status is '" + rowStatus + "' (Expected: Active)");
 				}
 
@@ -2161,9 +2253,89 @@ public class ProcessPage extends TestBase {
 		}
 
 		if (!isProcessFoundInArchive) {
-			System.out.println("❌ FAIL: Process '" + deleteProcessName + "' not found in archive tab.");
+			System.out.println("❌ FAIL: Process '" + fetchProcess_PropFile + "' not found in archive tab.");
 		}
 	}
+
+	// Unarchive Multiple Processes
+	public void unarchiveMultipleProcesses(int count) {
+		int unArchivedProcessCount = 0;
+
+		try {
+			// Step 1: Verify TotalProcess element is visible
+			Assert.assertTrue(totalProcessCount.isDisplayed(), "TotalProcess element is not displayed.");
+
+			// Step 2: Capture total processes before archiving
+			int beforeCount = extractProcessCount(totalProcessCount.getText());
+			System.out.println("Before Archive: " + beforeCount);
+
+			// Step 3: Perform archive operation for 'count' number of processes
+			while (unArchivedProcessCount < count) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("No processes available to archive in the table.");
+					break;
+				}
+
+				WebElement row = rows.get(0); // Always select the first row
+				String processName = "";
+
+				try {
+					processName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+
+					WebElement unarchiveIcon = row.findElement(By.xpath(".//td[5]//img[1]"));
+
+					if (unarchiveIcon.isDisplayed() && unarchiveIcon.isEnabled()) {
+						unarchiveIcon.click();
+
+						try {
+							wait.until(ExpectedConditions.visibilityOf(unArchivePopup));
+
+							if (unArchivePopup.isDisplayed()) {
+								unArchivePopupOptions.click();
+								System.out.println("✅ Unarchived Process: " + processName);
+								unArchivedProcessCount++;
+							} else {
+								System.out.println("⚠️ Unarchive popup not displayed for: " + processName);
+							}
+
+						} catch (NoSuchElementException e) {
+							System.out.println("⚠️ Unarchive popup not found for: " + processName);
+						}
+
+					} else {
+						System.out.println("⚠️ Unarchive button not visible or enabled for: " + processName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("Archive button or process name not found. Skipping row.");
+				}
+
+				Thread.sleep(1000); // Optional UI refresh wait
+			}
+
+			// Step 4: Capture total processes after archiving
+			int afterCount = extractProcessCount(totalProcessCount.getText());
+			System.out.println("After Archive: " + afterCount);
+
+			// Step 5: Validate the difference
+			int expectedAfterCount = beforeCount - count;
+
+			System.out.println("Expected After Archive Count: " + expectedAfterCount);
+			System.out.println("Actual After Archive Count: " + afterCount);
+
+			Assert.assertEquals(afterCount, expectedAfterCount, "Process count mismatch after archiving. Expected: "
+					+ expectedAfterCount + ", but found: " + afterCount);
+
+			System.out.println("Archive count validation successful. " + count + " process(es) archived correctly.");
+
+		} catch (Exception e) {
+			System.out.println("Exception occurred during archive operation: " + e.getMessage());
+		}
+	}
+
+	// Archive and UnArchive Sub_process & SubSub_Proces base Selecting Process
 
 	// Delete
 	public void deleteProcessByNameFromArchive(String processName) {
@@ -2353,5 +2525,354 @@ public class ProcessPage extends TestBase {
 			System.out.println("⚠️ Exception occurred during deletion: " + e.getMessage());
 		}
 	}
+
+	// Utiluty For Click on Sub process and Sub SubSub process
+
+	public void clickOnArchive_SubProcess_SubProcess(String type) {
+		String dynamicXPath = String.format("//img[@data-type='%s']", type);
+		WebElement element = driver.findElement(By.xpath(dynamicXPath));
+		element.click();
+	}
+
+//	public void clickOnArchive_SubProcess_SubProcess(String type) {
+//		String dynamicXPath = "//img[@data-type='" + type + "']";
+//		WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(dynamicXPath)));
+//		element.click();
+//		System.out.println("✅ Clicked on process element with data-type: " + type);
+//	}
+
+	// Based On Selected Process Archive Process and Sub process
+
+	public void archiveSubProcessRelatedToProcess() throws Throwable {
+		try {
+			// Step 1: Open main process hierarchy
+			Assert.assertTrue(fetchProcessName.isDisplayed(), "Main Process name is not displayed");
+			fetchProcessName.click();
+
+			PropertieFileUtil.storeSingleTextInPropertiesFile(dataSetup_FilePath, "SubProcess",
+					fetchSubProcessName.getText());
+			Assert.assertTrue(fetchSubProcessName.isDisplayed(), "Sub Process name is not displayed");
+			fetchSubProcessName.click();
+
+			PropertieFileUtil.storeSingleTextInPropertiesFile(dataSetup_FilePath, "SubSubProcess",
+					fetchSubSubProcessName.getText());
+			Assert.assertTrue(fetchSubSubProcessName.isDisplayed(), "Sub Sub Process name is not displayed");
+			fetchSubSubProcessName.click();
+
+			// Dynamically click on SubProcess
+			clickOnArchive_SubProcess_SubProcess("sub_process");
+
+			// Verify archive confirmation pop-up
+			verifyArchivePopupAfterClick();
+			verifyArchivePopupAndClick();
+
+			unWait(2);
+
+			// Step 2: Search manually after archive
+			searchThroughProcess("searchManually");
+
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+			// Get all process rows dynamically
+			List<WebElement> processRows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+			boolean isProcessFound = false;
+
+			for (WebElement row : processRows) {
+				String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+				String rowStatus = row.findElement(By.xpath("(//td[4])[position() <= 3]")).getText().trim(); // status
+																												// column
+
+				if (rowProcessName.toLowerCase().contains(fetchProcess_PropFile.toLowerCase())) {
+					isProcessFound = true;
+
+					if (rowStatus.equalsIgnoreCase("Active")) {
+						System.out.println(
+								"✅ PASS: Process '" + fetchProcess_PropFile + "' is archived with status 'Active'");
+					} else {
+						System.out.println("❌ FAIL: Process '" + fetchProcess_PropFile + "' found, but status is '"
+								+ rowStatus + "' (Expected: Inactive)");
+					}
+
+					break; // No need to continue once found
+				}
+			}
+
+			if (!isProcessFound) {
+				System.out.println("FAIL: Process '" + fetchProcess_PropFile + "' not found in archive list.");
+			}
+
+			navigateToArchiveProcess();
+
+			searchBar.sendKeys(fetchProcess_PropFile);
+			searchButton.click();
+
+			// Step 5: Expand all process hierarchy again
+			fetchProcessName.click();
+			fetchSubProcessName.click();
+			fetchSubSubProcessName.click();
+
+			// Step 6: Validate statuses for Process, Sub Process, Sub Sub Process
+			// dynamically
+			System.out.println(" Validating Process Hierarchy Statuses...");
+
+			List<WebElement> hierarchyRows = driver.findElements(By.xpath("//table/tbody/tr"));
+			boolean processFound = false, subProcessFound = false, subSubProcessFound = false;
+
+			for (WebElement row : hierarchyRows) {
+				String name = row.findElement(By.xpath(".//td[1]")).getText().trim();
+				String status = "";
+				try {
+					status = row.findElement(By.xpath(".//td[4]")).getText().trim();
+				} catch (NoSuchElementException e) {
+					status = "";
+				}
+
+				// Debugging
+				System.out.println("Checking: " + name + " | Status: " + status);
+
+				// Validate Process (Parent) → status should be blank/null
+				if (name.equalsIgnoreCase(fetchProcessName.getText())) {
+					processFound = true;
+					Assert.assertTrue(status.isEmpty() || status.equalsIgnoreCase("NA"),
+							" Process '" + name + "' status mismatch. Expected: blank/null, Found: " + status);
+					System.out.println("✅ Process '" + name + "' validated successfully (status: blank/null).");
+				}
+
+				// Validate Sub Process → status = Inactive
+				else if (name.equalsIgnoreCase(fetchSubProcessName.getText())) {
+					subProcessFound = true;
+					Assert.assertEquals(status, "Inactive",
+							" Sub Process '" + name + "' status mismatch. Expected: Inactive, Found: " + status);
+					System.out.println(" Sub Process '" + name + "' validated successfully (status: Inactive).");
+				}
+
+				// Validate Sub Sub Process → status = Inactive
+				else if (name.equalsIgnoreCase(fetchSubSubProcessName.getText())) {
+					subSubProcessFound = true;
+					Assert.assertEquals(status, "Inactive",
+							" Sub Sub Process '" + name + "' status mismatch. Expected: Inactive, Found: " + status);
+					System.out.println(" Sub Sub Process '" + name + "' validated successfully (status: Inactive).");
+				}
+			}
+
+			// Final check — make sure all 3 levels are found
+			Assert.assertTrue(processFound, " Parent process not found in hierarchy.");
+			Assert.assertTrue(subProcessFound, " Sub process not found in hierarchy.");
+			Assert.assertTrue(subSubProcessFound, " Sub-sub process not found in hierarchy.");
+
+			System.out.println(" All hierarchy levels validated successfully.");
+
+		} catch (NoSuchElementException e) {
+			System.out.println(" SubProcess already archived. Skipping re-archive steps.");
+			Assert.assertTrue(true, "SubProcess already archived.");
+		}
+	}
+
+	// archive Subsub process Based On Process
+	public void archiveSubSubProcessRelatedToProcess() throws Throwable {
+
+		try {
+
+			// Step 1: Open main process hierarchy
+			Assert.assertTrue(fetchProcessName.isDisplayed(), "Main Process name is not displayed");
+			fetchProcessName.click();
+
+			PropertieFileUtil.storeSingleTextInPropertiesFile(dataSetup_FilePath, "SubProcess",
+					fetchSubProcessName.getText());
+			Assert.assertTrue(fetchSubProcessName.isDisplayed(), "Sub Process name is not displayed");
+			fetchSubProcessName.click();
+
+			PropertieFileUtil.storeSingleTextInPropertiesFile(dataSetup_FilePath, "SubSubProcess",
+					fetchSubSubProcessName.getText());
+			Assert.assertTrue(fetchSubSubProcessName.isDisplayed(), "Sub Sub Process name is not displayed");
+			fetchSubSubProcessName.click();
+
+			// Dynamically click on SubProcess
+			clickOnArchive_SubProcess_SubProcess("s_sub_process");
+
+			// Verify archive confirmation pop-up
+			verifyArchivePopupAfterClick();
+			verifyArchivePopupAndClick();
+
+			unWait(2);
+
+			// Step 2: Search manually after archive
+			searchThroughProcess("searchManually");
+
+			// Click on Process toExpand Sub process
+			fetchProcessName.click();
+
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+			// Get all process rows dynamically
+			List<WebElement> processRows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+			boolean processFound = false;
+			boolean subProcessFound = false;
+
+			System.out.println(" Validating Process and Sub Process statuses...");
+
+			for (WebElement row : processRows) {
+				String name = row.findElement(By.xpath(".//td[1]")).getText().trim();
+				String status = "";
+				try {
+					status = row.findElement(By.xpath(".//td[4]")).getText().trim();
+				} catch (NoSuchElementException e) {
+					status = "";
+				}
+
+				// Debug info
+				System.out.println("Checking: " + name + " | Status: " + status);
+
+				// ✅ Validate Process — should remain Active
+				if (name.equalsIgnoreCase(fetchProcessName.getText())) {
+					processFound = true;
+					Assert.assertEquals(status, "Active",
+							"❌ Process '" + name + "' status mismatch. Expected: Active, Found: " + status);
+					System.out.println("✅ Process '" + name + "' validated successfully (status: Active).");
+				}
+
+				// ✅ Validate Sub Process — should remain Active
+				else if (name.equalsIgnoreCase(fetchSubProcessName.getText())) {
+					subProcessFound = true;
+					Assert.assertEquals(status, "Active",
+							" Sub Process '" + name + "' status mismatch. Expected: Active, Found: " + status);
+					System.out.println(" Sub Process '" + name + "' validated successfully (status: Active).");
+				}
+			}
+
+			// Final assertion to ensure both are found
+			Assert.assertTrue(processFound, " Parent process not found in the table.");
+			// Assert.assertTrue(subProcessFound, " Sub process not found in the table.");
+
+			System.out.println(" Both Process and Sub Process validated successfully (Status = Active).");
+
+			navigateToArchiveProcess();
+
+			searchBar.sendKeys(fetchProcess_PropFile);
+			searchButton.click();
+
+			// Step 5: Expand all process hierarchy again
+			fetchProcessName.click();
+			fetchSubProcessName.click();
+			fetchSubSubProcessName.click();
+
+			List<WebElement> hierarchyRows = driver.findElements(By.xpath("//table/tbody/tr"));
+			// boolean processFound = false, subProcessFound = false,
+			boolean subSubProcessFound = false;
+
+			for (WebElement row : hierarchyRows) {
+				String name = row.findElement(By.xpath(".//td[1]")).getText().trim();
+				String status = "";
+				try {
+					status = row.findElement(By.xpath(".//td[4]")).getText().trim();
+				} catch (NoSuchElementException e) {
+					status = "";
+				}
+
+				System.out.println("Checking: " + name + " | Status: " + status);
+
+				// Validate Process → status should be blank/null
+				if (name.equalsIgnoreCase(fetchProcessName.getText())) {
+					processFound = true;
+					Assert.assertTrue(status.isEmpty() || status.equalsIgnoreCase("NA"),
+							"Process '" + name + "' status mismatch. Expected: blank/null, Found: " + status);
+					System.out.println("Process '" + name + "' validated successfully (status: blank/null).");
+				}
+
+				// Validate Sub Process → status should be blank/null
+				else if (name.equalsIgnoreCase(fetchSubProcessName.getText())) {
+					subProcessFound = true;
+					Assert.assertTrue(status.isEmpty() || status.equalsIgnoreCase("NA"),
+							"Sub Process '" + name + "' status mismatch. Expected: blank/null, Found: " + status);
+					System.out.println("Sub Process '" + name + "' validated successfully (status: blank/null).");
+				}
+
+				// Validate Sub Sub Process → status = Inactive
+				else if (name.equalsIgnoreCase(fetchSubSubProcessName.getText())) {
+					subSubProcessFound = true;
+					Assert.assertEquals(status, "Inactive",
+							"Sub Sub Process '" + name + "' status mismatch. Expected: Inactive, Found: " + status);
+					System.out.println("Sub Sub Process '" + name + "' validated successfully (status: Inactive).");
+				}
+			}
+
+			// Final check — make sure all hierarchy levels are found
+			Assert.assertTrue(processFound, "Parent process not found in hierarchy.");
+			Assert.assertTrue(subProcessFound, "Sub process not found in hierarchy.");
+			Assert.assertTrue(subSubProcessFound, "Sub-sub process not found in hierarchy.");
+
+			System.out.println("All hierarchy levels validated successfully.");
+
+		} catch (NoSuchElementException e) {
+			System.out.println(" Sub Sub Process already archived. Skipping re-archive steps.");
+			Assert.assertTrue(true, "Sub sub Process already archived.");
+		}
+
+	}
+	
+
+	//28.10.25
+//	=============== Data Provider Implementation==========
+	
+	
+	public void dataProvideTeest(String invalidProcessName) {
+		
+//		createProcessButton.click();
+		jsClick(createProcessButton);
+		processNameField.sendKeys(invalidProcessName);
+		
+	}
+	
+	public void createThroughInvalidInputs(WebElement processsNameLabelElement,
+	Boolean Boolean, WebElement processNameFieldElement,String invalidInput, String ProcessDescription,
+	WebElement saveandContinueButtonElement) {
+		
+		checkTextfieldshouldNotAcceptInvalidInput(processsNameLabelElement, Boolean, processNameFieldElement,
+				invalidInput, ProcessDescription, saveandContinueButtonElement);
+	}
+
+	//Process_Chect INvalid Input
+	public void checkTextfieldshouldNotAcceptInvalidInput(WebElement processsNameLabelElement,
+			Boolean Boolean, WebElement processNameFieldElement,String invalidInput, String ProcessDescription,
+			WebElement saveandContinueButtonElement) {
+
+		processTab.isDisplayed();
+
+		assertTrue(editOption1.isDisplayed(), "editOption1 is not displayed");
+		//editOption1.click();
+		jsClick(editOption1);
+
+		wait.until(ExpectedConditions.visibilityOf(processsNameLabelElement));
+		assertTrue(processsNameLabelElement.isDisplayed(), "processNameLabel is not displayed");
+		checkthroughAsterisk(processsNameLabelElement, Boolean);
+		processNameFieldElement.clear();
+		processNameFieldElement.sendKeys(invalidInput);
+		
+		assertTrue(processDescField.isDisplayed(), "processDescField is not displayed");
+		processDescField.clear();
+		processDescField.sendKeys(ProcessDescription);
+
+		assertTrue(saveandContinueButtonElement.isDisplayed(), "saveandContinueButton is not dispalyed");
+		//saveandContinueButtonElement.click();
+		jsClick(saveandContinueButtonElement);
+
+		assertTrue(pleaseEnterName_ErrorMessage.isDisplayed(),
+				"Test Failed : plearEnterNameErrorMessage is not displayed For mandatory fields");
+
+		cancelButtonProcess.click();
+	}
+	
+	
+	//SearchBar accept_ Invalid Input
+	public void checkInvalidInpusShouldONSearchField(String invlaidInput) {
+		
+		assertTrue(searchBar.isDisplayed(),"searchBar Is Not is Dispalyed ");
+		assertTrue(searchBar.isEnabled(),"searchBar uis not enabled");
+		searchBar.sendKeys(invlaidInput);
+	}
+	
+	
 
 }

@@ -3,13 +3,15 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.advaita.TestTable.TestProcessTable">
+      <class name="com.advaita.TestTable.TestDataSetTable">
         <methods>
           <include name="setUp"/>
-          <include name="verifyTheUserIsAbleTotoDeleteArchiveProcess"/>
-          <include name="NaviageToProcessManagementPage"/>
+          <include name="navigateToArchiveDataSet"/>
+          <include name="unArchiveDataSetFromArchiveTab"/>
+          <include name="tearDown"/>
+          <include name="navigateToDatasetPageAndVerify"/>
         </methods>
-      </class> <!-- com.advaita.TestTable.TestProcessTable -->
+      </class> <!-- com.advaita.TestTable.TestDataSetTable -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

@@ -1,10 +1,12 @@
 package com.advaita.DataSetUp.PageObject;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,9 +15,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
@@ -28,6 +35,7 @@ import org.testng.Assert;
 
 import com.advaita.BaseClass.TestBase;
 import com.advaita.Login.Home.HomePage;
+import com.advaita.Utilities.ClickUtilities;
 import com.advaita.Utilities.DropDown;
 import com.advaita.Utilities.DynamicXpath;
 import com.advaita.Utilities.Pagination;
@@ -44,6 +52,12 @@ public class DataSet extends TestBase {
 
 	@FindBy(id = "pills-dataset-tab")
 	public WebElement dataSetTab;
+
+	@FindBy(xpath = "(//ul[@id='pills-tab'])[2]//button")
+	public List<WebElement> dataSetTabs;
+
+	@FindBy(xpath = "(//h1[normalize-space()='Dataset Management'])[1]")
+	public WebElement verifyDataSetManagementElement;
 
 	@FindBy(xpath = "(//a[normalize-space()='+ Create'])[1]")
 	public WebElement createDataSetButton;
@@ -212,6 +226,9 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "//table[@class='w-100']//tr//td//img[1]")
 	public List<WebElement> deleteDataSet;
 
+	@FindBy(xpath = "//h6[text()='Delete ?']")
+	public WebElement deletePopup;
+
 	@FindBy(xpath = "//div[@id='id_confrm_popp']//button[text()='Delete']")
 	public WebElement popDeleteButton;
 
@@ -230,27 +247,83 @@ public class DataSet extends TestBase {
 	@FindBy(xpath = "//div[@class='mt_20']//button[@type='submit']")
 	public WebElement recordDeleteButton;
 
+	// New_Archive Process ,UnArchiveProcess
+
+	@FindBy(xpath = "//tr//td[1]")
+	List<WebElement> dataSetLists;
+
+	@FindBy(xpath = "(//ul[@id='pills-tab'])[2]//button")
+	public List<WebElement> tab;
+
+	@FindBy(xpath = "//tr//td[6]//img[@alt='archive']")
+	List<WebElement> archiveActions;
+
+	@FindBy(xpath = "//tr//td[6]//img[@alt='unarchive']")
+	public WebElement unArchiveAction;
+
+	@FindBy(xpath = "//tr//td[6]//img[@alt='archive']")
+	public WebElement archiveAction;
+
+	@FindBy(id = "change_msg")
+	public WebElement archivePopup;
+
+	@FindBy(xpath = "(//tr//td[1])[position()<=1]")
+	public static WebElement fetchFirstCreatedRecord;
+
+	@FindBy(xpath = "//td[normalize-space(text())='No Entries Found']")
+	public WebElement noEntriesFound;
+
 	ScreenShorts ss = new ScreenShorts();
 	Pagination pg = new Pagination();
 
-	FakeData fake = new FakeData();
+//	FakeData fake = new FakeData();
 
 //	String processValue;
 //	String subProcessValue;
 //	String subSubProcessValue;
-	
 
 //	String processValue = "AJP";
 //	String subProcessValue = "Sub AJP";
 //	String subSubProcessValue = "Sub Sub AJP";
 
 	String dataSetName1 = FakeData.firstCapString() + " Name";
+	// String dataSetName1 = "abhijit"+"_Name";
 
 	public DataSet() {
 		PageFactory.initElements(driver, this);
 	}
 
 	HomePage hp = new HomePage();
+
+	// ====> Global
+	String dataset_filePath = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\DataSet.properties";
+
+	public String fetchDatset_PropFile; // Retrive Value name Fro Pro
+
+	public DataSet navigatToDatasetManagemnetPage() {
+
+		dataSetup.click();
+
+		dataSetTab.click();
+
+		assertTrue(verifyDataSetManagementElement.isDisplayed(), "verifyDataSetManagementElement is not Diaplyed");
+
+		return this;
+
+	}
+
+	public void naviateToUnarchiveDataset() {
+
+		navigatToDatasetManagemnetPage();
+
+	}
+
+	public void naviateToArchiveDataset(String tabName) {
+
+		// navigatToDatasetManagemnetPage();
+		ClickUtilities.clickIfMatch(dataSetTabs, tabName);
+
+	}
 
 	public void createDataSet(String type) throws Throwable {
 
@@ -560,6 +633,7 @@ public class DataSet extends TestBase {
 
 		// Validate Clear All filters button
 		clearButton.click();
+		// jsClick(clearButton);
 
 		Thread.sleep(2000);
 		// Find the pagination element
@@ -865,7 +939,8 @@ public class DataSet extends TestBase {
 		unWait(1);
 
 		String enteredText = dataSetNameField.getAttribute("value");
-		Assert.assertEquals(enteredText, dataSetName.replace(" ", ""), "dataSetName is not correctly entered in the field.");
+		Assert.assertEquals(enteredText, dataSetName.replace(" ", ""),
+				"dataSetName is not correctly entered in the field.");
 	}
 
 	public DataSet processDropDownSelect(WebElement processDropDown, String processValue) {
@@ -1006,20 +1081,20 @@ public class DataSet extends TestBase {
 		SendDataUtils.clearAndSendKeys(labelNameField, labelName);
 
 		String enteredText = labelNameField.getAttribute("value");
-		Assert.assertEquals(enteredText, labelName.replace(" ", ""), "fieldName is not correctly entered in the field.");
+		Assert.assertEquals(enteredText, labelName.replace(" ", ""),
+				"fieldName is not correctly entered in the field.");
 
 		return this;
 	}
-	
+
 	public DataSet verifyLabelNameFieldValue(WebElement labelNameField, String labelName) {
-		
+
 		assertTrue(labelNameField.isEnabled(), "fieldNameField is not enabled.");
-		
-		
-		
+
 		String enteredText = labelNameField.getAttribute("value");
-		Assert.assertEquals(enteredText, labelName.replace(" ", ""), "fieldName is not correctly entered in the field.");
-		
+		Assert.assertEquals(enteredText, labelName.replace(" ", ""),
+				"fieldName is not correctly entered in the field.");
+
 		return this;
 	}
 
@@ -1069,12 +1144,409 @@ public class DataSet extends TestBase {
 		return this;
 	}
 
+//	=====================================================================
+
+// New Funcanality 
+
+	// Search
+
+	public void searchThroughDatasetName(String searchProcess) throws Throwable {
+
+		switch (searchProcess) {
+
+		case "searchManually": {
+
+			PropertieFileUtil.extractAllAndStore(dataset_filePath, dataSetLists, "dataSet");
+
+			assertTrue(searchBar.isDisplayed(), "searchBar is not displayed");
+			searchBar.isEnabled();
+			searchBar.clear();
+
+			fetchDatset_PropFile = PropertieFileUtil.getSingleTextFromPropertiesFile(dataset_filePath, "dataSet1");
+
+			searchBar.sendKeys(fetchDatset_PropFile);
+
+			assertTrue(searchBar.isDisplayed(), "searchButton is not displayed");
+			searchButon.click();
+
+			assertEquals(fetchCurrentCreated.getText(), fetchDatset_PropFile, "Not Matched With Searched Process Name");
+
+			break;
+
+		}
+
+		case "randomely": {
+
+			try {
+				// Load properties file
+				Properties props = new Properties();
+
+				FileInputStream fis = new FileInputStream(dataset_filePath);
+
+				props.load(fis);
+
+				// Collect all values
+				List<String> values = new ArrayList<>();
+				for (String key : props.stringPropertyNames()) {
+					values.add(props.getProperty(key));
+				}
+
+				// Pick random value
+				String randomValue = values.get(new Random().nextInt(values.size()));
+
+				// Enter into search box
+
+				searchBar.clear();
+				searchBar.sendKeys(randomValue);
+
+				assertTrue(searchButon.isDisplayed(), "searchButton is not displayed");
+				searchButon.click();
+
+				// Check for "No Entries Found" element
+				List<WebElement> noEntryElements = driver.findElements(By.id("noEntriesFound"));
+				if (!noEntryElements.isEmpty() && noEntryElements.get(0).isDisplayed()) {
+					System.out.println("No created dataset available in this name: " + randomValue);
+				} else {
+					// Fetch first created record
+//					WebElement fetchFirstCreatedRecord = driver.findElement(By.id("fetchFirstCreatedRecord"));
+					String fetchedText = fetchCurrentCreated.getText().trim();
+
+					if (fetchedText.equalsIgnoreCase(randomValue)) {
+						System.out.println("dataset is available in this name: " + randomValue);
+					} else {
+						System.out.println("Mismatch: searched for " + randomValue + ", but got " + fetchedText);
+					}
+				}
+
+			} catch (IOException | NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+			break;
+		}
+
+		case "partailName":
+
+			try {
+				// Load properties file
+				Properties props = new Properties();
+				FileInputStream fis = new FileInputStream(dataset_filePath);
+				props.load(fis);
+
+				// Collect all values
+				List<String> values = new ArrayList<>();
+				for (String key : props.stringPropertyNames()) {
+					values.add(props.getProperty(key));
+				}
+
+				// Pick random value
+				String fullValue = values.get(new Random().nextInt(values.size()));
+
+				// Extract partial string (first 3–6 characters randomly)
+				int endIdx = Math.min(6, fullValue.length());
+				int startIdx = new Random().nextInt(Math.max(1, endIdx - 2));
+				String partialValue = fullValue.substring(startIdx, endIdx);
+
+				// Enter partial value into search box
+				searchBar.clear();
+				searchBar.sendKeys(partialValue);
+
+				assertTrue(searchButon.isDisplayed(), "Search button is not displayed");
+				searchButon.click();
+
+				// Check for "No Entries Found" element
+				List<WebElement> noEntryElements = driver.findElements(By.id("noEntriesFound"));
+				if (!noEntryElements.isEmpty() && noEntryElements.get(0).isDisplayed()) {
+					System.out.println(" No created process available in this name (partial): " + partialValue);
+				} else {
+					// WebElement fetchFirstCreatedRecord =
+					// driver.findElement(By.id("fetchFirstCreatedRecord"));
+					String fetchedText = fetchCurrentCreated.getText().trim();
+
+					if (fetchedText.toLowerCase().contains(partialValue.toLowerCase())) {
+						System.out
+								.println(" PASS: Partial value '" + partialValue + "' found in result: " + fetchedText);
+					} else {
+						System.out.println(
+								" FAIL: Partial value '" + partialValue + "' NOT found in result: " + fetchedText);
+					}
+				}
+
+			} catch (IOException | NoSuchElementException e) {
+				e.printStackTrace();
+			}
+
+			break;
+
+		default:
+
+			System.out.println("no Options Present  ");
+
+			break;
+		}
+
+	}
+
+	// =====>Delete
+
+	// Delete
+	public void deleteDatsetFromArchiveTab(String datasetName) {
+		try {
+			List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+			boolean processFound = false;
+
+			for (WebElement row : rows) {
+				String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+
+				if (rowProcessName.equalsIgnoreCase(datasetName)) {
+					processFound = true;
+
+					try {
+						WebElement deleteIcon = row.findElement(By.xpath("//table[@class='w-100']//tr//td//img[2]"));
+						if (deleteIcon.isDisplayed() && deleteIcon.isEnabled()) {
+							deleteIcon.click();
+							assertTrue(deletePopup.isDisplayed(), " Delete popup not displayed.");
+							ClickUtilities.clickIfMatch(popDeleteButton, "Delete");
+
+							System.out.println("dataset '" + datasetName + "' found and deleted.");
+						} else {
+							System.out.println("⚠ Delete icon not clickable for datasetName: '" + datasetName + "'");
+						}
+					} catch (NoSuchElementException e) {
+						System.out.println("⚠ Delete icon not found for process: '" + datasetName + "'");
+					}
+					break;
+				}
+			}
+
+			if (!processFound) {
+				System.out.println(" delete '" + datasetName + "' not found in the archive table.");
+			}
+		} catch (Exception e) {
+			System.out.println(" Exception in deleteProcessByNameFromArchive: " + e.getMessage());
+		}
+	}
+
+	// Utility to get Cunt for "showing "Showing 1 to 10 of 248"
+
+	public int getTotalCountFromElement(WebElement element) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(driver1 -> !element.getText().trim().isEmpty()); // Wait until text is not empty
+
+		String text = element.getText().replaceAll("\\s+", " ").trim();
+		System.out.println("🔍 Raw text captured from element: '" + text + "'");
+
+		// Use regex to extract last number
+		Pattern pattern = Pattern.compile("(\\d+)(?!.*\\d)");
+		Matcher matcher = pattern.matcher(text);
+
+		if (matcher.find()) {
+			int totalCount = Integer.parseInt(matcher.group(1));
+			System.out.println("✅ Total count extracted successfully: " + totalCount);
+			return totalCount;
+		} else {
+			System.out.println("⚠️ No numeric count found in text: '" + text + "'");
+			return 0; // Return 0 safely instead of throwing exception
+		}
+	}
+
+	// archive and Unarchive Dataset
+
+	public void archiveAction() {
+
+		assertTrue(archiveAction.isDisplayed(), "archive Button is not Displayed");
+
+		archiveAction.isEnabled();
+
+		archiveAction.click();
+
+	}
+
+	public void verifyArchivePopupAndClick() throws Throwable {
+
+		// ClickUtilities.clickIfMatch(archivePopupOptions, "Archive");
+
+		wait.until(ExpectedConditions.visibilityOf(archivePopup));
+		assertTrue(archivePopup.isDisplayed(), "archivePopup is not Displayed");
+		continueButton.click();
+
+	}
+
+	// ArchiveDataSet_single and Verify In Archiv Tab
+	public void archiveDataset(String archive_unarchivetab,String status) throws Throwable {
+		// 1️⃣ Capture total count before archive
+		int beforeCount = getTotalCountFromElement(showingNumberOfRecords);
+		System.out.println(" Total dataset count before archive: " + beforeCount);
+
+		// 2️⃣ Perform archive steps
+		searchThroughDatasetName("searchManually");
+		
+		clearButton.click();
+		
+		unWait(2);
+		
+		archiveAction();
+		
+		verifyArchivePopupAndClick();
+
+		int afterCount = getTotalCountFromElement(showingNumberOfRecords);
+		System.out.println(" Total dataset count after archive: " + afterCount);
+
+		// 4️⃣ Verify count decreased dynamically (not necessarily by 1)
+		Assert.assertTrue(afterCount < beforeCount, "FAIL: Total count did not decrease after archiving (Before: "
+				+ beforeCount + ", After: " + afterCount + ")");
+
+		System.out.println(" PASS: Total dataset count decreased from " + beforeCount + " to " + afterCount);
+
+		// Navigate To Archive Dataset tab
+		naviateToArchiveDataset(archive_unarchivetab);
+
+		// Search in ArchiveDataSet Tab
+		searchBar.sendKeys(fetchDatset_PropFile);
+		searchButon.click();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table")));
+
+		// Get all process rows dynamically
+		List<WebElement> processRows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+		boolean isProcessFound = false;
+
+		for (WebElement row : processRows) {
+			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
+			String rowStatus = row.findElement(By.xpath("(//td[5])")).getText().trim(); // status
+																						// column
+
+			if (rowProcessName.toLowerCase().contains(fetchDatset_PropFile.toLowerCase())) {
+				isProcessFound = true;
+
+				if (rowStatus.equalsIgnoreCase(status)) {
+					System.out.println(
+							" PASS: dataSet '" + fetchDatset_PropFile + "' is archived with status 'Inactive'");
+				} else {
+					System.out.println(" FAIL: Process '" + fetchDatset_PropFile + "' found, but status is '"
+							+ rowStatus + "' (Expected: Inactive)");
+				}
+
+				break; // No need to continue once found
+			}
+		}
+
+		if (!isProcessFound) {
+			System.out.println(" FAIL: Process '" + fetchDatset_PropFile + "' not found in archive list.");
+		}
+
+	}
+
+	// Archive Multiple DatSet
+
+	public void archive_Unarchive_MultipleDatasets(WebElement archiveAction, int count) {
+		int archivedCount = 0;
+
+		try {
+			// ✅ Step 1: Ensure element is visible
+			Assert.assertTrue(showingNumberOfRecords.isDisplayed(),
+					"❌ 'Showing-number-of-records' element is not displayed.");
+
+			// ✅ Step 2: Capture total before archive
+			int beforeCount = getTotalCountFromElement(showingNumberOfRecords);
+			System.out.println("📊 Total datasets before archive: " + beforeCount);
+
+			// ✅ Step 3: Start archive loop
+			while (archivedCount < count) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("⚠️ No dataset rows available to archive. Stopping loop.");
+					break;
+				}
+
+				WebElement firstRow = rows.get(0);
+				String datasetName = "";
+
+				try {
+					datasetName = firstRow.findElement(By.xpath(".//td[1]")).getText().trim();
+				} catch (NoSuchElementException e) {
+					System.out.println("⚠️ Could not read dataset name in the row - skipping this iteration.");
+					continue;
+				}
+
+				try {
+					// ✅ Use archiveAction element inside the row
+//	                WebElement archiveAction = firstRow.findElement(
+//	                        By.xpath(".//img[@alt='archive'] | .//button[contains(@class,'archive')]"));
+
+					if (archiveAction.isDisplayed() && archiveAction.isEnabled()) {
+						archiveAction.click();
+
+						// ✅ Wait for archive popup and confirm
+						wait.until(ExpectedConditions.visibilityOf(archivePopup));
+						Assert.assertTrue(archivePopup.isDisplayed(), "❌ archivePopup is not Displayed");
+						continueButton.click();
+
+						System.out.println("🗂️ Archived dataset (confirmed via popup): " + datasetName);
+						archivedCount++;
+
+						// ✅ Wait dynamically until count decreases
+						int expectedCountAfter = beforeCount - archivedCount;
+						wait.until(driver1 -> {
+							int currentCount = getTotalCountFromElement(showingNumberOfRecords);
+							return currentCount <= expectedCountAfter;
+						});
+
+						int newCount = getTotalCountFromElement(showingNumberOfRecords);
+						System.out.println("📉 Count updated after archiving '" + datasetName + "': " + newCount);
+
+					} else {
+						System.out.println("⚠️ Archive action not visible or disabled for dataset: " + datasetName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("⚠️ archiveAction not found for dataset: " + datasetName);
+				}
+			}
+
+			// ✅ Step 4: Capture total after archive
+			int afterCount = getTotalCountFromElement(showingNumberOfRecords);
+			System.out.println("📊 Total datasets after archive: " + afterCount);
+
+			// ✅ Step 5: Validate count dynamically
+			int expectedAfterCount = beforeCount - archivedCount;
+			System.out.println("🔎 Expected count after archive: " + expectedAfterCount + ", Actual: " + afterCount);
+
+			Assert.assertEquals(afterCount, expectedAfterCount, "❌ Dataset count mismatch after archiving. Expected: "
+					+ expectedAfterCount + ", but found: " + afterCount);
+
+			System.out.println("✅ Archive validation successful. " + archivedCount + " dataset(s) archived correctly.");
+
+		} catch (Exception e) {
+			Assert.fail("❌ Exception occurred during dataset archive operation: " + e.getMessage(), e);
+		}
+	}
+
+//=========================================================================
 	@FindBy(xpath = "//h2[text()='Create Dataset']/following-sibling::span")
 	WebElement close;
 
 	public DataSet close() {
 		jsClick(close);
 		return this;
+	}
+
+	
+	//Child Class
+	public class CustomDataSet extends DataSet {
+
+	    @Override
+	    public void naviateToArchiveDataset(String tabName) {
+	        // ✅ Locate the Archive tab using the updated XPath
+	        WebElement archiveTab = driver.findElement(By.xpath("(//ul[@id='pills-tab'])[2]//button"));
+
+	        // ✅ Use JS click for stability
+	        jsClick(archiveTab);
+
+	        System.out.println("✅ Custom navigation performed for: " + tabName + " via Archive Tab XPath");
+	    }
 	}
 
 }

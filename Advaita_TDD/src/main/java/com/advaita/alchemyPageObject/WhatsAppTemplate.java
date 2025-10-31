@@ -34,13 +34,11 @@ public class WhatsAppTemplate extends TestBase // Create_Class and extend base c
 	}
 
 	FakeData fake = new FakeData();
-
 	Stages stages = new Stages();
 	CallLogSatgeView callLogStageView = new CallLogSatgeView();
 	SmsTemplate smsTemplate = new SmsTemplate();
 
-	// Global Variables
-	// --------------------------------------------------->
+	// Global Variables---------------------->
 	public String FirstCreatedUserName;
 
 	public String lastcreatedValue_ToNumber;

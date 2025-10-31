@@ -22,6 +22,10 @@ public class HomePage extends TestBase {
 
 	@FindBy(id = "pills-dataset-tab")
 	public WebElement dataSetTab;
+	
+	@FindBy(xpath = "(//h1[normalize-space()='Dataset Management'])[1]")
+	public WebElement verifyDataSetManagementElement;
+
 
 	@FindBy(xpath = "//span[normalize-space()='Workflow Design']")
 	public WebElement workflowDesign;
@@ -61,6 +65,15 @@ public class HomePage extends TestBase {
 		click(driver, DataSetUpButton);
 //		DataSetUpButton.click();
 		assertTrue(processManagementPage.isDisplayed(), "processManagementPage is not displayed.");
+	}
+	
+	
+
+	public void clickonDatasetManagementPage() {
+
+		click(driver, DataSetUpButton);
+		dataSetTab.click();
+		assertTrue(verifyDataSetManagementElement.isDisplayed(), "datasetManagementPage is not displayed.");
 	}
 
 	public void clickOnworkflowDesign() {

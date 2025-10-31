@@ -1,7 +1,9 @@
 package com.advaita.TestTable;
 
+import org.apache.commons.compress.harmony.pack200.Archive;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.advaita.BaseClass.TestBase;
@@ -11,6 +13,7 @@ import com.advaita.Login.Home.LoginPage;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.testdata.DataProviders;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -30,9 +33,9 @@ public class TestProcessTable extends TestBase {
 	String emojis = "(*/ω＼*)";
 	String SpecialCharcters = "!@#$%^&*";
 	String NumericValue = "1234456";
-	String nonEnglishLangaugesCharcterForProcess = " 过程";
-	String nonEnglishLangaugesCharcterForSubProcess = " 子过程";
-	String nonEnglishLangaugesCharcterForSubSubProcess = " 子子过程";
+	String nonEnglishLangaugesChar_Process = " 过程";
+	String nonEnglishLangaugesChar_SP = " 子过程";
+	String nonEnglishLangaugesChar_SSP = " 子子过程";
 	String invaliCreatedProcess = "ddsds";
 	String spaces = "   ";
 
@@ -110,41 +113,44 @@ public class TestProcessTable extends TestBase {
 
 	}
 
-	// Table Page
+	// ================ Table Page ================================
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Search Manualley", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void veifyTheUserIsableTosearchThroughCraetedProcessManually() throws Throwable {
 
 		process.searchThroughProcess("searchManually");
 	}
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Search Randomely", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void veifyTheUserIsableTosearchThroughCraetedProcessRandomely() throws Throwable {
 
 		process.searchThroughProcess("randomely");
 	}
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Search Partial Name", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void veifyTheUserIsableTosearchThroughCraetedProcessPartailName() throws Throwable {
 
 		process.searchThroughProcess("partailName");
 	}
 
-	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	@Test(description = "Cleared Manual Filtered Searched", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessManually" })
 	public void clearFilterManualellySearched() {
 
 		process.clearFliter();
 
 	}
 
-	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessPartailName" })
+	@Test(description = "Cleared Randomely Filtered Searched", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessPartailName" })
 	public void clearFilterRandomelySearched() {
 
 		process.clearFliter();
 
 	}
 
-	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessByPartialNames" })
+	@Test(description = "Cleared PartialName Filtered Searched", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessByPartialNames" })
 	public void clearFilterPartialNameSearched() {
 
 		process.clearFliter();
@@ -181,49 +187,68 @@ public class TestProcessTable extends TestBase {
 	}
 	// 28.7.25
 	// ====== New Funcanaltity ==========
+	// =========== Archive and UnArchive Process ============
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "navaigate To Archive Process", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbleToNaviagteArchiveProcess() {
 
 		process.navigateToArchiveProcess();
 	}
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = " navaigate To UnArchive Process", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbleToNaviagteUnArchiveProcess() {
 
 		process.navigateToUnArchiveProcess();
 	}
 
-	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	@Test(description = "Archive Process", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessManually" })
 	public void verifyTheUserIsAbelToDoArchiveProcess() throws Throwable {
 		verifyTheUserIsAbelToDoArchiveProcessAndVerifyInArchiveTab();
 	}
 
 	// Archive
-	@Test(dependsOnMethods = { "veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+
+	@Test(description = "Archive Process and Verify In Archive Tab", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessManually" })
 	public void verifyTheUserIsAbelToDoArchiveProcessAndVerifyInArchiveTab() throws Throwable {
 
 		process.archiveAction();
-		process.verifyArchivePopupAfterClick();
+		process.verifyArchivePopupAndClick();
 		process.clickOnArchiveOptionAndVerifyInArchiveTab();
 
 	}
 
-	// Unarchive
+	@Test(description = "Archive Muttiple Process", dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleToArchivemutipleProcess() {
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+		process.navigateToUnArchiveProcess();
+		process.archiveMultipleProcesses(1);
+	}
+
+	// <<<<<< ========= Unarchive Process ============== >>>>>>
+
+	@Test(description = "UnArchive Process And Verify in UnArchive Tab", dependsOnMethods = {
+			"NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbelToUnArchiveProcessAndVerifyInUnArchiveTab() throws Throwable {
 
 		process.navigateToArchiveProcess();
 
 		process.unArchiveAction();
 		process.verifyUnArchivePopupAfterClickAndContinue();
-		process.clickOnUnArchiveOptionAndVerifyInUnArchiveTab();
+		// process.clickOnUnArchiveOptionAndVerifyInUnArchiveTab();
 
 	}
 
+	@Test(description = "UnArchive Muttiple Process", dependsOnMethods = { "NaviageToProcessManagementPage" })
+	public void verifyTheUserIsAbleTotoUnArchivemutipleProcess() {
+
+		process.navigateToArchiveProcess();
+		process.unarchiveMultipleProcesses(1);
+	}
+
 	// Delete process In Archive Tab
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Delete Archive Process Manualley", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbleTotoDeleteArchiveProcessManualley() {
 
 		process.navigateToArchiveProcess();
@@ -231,51 +256,73 @@ public class TestProcessTable extends TestBase {
 
 	}
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Delete Archive Process Randomely", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbleTotoDeleteArchiveProcessRandomely() {
 
 		process.navigateToArchiveProcess();
 		process.deleteRandomProcessFromArchive();
 	}
 
-	@Test(dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Delete Multiple Process", dependsOnMethods = { "NaviageToProcessManagementPage" })
 	public void verifyTheUserIsAbleTotoDeletemutipleProcess() {
 
 		process.navigateToArchiveProcess();
 		process.deleteProcessesFromArchive(1);
 	}
 
-	@Test(enabled = false, dependsOnMethods = { "NaviageToProcessManagementPage" })
+	@Test(description = "Delete all Archived Processes", dependsOnMethods = {
+			"NaviageToProcessManagementPage" }, enabled = false)
 	public void verifyTheUserIsAbleTotoDeleteall() {
 
 		process.navigateToArchiveProcess();
 		process.deleteAllArchivedProcesses();
 	}
 
-	// ========================== Negative=========================================
+	// Based On Selected Process Archive SubProcess & Sub Sub Process
 
-	@Test
-	public void verifyUserFilledAllDataINProcessesTabANdClickOnCancel() throws Throwable {
+	@Test(description = "Archive subProcess and Verify In Archive Tab", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	public void archiveSubProcess() throws Throwable {
 
-		homePage.clickOnProcessManagementCreate();
-		process.userFilledAllTheDatawithoutclickSaveandUpdateOptionInSubSubProcessTabAndclickOnCancelOption(
-				fake.lastName1() + " process", fake.lastName1() + " ProcessDesc", fake.lastName1() + " Sub process",
+		process.archiveSubProcessRelatedToProcess();
+	}
+
+	@Test(description = "Archive Sub_SubProcess and Verify In Archive Tab", dependsOnMethods = {
+			"veifyTheUserIsableTosearchThroughCraetedProcessManually" })
+	public void archiveSubSubProcess() throws Throwable {
+
+		process.archiveSubSubProcessRelatedToProcess();
+	}
+
+	// ========================== Negative Test Script ==========================
+
+	@Test(description = "verify The User Is able to create Process Without Sub sub process", dependsOnMethods = {
+			"NaviageToProcessManagementPage" })
+	public void withourFilledSubSubProcesClickOnCance() throws Throwable {
+		withoutFilledSubSubProcesClickOnCance();
+	}
+
+	@Test(description = "verify The User Is able to create Process Without Sub sub process", dependsOnMethods = {
+			"NaviageToProcessManagementPage" })
+	public void withoutFilledSubSubProcesClickOnCance() throws Throwable {
+
+		// homePage.clickOnProcessManagementCreate();
+		process.withoutFilledSubSubProcesClickOnCancelOption(fake.lastName1() + " process",
+				fake.lastName1() + " ProcessDesc", fake.lastName1() + " Sub process",
 				fake.lastName1() + " Subprocess Desc", fake.lastName1() + " SubSub process",
 				fake.lastName1() + " SubSubDescriprion");
 
 	}
 
-	// Without Enter processes name
-
-	@Test
-	public void verifyUserIsAbleTocreateWithoutEnterMandatoryFieldInProcessnamesandSave() {
+	@Test(description = "Verify The User Is able To Edit Process Without Enter ProcessName", dependsOnMethods = "NaviageToProcessManagementPage")
+	public void createProcessWithoutmandatoryFiledProceessName() {
 		homePage.clickOnProcessManagementCreate();
 
 		process.UserIsAbleTocreateWithoutEnterMandatoryFieldProcesssandSaveUTILITY(process.processNameLabel, true,
-				process.processNameField, fake.lastName1() + "Desc", process.saveandContinueButton);
+				process.processNameField, FakeData.lastName1() + "Desc", process.saveandContinueButton);
 	}
 
-	@Test
+	@Test(description = "Veify The user Able To Edit Process without sub processName_Mandatory Field", dependsOnMethods = "NaviageToProcessManagementPage")
 	public void verifyUserIsAbleToEditWithoutEnterMandatoryFieldInSubProcessnamesandSave() {
 		homePage.clickOnProcessManagementCreate();
 		process.UserIsAbleTocreateWithoutEnterMandatoryFieldsSubProcessandSaveUTILITY(process.editOption2,
@@ -283,9 +330,9 @@ public class TestProcessTable extends TestBase {
 				process.saveandContinnueButtonInSubProcess);
 	}
 
-	@Test
+	@Test(description = "Veify The user Able To Edit Process without sub sub processName_Mandatory Field", dependsOnMethods = "NaviageToProcessManagementPage")
 	public void verifyUserIsAbleToEditWithoutEnterMandatoryFieldInSubSubProcessnamesandSave() {
-		homePage.clickOnProcessManagementCreate();
+		// homePage.clickOnProcessManagementCreate();
 		process.UserIsAbleTocreateWithoutEnterMandatoryFieldsSubSubProcessandSaveUTILITY(process.editOption3,
 				process.subSubProcessNameFieldLabel, false, fake.lastName1() + "Desc",
 				process.save_UpdateButtonInSubsubProcess);
@@ -293,10 +340,11 @@ public class TestProcessTable extends TestBase {
 
 	// Special Charcters
 
-	@Test
+	// 🔹 Tell TestNG which DataProvider to use ,// 🔹 Where to find it
+	@Test(dependsOnMethods = "NaviageToProcessManagementPage")
 	public void verifyTheUSerisAbleToEditProcessNameToSpecialCharcterAndSave() { // Need To implemment after fixed
 
-		homePage.clickOnProcessManagementCreate();
+		// homePage.clickOnProcessManagementCreate();
 		process.SpecialCharctersForProcessUTILITY(process.processNameLabel, true, SpecialCharcters,
 				fake.lastName1() + "Desc", process.saveButton);
 	}
@@ -349,7 +397,7 @@ public class TestProcessTable extends TestBase {
 	public void verifyTheUSerisAbleToEditProcessNameToNonEnglishCaracterAndSave() {
 
 		homePage.clickOnProcessManagementCreate();
-		process.SpecialCharctersForProcessUTILITY(process.processNameLabel, true, nonEnglishLangaugesCharcterForProcess,
+		process.SpecialCharctersForProcessUTILITY(process.processNameLabel, true, nonEnglishLangaugesChar_Process,
 				fake.lastName1() + "Desc", process.saveButton);
 	}
 
@@ -358,7 +406,7 @@ public class TestProcessTable extends TestBase {
 
 		homePage.clickOnProcessManagementCreate();
 		process.SpecialCharctersForSubProcessUTILITY(process.editOption2, process.subProcessNameFieldLabel, false,
-				nonEnglishLangaugesCharcterForSubProcess, fake.lastName1() + "Desc", process.saveButtonInSubProcess);
+				nonEnglishLangaugesChar_SP, fake.lastName1() + "Desc", process.saveButtonInSubProcess);
 	}
 
 	@Test
@@ -367,8 +415,7 @@ public class TestProcessTable extends TestBase {
 
 		homePage.clickOnProcessManagementCreate();
 		process.SpecialCharctersForSubSubProcessUTILITY(process.editOption3, process.subSubProcessNameFieldLabel, false,
-				nonEnglishLangaugesCharcterForSubSubProcess, fake.lastName1() + "Desc",
-				process.save_UpdateButtonInSubsubProcess);
+				nonEnglishLangaugesChar_SSP, fake.lastName1() + "Desc", process.save_UpdateButtonInSubsubProcess);
 	}
 
 	@Test
@@ -405,30 +452,30 @@ public class TestProcessTable extends TestBase {
 
 	}
 
-	// Without Select Process and SubProcess Dropdown.
-	@Test
+	// ==== Without Select Process and SubProcess Dropdown====
+
+	@Test(description = " save Without Select Process")
 	public void verifyTheUserWithoutSelectProcessDropdownAndSave() {
 
 		homePage.clickOnProcessManagementCreate();
 		process.withoutSelectProcessDropdownAndSave();
 	}
 
-	@Test
+	@Test(description = " save Without Select SubProcess")
 	public void verifyTheUserWithoutSelectSubProcessDropdownAndSave() throws Throwable {
 
 		homePage.clickOnProcessManagementCreate();
 		process.withoutSelectSubProcessDropdownAndSave();
 	}
 
-	// save Through Dulplicate Name
-	@Test
+	@Test(description = "save Through Dulplicate Name")
 	public void verifyTheUserIsAbleToCreateWithSameProcessName() {
 
 		homePage.clickOnProcessManagementCreate();
 		process.userIsAbleToCreateWithSameProcessName();
 	}
 
-	// Search
+	// ========= Search_Negative
 	@Test
 	public void verifyTheUserIsAbleToSearchThroughInvalidProcessNames() {
 		homePage.clickOnProcessManagementCreate();
@@ -471,10 +518,45 @@ public class TestProcessTable extends TestBase {
 
 	@Test
 	public void verifyTheTheUserAfterAddingProcessAndSubProcessAndSave() {
+		verifyTheUserAfterAddingProcessAndSubProcessAndSave();
+	}
+
+	@Test
+	public void verifyTheUserAfterAddingProcessAndSubProcessAndSave() {
 
 		homePage.clickOnProcessManagementCreate();
 		process.TheUserAfterAddingProcessAndSubProcessAndSave();
 	}
+
+//28.10.25	
+//============= Data Provider_Implemenetation
+
+	@Test(dependsOnMethods = "NaviageToProcessManagementPage", dataProvider = "processNameData", dataProviderClass = DataProviders.class)
+	public void testDataProvider(String invalidProcessName) {
+		System.out.println("Running test for process name: " + invalidProcessName);
+		process.dataProvideTeest(invalidProcessName);
+	}
+
+	@Test(description = "Verify The Process name Accepts Invalids Inputs on ProcessName Field", dependsOnMethods = "NaviageToProcessManagementPage", dataProvider = "processNameData", dataProviderClass = DataProviders.class)
+	public void testCreateThroughInvalidInputs(String invalidInput) {
+		processNameAcceptsInvalidInputsOnProcessNameTextfield(invalidInput);
+	}
+
+	@Test(description = "Verify The Process name Accepts Invalids Inputs on ProcessName Field", dependsOnMethods = "NaviageToProcessManagementPage", dataProvider = "processNameData", dataProviderClass = DataProviders.class)
+	public void processNameAcceptsInvalidInputsOnProcessNameTextfield(String invalidInput) {
+		System.out.println("Running test for process name: " + invalidInput);
+		process.checkTextfieldshouldNotAcceptInvalidInput(process.processNameLabel, true, process.processNameField,
+				invalidInput, fake.lastName1() + "Desc", alchemy);
+	}
+
+	@Test(description = "Verify search Bar accepts Invalida Inputs", dependsOnMethods = "NaviageToProcessManagementPage", dataProvider = "processNameData", dataProviderClass = DataProviders.class)
+	public void testSearchBarAcceptInput(String invlaidInput) {
+
+		process.checkInvalidInpusShouldONSearchField(invlaidInput);
+	}
+
+//	process.SpecialCharctersForProcessUTILITY(process.processNameLabel, true, SpecialCharcters,
+//	fake.lastName1() + "Desc", process.saveButton);
 
 //	@AfterMethod
 //	public void getResult(ITestResult result) throws IOException, Throwable {
@@ -495,14 +577,7 @@ public class TestProcessTable extends TestBase {
 //		reports.flush();
 //	}
 
-	
-	@Test
-	public void name() {
-		
-	}
-	
-	
-	// @AfterTest
+	@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();
