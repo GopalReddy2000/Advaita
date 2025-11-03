@@ -42,6 +42,7 @@ import com.advaita.Utilities.Pagination;
 import com.advaita.Utilities.PropertieFileUtil;
 import com.advaita.Utilities.ScreenShorts;
 import com.advaita.Utilities.SendDataUtils;
+import com.google.gson.annotations.Until;
 
 import Advaita_TDD.Advaita_TDD.FakeData;
 
@@ -256,16 +257,35 @@ public class DataSet extends TestBase {
 	public List<WebElement> tab;
 
 	@FindBy(xpath = "//tr//td[6]//img[@alt='archive']")
-	List<WebElement> archiveActions;
+	List<WebElement> archiveActions_WebElements;
 
 	@FindBy(xpath = "//tr//td[6]//img[@alt='unarchive']")
-	public WebElement unArchiveAction;
+	public WebElement unArchiveAction_WebElement;
 
 	@FindBy(xpath = "//tr//td[6]//img[@alt='archive']")
-	public WebElement archiveAction;
+	public WebElement archiveAction_WebElement;
 
 	@FindBy(id = "change_msg")
 	public WebElement archivePopup;
+
+	@FindBy(xpath = "//tr//td[6]//img[contains(@class,'duplicate_dataset_btn')]")
+	public List<WebElement> duplicateActions;
+
+	@FindBy(xpath = "//tr//td[6]//img[contains(@class,'duplicate_dataset_btn')]")
+	public WebElement duplicateAction;
+
+	@FindBy(xpath = "//h6[text()='Duplicate ?']")
+	public WebElement duplicatePoup;
+
+	@FindBy(id = "dataset_duplicate_yes_btn")
+	public WebElement yesButton_Delete;
+
+	// isMask
+	@FindBy(xpath = "//input[@class='is-mask-slider']")
+	List<WebElement> isMaskToggelOption;
+
+	@FindBy(xpath = "//div[@class='table-responsive data-view-name']//table//tr//td[2]")
+	List<WebElement> dataSetFieldLabelel;
 
 	@FindBy(xpath = "(//tr//td[1])[position()<=1]")
 	public static WebElement fetchFirstCreatedRecord;
@@ -299,6 +319,7 @@ public class DataSet extends TestBase {
 	String dataset_filePath = "C:\\Users\\W2378\\git\\Advaita\\Advaita_TDD\\src\\main\\resources\\DataSet.properties";
 
 	public String fetchDatset_PropFile; // Retrive Value name Fro Pro
+	public String fetchDataSetFieldLabel; // Retrive Value name Fro Pro
 
 	public DataSet navigatToDatasetManagemnetPage() {
 
@@ -321,6 +342,7 @@ public class DataSet extends TestBase {
 	public void naviateToArchiveDataset(String tabName) {
 
 		// navigatToDatasetManagemnetPage();
+		unWait(2);
 		ClickUtilities.clickIfMatch(dataSetTabs, tabName);
 
 	}
@@ -1169,6 +1191,7 @@ public class DataSet extends TestBase {
 			assertTrue(searchBar.isDisplayed(), "searchButton is not displayed");
 			searchButon.click();
 
+			unWait(1);
 			assertEquals(fetchCurrentCreated.getText(), fetchDatset_PropFile, "Not Matched With Searched Process Name");
 
 			break;
@@ -1352,15 +1375,38 @@ public class DataSet extends TestBase {
 
 	// archive and Unarchive Dataset
 
-	public void archiveAction() {
+//	public void archiveAction() {
+//
+//		assertTrue(archiveAction.isDisplayed(), "archive Button is not Displayed");
+//
+//		archiveAction.isEnabled();
+//
+//		archiveAction.click();
+//
+//	}
 
-		assertTrue(archiveAction.isDisplayed(), "archive Button is not Displayed");
-
-		archiveAction.isEnabled();
-
-		archiveAction.click();
-
+	public void archiveAction(WebElement archive_unarchive_Action) {
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(archive_unarchive_Action));
+			jsWindowsScrollIntoView(archive_unarchive_Action); // optional helper if element is off-screen
+			assertTrue(archive_unarchive_Action.isDisplayed(), "Archive button is not displayed");
+			jsClick(archive_unarchive_Action); // use JS click for reliability
+			System.out.println("✅ Clicked on Archive/Unarchive action successfully.");
+		} catch (Exception e) {
+			System.out.println("❌ Failed to click archive button: " + e.getMessage());
+			throw e; // rethrow to fail test
+		}
 	}
+
+//	public void unArchiveAction() {
+//
+//		assertTrue(unArchiveAction_WebElement.isDisplayed(), "archive Button is not Displayed");
+//
+//		unArchiveAction_WebElement.isEnabled();
+//
+//		unArchiveAction_WebElement.click();
+//
+//	}
 
 	public void verifyArchivePopupAndClick() throws Throwable {
 
@@ -1373,20 +1419,21 @@ public class DataSet extends TestBase {
 	}
 
 	// ArchiveDataSet_single and Verify In Archiv Tab
-	public void archiveDataset(String archive_unarchivetab,String status) throws Throwable {
+	public void archiveDataset(WebElement archive_unarchive_Action, String archive_unarchivetab, String status)
+			throws Throwable {
 		// 1️⃣ Capture total count before archive
 		int beforeCount = getTotalCountFromElement(showingNumberOfRecords);
 		System.out.println(" Total dataset count before archive: " + beforeCount);
 
 		// 2️⃣ Perform archive steps
 		searchThroughDatasetName("searchManually");
-		
+
 		clearButton.click();
-		
+
 		unWait(2);
-		
-		archiveAction();
-		
+
+		archiveAction(archive_unarchive_Action);
+
 		verifyArchivePopupAndClick();
 
 		int afterCount = getTotalCountFromElement(showingNumberOfRecords);
@@ -1414,8 +1461,7 @@ public class DataSet extends TestBase {
 
 		for (WebElement row : processRows) {
 			String rowProcessName = row.findElement(By.xpath(".//td[1]")).getText().trim();
-			String rowStatus = row.findElement(By.xpath("(//td[5])")).getText().trim(); // status
-																						// column
+			String rowStatus = row.findElement(By.xpath("(//td[5])")).getText().trim(); // status column
 
 			if (rowProcessName.toLowerCase().contains(fetchDatset_PropFile.toLowerCase())) {
 				isProcessFound = true;
@@ -1524,6 +1570,139 @@ public class DataSet extends TestBase {
 		}
 	}
 
+	// Duplicate
+
+	public void duplicateDataset(WebElement duplicateAction, int count) {
+
+		int archivedCount = 0;
+
+		try {
+			// ✅ Step 1: Ensure element is visible
+			Assert.assertTrue(showingNumberOfRecords.isDisplayed(),
+					"❌ 'Showing-number-of-records' element is not displayed.");
+
+			// ✅ Step 2: Capture total before archive
+			int beforeCount = getTotalCountFromElement(showingNumberOfRecords);
+			System.out.println("📊 Total datasets before archive: " + beforeCount);
+
+			// ✅ Step 3: Start archive loop
+			while (archivedCount < count) {
+				List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+
+				if (rows.isEmpty()) {
+					System.out.println("⚠️ No dataset rows available to archive. Stopping loop.");
+					break;
+				}
+
+				WebElement firstRow = rows.get(0);
+				String datasetName = "";
+
+				try {
+					datasetName = firstRow.findElement(By.xpath(".//td[1]")).getText().trim();
+				} catch (NoSuchElementException e) {
+					System.out.println("⚠️ Could not read dataset name in the row - skipping this iteration.");
+					continue;
+				}
+
+				try {
+					// ✅ Use archiveAction element inside the row
+//	                WebElement archiveAction = firstRow.findElement(
+//	                        By.xpath(".//img[@alt='archive'] | .//button[contains(@class,'archive')]"));
+
+					if (duplicateAction.isDisplayed() && duplicateAction.isEnabled()) {
+						duplicateAction.click();
+
+						// ✅ Wait for archive popup and confirm
+						wait.until(ExpectedConditions.visibilityOf(yesButton_Delete));
+						Assert.assertTrue(yesButton_Delete.isDisplayed(), "❌ yesButton_Delete is not Displayed");
+//						continueButton.click();
+//
+//						System.out.println("🗂️ Archived dataset (confirmed via popup): " + datasetName);
+//						archivedCount++;
+//
+//						// ✅ Wait dynamically until count decreases
+//						int expectedCountAfter = beforeCount - archivedCount;
+//						wait.until(driver1 -> {
+//							int currentCount = getTotalCountFromElement(showingNumberOfRecords);
+//							return currentCount <= expectedCountAfter;
+//						});
+//
+//						int newCount = getTotalCountFromElement(showingNumberOfRecords);
+//						System.out.println("📉 Count updated after archiving '" + datasetName + "': " + newCount);
+
+					} else {
+						// System.out.println("⚠️ Archive action not visible or disabled for dataset: "
+						// + datasetName);
+					}
+
+				} catch (NoSuchElementException e) {
+					System.out.println("⚠️ archiveAction not found for dataset: " + datasetName);
+				}
+			}
+
+			// ✅ Step 4: Capture total after archive
+			int afterCount = getTotalCountFromElement(showingNumberOfRecords);
+			System.out.println("📊 Total datasets after archive: " + afterCount);
+
+			// ✅ Step 5: Validate count dynamically
+			int expectedAfterCount = beforeCount - archivedCount;
+			System.out.println("🔎 Expected count after archive: " + expectedAfterCount + ", Actual: " + afterCount);
+
+			Assert.assertEquals(afterCount, expectedAfterCount, "❌ Dataset count mismatch after archiving. Expected: "
+					+ expectedAfterCount + ", but found: " + afterCount);
+
+			System.out.println("✅ Archive validation successful. " + archivedCount + " dataset(s) archived correctly.");
+
+		} catch (Exception e) {
+			Assert.fail("❌ Exception occurred during dataset archive operation: " + e.getMessage(), e);
+		}
+
+	}
+
+	// Duplicate
+
+	// IsMask
+	public void isMask() throws Throwable {
+		isMaskDataset();
+	}
+
+	// IsMask
+	public void isMaskDataSet() throws Throwable {
+		isMaskDataset();
+	}
+
+	// IsMask
+	public void isMaskDataset() throws Throwable {
+
+		//  2. Search dataset manually (now you can use it)
+		searchThroughDatasetName("searchManually");
+
+		//  3. Click on dataset name
+		for (WebElement dataset : dataSetLists) {
+
+			if (dataset.getText().trim().equalsIgnoreCase(fetchDatset_PropFile.trim())) {
+				jsClick(dataset);
+				System.out.println("Clicked on dataset: " + fetchDatset_PropFile);
+				break;
+			}
+		}
+
+		// 🔹 1. Fetch test data (first!)
+		PropertieFileUtil.extractAllAndStore(dataset_filePath, dataSetFieldLabelel, "dataSetFieldLabel");
+		fetchDataSetFieldLabel = PropertieFileUtil.getSingleTextFromPropertiesFile(dataset_filePath,
+				"dataSetFieldLabel1");
+
+		// 🔹 4. Click on matching field label toggle
+		for (int i = 0; i < dataSetFieldLabelel.size(); i++) {
+			WebElement dataSetFieldLabel = dataSetFieldLabelel.get(i);
+			if (dataSetFieldLabel.getText().equalsIgnoreCase(fetchDataSetFieldLabel)) {
+				jsClick(isMaskToggelOption.get(i));
+				System.out.println("Clicked on IsMask Toggle for: " + fetchDataSetFieldLabel);
+				break;
+			}
+		}
+	}
+
 //=========================================================================
 	@FindBy(xpath = "//h2[text()='Create Dataset']/following-sibling::span")
 	WebElement close;
@@ -1531,22 +1710,6 @@ public class DataSet extends TestBase {
 	public DataSet close() {
 		jsClick(close);
 		return this;
-	}
-
-	
-	//Child Class
-	public class CustomDataSet extends DataSet {
-
-	    @Override
-	    public void naviateToArchiveDataset(String tabName) {
-	        // ✅ Locate the Archive tab using the updated XPath
-	        WebElement archiveTab = driver.findElement(By.xpath("(//ul[@id='pills-tab'])[2]//button"));
-
-	        // ✅ Use JS click for stability
-	        jsClick(archiveTab);
-
-	        System.out.println("✅ Custom navigation performed for: " + tabName + " via Archive Tab XPath");
-	    }
 	}
 
 }

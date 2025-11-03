@@ -157,7 +157,7 @@ public class TestDataSetTable extends TestBase {
 			"navigateToDatasetPageAndVerify" })
 	public void archiveDataSetFromUnArchiveTab() throws Throwable {
 
-		dataset.archiveDataset("Archived Dataset","Inactive"); //Unarchived Dataset
+		dataset.archiveDataset(dataset.archiveAction_WebElement,"Archived Dataset","Inactive");
 
 	}
 
@@ -165,7 +165,7 @@ public class TestDataSetTable extends TestBase {
 			"navigateToDatasetPageAndVerify" })
 	public void testArchiveMultipleDataSet() {
 
-		dataset.archive_Unarchive_MultipleDatasets(dataset.archiveAction, 1);
+		dataset.archive_Unarchive_MultipleDatasets(dataset.archiveAction_WebElement, 3);
 	}
 
 	// ==> Unarchive
@@ -174,7 +174,7 @@ public class TestDataSetTable extends TestBase {
 			"navigateToDatasetPageAndVerify", "navigateToArchiveDataSet" })
 	public void unArchiveDataSetFromArchiveTab() throws Throwable {
 
-		 dataset.archiveDataset("Unarchived Dataset","Active"); // need to Implemet(tommorow
+		 dataset.archiveDataset(dataset.unArchiveAction_WebElement,"Unarchived Dataset","Active"); // need to Implemet(tommorow
 
 	}
 
@@ -182,9 +182,22 @@ public class TestDataSetTable extends TestBase {
 			"navigateToDatasetPageAndVerify", "navigateToArchiveDataSet" })
 	public void testUnArchiveMultipleDataSet() {
 
-		dataset.archive_Unarchive_MultipleDatasets(dataset.unArchiveAction, 1);
+		dataset.archive_Unarchive_MultipleDatasets(dataset.unArchiveAction_WebElement, 3);
 
 	}
+	
+	//Duplicate
+	
+	
+	
+	//isMask
+	@Test(description = "Verify The User is able To isMask Dataset manualley", dependsOnMethods = "searchDataSetManualley")
+	public void testIsMask() throws Throwable {
+		
+			dataset.isMaskDataset();
+	}
+	
+	
 
 //========================================================================	
 
@@ -207,7 +220,7 @@ public class TestDataSetTable extends TestBase {
 		reports.flush();
 	}
 
-	@AfterTest
+//	@AfterTest
 	public void tearDown() {
 		driver.manage().window().minimize();
 		driver.quit();

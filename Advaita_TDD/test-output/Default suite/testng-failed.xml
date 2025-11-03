@@ -6,10 +6,9 @@
       <class name="com.advaita.TestTable.TestDataSetTable">
         <methods>
           <include name="setUp"/>
-          <include name="navigateToArchiveDataSet"/>
-          <include name="unArchiveDataSetFromArchiveTab"/>
-          <include name="tearDown"/>
+          <include name="testIsMask"/>
           <include name="navigateToDatasetPageAndVerify"/>
+          <include name="searchDataSetManualley"/>
         </methods>
       </class> <!-- com.advaita.TestTable.TestDataSetTable -->
     </classes>

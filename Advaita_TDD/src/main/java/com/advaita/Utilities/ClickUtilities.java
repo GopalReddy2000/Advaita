@@ -274,7 +274,8 @@ public class ClickUtilities extends TestBase {
 	                    try {
 	                        String text = el.getText().trim().toLowerCase();
 	                        if (text.equals(target)) {
-	                            el.click();
+	                            //el.click();
+	                        	jsClick(el);
 	                            System.out.println("[clickIfMatch] Clicked WebElement with text: " + el.getText().trim());
 	                            clickedOrMatched = true;
 	                            break;
